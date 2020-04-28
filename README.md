@@ -1,3 +1,5 @@
-![Java CI with Maven](https://github.com/AMOS-5/clinkle/workflows/Java%20CI%20with%20Maven/badge.svg)
+![Build](https://github.com/AMOS-5/clinkle/workflows/Build/badge.svg)
 
-# clinkle
+# InfiniTag
+The repository for the AMOS Team 5 Project for tagging
+documents using the power of machine learning!
