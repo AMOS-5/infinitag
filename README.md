@@ -1,3 +1,4 @@
+
 ![Build](https://github.com/AMOS-5/clinkle/workflows/Build/badge.svg)
 
 # InfiniTag
