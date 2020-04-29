@@ -1,0 +1,15 @@
+matrix:
+    include:
+        - language: node_js
+          node_js:
+              - 12
+          before_script:
+              - cd frontend
+          script:
+              - npm ci
+              - npm run build:ci
+
+        - language: java
+          jdk: oraclejdk11
+          script:
+              - ./mvnw package
