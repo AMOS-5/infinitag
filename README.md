@@ -1,5 +1,5 @@
 
-![Build](https://github.com/AMOS-5/clinkle/workflows/Build/badge.svg)
+![Build](https://travis-ci.com/AMOS-5/infinitag.svg?branch=master)
 
 # InfiniTag
 The repository for the AMOS Team 5 Project for tagging
