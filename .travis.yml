@@ -11,5 +11,9 @@ matrix:
 
         - language: java
           jdk: oraclejdk11
+          before_install:
+              - mysql -e 'CREATE DATABASE infinitag;'
+          services:
+              - mysql
           script:
               - ./mvnw package
