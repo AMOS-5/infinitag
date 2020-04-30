@@ -17,3 +17,12 @@ given when creating a user for the database.
     - `INFINITAG_PASSWORD`
 - If necessary, set the value for `spring.datasource.url` in the
 `application.properties` file.
+
+## Running Software
+### Front End
+- `cd frontend`
+- `npm ci`
+- `ng serve`
+
+### Rest Server
+- `./mvnw spring-boot:run`
