@@ -1,8 +1,5 @@
 package com.amos.infinitag.unittests;
 
-import java.nio.file.Paths;
-import java.util.stream.Stream;
-
 import com.amos.infinitag.exceptions.StorageFileNotFoundException;
 import com.amos.infinitag.services.FileSystemStorageService;
 import org.junit.jupiter.api.Test;
@@ -14,12 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 

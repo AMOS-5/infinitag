@@ -31,6 +31,11 @@ public class FileSystemStorageService implements StorageService {
         this.rootLocation = Paths.get(properties.getLocation());
     }
 
+
+    /**
+     * Attempts to save a file using the local storage system
+     * and returns the path of the saved file
+     */
     @Override
     public String store(MultipartFile file, String name) {
         String originalFileName = file.getOriginalFilename();
@@ -61,6 +66,10 @@ public class FileSystemStorageService implements StorageService {
         return "";
     }
 
+    /**
+     * @return A stream of paths on the local file system which have
+     * been saved under the root location of the storage system.
+     */
     @Override
     public Stream<Path> loadAll() {
         try {
@@ -74,11 +83,20 @@ public class FileSystemStorageService implements StorageService {
 
     }
 
+    /**
+     * @param filename Name of the file to load
+     * @return Path of the file on the storage system
+     */
     @Override
     public Path load(String filename) {
         return rootLocation.resolve(filename);
     }
 
+    /**
+     *
+     * @param filename Name of the file to load
+     * @return Returns the file as a resource instead of a path
+     */
     @Override
     public Resource loadAsResource(String filename) {
         try {
@@ -97,11 +115,17 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    /**
+     * Delete all the files under the root location
+     */
     @Override
     public void deleteAll() {
         FileSystemUtils.deleteRecursively(rootLocation.toFile());
     }
 
+    /**
+     * Initializes the storage service by creating the directories necessary.
+     */
     @Override
     public void init() {
         try {
@@ -112,6 +136,11 @@ public class FileSystemStorageService implements StorageService {
         }
     }
 
+    /**
+     *
+     * @param file MultipartFile to save. Will be given a UUID for a name.
+     * @return Returns the path of the file on the file system.
+     */
     @Override
     public String store(MultipartFile file) {
         UUID uuid = UUID.randomUUID();

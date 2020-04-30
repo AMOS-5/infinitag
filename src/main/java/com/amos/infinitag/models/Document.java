@@ -5,6 +5,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Standard document class. This is marked as an entity to save it to the database.
+ */
 @Entity
 public class Document {
     @Id

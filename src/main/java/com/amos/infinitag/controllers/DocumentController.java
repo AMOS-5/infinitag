@@ -32,6 +32,10 @@ public class DocumentController {
         this.documentService = documentService;
     }
 
+    /**
+     *
+     * @return Returns a collection of all documents in the database.
+     */
     @GetMapping("/documents")
     public Iterable<Document> getDocuments() {
         Iterable<Document> documents = this.documentService.getAllDocuments();
@@ -39,6 +43,13 @@ public class DocumentController {
         return this.documentService.getAllDocuments();
     }
 
+    /**
+     * Loads the file and returns the content. Uses the original name of the file instead
+     * of the UUID
+     * @param filename Name (UUID) of the file to be fetched.
+     * @return A response with the file as an attachment. Can be used in a download link
+     * @throws IOException Throws an exception if the file does not exist or cannot be read.
+     */
     @GetMapping(
         value = "/documents/download/{filename}",
         produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
@@ -63,6 +74,13 @@ public class DocumentController {
             .body(byteArrayResource);
     }
 
+
+    /**
+     * Saves the file using the storage service and creates a new entry in the database.
+     * The name of the file is replaced with a UUID to prevent conflicts.
+     * @param file MultipartFile. The file has to be attached to the request with the 'file' label.
+     * @return Document which has been created
+     */
     @PostMapping("/documents/upload")
     public Document handleDocumentUpload(@RequestParam("file") MultipartFile file) {
 
