@@ -13,6 +13,5 @@ matrix:
           jdk: oraclejdk11
           services:
               - mysql
-          env: INFINITAG_USER=root INFINITAG_PASSWORD=
           script:
               - ./mvnw package
