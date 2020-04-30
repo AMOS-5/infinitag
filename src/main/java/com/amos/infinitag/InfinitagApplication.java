@@ -1,12 +1,15 @@
 package com.amos.infinitag;
 
+import com.amos.infinitag.configuration.StorageProperties;
+import com.amos.infinitag.services.StorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@EnableConfigurationProperties(StorageProperties.class)
 public class InfinitagApplication {
 
     public static void main(String[] args) {
@@ -14,7 +17,9 @@ public class InfinitagApplication {
     }
 
     @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {};
+    CommandLineRunner init(StorageService storageService) {
+        return (args) -> {
+            storageService.init();
+        };
     }
 }
