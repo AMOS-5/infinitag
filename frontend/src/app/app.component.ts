@@ -9,7 +9,7 @@ import {IDocument} from './models/IDocument.model';
 })
 export class AppComponent implements OnInit {
   public title = 'infinitag';
-  public serverUrl = 'http://localhost:8080';
+  public serverUrl = 'http://localhost:5000';
   public backendStatus = `${this.serverUrl}/health`;
   public documentsUrl = `${this.serverUrl}/documents`;
   public uploadUrl = `${this.documentsUrl}/upload`;
