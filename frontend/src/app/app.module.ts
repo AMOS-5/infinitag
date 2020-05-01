@@ -5,11 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
 import {MatTableModule} from '@angular/material/table'; 
-
+import {MatSortModule} from '@angular/material/sort'; 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTable } from './documentview/document-view-table';
-
 
 @NgModule({
   declarations: [
@@ -21,9 +21,11 @@ import { DocumentViewTable } from './documentview/document-view-table';
         AppRoutingModule,
         HttpClientModule,
         FormsModule,
-        MatTableModule
+        MatTableModule,
+        MatSortModule,
+        BrowserAnimationsModule,
     ],
-  providers: [],
+    providers: [],
   bootstrap: [AppComponent, DocumentViewTable]
 })
 export class AppModule { }
