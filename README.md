@@ -22,4 +22,4 @@ documents using the power of machine learning!
 - `ng serve`
 
 ### Rest Server
-- `./mvnw spring-boot:run`
+- `python app.py`
