@@ -5,18 +5,15 @@
 The repository for the AMOS Team 5 Project for tagging
 documents using the power of machine learning!
 
-## Setup of Database
-### MySQL
-- Install mysql server
-- Create a database with the name `infinitag`
-- Make sure you have a user for the database which can read and write
-to the database.
-- Make sure the following environment variables are set with the values
-given when creating a user for the database.
-    - `INFINITAG_USER`
-    - `INFINITAG_PASSWORD`
-- If necessary, set the value for `spring.datasource.url` in the
-`application.properties` file.
+
+## Getting Started
+### Front End
+- Install Node & npm (https://nodejs.org/en/)
+- Install angular-cli  `npm install -g @angular/cli`
+- Do `npm install` in `./frontend`
+### Back End
+- Install Python3
+- pip install -r requirements.txt
 
 ## Running Software
 ### Front End
@@ -25,4 +22,4 @@ given when creating a user for the database.
 - `ng serve`
 
 ### Rest Server
-- `./mvnw spring-boot:run`
+- `python app.py`
