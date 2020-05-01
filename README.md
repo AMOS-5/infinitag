@@ -5,6 +5,7 @@
 The repository for the AMOS Team 5 Project for tagging
 documents using the power of machine learning!
 
+
 ## Getting Started
 ### Front End
 - Install Node & npm (https://nodejs.org/en/)
@@ -21,4 +22,4 @@ documents using the power of machine learning!
 - `ng serve`
 
 ### Rest Server
-- `python app.py`
+- `./mvnw spring-boot:run`
