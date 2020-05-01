@@ -5,16 +5,8 @@
 The repository for the AMOS Team 5 Project for tagging
 documents using the power of machine learning!
 
-## Getting Started
-### Front End
-- Install Node & npm (https://nodejs.org/en/)
-- Install angular-cli  `npm install -g @angular/cli`
-- Do `npm install` in `./frontend`
-### Back End
-- Install Python3
-- Install all dependencies.
-### Setup of Database
-#### MySQL
+## Setup of Database
+### MySQL
 - Install mysql server
 - Create a database with the name `infinitag`
 - Make sure you have a user for the database which can read and write
@@ -33,4 +25,4 @@ given when creating a user for the database.
 - `ng serve`
 
 ### Rest Server
-- `python app.py`
+- `./mvnw spring-boot:run`
