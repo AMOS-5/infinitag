@@ -23,9 +23,10 @@ class BasicTestCase(unittest.TestCase):
         response = tester.get('/documents', content_type="application/json")
         self.assertEqual(response.status_code, 200)
 
-        data_response = json.loads(response.data)
-        documents = data_response['documents']
-        self.assertIsNotNone(documents)
+        #disabled documents upload
+        #data_response = json.loads(response.data)
+        #documents = data_response['documents']
+        #self.assertIsNotNone(documents)
 
 
 if __name__ == '__main__':
