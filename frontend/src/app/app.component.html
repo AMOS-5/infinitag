@@ -1,4 +1,4 @@
-<h1>Welcome to the Initag Front End</h1>
+<h1>Welcome to the Infitag Front End</h1>
 <h4>The current status of the server is: {{serverStatus}}</h4>
 
 <h4>Upload New Document</h4>
@@ -9,25 +9,5 @@
          (change)="handleFileInput($event.target.files)">
 </form>
 
-
-<h4>Available Documents</h4>
-<table *ngIf="documents.length > 0">
-  <thead>
-  <td>Name</td>
-  <td>Original Name</td>
-  <td>Size</td>
-  <td>Type</td>
-  <td>Server Path</td>
-  <td>Upload Date</td>
-  <td>Download</td>
-  </thead>
-  <tr *ngFor="let document of documents">
-    <td>{{document.name}}</td>
-    <td>{{document.originalName}}</td>
-    <td>{{document.size}}</td>
-    <td>{{document.type}}</td>
-    <td>{{document.path}}</td>
-    <td>{{document.createdAt}}</td>
-    <td><a download href="{{downloadUrl}}/{{document.name}}">Download</a></td>
-  </tr>
-</table>
+<document-view-table>
+</document-view-table>
