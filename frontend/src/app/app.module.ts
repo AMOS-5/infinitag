@@ -10,11 +10,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTable } from './documentview/document-view-table';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DocumentViewTable
+    DocumentViewTable,
+    HomeComponent,
   ],
     imports: [
         BrowserModule,
