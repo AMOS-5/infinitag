@@ -1,5 +1,5 @@
 import unittest
-from app import app
+from Scripts.app import app
 import json
 
 
@@ -30,3 +30,4 @@ class BasicTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
