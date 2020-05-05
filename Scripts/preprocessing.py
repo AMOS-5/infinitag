@@ -1,13 +1,9 @@
 import os
-import io
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
 import gensim
 from gensim import corpora
-import pickle5
-import pyLDAvis.gensim
 
 
 class MyNLP:

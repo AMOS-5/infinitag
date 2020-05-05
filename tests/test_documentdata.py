@@ -22,6 +22,7 @@ class DocumentTestCase(unittest.TestCase):
             "createdAt" : 'Fri May  1 12:11:10 2020'
         }
         self.assertDictEqual(doc.as_dict(), dict)
-        
+
+
 if __name__ == '__main__':
     unittest.main()
