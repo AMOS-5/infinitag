@@ -1,6 +1,12 @@
-from flask import Flask
 from flask_cors import CORS
 from flask_jsonpify import jsonify
+from flask import Flask
+
+import sys
+from datetime import datetime, timedelta
+
+from documentdata import DocumentData
+
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +19,25 @@ def hello_world():
 
 @app.route('/documents')
 def get_documents():
-    return jsonify({"documents": []})
+    """
+    Sends document data as json object to frontend.
+    Right now only sends dummy data
+    """
+    list = []
+    for i in range(0, 1000):
+        day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
+        doc = DocumentData(
+            name="test"+str(i)+".pdf",
+            path="./test"+str(i)+".pdf",
+            type="pdf",
+            lang="de",
+            size=200-i,
+            createdAt=day
+        )
+        list.append(doc.as_dict())
+
+    jsonstr = jsonify(list)
+    return jsonstr
 
 
 @app.route('/health')

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {IDocument} from './models/IDocument.model';
 
+import { environment } from './../environments/environment';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -9,9 +11,9 @@ import {IDocument} from './models/IDocument.model';
 })
 export class AppComponent implements OnInit {
   public title = 'infinitag';
-  public serverUrl = 'http://localhost:5000';
-  public backendStatus = `${this.serverUrl}/health`;
-  public documentsUrl = `${this.serverUrl}/documents`;
+  
+  public backendStatus = `${environment.serverUrl}/health`;
+  public documentsUrl = `${environment.serverUrl}/documents`;
   public uploadUrl = `${this.documentsUrl}/upload`;
   public downloadUrl = `${this.documentsUrl}/download`;
 
@@ -26,11 +28,6 @@ export class AppComponent implements OnInit {
       .subscribe((value: {status: string}) => {
         this.serverStatus = value.status;
       });
-
-    this.httpClient.get(this.documentsUrl)
-      .subscribe((value: Array<IDocument>) => {
-        this.documents = value;
-      });
   }
 
   public handleFileInput(files: FileList) {
@@ -43,12 +40,12 @@ export class AppComponent implements OnInit {
       });
   }
 
-  public download(document: IDocument) {
+  /*public download(document: IDocument) {
     const url = `${this.downloadUrl}/${document.name}`;
 
     this.httpClient.get(url)
       .subscribe((response: any) => {
         console.log(response);
       });
-  }
+  }*/
 }

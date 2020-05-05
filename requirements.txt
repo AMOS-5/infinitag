@@ -1,4 +1,7 @@
+pyLDAvis
 flask
 flask_cors
 flask_jsonpify
 pytest
+nltk
+gensim
