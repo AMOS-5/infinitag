@@ -24,7 +24,7 @@ def get_documents():
     list = []
     for i in range(0, 100):
         doc = DocumentData(name="test"+str(i)+".pdf", path="./test"+str(i)+".pdf",type="pdf",lang="de",size=200-i,createdAt="1.5.2"+str(i))
-        list.append(doc.asDict())
+        list.append(doc.as_dict())
     
     jsonstr = jsonify(list)
     return jsonstr

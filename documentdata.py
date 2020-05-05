@@ -8,7 +8,7 @@ class DocumentData:
         self.size = size
         self.createdAt = createdAt
 
-    def asDict(self):
+    def as_dict(self):
         return {
             "name" : self.name,
             "path" : self.path,

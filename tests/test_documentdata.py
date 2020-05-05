@@ -14,7 +14,7 @@ class DocumentTestCase(unittest.TestCase):
             "size" : 20,
             "createdAt" : "1.5.2020"
         }
-        self.assertDictEqual(doc.asDict(), dict)
+        self.assertDictEqual(doc.as_dict(), dict)
         
 if __name__ == '__main__':
     unittest.main()
