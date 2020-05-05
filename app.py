@@ -1,6 +1,6 @@
-from flask import Flask
 from flask_cors import CORS
 from flask_jsonpify import jsonify
+from flask import Flask
 
 import sys
 from datetime import datetime, timedelta
