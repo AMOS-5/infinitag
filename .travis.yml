@@ -14,5 +14,5 @@ matrix:
           install:
               - pip install -r requirements.txt
           script:
-              - python -c "import nltk; nltk.download('stopwords')"
+              - python -c "import nltk; nltk.download('wordnet')"
               - python -m unittest discover -s tests
