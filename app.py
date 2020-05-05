@@ -19,6 +19,10 @@ def hello_world():
 
 @app.route('/documents')
 def get_documents():
+    """
+    Sends document data as json object to frontend.
+    Right now only sends dummy data
+    """
     #doc1 = DocumentData(name="test.pdf", path="./test.pdf",type="pdf",lang="de",size=20,createdAt="1.5.2020")
     #doc2 = DocumentData(name="abc.txt", path="./abc.txt",type="txt",lang="en",size=30,createdAt="11.5.1999")
     list = []
