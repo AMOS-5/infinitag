@@ -29,7 +29,7 @@ export class DocumentViewTable implements OnInit {
   
 
   public ngOnInit() {
-    this.httpClient.get(`${environment.apiUrl}/documents`)
+    this.httpClient.get(`${environment.serverUrl}/documents`)
       .subscribe((value: Array<IDocument>) => {
         value.map((doc) => {
           doc.createdAt = new Date(doc.createdAt)

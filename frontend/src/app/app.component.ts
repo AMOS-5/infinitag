@@ -12,8 +12,8 @@ import { environment } from './../environments/environment';
 export class AppComponent implements OnInit {
   public title = 'infinitag';
   
-  public backendStatus = `${environment.apiUrl}/health`;
-  public documentsUrl = `${environment.apiUrl}/documents`;
+  public backendStatus = `${environment.serverUrl}/health`;
+  public documentsUrl = `${environment.serverUrl}/documents`;
   public uploadUrl = `${this.documentsUrl}/upload`;
   public downloadUrl = `${this.documentsUrl}/download`;
 
