@@ -11,10 +11,14 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { DocumentViewTable } from './documentview/document-view-table';
 import { HomeComponent } from './home/home.component';
+import { SearchComponent } from './search/search.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    SearchComponent,
+    SettingsComponent,
     DocumentViewTable,
     HomeComponent,
   ],
