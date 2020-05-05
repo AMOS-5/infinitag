@@ -30,9 +30,12 @@ export class DocumentViewTable implements OnInit {
 
   public ngOnInit() {
     this.httpClient.get(`${environment.apiUrl}/documents`)
-    .subscribe((value: Array<IDocument>) => {
-      this.dataSource.data = value;
-    });
+      .subscribe((value: Array<IDocument>) => {
+        value.map((doc) => {
+          doc.createdAt = new Date(doc.createdAt)
+        })
+        this.dataSource.data = value;
+      });
     setTimeout(() => {
       this.dataSource.sort = this.sort;
     });

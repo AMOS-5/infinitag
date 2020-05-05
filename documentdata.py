@@ -1,6 +1,8 @@
+from datetime import datetime
+
 class DocumentData:
 
-    def __init__(self, name, path, type, lang, size, createdAt):
+    def __init__(self, name: str, path: str, type: str, lang: str, size: int, createdAt: datetime):
         self.name = name
         self.path = path
         self.type = type
@@ -15,5 +17,5 @@ class DocumentData:
             "type" : self.type,
             "lang" : self.lang,
             "size" : self.size,
-            "createdAt" : self.createdAt
+            "createdAt" : self.createdAt.ctime()
         }
