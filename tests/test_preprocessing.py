@@ -2,7 +2,7 @@ import json
 import os
 import io
 import unittest
-from Scripts.pre_processing import MyNLP
+from Scripts.preprocessing import MyNLP
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
@@ -22,6 +22,9 @@ class PreProcessingTestCase(unittest.TestCase):
         self.assertNotIn(result, string.punctuation)
         for word in result:
             self.assertNotIn(result,WordNetLemmatizer().lemmatize(word))
+
+
+
 
     if __name__ == '__main__':
         unittest.main()

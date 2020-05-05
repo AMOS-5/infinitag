@@ -66,4 +66,4 @@ class MyNLP:
 
                 print(ldamodel.print_topics(num_topics=2, num_words=4))
 
-        return
+        return ldamodel
