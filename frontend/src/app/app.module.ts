@@ -28,6 +28,6 @@ import { HomeComponent } from './home/home.component';
         BrowserAnimationsModule,
     ],
     providers: [],
-  bootstrap: [AppComponent, DocumentViewTable]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
