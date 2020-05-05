@@ -31,7 +31,7 @@ def get_documents():
             path="./test"+str(i)+".pdf",
             type="pdf",
             lang="de",
-            size=200-i,
+            size=200+i,
             createdAt=day
         )
         list.append(doc.as_dict())
