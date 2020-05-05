@@ -24,8 +24,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         data_response = json.loads(response.data)
-        documents = data_response['documents']
-        self.assertIsNotNone(documents)
+        self.assertIsNotNone(data_response)
 
 
 if __name__ == '__main__':

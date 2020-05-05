@@ -2,23 +2,32 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {FormsModule} from '@angular/forms';
+import {MatTableModule} from '@angular/material/table'; 
+import {MatSortModule} from '@angular/material/sort'; 
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
+import { AppComponent } from './app.component';
+import { DocumentViewTable } from './documentview/document-view-table';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent
+    DocumentViewTable,
+    HomeComponent,
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        BrowserAnimationsModule,
     ],
-  providers: [],
+    providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
