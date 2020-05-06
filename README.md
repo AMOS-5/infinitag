@@ -23,3 +23,11 @@ documents using the power of machine learning!
 
 ### Rest Server
 - `python app.py`
+
+# Start Script
+- Make sure the script can be executed
+- `chmod +x start.h`
+- You can either simply run `./start.sh` or you can use the following arguments:
+    - `-h` prints usage
+    - `-i` will install dependencies and start the software
+    - `-p` will build the front end for production mode and start the rest server
