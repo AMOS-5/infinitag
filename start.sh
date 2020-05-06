@@ -97,7 +97,7 @@ else
     echo "Serving Frontend at: "
     echo "http://localhost:$FRONTEND_PORT"
     cd frontend || exit
-    ng serve --port=$FRONTEND_PORT -o
+    node node_modules/@angular/cli/bin/ng serve --port=$FRONTEND_PORT -o
 fi
 
 
