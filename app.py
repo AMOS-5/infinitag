@@ -26,13 +26,22 @@ def get_documents():
     list = []
     for i in range(0, 1000):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
+        tags = []
+        if i % 2 == 0:
+            tags.append("test-tag-1")
+        if i % 3 == 0:
+            tags.append("test-tag-2")
+        if i % 4 == 0:
+            tags.append("test-tag-3")
+        
         doc = DocumentData(
             name="test"+str(i)+".pdf",
             path="./test"+str(i)+".pdf",
             type="pdf",
             lang="de",
             size=200+i,
-            createdAt=day
+            createdAt=day,
+            tags=tags
         )
         list.append(doc.as_dict())
 
