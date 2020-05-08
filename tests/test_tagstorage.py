@@ -6,12 +6,12 @@ import unittest
 import time
 
 
-
 class TagStorageTestCase(unittest.TestCase):
     config = {
         "field": "tag",
         "corename": "test_tags",
-        "url": "http://localhost:8983/solr/",
+        # "url": "http://localhost:8983/solr/",
+        "url": "http://ec2-54-185-241-44.us-west-2.compute.amazonaws.com:8983/solr/",
         "always_commit": True,
     }
 
@@ -43,7 +43,7 @@ class TagStorageTestCase(unittest.TestCase):
 
 
 # setup the test database for each testcase
-create_core(TagStorageTestCase.config)
+# create_core(TagStorageTestCase.config)
 SOLR_TAGS = SolrTagStorage(TagStorageTestCase.config)
 
 if __name__ == "__main__":
