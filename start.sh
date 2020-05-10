@@ -3,10 +3,26 @@ shopt -s expand_aliases
 install_flag='false'
 production_flag='false'
 
-python3_cmd=`which python3`
-python_cmd=`which python`
-node_cmd=`which node`
-npm_cmd=`which npm`
+# Check to see if python has been set by an environment variable
+if [ -n "${python}" ]; then
+    alias p=${python}
+else
+    # If python is not an environment variable, try to find it in the path
+    python3_cmd=$(which python3)
+    python_cmd=$(which python)
+
+    if [ -n "$python3_cmd" ]; then
+        alias p='python3'
+    elif [ -z "$python3_cmd" ] && [ -n "$python_cmd" ]; then
+        alias p='python'
+    else
+        echo "No python found. Exiting."
+        exit 1
+    fi
+fi
+
+node_cmd=$(which node)
+npm_cmd=$(which npm)
 
 BACKEND_PORT=5000
 BACKEND_HOST="0.0.0.0"
@@ -20,18 +36,6 @@ fi
 
 if [ -z "$npm_cmd" ]; then
     echo "Npm not found. Cannot continue"
-    exit 1
-fi
-
-
-if [ -n "$python3_cmd" ]; then
-    alias p='python3'
-    alias pp='pip3'
-elif [ -z "$python3_cmd" ] && [ -n "$python_cmd" ]; then
-    alias p='python'
-    alias pp='pip'
-else
-    echo "No python found. Exiting."
     exit 1
 fi
 
@@ -72,7 +76,7 @@ trap cleanup EXIT
 
 if [ "$install_flag" = "true" ]; then
     echo "Installing dependencies..."
-    pp install -r requirements.txt
+    p -m pip install -r requirements.txt
     cd frontend || exit
     npm ci
     cd ../

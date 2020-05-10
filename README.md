@@ -74,6 +74,12 @@ The default operation of this script is:
 ## Linux / Mac
 - Make sure the script can be executed
 - `chmod +x start.h`
+- Because our software requires `python 3.7`, you may have to export your
+desired python version as an environment variable. For example:
+    - `export python=/home/user/anaconda3/bin/python`
+
+this will then cause the script to use this version instead of the default
+version in the path.
 - You can either simply run `./start.sh` or you can use the following arguments:
     - `-h` prints usage
     - `-i` will install dependencies and start the software
