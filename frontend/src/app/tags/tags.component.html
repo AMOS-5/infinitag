@@ -1,0 +1,13 @@
+<div class="container">
+    <mat-form-field>
+        <mat-label>Add Tags ...</mat-label>
+        <input matInput [matChipInputFor]=" chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)" placeholder="automobile">
+    </mat-form-field>
+    <mat-chip-list #chipList class="mat-chip-list-stacked" aria-label="Tag selection">
+        <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable" (removed)="remove(tag)">
+            {{tag.name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+    </mat-chip-list>
+</div>
