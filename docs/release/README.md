@@ -27,8 +27,8 @@ In order to make sure you can do everything necessary the following will have to
 
 <a name="python"></a>
 ### Python
-`Python 2` has been end of life for quite some time, and our software requires `python 3`.
-[Here's where you can get it](https://www.python.org/downloads/)
+`Python 2` has been end of life for quite some time, and our software requires `python 3.7`.
+[Here's where you can get it](https://www.python.org/downloads/release/python-377/)
 
 <a name="node"></a>
 ### Node
