@@ -5,3 +5,5 @@ flask_jsonpify
 pytest
 nltk
 gensim
+pysolr
+urlpath
