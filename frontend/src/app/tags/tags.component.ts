@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ITag } from '../models/ITag.model';
-import { HttpClient } from '@angular/common/http';
-import { environment } from './../../environments/environment';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-tags',
@@ -18,36 +17,44 @@ export class TagsComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
 
-  tags: ITag[] = [
-    { name: 'Test' },
-  ];
+  tags: ITag[] = [];
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private api: ApiService) { }
 
   public ngOnInit() {
-    this.httpClient.get(`${environment.serverUrl}/tags`)
-      .subscribe((value: Array<ITag>) => {
-        this.tags = value;
+    this.api.getTags()
+      .subscribe((data: Array<ITag>) => {
+        this.tags = data;
       });
   }
 
   public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-    if ((value || '').trim()) {
-      this.tags.push({ name: value.trim() });
-    }
-    if (input) {
-      input.value = '';
+    if (value != '') {
+      this.api.addTag({ name: value })
+        .subscribe(res => {
+          if ((value || '').trim()) {
+            this.tags.push({ name: value.trim() });
+          }
+          if (input) {
+            input.value = '';
+          }
+          console.log(res);
+        });
     }
   }
 
   public remove(tag: ITag): void {
-    const index = this.tags.indexOf(tag);
+    this.api.removeTag(tag)
+      .subscribe(res => {
+        const index = this.tags.indexOf(tag);
 
-    if (index >= 0) {
-      this.tags.splice(index, 1);
-    }
+        if (index >= 0) {
+          this.tags.splice(index, 1);
+        }
+        console.log(res);
+      });
   }
 
 }
