@@ -29,12 +29,13 @@ def get_documents():
     list = []
     for i in range(0, 100):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
-        solr_tags = SOLR_TAGS.tags #load tags from solr
         tags = []
-        #assign tags pseudo randomly
-        for tag_idx in range(0, len(solr_tags)):
-            if(i % (tag_idx+2) == 0):
-                tags.append(solr_tags[tag_idx])
+        if SOLR_TAGS is not None:
+            solr_tags = SOLR_TAGS.tags #load tags from solr
+            #assign tags pseudo randomly
+            for tag_idx in range(0, len(solr_tags)):
+                if(i % (tag_idx+2) == 0):
+                    tags.append(solr_tags[tag_idx])
         
         doc = DocumentData(
             name="test"+str(i)+".pdf",
