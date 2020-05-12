@@ -11,11 +11,11 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getTags() {
+  public getTags() {
     return this.http.get(`${environment.serverUrl}/tags`);
   }
 
-  addTag(tag: ITag): Observable<object> {
+  public addTag(tag: ITag): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -24,7 +24,7 @@ export class ApiService {
     return this.http.post(`${environment.serverUrl}/tags`, tag, httpOptions);
   }
 
-  removeTag(tag: ITag): Observable<object> {
+  public removeTag(tag: ITag): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
