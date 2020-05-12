@@ -1,6 +1,7 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request
+
 from argparse import ArgumentParser
 import sys
 import os
@@ -46,7 +47,22 @@ def get_documents():
 def get_health():
     return jsonify({"status": "UP"})
 
+  
+@app.route('/tags', methods=['GET', 'POST', 'DELETE'])
+def tags():
+    if request.method == 'GET':
+        data = [{"name": "automobile"}, {"name": "BMW"}, {"name": "sedan"}]
+        return jsonify(data)
+    if request.method == 'POST':
+        data = request.json.get('name')
+        return jsonify(data + " will be added to database"), 200
 
+
+@app.route('/tags/<tag_id>', methods=['DELETE'])
+def remove_tags(tag_id):
+    return jsonify(tag_id + " will be removed from database"), 200
+  
+  
 @app.route('/stopServer', methods=['GET'])
 def stop_server():
     shutdown = request.environ.get('werkzeug.server.shutdown')
