@@ -8,7 +8,7 @@ import signal
 from datetime import datetime, timedelta
 
 from documentdata import DocumentData
-from backend import tagstorage_setup, config
+from backend import config
 from backend.tagstorage import SolrTagStorage
 
 app = Flask(__name__)
