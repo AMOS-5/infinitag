@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { HomeComponent } from './home.component';
+import { MatSortModule, } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DocumentViewTable } from '../documentview/document-view-table';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -9,9 +13,12 @@ describe('HomeComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MatSortModule,
+        MatTableModule,
+        BrowserAnimationsModule,
       ],
-      declarations: [HomeComponent]
+      declarations: [HomeComponent, DocumentViewTable]
     })
       .compileComponents();
   }));
