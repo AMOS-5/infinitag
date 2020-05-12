@@ -49,13 +49,15 @@ def get_health():
 def tags():
     if request.method == 'GET':
         data = [{"name": "automobile"}, {"name": "BMW"}, {"name": "sedan"}]
-        return jsonify(data), 200
+        return jsonify(data)
     if request.method == 'POST':
         data = request.json.get('name')
-        return jsonify(data + " will be added to database"), 500
-    if request.method == 'DELETE':
-        data = request.json.get('name')
-        return jsonify(data + " will be deleted from database"), 500
+        return jsonify(data + " will be added to database"), 200
+
+
+@app.route('/tags/<tag_id>', methods=['DELETE'])
+def remove_tags(tag_id):
+    return jsonify(tag_id + " will be removed from database"), 200
 
 
 if __name__ == '__main__':
