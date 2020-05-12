@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ITag } from '../models/ITag.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-tags',
@@ -15,29 +17,32 @@ export class TagsComponent implements OnInit {
   removable = true;
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+
   tags: ITag[] = [
     { name: 'Test' },
   ];
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
-  ngOnInit(): void {
+  public ngOnInit() {
+    this.httpClient.get(`${environment.serverUrl}/tags`)
+      .subscribe((value: Array<ITag>) => {
+        this.tags = value;
+      });
   }
 
-
-  add(event: MatChipInputEvent): void {
+  public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim()) {
       this.tags.push({ name: value.trim() });
     }
-
     if (input) {
       input.value = '';
     }
   }
 
-  remove(tag: ITag): void {
+  public remove(tag: ITag): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {

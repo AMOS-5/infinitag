@@ -1,6 +1,6 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
-from flask import Flask
+from flask import Flask, request
 
 import sys
 from datetime import datetime, timedelta
@@ -43,6 +43,19 @@ def get_documents():
 @app.route('/health')
 def get_health():
     return jsonify({"status": "UP"})
+
+
+@app.route('/tags', methods=['GET', 'POST', 'DELETE'])
+def tags():
+    if request.method == 'GET':
+        data = [{"name": "automobile"}, {"name": "BMW"}, {"name": "sedan"}]
+        return jsonify(data), 200
+    if request.method == 'POST':
+        data = request.json.get('name')
+        return jsonify(data + " will be added to database"), 500
+    if request.method == 'DELETE':
+        data = request.json.get('name')
+        return jsonify(data + " will be deleted from database"), 500
 
 
 if __name__ == '__main__':
