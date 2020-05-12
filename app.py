@@ -13,7 +13,7 @@ from backend.tagstorage import SolrTagStorage
 
 app = Flask(__name__)
 CORS(app)
-SOLR_TAGS = SolrTagStorage(config.tag_storage)
+SOLR_TAGS = None
 
 @app.route('/')
 def hello_world():
@@ -70,7 +70,8 @@ def stop_server():
 if __name__ == '__main__':
     #create solr tags core
     tagstorage_setup.create_core(config.tag_storage)
-
+    SOLR_TAGS = SolrTagStorage(config.tag_storage)
+    
     #add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1")
