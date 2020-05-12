@@ -1,8 +1,10 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
-from flask import Flask
-
+from flask import Flask, request
+from argparse import ArgumentParser
 import sys
+import os
+import signal
 from datetime import datetime, timedelta
 
 from documentdata import DocumentData
@@ -54,5 +56,21 @@ def get_health():
     return jsonify({"status": "UP"})
 
 
+@app.route('/stopServer', methods=['GET'])
+def stop_server():
+    shutdown = request.environ.get('werkzeug.server.shutdown')
+    if shutdown is None:
+        return jsonify({"success": False, "message": "Server could not be shut down."})
+
+    shutdown()
+    return jsonify({"success": True, "message": "Server is shutting down..."})
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    parser = ArgumentParser(description="Infinitag Rest Server")
+    parser.add_argument("--debug", type=bool, default=True)
+    parser.add_argument("--port", type=int, default=5000)
+    parser.add_argument("--host", type=str, default="0.0.0.0")
+    args = parser.parse_args()
+
+    app.run(host=args.host, port=args.port, debug=args.debug)

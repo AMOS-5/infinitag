@@ -1,5 +1,5 @@
 import unittest
-from Scripts.preprocessing import MyNLP
+from utils.preprocessing import MyNLP
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
