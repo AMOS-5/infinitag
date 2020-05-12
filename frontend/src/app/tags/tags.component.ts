@@ -31,30 +31,29 @@ export class TagsComponent implements OnInit {
   public add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
-    if (value != '') {
-      this.api.addTag({ name: value })
-        .subscribe(res => {
-          if ((value || '').trim()) {
-            this.tags.push({ name: value.trim() });
-          }
-          if (input) {
-            input.value = '';
-          }
-          console.log(res);
-        });
+    if ((value || '').trim()) {
+      this.tags.push({ name: value.trim() });
     }
+    if (input) {
+      input.value = '';
+    }
+    // this.api.addTag({ name: value })
+    //   .subscribe(res => {
+    //     console.log(res);
+    //   });
   }
 
   public remove(tag: ITag): void {
-    this.api.removeTag(tag)
-      .subscribe(res => {
-        const index = this.tags.indexOf(tag);
+    const index = this.tags.indexOf(tag);
 
-        if (index >= 0) {
-          this.tags.splice(index, 1);
-        }
-        console.log(res);
-      });
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+
+    // this.api.removeTag(tag)
+    //   .subscribe(res => {
+    //     console.log(res);
+    //   });
   }
 
 }

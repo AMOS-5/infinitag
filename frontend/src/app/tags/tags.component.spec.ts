@@ -1,7 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { TagsComponent } from './tags.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipsModule } from '@angular/material/chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TagsComponent', () => {
   let component: TagsComponent;
@@ -9,7 +14,15 @@ describe('TagsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TagsComponent]
+      declarations: [TagsComponent],
+      imports: [
+        HttpClientTestingModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        MatChipsModule
+      ],
     })
       .compileComponents();
   }));
