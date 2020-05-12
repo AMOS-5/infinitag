@@ -27,15 +27,19 @@ def get_documents():
     Right now only sends dummy data
     """
     list = []
+    solr_tags = []
+    if SOLR_TAGS is not None:
+        #load tags from solr
+        solr_tags = SOLR_TAGS.tags
+    
     for i in range(0, 100):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
         tags = []
-        if SOLR_TAGS is not None:
-            solr_tags = SOLR_TAGS.tags #load tags from solr
-            #assign tags pseudo randomly
-            for tag_idx in range(0, len(solr_tags)):
-                if(i % (tag_idx+2) == 0):
-                    tags.append(solr_tags[tag_idx])
+        
+        #assign tags pseudo randomly
+        for tag_idx in range(0, len(solr_tags)):
+            if(i % (tag_idx+2) == 0):
+                tags.append(solr_tags[tag_idx])
         
         doc = DocumentData(
             name="test"+str(i)+".pdf",
@@ -68,15 +72,11 @@ def stop_server():
 
 
 if __name__ == '__main__':
-    #create solr tags core
-    tagstorage_setup.create_core(config.tag_storage)
     SOLR_TAGS = SolrTagStorage(config.tag_storage)
     
     #add sample tags
     SOLR_TAGS.clear()
-    SOLR_TAGS.add("test-tag-1")
-    SOLR_TAGS.add("test-tag-2")
-    SOLR_TAGS.add("test-tag-3")
+    SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
