@@ -41,9 +41,15 @@ class TagStorageTestCase(unittest.TestCase):
         self.assertTrue("tag1" in SOLR_TAGS)
         self.assertTrue("tag2" not in SOLR_TAGS)
 
+    def test_delete(self):
+        SOLR_TAGS.add("tag1", "tag2")
+        SOLR_TAGS.delete("tag1")
 
-# setup the test database for each testcase
-# create_core(TagStorageTestCase.config)
+        tags = SOLR_TAGS.tags
+        self.assertEqual(len(tags), 1)
+        self.assertTrue("tag2" in tags)
+
+# database connection for the testcases
 SOLR_TAGS = SolrTagStorage(TagStorageTestCase.config)
 
 if __name__ == "__main__":

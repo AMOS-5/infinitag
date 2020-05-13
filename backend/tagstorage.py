@@ -31,6 +31,14 @@ class TagStorage:
         """
         ...
 
+    def delete(self, *tags: str) -> None:
+        """
+        Deletes tags from the TagStorage
+
+        :param tags: List of tags
+        :return:
+        """
+
     @property
     def tags(self) -> List[str]:
         """
@@ -63,9 +71,12 @@ class SolrTagStorage(TagStorage):
         # connection to the solr instance
         self.con = pysolr.Solr(**_conf)
 
-    def add(self, *tags: str, commit=True):
+    def add(self, *tags: str):
         tags = [dict(Tag(self.field, tag)) for tag in tags]
         self.con.add(tags)
+
+    def delete(self, *tags: str):
+        self.con.delete(id=tags)
 
     @property
     def tags(self) -> List[str]:
