@@ -1,6 +1,5 @@
 import unittest
-from documentdata import DocumentData
-import json
+from backend.documentdata import DocumentData
 from datetime import datetime
 
 class DocumentTestCase(unittest.TestCase):
@@ -11,8 +10,7 @@ class DocumentTestCase(unittest.TestCase):
             type="pdf",
             lang="de",
             size=20,
-            createdAt=datetime(year=2020, month=5, day=1, hour=12, minute=11, second=10),
-            tags=["a", "b", "c"]
+            createdAt=datetime(year=2020, month=5, day=1, hour=12, minute=11, second=10)
         )
         dict = {
             "name" : "test.pdf",
@@ -20,8 +18,7 @@ class DocumentTestCase(unittest.TestCase):
             "type" : "pdf",
             "lang" : "de",
             "size" : 20,
-            "createdAt" : 'Fri May  1 12:11:10 2020',
-            "tags" : ["a", "b", "c"]
+            "createdAt" : 'Fri May  1 12:11:10 2020'
         }
         self.assertDictEqual(doc.as_dict(), dict)
 
