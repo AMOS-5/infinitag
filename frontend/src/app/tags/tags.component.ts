@@ -62,7 +62,6 @@ export class TagsComponent implements OnInit {
     }
     this.api.removeTag(tag)
       .subscribe(res => {
-        console.log(res)
         this.snackBar.open(`${tag} deleted from the database`, '', { duration: 3000 });
       });
   }
