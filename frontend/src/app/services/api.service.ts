@@ -29,6 +29,6 @@ export class ApiService {
         'Content-Type': 'application/json'
       })
     };
-    return this.http.delete(`${environment.serverUrl}/tags/${tag.name}`, httpOptions);
+    return this.http.delete(`${environment.serverUrl}/tags/${tag}`, httpOptions);
   }
 }

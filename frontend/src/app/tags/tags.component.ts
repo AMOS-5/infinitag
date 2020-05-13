@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { ApiService } from '../services/api.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
@@ -14,14 +14,14 @@ export class TagsComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
-  tags;
+  tags = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private snackBar: MatSnackBar) { }
 
   public ngOnInit() {
     this.api.getTags()
-      .subscribe((data) => {
+      .subscribe((data: []) => {
         this.tags = data;
       });
   }
@@ -34,10 +34,10 @@ export class TagsComponent implements OnInit {
         this.tags.push(value.trim());
         this.api.addTag({ tag: value })
           .subscribe(res => {
-            console.log(res);
+            this.snackBar.open(`${value} added into the database`, '', { duration: 3000 });
           });
       } else {
-        alert('tag already present');
+        this.snackBar.open(`${value} already present`, '', { duration: 3000 });
       }
     }
     if (input) {
@@ -60,10 +60,10 @@ export class TagsComponent implements OnInit {
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
-
     this.api.removeTag(tag)
       .subscribe(res => {
-        console.log(res);
+        console.log(res)
+        this.snackBar.open(`${tag} deleted from the database`, '', { duration: 3000 });
       });
   }
 
