@@ -16,6 +16,7 @@ app = Flask(__name__)
 CORS(app)
 SOLR_TAGS = None
 
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -30,18 +31,18 @@ def get_documents():
     list = []
     solr_tags = []
     if SOLR_TAGS is not None:
-        #load tags from solr
+        # load tags from solr
         solr_tags = SOLR_TAGS.tags
-    
+
     for i in range(0, 100):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
         tags = []
-        
-        #assign tags pseudo randomly
+
+        # assign tags pseudo randomly
         for tag_idx in range(0, len(solr_tags)):
             if(i % (tag_idx+2) == 0):
                 tags.append(solr_tags[tag_idx])
-        
+
         doc = DocumentData(
             name="test"+str(i)+".pdf",
             path="./test"+str(i)+".pdf",
@@ -61,22 +62,24 @@ def get_documents():
 def get_health():
     return jsonify({"status": "UP"})
 
-  
+
 @app.route('/tags', methods=['GET', 'POST', 'DELETE'])
 def tags():
     if request.method == 'GET':
-        data = [{"name": "automobile"}, {"name": "BMW"}, {"name": "sedan"}]
+        data = SOLR_TAGS.tags
         return jsonify(data)
     if request.method == 'POST':
-        data = request.json.get('name')
-        return jsonify(data + " will be added to database"), 200
+        data = request.json.get('tag')
+        SOLR_TAGS.add(data)
+        return jsonify(data + " has been added to database"), 200
 
 
 @app.route('/tags/<tag_id>', methods=['DELETE'])
 def remove_tags(tag_id):
+
     return jsonify(tag_id + " will be removed from database"), 200
-  
-  
+
+
 @app.route('/stopServer', methods=['GET'])
 def stop_server():
     shutdown = request.environ.get('werkzeug.server.shutdown')
@@ -89,8 +92,8 @@ def stop_server():
 
 if __name__ == '__main__':
     SOLR_TAGS = SolrTagStorage(config.tag_storage)
-    
-    #add sample tags
+
+    # add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 

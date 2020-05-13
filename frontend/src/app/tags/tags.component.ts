@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { ITag } from '../models/ITag.model';
 import { ApiService } from '../services/api.service';
 
 @Component({
@@ -15,15 +14,14 @@ export class TagsComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  tags;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
-
-  tags: ITag[] = [];
 
   constructor(private api: ApiService) { }
 
   public ngOnInit() {
     this.api.getTags()
-      .subscribe((data: Array<ITag>) => {
+      .subscribe((data) => {
         this.tags = data;
       });
   }
@@ -33,13 +31,13 @@ export class TagsComponent implements OnInit {
     const value = event.value;
     if ((value || '').trim()) {
       if (!this.isDuplicate(event.value)) {
-        this.tags.push({ name: value.trim() })
-        this.api.addTag({ name: value })
+        this.tags.push(value.trim());
+        this.api.addTag({ tag: value })
           .subscribe(res => {
             console.log(res);
           });
       } else {
-        alert('tag already present')
+        alert('tag already present');
       }
     }
     if (input) {
@@ -49,14 +47,14 @@ export class TagsComponent implements OnInit {
   }
 
   private isDuplicate(value) {
-    const index = this.tags.findIndex((tag: ITag) => tag.name === value);
+    const index = this.tags.findIndex((tag) => tag === value);
     if (index === -1) {
       return false;
     }
     return true;
   }
 
-  public remove(tag: ITag): void {
+  public remove(tag): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {

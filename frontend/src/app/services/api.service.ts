@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
-import { ITag } from '../models/ITag.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,7 +14,7 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/tags`);
   }
 
-  public addTag(tag: ITag): Observable<object> {
+  public addTag(tag): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -24,7 +23,7 @@ export class ApiService {
     return this.http.post(`${environment.serverUrl}/tags`, tag, httpOptions);
   }
 
-  public removeTag(tag: ITag): Observable<object> {
+  public removeTag(tag): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
