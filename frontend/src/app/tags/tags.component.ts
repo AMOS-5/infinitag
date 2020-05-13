@@ -32,15 +32,20 @@ export class TagsComponent implements OnInit {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim()) {
-      this.isDuplicate(event.value) ? alert('tag already present') : this.tags.push({ name: value.trim() });
+      if (!this.isDuplicate(event.value)) {
+        this.tags.push({ name: value.trim() })
+        this.api.addTag({ name: value })
+          .subscribe(res => {
+            console.log(res);
+          });
+      } else {
+        alert('tag already present')
+      }
     }
     if (input) {
       input.value = '';
     }
-    // this.api.addTag({ name: value })
-    //   .subscribe(res => {
-    //     console.log(res);
-    //   });
+
   }
 
   private isDuplicate(value) {
@@ -50,6 +55,7 @@ export class TagsComponent implements OnInit {
     }
     return true;
   }
+
   public remove(tag: ITag): void {
     const index = this.tags.indexOf(tag);
 
@@ -57,10 +63,10 @@ export class TagsComponent implements OnInit {
       this.tags.splice(index, 1);
     }
 
-    // this.api.removeTag(tag)
-    //   .subscribe(res => {
-    //     console.log(res);
-    //   });
+    this.api.removeTag(tag)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
 }
