@@ -5,4 +5,5 @@ export interface IDocument {
   lang: string;
   size: number;
   createdAt: Date;
+  tags: string[];
 }

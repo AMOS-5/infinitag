@@ -19,7 +19,7 @@ import { environment } from './../../environments/environment';
 })
 export class DocumentViewTable implements OnInit {
   //defines order of columns
-  displayedColumns: string[] = ['name', 'path', 'type', 'lang', 'size', 'createdAt'];
+  displayedColumns: string[] = ['name', 'path', 'type', 'lang', 'size', 'createdAt', 'MyTags'];
 
 
   constructor( private httpClient: HttpClient) {}

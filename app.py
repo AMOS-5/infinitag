@@ -9,11 +9,12 @@ import signal
 from datetime import datetime, timedelta
 
 from documentdata import DocumentData
-
+from backend import config
+from backend.tagstorage import SolrTagStorage
 
 app = Flask(__name__)
 CORS(app)
-
+SOLR_TAGS = None
 
 @app.route('/')
 def hello_world():
@@ -27,15 +28,28 @@ def get_documents():
     Right now only sends dummy data
     """
     list = []
-    for i in range(0, 1000):
+    solr_tags = []
+    if SOLR_TAGS is not None:
+        #load tags from solr
+        solr_tags = SOLR_TAGS.tags
+    
+    for i in range(0, 100):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
+        tags = []
+        
+        #assign tags pseudo randomly
+        for tag_idx in range(0, len(solr_tags)):
+            if(i % (tag_idx+2) == 0):
+                tags.append(solr_tags[tag_idx])
+        
         doc = DocumentData(
             name="test"+str(i)+".pdf",
             path="./test"+str(i)+".pdf",
             type="pdf",
             lang="de",
             size=200+i,
-            createdAt=day
+            createdAt=day,
+            tags=tags
         )
         list.append(doc.as_dict())
 
@@ -74,6 +88,12 @@ def stop_server():
 
 
 if __name__ == '__main__':
+    SOLR_TAGS = SolrTagStorage(config.tag_storage)
+    
+    #add sample tags
+    SOLR_TAGS.clear()
+    SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
+
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
