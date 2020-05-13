@@ -12,6 +12,13 @@ from pathlib import Path
 from urlpath import URL
 import json
 
+"""
+This file is experimental and was used to setup a local Solr instance.
+We have already changed that and setup a remote instance for everybody.
+Still this file contains some useful informations on how a Solr core can be setup
+remotely.
+"""
+
 
 def get_default_config_dir(solr_home: Path):
     return solr_home / "configsets" / "_default" / "conf"
