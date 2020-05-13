@@ -32,7 +32,7 @@ export class TagsComponent implements OnInit {
     const input = event.input;
     const value = event.value;
     if ((value || '').trim()) {
-      this.tags.push({ name: value.trim() });
+      this.isDuplicate(event.value) ? alert('tag already present') : this.tags.push({ name: value.trim() });
     }
     if (input) {
       input.value = '';
@@ -43,6 +43,13 @@ export class TagsComponent implements OnInit {
     //   });
   }
 
+  private isDuplicate(value) {
+    const index = this.tags.findIndex((tag: ITag) => tag.name === value);
+    if (index === -1) {
+      return false;
+    }
+    return true;
+  }
   public remove(tag: ITag): void {
     const index = this.tags.indexOf(tag);
 
