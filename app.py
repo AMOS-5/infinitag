@@ -1,6 +1,7 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request
+from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
@@ -20,6 +21,20 @@ SOLR_TAGS = None
 def hello_world():
     return 'Hello World!'
 
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    try:
+        f = request.files['fileKey']
+        file_name = secure_filename(f.filename)
+
+        print(request.form['test'], file=sys.stdout)
+        
+        f.save('tmp/' + file_name)
+        print('Uploaded and saved file: ' + file_name, file=sys.stdout)
+        return jsonify(file_name + " was saved"), 200
+    except Exception as e:
+        print(str(e), file=sys.stderr)
+        return jsonify("error: " + str(e)), 500
 
 @app.route('/documents')
 def get_documents():

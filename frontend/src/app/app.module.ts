@@ -10,6 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -18,6 +19,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { TagsComponent } from './tags/tags.component';
     DocumentViewTable,
     HomeComponent,
     TagsComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +42,8 @@ import { TagsComponent } from './tags/tags.component';
     MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
