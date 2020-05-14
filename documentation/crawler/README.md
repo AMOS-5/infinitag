@@ -1,7 +1,28 @@
 # Arxiv Crawler
 
 ## Usage
+### Example
 `python crawler.py --categories "astro-ph cs.CR math.PR" --max_results 1000 --fetch_size 100`
+### Arguments
+- `--categories "<space-separated list of categories>"` Default is cs.CR
+- `--max_results <int>` determining how many results to fetch from arxiv. Default is 1000
+- `--fetch_size <int>` determines how many documents should be retrieved in total. If this is reached before the
+last of the categories is reached, the program will end and the last categories will not be used. Default is 100.
+- `--document_output <path>` Writes the files to this folder. Default is `output`
+- `--sleep_time <integer>` Number of seconds to wait until getting the next entry. Minimum is
+5 seconds. This is to ensure that we don't clobber arXiv and get banned.
+- `--source arxiv` Only arXiv is supported right now. Until we add additional document sources, this can be omitted.
+
+### Returns
+Documents which have a CC license will be written to the output folder. In addition a `meta.json` will be created
+in this same folder with the following information:
+- id
+- title
+- categories
+- publish date
+- license
+- link
+
 
 ## Arxiv Categories
 astro-ph	Astrophysics

@@ -10,11 +10,12 @@ import json
 
 
 def crawl_arxiv(categories: List[str], max_results: int, sleep_time: int,
-                fetch_size: int):
+                fetch_size: int, output: str):
     documents = []
     base_url = 'http://export.arxiv.org/api/query?'
     base_oai = 'http://export.arxiv.org/oai2?verb=GetRecord&identifier=oai:arXiv.org:{}&metadataPrefix=arXiv'
     oai_tag = '{http://www.openarchives.org/OAI/2.0/}'
+    meta_list = []
     for category in categories:
         print('Looking up papers in {}'.format(category))
         url = "{}search_query=cat:{}&max_results={}&sortBy=lastUpdatedDate&sortOrder=descending".format(
@@ -40,7 +41,9 @@ def crawl_arxiv(categories: List[str], max_results: int, sleep_time: int,
                     license_link = find_license(record)
                     if is_cc_license(license_link):
                         setattr(entry, 'license', license_link)
+                        meta = download_document(entry, output)
                         documents.append(entry)
+                        meta_list.append(meta)
                         if len(documents) >= fetch_size:
                             break
 
@@ -50,7 +53,10 @@ def crawl_arxiv(categories: List[str], max_results: int, sleep_time: int,
             print("I found what I was looking for. We can stop searching.")
             break
 
-    return documents
+    with open('{}/meta.json'.format(output), 'w') as fout:
+        json.dump(meta_list, fout)
+
+    return documents, meta_list
 
 
 def is_cc_license(link_url):
@@ -60,35 +66,30 @@ def is_cc_license(link_url):
     return False
 
 
-def download_documents(entries, output):
-    metainformation = []
-    for entry in entries:
-        entry_link = entry.id_
-        entry_index = entry_link.rfind('/')
-        entry_id = entry_link[entry_index + 1:]
-        links = entry.links
-        categories = []
-        for category in entry.categories:
-            categories.append(category.term)
-        for link in links:
-            if link.title == 'pdf':
-                file = requests.get(link.href)
-                with open('{}/{}.pdf'.format(output, entry_id), 'wb') as pdf:
-                    pdf.write(file.content)
-        meta = {
-            'id': entry_id,
-            'published': entry.published.strftime("%d-%m-%Y::%H:%M:%S"),
-            'categories': categories,
-            'link': entry.id_,
-            'title': entry.title.value,
-            'license': entry.license
+def download_document(entry, output):
+    entry_link = entry.id_
+    entry_index = entry_link.rfind('/')
+    entry_id = entry_link[entry_index + 1:]
+    links = entry.links
+    categories = []
+    for category in entry.categories:
+        categories.append(category.term)
+    for link in links:
+        if link.title == 'pdf':
+            file = requests.get(link.href)
+            with open('{}/{}.pdf'.format(output, entry_id), 'wb') as pdf:
+                pdf.write(file.content)
+    meta = {
+        'id': entry_id,
+        'published': entry.published.strftime("%d-%m-%Y::%H:%M:%S"),
+        'categories': categories,
+        'link': entry.id_,
+        'title': entry.title.value,
+        'license': entry.license
 
-        }
-        metainformation.append(meta)
-        sleep(10)
-
-    with open('{}/meta.json'.format(output), 'w') as fout:
-        json.dump(metainformation, fout)
+    }
+    sleep(5)
+    return meta
 
 
 def find_license(record):
@@ -115,16 +116,16 @@ if __name__ == "__main__":
     parser.add_argument("--document_output", type=str, default="output")
     args = parser.parse_args()
 
+    if not os.path.isdir(args.document_output):
+        os.makedirs(args.document_output)
+
     if args.source == "arxiv":
-        documents = crawl_arxiv(args.categories.split(),
-                                args.max_results,
+
+        documents = crawl_arxiv(categories=args.categories.split(),
+                                max_results=args.max_results,
                                 sleep_time=max(5, args.sleep_time),
-                                fetch_size=args.fetch_size)
-
-        if not os.path.isdir(args.document_output):
-            os.makedirs(args.document_output)
-
-        download_documents(documents, args.document_output)
+                                fetch_size=args.fetch_size,
+                                output=args.document_output)
 
     else:
         print("Only arxiv is supported as a source at the moment")
