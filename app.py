@@ -31,7 +31,8 @@ def get_documents():
             type="pdf",
             lang="de",
             size=200+i,
-            createdAt=day
+            createdAt=day,
+            tags=[]
         )
         list.append(doc.as_dict())
 
