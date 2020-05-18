@@ -18,14 +18,13 @@ class DocStorageTestCase(unittest.TestCase):
         # "url": "http://localhost:8983/solr/",
         "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
         "always_commit": True,
-        "debug": True,
+        "debug": False,
     }
 
     def setUp(self):
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
         base = f"{os.getcwd()}/tests/test_docstorage_files/test"
-        print(base)
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
         self.docs = [f"{base}.{doc_type}" for doc_type in self.doc_types]
 
@@ -41,8 +40,6 @@ class DocStorageTestCase(unittest.TestCase):
     def test_delete(self):
         SOLR_DOCS.add(*self.docs)
 
-        added = SOLR_DOCS.search("*:*")
-
         deleted = self.docs[0]
 
         SOLR_DOCS.delete(deleted)
@@ -51,11 +48,8 @@ class DocStorageTestCase(unittest.TestCase):
     def test_contains(self):
         SOLR_DOCS.add(*self.docs)
 
-        added = SOLR_DOCS.search("*:*")
         for doc in self.docs:
             self.assertTrue(doc in SOLR_DOCS)
-
-        SOLR_DOCS.clear()
 
         not_existing = "this_file_does_not_exist"
         self.assertTrue(not_existing not in SOLR_DOCS)
