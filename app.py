@@ -38,7 +38,6 @@ def get_documents():
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
         tags = []
 
-        # assign tags pseudo randomly
         for tag_idx in range(0, len(solr_tags)):
             if(i % (tag_idx+2) == 0):
                 tags.append(solr_tags[tag_idx])
@@ -91,9 +90,10 @@ def stop_server():
 
 
 if __name__ == '__main__':
-    SOLR_TAGS = SolrTagStorage(config.tag_storage)
 
-    # add sample tags
+    SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
+
+    #add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 
