@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -43,7 +44,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatListModule
+    MatListModule,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

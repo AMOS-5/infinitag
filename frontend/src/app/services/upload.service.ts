@@ -8,14 +8,19 @@ import { Observable } from 'rxjs';
 })
 export class UploadService {
 
+  
   constructor(private httpClient: HttpClient) { }
 
   postFile(file: File): Observable<object> {
+
     console.log("postFile" + file.name)
     const formData: FormData = new FormData();
     formData.append('fileKey', file, file.name);
-    formData.append('test', 'abc');
+    //formData.append('test', 'abc');
     return this.httpClient
-      .post(`${environment.serverUrl}/upload`, formData)
+      .post(`${environment.serverUrl}/upload`, formData, {
+        reportProgress: true,
+        observe: 'events'
+      })
   }
 }
