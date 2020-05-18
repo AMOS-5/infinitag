@@ -18,7 +18,6 @@ import { DocumentViewTable } from './documentview/document-view-table';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
-import { TagsComponent } from './tags/tags.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +25,7 @@ import { TagsComponent } from './tags/tags.component';
     SearchComponent,
     SettingsComponent,
     DocumentViewTable,
-    HomeComponent,
-    TagsComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
