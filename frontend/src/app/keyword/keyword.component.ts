@@ -34,7 +34,7 @@ export class TagsComponent implements OnInit {
         this.tags.push(value);
         this.api.addTag({ tag: value })
           .subscribe(res => {
-            this.snackBar.open(`${value} added into the database`, '', { duration: 3000 });
+            this.snackBar.open(`${value} added`, '', { duration: 3000 });
           });
       } else {
         this.snackBar.open(`${value} already present`, '', { duration: 3000 });
@@ -62,7 +62,7 @@ export class TagsComponent implements OnInit {
     }
     this.api.removeTag(tag)
       .subscribe(res => {
-        this.snackBar.open(`${tag} deleted from the database`, '', { duration: 3000 });
+        this.snackBar.open(`${tag} deleted`, '', { duration: 3000 });
       });
   }
 

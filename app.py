@@ -62,21 +62,30 @@ def get_health():
     return jsonify({"status": "UP"})
 
 
-@app.route('/tags', methods=['GET', 'POST', 'DELETE'])
+@app.route('/tags', methods=['GET', 'POST'])
 def tags():
     if request.method == 'GET':
-        data = SOLR_TAGS.tags
-        return jsonify(data)
+        try:
+            data = SOLR_TAGS.tags
+            return jsonify(data)
+        except:
+            return jsonify("internal error"), 500
     if request.method == 'POST':
-        data = request.json.get('tag')
-        SOLR_TAGS.add(data)
-        return jsonify(data + " has been added to database"), 200
+        try:
+            data = request.json.get('tag')
+            SOLR_TAGS.add(data)
+            return jsonify(data + " has been added"), 200
+        except:
+            return jsonify("internal error"), 500
 
 
 @app.route('/tags/<tag_id>', methods=['DELETE'])
 def remove_tags(tag_id):
-
-    return jsonify(tag_id + " will be removed from database"), 200
+    try:
+        SOLR_TAGS.delete(tag_id)
+        return jsonify(tag_id + "has been removed"), 200
+    except:
+        return jsonify(tag_id + "internal error"), 500
 
 
 @app.route('/stopServer', methods=['GET'])
@@ -93,7 +102,7 @@ if __name__ == '__main__':
 
     SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
 
-    #add sample tags
+    # add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 
