@@ -8,7 +8,7 @@ class TagStorageTestCase(unittest.TestCase):
         "field": "tag",
         "corename": "test_tags",
         # "url": "http://localhost:8983/solr/",
-        "url": "http://ec2-52-205-45-244.compute-1.amazonaws.com:8983/solr/",
+        "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
         "always_commit": True,
     }
 
