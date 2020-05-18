@@ -2,31 +2,31 @@ from backend.docstorage import SolrDocStorage
 
 import unittest
 from pathlib import Path
-
+import os
 
 class DocStorageTestCase(unittest.TestCase):
     """
     IMPORTANT:
 
-    The testfiles depend on our filestorage. As filestorage we use on our EC2 instance
-    ~/filestorage/docstorage_test. If you want to run the tests locally, you have to add the testfiles
-    to ~/filestorage/docstorage_test on Linux/Mac. For Windows it depends what 'Path.home()' returns
-    for you.
+    To run this tests you have to:
+    1. Install Solr
+    2. export SOLR_ROOT=PATH/TO/YOUR/SOLR/INSTALLATION
     """
 
     config = {
         "corename": "test_documents",
         # can safely be set when our test runs in deployment
-        "url": "http://localhost:8983/solr/",
-        # "url": "http://ec2-52-205-45-244.compute-1.amazonaws.com:8983/solr",
+        # "url": "http://localhost:8983/solr/",
+        "url": "http://ec2-52-205-45-244.compute-1.amazonaws.com:8983/solr",
         "always_commit": True,
-        "debug": False,
+        "debug": True,
     }
 
     def setUp(self):
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
-        base = f"{Path.home()}/filestorage/docstorage_test/test"
+        base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+        print(base)
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
         self.docs = [f"{base}.{doc_type}" for doc_type in self.doc_types]
 
