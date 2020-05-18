@@ -1,0 +1,14 @@
+<div class="form-group">
+    <label for="file">Choose Files: </label>
+    <input type='file' (change)="onSelectFile($event.target.files)" multiple>
+
+    <mat-list>
+      <!--<a mat-list-item *ngFor="let file of files"> {{ file.name }} </a>-->
+      <mat-list-item *ngFor="let file of files; index as i">
+        <h3 matLine> {{file.name}} </h3>
+      </mat-list-item>
+    </mat-list>
+    
+</div>
+
+  

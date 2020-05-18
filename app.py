@@ -1,6 +1,7 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request
+from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
@@ -11,6 +12,7 @@ from datetime import datetime, timedelta
 from documentdata import DocumentData
 from backend import config
 from backend.tagstorage import SolrTagStorage
+from backend.docstorage import SolrDocStorage
 
 app = Flask(__name__)
 CORS(app)
@@ -20,6 +22,23 @@ SOLR_TAGS = None
 @app.route('/')
 def hello_world():
     return 'Hello World!'
+
+
+@app.route('/upload', methods=['POST'])
+def upload_file():
+    try:
+        f = request.files['fileKey']
+        file_name = secure_filename(f.filename)
+
+        print(request.form['test'], file=sys.stdout)
+
+        f.save('./tmp/' + file_name)
+        SOLR_DOCS.add('./tmp/' + file_name)
+        print('Uploaded and saved file: ' + file_name, file=sys.stdout)
+        return jsonify(file_name + " was saved"), 200
+    except Exception as e:
+        print(str(e), file=sys.stderr)
+        return jsonify("error: " + str(e)), 500
 
 
 @app.route('/documents')
@@ -101,7 +120,7 @@ def stop_server():
 if __name__ == '__main__':
 
     SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
-
+    SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
     # add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")

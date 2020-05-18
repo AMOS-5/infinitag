@@ -11,6 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatListModule } from '@angular/material/list';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -18,6 +19,8 @@ import { DocumentViewTable } from './documentview/document-view-table';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
+import { TagsComponent } from './tags/tags.component';
+import { FileUploadComponent } from './file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { SettingsComponent } from './settings/settings.component';
     SearchComponent,
     SettingsComponent,
     DocumentViewTable,
-    HomeComponent
+    HomeComponent,
+    TagsComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +44,8 @@ import { SettingsComponent } from './settings/settings.component';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
