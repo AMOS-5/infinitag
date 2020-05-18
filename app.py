@@ -32,16 +32,16 @@ def get_documents():
     if SOLR_TAGS is not None:
         #load tags from solr
         solr_tags = SOLR_TAGS.tags
-    
+
     for i in range(0, 100):
         day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
         tags = []
-        
+
         #assign tags pseudo randomly
         for tag_idx in range(0, len(solr_tags)):
             if(i % (tag_idx+2) == 0):
                 tags.append(solr_tags[tag_idx])
-        
+
         doc = DocumentData(
             name="test"+str(i)+".pdf",
             path="./test"+str(i)+".pdf",
@@ -61,7 +61,7 @@ def get_documents():
 def get_health():
     return jsonify({"status": "UP"})
 
-  
+
 @app.route('/tags', methods=['GET', 'POST', 'DELETE'])
 def tags():
     if request.method == 'GET':
@@ -75,8 +75,8 @@ def tags():
 @app.route('/tags/<tag_id>', methods=['DELETE'])
 def remove_tags(tag_id):
     return jsonify(tag_id + " will be removed from database"), 200
-  
-  
+
+
 @app.route('/stopServer', methods=['GET'])
 def stop_server():
     shutdown = request.environ.get('werkzeug.server.shutdown')
@@ -88,8 +88,8 @@ def stop_server():
 
 
 if __name__ == '__main__':
-    SOLR_TAGS = SolrTagStorage(config.tag_storage)
-    
+    SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
+
     #add sample tags
     SOLR_TAGS.clear()
     SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")

@@ -1,9 +1,6 @@
 from backend.tagstorage import SolrTagStorage
-from backend.tagstorage_setup import create_core
 
-import json
 import unittest
-import time
 
 
 class TagStorageTestCase(unittest.TestCase):
@@ -11,7 +8,7 @@ class TagStorageTestCase(unittest.TestCase):
         "field": "tag",
         "corename": "test_tags",
         # "url": "http://localhost:8983/solr/",
-        "url": "http://ec2-54-185-241-44.us-west-2.compute.amazonaws.com:8983/solr/",
+        "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
         "always_commit": True,
     }
 
@@ -48,6 +45,7 @@ class TagStorageTestCase(unittest.TestCase):
         tags = SOLR_TAGS.tags
         self.assertEqual(len(tags), 1)
         self.assertTrue("tag2" in tags)
+
 
 # database connection for the testcases
 SOLR_TAGS = SolrTagStorage(TagStorageTestCase.config)
