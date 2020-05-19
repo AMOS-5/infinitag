@@ -7,4 +7,6 @@ nltk
 gensim
 pysolr
 urlpath
+atoma
+lxml
 gunicorn
