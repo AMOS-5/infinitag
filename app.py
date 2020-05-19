@@ -82,25 +82,7 @@ def get_documents():
                     SOLR_TAGS.add(tag)
             except:
                 return jsonify("internal error"), 500
-    for i in range(0, 100):
-
-        tags = []
-
-        for tag_idx in range(0, len(solr_tags)):
-            if(i % (tag_idx+2) == 0):
-                tags.append(solr_tags[tag_idx])
-
-        doc = DocumentData(
-            name="test"+str(i)+".pdf",
-            path="./test"+str(i)+".pdf",
-            type="pdf",
-            lang="de",
-            size=200+i,
-            createdAt=day,
-            tags=tags
-        )
-        list.append(doc.as_dict())
-
+    
     jsonstr = jsonify(list)
     return jsonstr
 
