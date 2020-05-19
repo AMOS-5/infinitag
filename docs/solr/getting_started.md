@@ -42,12 +42,6 @@ delete a core entirely, the working directory will also be deleted
 ## visual overview
     localhost:8983/solr/#/<corename>
 
-## create the tags core
-
-contains utility for creating core automatically for tests etc.
-
-    python backend/tagstorage_setup.py
-
 ## comment on pysolr
 
 I had problems creating a core with the library, if you don't have problems, then it's something on my side. This fixed it for me:

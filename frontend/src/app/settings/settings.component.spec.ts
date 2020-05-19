@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
+import { FileUploadComponent } from '../file-upload/file-upload.component'
+import { HttpClientModule } from '@angular/common/http'; 
+import { MatListModule } from '@angular/material/list';
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -8,7 +11,11 @@ describe('SettingsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SettingsComponent ]
+      imports: [
+        HttpClientModule,
+        MatListModule
+      ],
+      declarations: [ SettingsComponent, FileUploadComponent ]
     })
     .compileComponents();
   }));

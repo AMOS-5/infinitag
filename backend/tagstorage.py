@@ -1,4 +1,5 @@
 import pysolr
+
 from typing import List
 from urlpath import URL
 import copy
@@ -30,6 +31,14 @@ class TagStorage:
         :return:
         """
         ...
+
+    def delete(self, *tags: str) -> None:
+        """
+        Deletes tags from the TagStorage
+
+        :param tags: List of tags
+        :return:
+        """
 
     @property
     def tags(self) -> List[str]:
@@ -63,9 +72,12 @@ class SolrTagStorage(TagStorage):
         # connection to the solr instance
         self.con = pysolr.Solr(**_conf)
 
-    def add(self, *tags: str, commit=True):
+    def add(self, *tags: str) -> None:
         tags = [dict(Tag(self.field, tag)) for tag in tags]
         self.con.add(tags)
+
+    def delete(self, *tags: str) -> None:
+        self.con.delete(id=tags)
 
     @property
     def tags(self) -> List[str]:
@@ -75,10 +87,15 @@ class SolrTagStorage(TagStorage):
         tags = [hit[self.field][0] for hit in result]
         return tags
 
-    def __contains__(self, tag: str) -> str:
+    def __contains__(self, tag: str) -> bool:
         query = f"{self.field}:{tag}"
         result = self.con.search(query)
-        return bool(result)
+
+        if not result:
+            return False
+
+        best_match = next(iter(result))
+        return best_match["id"] == tag
 
     def clear(self):
-        self.con.delete(q=f"*:*")
+        self.con.delete(q="*:*")

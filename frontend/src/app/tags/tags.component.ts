@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { ITag } from '../models/ITag.model';
 import { ApiService } from '../services/api.service';
-
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-tags',
   templateUrl: './tags.component.html',
@@ -15,45 +14,56 @@ export class TagsComponent implements OnInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
+  tags = [];
   readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
 
-  tags: ITag[] = [];
-
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private snackBar: MatSnackBar) { }
 
   public ngOnInit() {
     this.api.getTags()
-      .subscribe((data: Array<ITag>) => {
+      .subscribe((data: []) => {
         this.tags = data;
       });
   }
 
   public add(event: MatChipInputEvent): void {
     const input = event.input;
-    const value = event.value;
+    const value = event.value.trim().toLowerCase();
     if ((value || '').trim()) {
-      this.tags.push({ name: value.trim() });
+      if (!this.isDuplicate(event.value)) {
+        this.tags.push(value);
+        this.api.addTag({ tag: value })
+          .subscribe(res => {
+            this.snackBar.open(`${value} added into the database`, '', { duration: 3000 });
+          });
+      } else {
+        this.snackBar.open(`${value} already present`, '', { duration: 3000 });
+      }
     }
     if (input) {
       input.value = '';
     }
-    // this.api.addTag({ name: value })
-    //   .subscribe(res => {
-    //     console.log(res);
-    //   });
+
   }
 
-  public remove(tag: ITag): void {
+  private isDuplicate(value) {
+    const index = this.tags.findIndex((tag) => tag === value);
+    if (index === -1) {
+      return false;
+    }
+    return true;
+  }
+
+  public remove(tag): void {
     const index = this.tags.indexOf(tag);
 
     if (index >= 0) {
       this.tags.splice(index, 1);
     }
-
-    // this.api.removeTag(tag)
-    //   .subscribe(res => {
-    //     console.log(res);
-    //   });
+    this.api.removeTag(tag)
+      .subscribe(res => {
+        this.snackBar.open(`${tag} deleted from the database`, '', { duration: 3000 });
+      });
   }
 
 }
