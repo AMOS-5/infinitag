@@ -49,12 +49,26 @@ def get_documents():
     """
     list = []
     solr_tags = []
+    day = datetime.today()
     if SOLR_TAGS is not None:
         # load tags from solr
         solr_tags = SOLR_TAGS.tags
+        solr_docs = SOLR_DOCS.search("*:*")
 
+        for result in solr_docs:
+            tags = result['author'] + result['title']
+            doc = DocumentData(
+                name=result['title'],
+                path=result['id'],
+                type=result['stream_content_type'],
+                lang='de',
+                size=result['stream_size'],
+                createdAt=day,
+                tags=tags
+            )
+            list.append(doc.as_dict())
     for i in range(0, 100):
-        day = datetime.today() - timedelta(days=i, hours=i, minutes=i)
+
         tags = []
 
         for tag_idx in range(0, len(solr_tags)):
