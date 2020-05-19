@@ -23,12 +23,16 @@ def hello_world():
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
+    """
+    Handles the file upload post request by saving the file and adding it to the solr db
+    :return: json object containing a success/error message
+    """
     try:
         f = request.files['fileKey']
         file_name = secure_filename(f.filename)
 
-        print(request.form['test'], file=sys.stdout)
-        
+        #print(request.form['test'], file=sys.stdout)
+        #print(type(f), file=sys.stdout)
         f.save('tmp/' + file_name)
         print('Uploaded and saved file: ' + file_name, file=sys.stdout)
         return jsonify(file_name + " was saved"), 200
