@@ -22,6 +22,8 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(health, "UP")
 
     def test_upload_file(self):
+        if os.path.exists("./tmp/") == False:
+            os.mkdir("./tmp")
         #delete file if it already exists
         if os.path.exists("./tmp/test_upload.test"):
             os.remove("./tmp/test_upload.test")
