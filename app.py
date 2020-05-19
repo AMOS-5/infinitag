@@ -32,8 +32,8 @@ def upload_file():
 
         print(request.form['test'], file=sys.stdout)
 
-        f.save('./tmp/' + file_name)
-        SOLR_DOCS.add('./tmp/' + file_name)
+        f.save('~/filestorage/' + file_name)
+        SOLR_DOCS.add('~/filestorage/' + file_name)
         print('Uploaded and saved file: ' + file_name, file=sys.stdout)
         return jsonify(file_name + " was saved"), 200
     except Exception as e:
