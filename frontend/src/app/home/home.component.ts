@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
-
+import { environment } from './../../environments/environment';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,7 +10,7 @@ import { IDocument } from '../models/IDocument.model';
 
 export class HomeComponent implements OnInit {
   public title = 'infinitag';
-  public serverUrl = 'http://localhost:5000';
+  public serverUrl = environment.serverUrl;
   public backendStatus = `${this.serverUrl}/health`;
   public documentsUrl = `${this.serverUrl}/documents`;
   public uploadUrl = `${this.documentsUrl}/upload`;
