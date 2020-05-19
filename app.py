@@ -59,8 +59,14 @@ def get_documents():
         solr_docs = SOLR_DOCS.search("*:*")
 
         for result in solr_docs:
+            tags = []
             try:
-                tags = result['author'] + result['title']
+                if 'title' in result:
+                    tags.append(result['title'])
+                if 'author' in result:
+                    tags.append(result['author'])
+                # if(result['author']):
+                #     tags.append(result['author'])
                 doc = DocumentData(
                     name=result['title'],
                     path=result['id'],
@@ -71,6 +77,8 @@ def get_documents():
                     tags=tags
                 )
                 list.append(doc.as_dict())
+                for tag in tags:
+                    SOLR_TAGS.add(tag)
             except:
                 return jsonify("internal error"), 500
     for i in range(0, 100):
