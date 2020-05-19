@@ -56,17 +56,20 @@ def get_documents():
         solr_docs = SOLR_DOCS.search("*:*")
 
         for result in solr_docs:
-            tags = result['author'] + result['title']
-            doc = DocumentData(
-                name=result['title'],
-                path=result['id'],
-                type=result['stream_content_type'],
-                lang='de',
-                size=result['stream_size'],
-                createdAt=day,
-                tags=tags
-            )
-            list.append(doc.as_dict())
+            try:
+                tags = result['author'] + result['title']
+                doc = DocumentData(
+                    name=result['title'],
+                    path=result['id'],
+                    type=result['stream_content_type'],
+                    lang='de',
+                    size=result['stream_size'],
+                    createdAt=day,
+                    tags=tags
+                )
+                list.append(doc.as_dict())
+            except:
+                return jsonify("internal error"), 500
     for i in range(0, 100):
 
         tags = []
