@@ -36,7 +36,8 @@ def upload_file():
         file_name = secure_filename(f.filename)
 
         f.save('./tmp/' + file_name)
-        SOLR_DOCS.add('./tmp/' + file_name)
+        if(SOLR_DOCS != None):
+            SOLR_DOCS.add('./tmp/' + file_name)
         print('Uploaded and saved file: ' + file_name, file=sys.stdout)
         return jsonify(file_name + " was saved"), 200
     except Exception as e:
@@ -61,14 +62,14 @@ def get_documents():
         for result in solr_docs:
             tags = []
             try:
-                if 'title' in result:
-                    tags.append(result['title'])
+                if 'dc_title' in result:
+                    tags.append(result['dc_title'])
                 if 'author' in result:
                     tags.append(result['author'])
                 # if(result['author']):
                 #     tags.append(result['author'])
                 doc = DocumentData(
-                    name=result['title'],
+                    name=result['dc_title'],
                     path=result['id'],
                     type=result['stream_content_type'],
                     lang='de',
