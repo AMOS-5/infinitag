@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
@@ -45,7 +46,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MatInputModule,
     MatIconModule,
     MatSnackBarModule,
-    MatListModule
+    MatListModule,
+    MatProgressBarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
