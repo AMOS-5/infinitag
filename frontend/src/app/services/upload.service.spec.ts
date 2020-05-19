@@ -35,8 +35,8 @@ describe('UploadService', async () => {
     const req = http.expectOne(`${environment.serverUrl}/upload`);
     req.flush(attemptedEvent);
     
-    console.log(req)
-    console.log(attemptedEvent)
+    //console.log(req)
+    //console.log(attemptedEvent)
 
     expect(req.request.method).toEqual('POST');
     expect(attemptedEvent.status).toEqual(200);

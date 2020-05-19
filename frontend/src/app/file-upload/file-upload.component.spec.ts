@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {By} from '@angular/platform-browser';
 import { FileUploadComponent } from './file-upload.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MatListModule } from '@angular/material/list';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -14,7 +14,8 @@ describe('FileUploadComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MatListModule,
       ],
       declarations: [ FileUploadComponent ]
     })
