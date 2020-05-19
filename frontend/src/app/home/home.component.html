@@ -7,28 +7,6 @@
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
-    <h5>Available Documents</h5>
-    <!--
-    <table *ngIf="documents.length > 0">
-        <thead>
-            <td>Name</td>
-            <td>Original Name</td>
-            <td>Size</td>
-            <td>Type</td>
-            <td>Server Path</td>
-            <td>Upload Date</td>
-            <td>Download</td>
-        </thead>
-        <tr *ngFor="let document of documents">
-            <td>{{document.name}}</td>
-            <td>{{document.originalName}}</td>
-            <td>{{document.size}}</td>
-            <td>{{document.type}}</td>
-            <td>{{document.path}}</td>
-            <td>{{document.createdAt}}</td>
-            <td><a download href="{{downloadUrl}}/{{document.name}}">Download</a></td>
-        </tr>
-    </table>
-    -->
 </div>
+<h5>Available Documents</h5>
 <document-view-table></document-view-table>

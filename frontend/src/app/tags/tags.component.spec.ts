@@ -6,6 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('TagsComponent', () => {
@@ -21,7 +23,8 @@ describe('TagsComponent', () => {
         MatInputModule,
         MatIconModule,
         BrowserAnimationsModule,
-        MatChipsModule
+        MatChipsModule,
+        MatSnackBarModule
       ],
     })
       .compileComponents();
@@ -44,10 +47,10 @@ describe('TagsComponent', () => {
   it('should add new tag', () => {
     const hostElement = fixture.nativeElement;
     const tagInput: MatChipInputEvent = hostElement.querySelector('input');
-    tagInput.value = 'karma-test';
+    tagInput.value = 'test';
     component.add(tagInput);
     const lastTag = component.tags[component.tags.length - 1];
-    expect(lastTag.name).toEqual(tagInput.value);
+    expect(lastTag).toEqual(tagInput.value);
   });
 
   it('should delete tag', () => {

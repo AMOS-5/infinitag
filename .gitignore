@@ -37,3 +37,4 @@ upload-dir
 __pycache__/
 venv/
 *.pyc
+tmp/
