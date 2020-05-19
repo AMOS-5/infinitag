@@ -1,12 +1,13 @@
 from flask_cors import CORS
 from flask_jsonpify import jsonify
-
 from flask import Flask, request
 from werkzeug.utils import secure_filename
 
-
+from argparse import ArgumentParser
+import sys
+import os
+import signal
 from datetime import datetime, timedelta
-
 
 from documentdata import DocumentData
 from backend import config
@@ -96,7 +97,7 @@ def get_documents():
             lang="de",
             size=200+i,
             createdAt=day,
-            tags=[]
+            tags=tags
         )
         list.append(doc.as_dict())
 
