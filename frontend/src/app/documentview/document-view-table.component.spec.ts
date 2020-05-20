@@ -1,13 +1,13 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { DocumentViewTable } from './document-view-table';
+import { DocumentViewTableComponent } from './document-view-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSortable, MatSortModule, } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DocumentViewTable', () => {
-  let component: DocumentViewTable;
-  let fixture: ComponentFixture<DocumentViewTable>;
+  let component: DocumentViewTableComponent;
+  let fixture: ComponentFixture<DocumentViewTableComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,13 +17,13 @@ describe('DocumentViewTable', () => {
         MatTableModule,
         BrowserAnimationsModule,
       ],
-      declarations: [DocumentViewTable]
+      declarations: [DocumentViewTableComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DocumentViewTable);
+    fixture = TestBed.createComponent(DocumentViewTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

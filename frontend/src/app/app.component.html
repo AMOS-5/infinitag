@@ -1,27 +1,44 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="" [routerLink]="['']"><img
-      src="https://www.zdnet.de/wp-content/uploads/2013/11/infineon-logo.png" alt="Logo" height="100" width="150"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<mat-toolbar color="secondary">
+  <mat-toolbar-row>
+    <a mat-button [routerLink]="''"><h1>InfiniTag</h1></a>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="''">Home</a>
+      <a mat-button [routerLink]="'/search'">Search</a>
+      <a mat-button [routerLink]="'/settings'">Settings</a>
+      <a mat-button [routerLink]="'/keywords'">Keywords</a>
+    </div>
+    <span class="fill-remaining-space"></span>
+    <div>
+      Server Status: {{serverStatus}}
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:
-        true}">
-        <a class="nav-link" href="" [routerLink]="['']">Home</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" href="" [routerLink]="['/search']">Search</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" href="" [routerLink]="['/settings']">Settings</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" href="" [routerLink]="['/keywords']">Keywords</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--  <a class="navbar-brand" href="" [routerLink]="['']"><img-->
+<!--      src="https://www.zdnet.de/wp-content/uploads/2013/11/infineon-logo.png" alt="Logo" height="100" width="150"></a>-->
+<!--  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"-->
+<!--    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--    <span class="navbar-toggler-icon"></span>-->
+<!--  </button>-->
+
+<!--  <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
+<!--    <ul class="navbar-nav mr-auto">-->
+<!--      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact:-->
+<!--        true}">-->
+<!--        <a class="nav-link" href="" [routerLink]="['']">Home</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item" routerLinkActive="active">-->
+<!--        <a class="nav-link" href="" [routerLink]="['/search']">Search</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item" routerLinkActive="active">-->
+<!--        <a class="nav-link" href="" [routerLink]="['/settings']">Settings</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item" routerLinkActive="active">-->
+<!--        <a class="nav-link" href="" [routerLink]="['/keywords']">Keywords</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</nav>-->
 <router-outlet></router-outlet>

@@ -4,7 +4,7 @@ import { HomeComponent } from './home.component';
 import { MatSortModule, } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DocumentViewTable } from '../documentview/document-view-table';
+import { DocumentViewTableComponent } from '../documentview/document-view-table.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -18,7 +18,7 @@ describe('HomeComponent', () => {
         MatTableModule,
         BrowserAnimationsModule,
       ],
-      declarations: [HomeComponent, DocumentViewTable]
+      declarations: [HomeComponent, DocumentViewTableComponent]
     })
       .compileComponents();
   }));

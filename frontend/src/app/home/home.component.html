@@ -1,12 +1,10 @@
 <div class="container">
-    <h1>Welcome to the Infinitag Front End</h1>
-    <h5>Serving from home component</h5>
-    <h5>The current status of the server is: {{serverStatus}}</h5>
-    <h5>Search for a document</h5>
     <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <mat-form-field class="example-full-width">
+        <mat-label>Search for documents</mat-label>
+        <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">
+      </mat-form-field>
     </form>
 </div>
 <h5>Available Documents</h5>
-<document-view-table></document-view-table>
+<document-view-table [documents]="documents" [filter]="filterString"></document-view-table>
