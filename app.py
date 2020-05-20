@@ -5,19 +5,20 @@ from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
-import os
-import signal
+
 from datetime import datetime, timedelta
 
+from backend.services.solr import SolrService
 from documentdata import DocumentData
-from backend import config
-from backend.tagstorage import SolrTagStorage
-from backend.docstorage import SolrDocStorage
+from backend import middleware
+
 
 app = Flask(__name__)
+solr_service = SolrService()
+app.wsgi_app = middleware.SolrMiddleware(app.wsgi_app, solr_service)
 CORS(app)
-SOLR_TAGS = None
-SOLR_DOCS = None
+SOLR_TAGS = solr_service.get_tags()
+SOLR_DOCS = solr_service.get_docs()
 
 
 @app.route('/')
@@ -33,12 +34,16 @@ def upload_file():
     """
     try:
         f = request.files['fileKey']
-        file_name = secure_filename(f.filename)
+        file_name = f"tmp/{secure_filename(f.filename)}"
 
-        f.save('./tmp/' + file_name)
-        if(SOLR_DOCS != None):
-            SOLR_DOCS.add('./tmp/' + file_name)
-        print('Uploaded and saved file: ' + file_name, file=sys.stdout)
+        f.save(file_name)
+        if SOLR_DOCS is not None:
+            print(f'Pushing to Solr: {file_name}')
+            SOLR_DOCS.add(file_name)
+            print(f'Uploaded and saved file: {file_name}' , file=sys.stdout)
+        else:
+            print('File only uploaded.')
+
         return jsonify(file_name + " was saved"), 200
     except Exception as e:
         print(str(e), file=sys.stderr)
@@ -63,13 +68,16 @@ def get_documents():
             tags = []
             try:
                 if 'dc_title' in result:
-                    tags.append(result['dc_title'])
+                    title = result['dc_title']
+                    tags.append(title)
+                else:
+                    title = None
                 if 'author' in result:
                     tags.append(result['author'])
                 # if(result['author']):
                 #     tags.append(result['author'])
                 doc = DocumentData(
-                    name=result['dc_title'],
+                    name=title,
                     path=result['id'],
                     type=result['stream_content_type'],
                     lang='de',
@@ -80,9 +88,9 @@ def get_documents():
                 list.append(doc.as_dict())
                 for tag in tags:
                     SOLR_TAGS.add(tag)
-            except:
-                return jsonify("internal error"), 500
-    
+            except Exception as e:
+                return jsonify(f"internal error: {e}"), 500
+
     jsonstr = jsonify(list)
     return jsonstr
 
@@ -127,14 +135,7 @@ def stop_server():
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
-
 if __name__ == '__main__':
-
-    SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
-    SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
-    # add sample tags
-    SOLR_TAGS.clear()
-    SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
