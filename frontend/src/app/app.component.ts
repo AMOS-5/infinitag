@@ -12,6 +12,8 @@ export class AppComponent implements OnInit {
   public backendStatus = `${this.serverUrl}/health`;
   public serverStatus = 'DOWN';
 
+  public iconPath = 'assets/img/InfiniTag1.png';
+
   constructor(private httpClient: HttpClient) {
   }
   public ngOnInit(): void {
