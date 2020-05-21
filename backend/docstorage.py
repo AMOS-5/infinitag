@@ -29,7 +29,7 @@ class SolrPipe:
     def post(self, url: URL, corename: str, *docs: str):
         docs = " ".join(docs)
 
-        # prepare path for update
+        # prepare url for update
         url = url / "update"
 
         p = self._popen(f"{self._post_bin} -url {url} -c {corename} {docs}")
@@ -38,6 +38,13 @@ class SolrPipe:
             print("STDOUT:", p.stdout.decode("utf-8"))
             if p.stderr:
                 print("STDERR:", p.stderr.decode("utf-8"))
+
+    def start(self):
+        p = self._popen(f"{self._solr_bin} start")
+
+    @property
+    def _solr_bin(self) -> Path:
+        return self._bin_dir / "solr"
 
     @property
     def _post_bin(self) -> Path:

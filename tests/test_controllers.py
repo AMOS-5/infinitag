@@ -5,8 +5,6 @@ import os
 from werkzeug.datastructures import FileStorage
 
 from app import app
-from backend.docstorage import SolrDocStorage
-from backend import config
 
 
 class BasicTestCase(unittest.TestCase):
@@ -40,8 +38,6 @@ class BasicTestCase(unittest.TestCase):
             '/upload', content_type='multipart/form-data', data=data, follow_redirects=True)
         # check status code
         self.assertEqual(response.status_code, 200)
-        data_response = json.loads(response.data)
-        self.assertEquals(data_response, "test_upload.test was saved")
         # check file
         self.assertTrue(os.path.exists("./tmp/test_upload.test"))
         f = open("./tmp/test_upload.test", "r")
@@ -61,8 +57,6 @@ class BasicTestCase(unittest.TestCase):
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
 
-
-SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
 
 if __name__ == '__main__':
     unittest.main()

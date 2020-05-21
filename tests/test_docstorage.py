@@ -29,7 +29,8 @@ class DocStorageTestCase(unittest.TestCase):
         self.docs = [f"{base}.{doc_type}" for doc_type in self.doc_types]
 
     def tearDown(self):
-        SOLR_DOCS.clear()
+        # SOLR_DOCS.clear()
+        pass
 
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)
