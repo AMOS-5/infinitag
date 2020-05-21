@@ -4,6 +4,9 @@ Module handling the document metadata
 from datetime import datetime
 from typing import List
 
+import sys
+import re
+
 class DocumentData:
     """
     Class encapsuling the metadata of a document file
@@ -29,6 +32,55 @@ class DocumentData:
         self.size = size
         self.createdAt = createdAt
         self.tags = tags
+
+    @classmethod
+    def documentdata_from_result(cls, result: dict):
+        """
+        Constructs a new DocumentData object from a dict returned by a solr search
+
+        :param result: dict given by solr
+        :return: DocumentData object
+        """
+        name = 'no name'
+        path = 'no path'
+        type = 'no type'
+        lang = 'no lang'
+        size = 'no size'
+        createdAt = datetime.today()
+        tags = []
+
+        if 'title' in result:
+            name = result['title']
+        elif 'dc_title' in result:
+            name = result['dc_title']
+
+        if 'id' in result:
+            path = result['id']
+        
+        if 'stream_content_type' in result:
+            type = result['stream_content_type']
+        
+        if 'language' in result:
+            lang = result['language']
+
+        if 'stream_size' in result:
+            size=result['stream_size']
+        
+        if 'date' in result:
+            createdAt=datetime.strptime(result['date'][0], '%Y-%m-%dT%H:%M:%SZ')
+
+        if 'keywords' in result:
+            tags = re.split(',|;', result['keywords'][0])
+       
+        return cls(
+            name=name,
+            path=path,
+            type=type,
+            lang=lang,
+            size=size,
+            createdAt=createdAt,
+            tags=tags
+        )
 
     def as_dict(self):
         """

@@ -38,7 +38,7 @@ def upload_file():
 
         f.save(file_name)
         if SOLR_DOCS is not None:
-            print(f'Pushing to Solr: {file_name}')
+            print(f'Pushing to Solr: {file_name}' , file=sys.stdout)
             SOLR_DOCS.add(file_name)
             print(f'Uploaded and saved file: {file_name}' , file=sys.stdout)
         else:
@@ -49,7 +49,6 @@ def upload_file():
         print(str(e), file=sys.stderr)
         return jsonify("error: " + str(e)), 500
 
-
 @app.route('/documents')
 def get_documents():
     """
@@ -57,38 +56,18 @@ def get_documents():
     Right now only sends dummy data
     """
     list = []
-    solr_tags = []
-    day = datetime.today()
     if SOLR_TAGS is not None:
-        # load tags from solr
-        solr_tags = SOLR_TAGS.tags
+        # load docs from solr
         solr_docs = SOLR_DOCS.search("*:*")
-
+        
         for result in solr_docs:
-            tags = []
             try:
-                if 'dc_title' in result:
-                    title = result['dc_title']
-                    tags.append(title)
-                else:
-                    title = None
-                if 'author' in result:
-                    tags.append(result['author'])
-                # if(result['author']):
-                #     tags.append(result['author'])
-                doc = DocumentData(
-                    name=title,
-                    path=result['id'],
-                    type=result['stream_content_type'],
-                    lang='de',
-                    size=result['stream_size'],
-                    createdAt=day,
-                    tags=tags
-                )
+                doc = DocumentData.documentdata_from_result(result)
                 list.append(doc.as_dict())
-                for tag in tags:
-                    SOLR_TAGS.add(tag)
+                #for tag in doc.tags:
+                #    SOLR_TAGS.add(tag)
             except Exception as e:
+                print(e, file=sys.stderr)
                 return jsonify(f"internal error: {e}"), 500
 
     jsonstr = jsonify(list)
@@ -136,7 +115,7 @@ def stop_server():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 if __name__ == '__main__':
-
+    
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
