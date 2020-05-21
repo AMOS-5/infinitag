@@ -10,3 +10,4 @@ urlpath
 atoma
 lxml
 gunicorn
+Werkzeug
