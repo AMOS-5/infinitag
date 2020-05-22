@@ -9,7 +9,7 @@ import sys
 from datetime import datetime, timedelta
 
 from backend.services.solr import SolrService
-from documentdata import DocumentData
+from backend.documentdata import DocumentData
 from backend import middleware
 
 
@@ -59,10 +59,10 @@ def get_documents():
     if SOLR_TAGS is not None:
         # load docs from solr
         solr_docs = SOLR_DOCS.search("*:*")
-        
+
         for result in solr_docs:
             try:
-                doc = DocumentData.documentdata_from_result(result)
+                doc = DocumentData.from_result(result)
                 list.append(doc.as_dict())
                 #for tag in doc.tags:
                 #    SOLR_TAGS.add(tag)
@@ -115,7 +115,7 @@ def stop_server():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 if __name__ == '__main__':
-    
+
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
