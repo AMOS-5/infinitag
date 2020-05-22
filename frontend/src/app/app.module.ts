@@ -16,19 +16,21 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppComponent } from './app.component';
-import { DocumentViewTable } from './documentview/document-view-table';
+import { DocumentViewTableComponent } from './documentview/document-view-table.component';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchComponent,
     SettingsComponent,
-    DocumentViewTable,
+    DocumentViewTableComponent,
     HomeComponent,
     TagsComponent,
     FileUploadComponent,
@@ -48,6 +50,8 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MatSnackBarModule,
     MatListModule,
     MatProgressBarModule,
+    MatToolbarModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

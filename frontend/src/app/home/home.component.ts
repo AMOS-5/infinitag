@@ -19,15 +19,11 @@ export class HomeComponent implements OnInit {
   public serverStatus = 'DOWN';
 
   public documents: Array<IDocument> = [];
+  public filterString = '';
 
   constructor(private httpClient: HttpClient) { }
 
   public ngOnInit(): void {
-    this.httpClient.get(this.backendStatus)
-      .subscribe((value: { status: string }) => {
-        this.serverStatus = value.status;
-      });
-
     this.httpClient.get(this.documentsUrl)
       .subscribe((value: Array<IDocument>) => {
         this.documents = value;
