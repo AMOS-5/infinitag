@@ -1,16 +1,18 @@
-from backend.tagstorage import SolrTagStorage
+from backend.solr import SolrTagStorage
 
 import unittest
 
 
 class TagStorageTestCase(unittest.TestCase):
     config = {
-        "field": "tag",
         "corename": "test_tags",
         # "url": "http://localhost:8983/solr/",
         "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr/",
         "always_commit": True,
     }
+
+    def setUp(self):
+        SOLR_TAGS.clear()
 
     def tearDown(self):
         SOLR_TAGS.clear()
@@ -31,6 +33,7 @@ class TagStorageTestCase(unittest.TestCase):
 
         added = SOLR_TAGS.tags
         self.assertEqual(len(added), 1)
+        self.assertTrue("tag1" in added)
 
     def test_contains(self):
         SOLR_TAGS.add("tag1")
@@ -46,6 +49,11 @@ class TagStorageTestCase(unittest.TestCase):
         self.assertEqual(len(tags), 1)
         self.assertTrue("tag2" in tags)
 
+    def test_huge_tag_amount(self):
+        tags = [f"tag{i}" for i in range(5000)]
+        SOLR_TAGS.add(*tags)
+        added = SOLR_TAGS.tags
+        self.assertEqual(len(added), 5000)
 
 # database connection for the testcases
 SOLR_TAGS = SolrTagStorage(TagStorageTestCase.config)
