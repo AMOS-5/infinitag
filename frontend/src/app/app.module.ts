@@ -24,6 +24,7 @@ import { TagsComponent } from './tags/tags.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatProgressBarModule,
     MatToolbarModule,
     MatButtonModule,
+    MatCheckboxModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
