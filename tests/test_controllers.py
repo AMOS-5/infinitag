@@ -49,6 +49,8 @@ class BasicTestCase(unittest.TestCase):
         if os.path.exists("./tmp/test_upload.test"):
             os.remove("./tmp/test_upload.test")
 
+
+
     def test_documents(self):
         tester = app.test_client(self)
         response = tester.get('/documents', content_type="application/json")
