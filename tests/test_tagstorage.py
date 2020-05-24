@@ -1,7 +1,7 @@
 from backend.solr import SolrTagStorage
 
 import unittest
-
+import time
 
 class TagStorageTestCase(unittest.TestCase):
     config = {
@@ -52,6 +52,9 @@ class TagStorageTestCase(unittest.TestCase):
     def test_huge_tag_amount(self):
         tags = [f"tag{i}" for i in range(5000)]
         SOLR_TAGS.add(*tags)
+
+        time.sleep(3) # give solr some time to process
+
         added = SOLR_TAGS.tags
         self.assertEqual(len(added), 5000)
 
