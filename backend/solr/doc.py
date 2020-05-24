@@ -54,24 +54,24 @@ class SolrDoc:
         return SolrDoc(
             hit["id"],
             *hit["tags"] if "tags" in hit else [],
-            title=hit["title"],
-            file_type=hit["type"],
-            lang=hit["language"],
-            size=hit["size"],
-            creation_date=hit["creation_date"],
-            content=hit["content"],
+            title=hit["title"][0],
+            file_type=hit["type"][0],
+            lang=hit["language"][0],
+            size=hit["size"][0],
+            creation_date=hit["creation_date"][0],
+            content=hit["content"][0],
         )
 
     def as_dict(self) -> dict:
         return {
             "id": self.id,
             "tags": self.tags,
-            "title": self.title[0],
-            "type": self.file_type[0],
-            "language": self.lang[0],
-            "size": self.size[0],
-            "creation_date": self.creation_date[0],
-            "content": self.content[0],
+            "title": self.title,
+            "type": self.file_type,
+            "language": self.lang,
+            "size": self.size,
+            "creation_date": self.creation_date,
+            "content": self.content,
         }
 
     @property
