@@ -1,8 +1,13 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { DocumentViewTableComponent } from './document-view-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatSortable, MatSortModule, } from '@angular/material/sort';
+import { MatSortable, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IDocument } from '../models/IDocument.model';
 
@@ -17,6 +22,12 @@ describe('DocumentViewTable', () => {
         MatSortModule,
         MatTableModule,
         BrowserAnimationsModule,
+        MatMenuModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule
       ],
       declarations: [DocumentViewTableComponent]
     })

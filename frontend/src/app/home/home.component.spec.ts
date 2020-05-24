@@ -8,6 +8,8 @@ import { DocumentViewTableComponent } from '../documentview/document-view-table.
 import { IDocument } from '../models/IDocument.model';
 import { concatMap } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -25,7 +27,9 @@ describe('HomeComponent', () => {
         BrowserAnimationsModule,
         MatInputModule,
         MatFormFieldModule,
-        MatToolbarModule
+        MatToolbarModule,
+        FormsModule,
+        ReactiveFormsModule
       ],
       declarations: [HomeComponent, DocumentViewTableComponent],
       schemas: [
