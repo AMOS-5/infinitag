@@ -25,7 +25,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selectedTags: string[] = [];
   constructor(private api: ApiService) { }
   // defines order of columns
-  displayedColumns: string[] = ['name', 'type', 'lang', 'size', 'createdAt', 'MyTags'];
+  displayedColumns: string[] = ['title', 'type', 'language', 'size', 'creation_date', 'MyTags'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatInput) input = MatInput;
