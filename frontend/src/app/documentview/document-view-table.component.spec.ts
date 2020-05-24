@@ -4,7 +4,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSortable, MatSortModule, } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {IDocument} from '../models/IDocument.model';
+import { IDocument } from '../models/IDocument.model';
 
 describe('DocumentViewTable', () => {
   let component: DocumentViewTableComponent;
@@ -52,21 +52,23 @@ describe('DocumentViewTable', () => {
     const testDocuments: Array<IDocument> = [
       {
         size: 1,
-        lang: 'en',
-        createdAt: new Date(),
-        name: 'Test 1',
-        path: '/path',
+        language: 'en',
+        creation_date: new Date(),
+        title: 'Test 1',
+        id: '/path',
         tags: ['Tag 1', 'Test Document'],
-        type: 'pdf'
+        type: 'pdf',
+        content: ''
       },
       {
         size: 3,
-        lang: 'en',
-        createdAt: new Date(),
-        name: 'Test 2',
-        path: '/path',
+        language: 'de',
+        creation_date: new Date(),
+        title: 'Test 2',
+        id: '/path',
         tags: ['Tag 2', 'Test Document'],
-        type: 'eml'
+        type: 'eml',
+        content: ''
       }
     ];
 
