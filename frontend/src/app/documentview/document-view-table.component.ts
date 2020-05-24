@@ -9,6 +9,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { environment } from './../../environments/environment';
 
+import { UploadService } from '../services/upload.service';
 
 
 /**
@@ -21,9 +22,9 @@ import { environment } from './../../environments/environment';
 })
 export class DocumentViewTableComponent implements OnInit, OnChanges {
   // defines order of columns
-  displayedColumns: string[] = ['select', 'name', 'path', 'type', 'lang', 'size', 'createdAt', 'MyTags'];
+  displayedColumns: string[] = ['select', 'name', 'type', 'lang', 'size', 'createdAt', 'MyTags'];
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private uploadService: UploadService) {}
 
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   @Input() documents: Array<IDocument> | undefined;
@@ -79,7 +80,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     //send tags to backend here
-    console.log(this.selection.selected)
+    //console.log(this.selection.selected)
+    for(let i = 0; i < this.selection.selected.length; i++) {
+      let doc = this.selection.selected[i];
+      //console.log(doc);
+      doc.tags.push("test");
+      this.uploadService.patchTags(doc).subscribe(res => {
+
+      });
+    }
   }
 
 }

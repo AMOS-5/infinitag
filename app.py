@@ -49,6 +49,21 @@ def upload_file():
         print(str(e), file=sys.stderr)
         return jsonify("error: " + str(e)), 500
 
+@app.route('/changetags', methods=['PATCH'])
+def change_tags():
+    try:
+        iDoc = request.json
+        path = iDoc.get('path')
+        tags = iDoc.get('tags')
+        print('changeing tags on file ' + path + ' to ' + ','.join(tags) , file=sys.stdout)
+
+
+
+        return jsonify("success"), 200
+    except Exception as e:
+        print(str(e), file=sys.stderr)
+        return jsonify("error: " + str(e)), 500
+
 @app.route('/documents')
 def get_documents():
     """
