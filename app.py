@@ -59,7 +59,6 @@ def get_documents():
             # load docs from solr
             res = solr.docs.search("*:*")
             res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
-            print(res)
             response = (jsonify(res), 200)
         except Exception as e:
             log.error(f"/documents: {e}")
