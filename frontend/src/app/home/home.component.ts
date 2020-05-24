@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
   public ngOnInit(): void {
     this.httpClient.get(this.documentsUrl)
       .subscribe((value: Array<IDocument>) => {
+        console.log(value)
         this.documents = value;
       });
   }
@@ -41,7 +42,7 @@ export class HomeComponent implements OnInit {
   }
 
   public download(document: IDocument) {
-    const url = `${this.downloadUrl}/${document.name}`;
+    const url = `${this.downloadUrl}/${document.title}`;
 
     this.httpClient.get(url)
       .subscribe((response: any) => {

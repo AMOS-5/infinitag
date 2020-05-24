@@ -1,6 +1,4 @@
-from backend.docstorage import SolrDocStorage
-from backend.tagstorage import SolrTagStorage
-from backend import config
+from backend.solr import SolrDocStorage, SolrTagStorage, config
 
 
 class SolrService:
@@ -14,14 +12,12 @@ class SolrService:
     def initialize_solr(self):
         self.SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
         self.SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
-
-        # add sample tags
-        self.SOLR_TAGS.clear()
         self.INITIALIZED = True
 
-    def get_tags(self):
+    @property
+    def tags(self):
         return self.SOLR_TAGS
 
-    def get_docs(self):
+    @property
+    def docs(self):
         return self.SOLR_DOCS
-

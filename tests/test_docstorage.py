@@ -1,36 +1,29 @@
-from backend.docstorage import SolrDocStorage
+from backend.solr import SolrDocStorage, SolrDoc
 
 import unittest
 from pathlib import Path
 import os
 
+
 class DocStorageTestCase(unittest.TestCase):
-    """
-    IMPORTANT:
-
-    To run this tests you have to:
-    1. Install Solr
-    2. export SOLR_ROOT=PATH/TO/YOUR/SOLR/INSTALLATION
-    """
-
     config = {
         "corename": "test_documents",
         # "url": "http://localhost:8983/solr/",
         "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
         "always_commit": True,
-        "debug": False,
     }
 
     def setUp(self):
+        SOLR_DOCS.clear()
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
         base = f"{os.getcwd()}/tests/test_docstorage_files/test"
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
-        self.docs = [f"{base}.{doc_type}" for doc_type in self.doc_types]
+        self.doc_paths = [f"{base}.{doc_type}" for doc_type in self.doc_types]
+        self.docs = [SolrDoc(path) for path in self.doc_paths]
 
     def tearDown(self):
-        # SOLR_DOCS.clear()
-        pass
+        SOLR_DOCS.clear()
 
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)
@@ -43,23 +36,50 @@ class DocStorageTestCase(unittest.TestCase):
 
         deleted = self.docs[0]
 
-        SOLR_DOCS.delete(deleted)
-        self.assertTrue(deleted not in SOLR_DOCS)
+        SOLR_DOCS.delete(deleted.path)
+        self.assertTrue(deleted.path not in SOLR_DOCS)
 
     def test_contains(self):
         SOLR_DOCS.add(*self.docs)
 
         for doc in self.docs:
-            self.assertTrue(doc in SOLR_DOCS)
+            self.assertTrue(doc.path in SOLR_DOCS)
 
-        not_existing = "this_file_does_not_exist"
+        not_existing = "/this/file/does/not/exist"
         self.assertTrue(not_existing not in SOLR_DOCS)
 
+    def test_empty_tags(self):
+        doc = SolrDoc(self.doc_paths[0])
+        SOLR_DOCS.add(doc)
+        doc = SOLR_DOCS.get(doc.path)[0]
+
+        self.assertFalse(doc.tags)
+
+    def test_initial_tags(self):
+        doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
+        SOLR_DOCS.add(doc)
+
+        doc = SOLR_DOCS.get(doc.path)[0]
+
+        self.assertTrue("tag1" in doc.tags)
+        self.assertTrue("tag2" in doc.tags)
+
+    def test_update_tags(self):
+        doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
+        SOLR_DOCS.add(doc)
+
+        doc = SOLR_DOCS.get(doc.path)[0]
+        doc.tags.remove("tag1")
+        doc.tags.append("tag3")
+        SOLR_DOCS.update(doc)
+
+        doc = SOLR_DOCS.get(doc.path)[0]
+        self.assertTrue("tag1" not in doc.tags)
+        self.assertTrue("tag2" in doc.tags)
+        self.assertTrue("tag3" in doc.tags)
 
 
-# database connection & pipe for the testcases
 SOLR_DOCS = SolrDocStorage(DocStorageTestCase.config)
-SOLR_DOCS.clear()
 
 if __name__ == "__main__":
     unittest.main()

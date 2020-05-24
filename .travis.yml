@@ -13,10 +13,6 @@ matrix:
           python: 3.8.0
           install:
               - pip install -r requirements.txt
-          before_script:
-              - wget http://apache.lauf-forum.at/lucene/solr/8.5.1/solr-8.5.1.tgz && tar xzf solr-8.5.1.tgz
-          env:
-              - SOLR_ROOT=./solr-8.5.1
           script:
               - python -c "import nltk; nltk.download('wordnet'); nltk.download('stopwords')"
               - python -m unittest discover -s tests

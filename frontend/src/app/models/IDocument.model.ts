@@ -1,9 +1,12 @@
+import { Time } from '@angular/common';
+
 export interface IDocument {
-  name: string;
-  path: string;
-  type: string;
-  lang: string;
+  content: string;
+  creation_date: Date;
+  id: string;
+  language: string;
   size: number;
-  createdAt: Date;
   tags: string[];
+  title: string;
+  type: string;
 }
