@@ -42,7 +42,7 @@ def upload_file():
             # doc = SolrDoc(file_name, "tag1", "tag2")
             doc = SolrDoc(file_name)
             solr.docs.add(doc)
-            print(f'Uploaded and saved file: {file_name}' , file=sys.stdout)
+            print(f'Uploaded and saved file: {file_name}', file=sys.stdout)
         else:
             print('File only uploaded.')
 
@@ -51,19 +51,15 @@ def upload_file():
         print(str(e), file=sys.stderr)
         return jsonify(f"internal error: {e}"), 500
 
+
 @app.route('/documents')
 def get_documents():
-    """
-    Sends document data as json object to frontend.
-    Right now only sends dummy data
-    """
-
     if solr.docs is not None:
         try:
             # load docs from solr
             res = solr.docs.search("*:*")
             res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
-
+            print(res)
             response = (jsonify(res), 200)
         except Exception as e:
             log.error(f"/documents: {e}")
@@ -112,6 +108,7 @@ def stop_server():
 
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
+
 
 if __name__ == '__main__':
 

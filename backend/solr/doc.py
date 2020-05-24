@@ -66,12 +66,12 @@ class SolrDoc:
         return {
             "id": self.id,
             "tags": self.tags,
-            "title": self.title,
-            "type": self.file_type,
-            "language": self.lang,
-            "size": self.size,
-            "creation_date": self.creation_date,
-            "content": self.content,
+            "title": self.title[0],
+            "type": self.file_type[0],
+            "language": self.lang[0],
+            "size": self.size[0],
+            "creation_date": self.creation_date[0],
+            "content": self.content[0],
         }
 
     @property
@@ -191,7 +191,8 @@ class Language:
             lang = "unknown"
 
         if lang not in Language.mapping:
-            log.debug(f"LANGUAGE UNKNOWN / NOT FOUND: {json.dumps(res, indent=3)}")
+            log.debug(
+                f"LANGUAGE UNKNOWN / NOT FOUND: {json.dumps(res, indent=3)}")
             return lang
 
         return Language.mapping[lang]
