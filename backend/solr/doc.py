@@ -5,7 +5,7 @@ import json
 
 # if you activate this you will see why some fields are unknown and maybe can
 # find the name of another metadata field to add to the solr parsers
-# log.basicConfig(level=log.DEBUG)
+log.basicConfig(level=log.DEBUG)
 
 
 class SolrDoc:
@@ -80,10 +80,13 @@ class SolrDoc:
         return self.id
 
 
+def exists_and_not_empty(res: dict, field: str) -> bool:
+    return field in res and res[field][0]
+
 class FileContent:
     @staticmethod
     def from_result(res: dict) -> str:
-        if "contents" in res:
+        if exists_and_not_empty(res, "contents"):
             return res["contents"]
 
         log.debug("FileContent is unknown")
@@ -94,9 +97,9 @@ class Path:
     @staticmethod
     def from_result(res: dict) -> str:
         res = res["metadata"]
-        if "stream_name" in res:
+        if exists_and_not_empty(res, "stream_name"):
             return res["stream_name"][0]
-        elif "recourcename" in res:
+        elif exists_and_not_empty(res, "recourcename"):
             return res["resourcename"][0]
 
         raise ValueError("Path could not be extracted => no id.")
@@ -107,9 +110,9 @@ class Title:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "title" in res:
+        if exists_and_not_empty(res, "title") and res["title"][0]:
             return res["title"][0]
-        elif "dc:title" in res:
+        elif exists_and_not_empty(res, "dc:title"):
             return res["dc:title"][0]
 
         log.debug(f"Title is unknown: {json.dumps(res, indent=2)}")
@@ -121,11 +124,11 @@ class Author:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "Author" in res:
+        if exists_and_not_empty(res, "Author"):
             return res["Author"][0]
-        elif "meta:author" in res:
+        elif exists_and_not_empty(res, "meta:author"):
             return res["meta:author"][0]
-        elif "creator" in res:
+        elif exists_and_not_empty(res, "creator"):
             return res["creator"][0]
         else:
             log.debug("Author is unknown.")
@@ -147,9 +150,9 @@ class FileType:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "stream_content_type" in res:
+        if exists_and_not_empty(res, "stream_content_type"):
             t = res["stream_content_type"][0]
-        elif "Content-Type" in res:
+        elif exists_and_not_empty(res, "Content-Type"):
             t = res["Content-Type"][0]
         else:
             t = "unknown"
@@ -169,7 +172,7 @@ class FileSize:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "stream_size" in res:
+        if exists_and_not_empty(res, "stream_size"):
             return res["stream_size"][0]
 
         log.debug("FileSize is unknown.")
@@ -183,9 +186,9 @@ class Language:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "language" in res:
+        if exists_and_not_empty(res, "language"):
             lang = res["language"][0]
-        elif "dc:language" in res:
+        elif exists_and_not_empty(res, "dc:language"):
             lang = res["dc:language"][0]
         else:
             lang = "unknown"
@@ -203,13 +206,13 @@ class CreationDate:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if "meta:creation-date" in res:  # this should persist through saving
+        if exists_and_not_empty(res, "meta:creation-date"):  # this should persist through saving
             return res["meta:creation-date"][0]
-        elif "date" in res:
+        elif exists_and_not_empty(res, "date"):
             return res["date"][0]
-        elif "Creation-Date" in res:
+        elif exists_and_not_empty(res, "Creation-Date"):
             return res["Creation-Date"][0]
-        elif "dcterms:created" in res:
+        elif exists_and_not_empty(res, "dcterms:created"):
             return res["dcterms:created"][0]
         else:
             log.debug("CreationDate is unknown.")
