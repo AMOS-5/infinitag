@@ -56,10 +56,13 @@ def upload_file():
 def change_tags():
     try:
         iDoc = request.json
-        path = iDoc.get('id')
+        id = iDoc.get('id')
         tags = iDoc.get('tags')
-        print('changing tags on file ' + path + ' to ' + ','.join(tags) , file=sys.stdout)
+        print('changing tags on file ' + id + ' to ' + ','.join(tags) , file=sys.stdout)
 
+        solDoc = solr.SOLR_DOCS._get(id)
+        solDoc.tags = tags
+        solr.SOLR_DOCS.update(solDoc)
 
         return jsonify("success"), 200
     except Exception as e:

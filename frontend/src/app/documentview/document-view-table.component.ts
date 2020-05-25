@@ -86,20 +86,40 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
 
-  applyBulkTags() {
+  addTagToDoc(iDoc, tag) {
+    if(iDoc.tags.includes(tag) == false) {
+      iDoc.tags.push(tag);
+      iDoc.tags.sort();
+      return iDoc;
+    } else {
+      this.snackBar.open('Tag already added to this doc', ``, { duration: 3000 });
+      return null;
+    }
+  }
+
+  applyTag(doc, tag) {
+    doc = this.addTagToDoc(doc, tag);
+    if(doc) {
+      this.uploadService.patchTags(doc).subscribe(res => {
+
+      });
+    }
+  }
+
+  applyBulkTags(tag) {
     if(this.selection.selected.length == 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
 
     //send tags to backend here
-    //console.log(this.selection.selected)
     for(let i = 0; i < this.selection.selected.length; i++) {
       let doc = this.selection.selected[i];
-      //console.log(doc);
-      doc.tags.push("test");
-      this.uploadService.patchTags(doc).subscribe(res => {
+      doc = this.addTagToDoc(doc, tag);
+      if(doc) {
+        this.uploadService.patchTags(doc).subscribe(res => {
 
-      });
+        });
+      }
     }
   }
 
