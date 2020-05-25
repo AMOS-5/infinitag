@@ -27,6 +27,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatButtonModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
