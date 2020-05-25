@@ -35,7 +35,8 @@
       <mat-menu #menu="matMenu">
         <mat-form-field (click)="$event.stopPropagation()">
           <mat-label>Search Tags...</mat-label>
-          <input matInput #tagInput (keyup)="onKey($event)" (blur)="tagInput.focus()" autocomplete="off">
+          <input matInput #tagInput (keyup)="onKey($event)" (blur)="tagInput.focus()" (click)="$event.stopPropagation()"
+            autocomplete="off">
         </mat-form-field>
         <button *ngFor="let tag of selectedTags" mat-menu-item>{{tag}}</button>
       </mat-menu>
