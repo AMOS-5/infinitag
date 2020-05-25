@@ -56,7 +56,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       });
 
       this.dataSource.data = this.documents;
-      console.log(this.dataSource.data)
       setTimeout(() => {
         this.dataSource.sort = this.sort;
       });
