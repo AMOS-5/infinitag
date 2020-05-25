@@ -1,10 +1,10 @@
 <div class="container">
-    <form class="form-inline my-2 my-lg-0">
-      <mat-form-field class="example-full-width">
-        <mat-label>Search for documents</mat-label>
-        <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">
-      </mat-form-field>
-    </form>
+  <form class="form-inline my-2 my-lg-0">
+    <mat-form-field class="example-full-width">
+      <mat-label>Search for documents</mat-label>
+      <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+  </form>
+  <h5>Available Documents</h5>
+  <document-view-table [documents]="documents" [filter]="filterString"></document-view-table>
 </div>
-<h5>Available Documents</h5>
-<document-view-table [documents]="documents" [filter]="filterString"></document-view-table>

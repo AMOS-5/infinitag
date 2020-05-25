@@ -29,7 +29,7 @@ export class UploadService {
   }
 
   public patchTags(iDoc: IDocument): Observable<object> {
-    console.log("sending doc: " + iDoc.path)
+    console.log("sending doc: " + iDoc.id)
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',

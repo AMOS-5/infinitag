@@ -1,16 +1,6 @@
-import pysolr
-
-import os
-import subprocess as sp
-from pathlib import Path
-from urlpath import URL
-import copy
-
-
 class SolrPipe:
     """
     SolrPipe to use solr binaries
-
     Only works if you have set the SOLR_ROOT env variable pointing to your Solr
     installation path
     """
@@ -58,44 +48,3 @@ class SolrPipe:
         self, command: str, stdout: int = sp.PIPE, stderr: int = sp.PIPE
     ) -> sp.CompletedProcess:
         return sp.run(command, stdout=stdout, stderr=stderr, shell=True)
-
-
-class SolrDocStorage:
-    def __init__(self, config: dict):
-        # we'll modify the original configuration
-        _conf = copy.deepcopy(config)
-
-        debug = _conf.pop("debug")
-        self.pipe = SolrPipe(debug)
-
-        # build the full url
-        self.corename = _conf.pop("corename")
-        self.url = URL(_conf["url"]) / self.corename
-        _conf["url"] = str(self.url)
-        # connection to the solr instance
-        self.con = pysolr.Solr(**_conf)
-
-    def add(self, *docs: str) -> None:
-        self.pipe.post(self.url, self.corename, *docs)
-
-    # query syntax = Solr
-    def search(self, query: str) -> dict:
-        return self.con.search(query)
-
-    def delete(self, *docs: str) -> None:
-        # the id of a doc corresponds to the path where it is stored (or where it was
-        # indexed from), in our case our filestorage
-        self.con.delete(id=docs)
-
-    def __contains__(self, doc: str) -> bool:
-        query = f"id:{doc}"
-        result = self.con.search(query)
-
-        if not result:
-            return False
-
-        best_match = next(iter(result))
-        return best_match["id"] == doc
-
-    def clear(self):
-        self.con.delete(q="*:*")

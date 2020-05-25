@@ -1,13 +1,14 @@
-import {HttpClient} from '@angular/common/http';
-import {IDocument} from '../models/IDocument.model';
+import { HttpClient } from '@angular/common/http';
+import { IDocument } from '../models/IDocument.model';
 
-import {Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
-import {MatSort} from '@angular/material/sort';
-import {MatTableDataSource} from '@angular/material/table';
-import {SelectionModel} from '@angular/cdk/collections';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { MatSort } from '@angular/material/sort';
+import { MatInput } from '@angular/material/input';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-import { environment } from './../../environments/environment';
+import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
 
@@ -20,28 +21,39 @@ import { UploadService } from '../services/upload.service';
   styleUrls: ['document-view-table.component.scss'],
   templateUrl: 'document-view-table.component.html',
 })
+
 export class DocumentViewTableComponent implements OnInit, OnChanges {
+
+  tags: string[] = [];
+  selectedTags: string[] = [];
+  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
   // defines order of columns
-  displayedColumns: string[] = ['select', 'name', 'type', 'lang', 'size', 'createdAt', 'MyTags'];
+  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyTags'];
 
-  constructor(private snackBar: MatSnackBar, private uploadService: UploadService) {}
-
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatInput) input = MatInput;
   @Input() documents: Array<IDocument> | undefined;
   @Input() filter: string | undefined;
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
 
+
+
   public ngOnInit() {
     if (this.documents !== undefined) {
-      this.documents.map( (document: IDocument) => {
-      document.createdAt = new Date(document.createdAt);
-    });
+      this.documents.map((document: IDocument) => {
+        document.creation_date = new Date(document.creation_date);
+      });
       this.dataSource.data = this.documents;
       setTimeout(() => {
         this.dataSource.sort = this.sort;
       });
     }
+    this.api.getTags()
+      .subscribe((data: []) => {
+        this.tags = data;
+        this.selectedTags = this.tags;
+      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -91,5 +103,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
+  onKey(event) {
+    this.selectedTags = this.search(event.target.value);
+  }
+
+  search(value: string) {
+    const filter = value.toLowerCase();
+    return this.tags.filter(option => option.toLowerCase().startsWith(filter));
+  }
 }
 
