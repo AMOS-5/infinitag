@@ -4,26 +4,38 @@ import io
 import os
 from werkzeug.datastructures import FileStorage
 
+# TODO hack to modify the config before the app gets initialized
+# we should use a better fixture where the app gets initialized with our
+# desired configurations
+from backend.solr import config
+
+# reinit for test
+config_tags = config.tag_storage_solr
+config_tags["corename"] = "test_tags"
+
+config_docs = config.doc_storage_solr
+config_docs["corename"] = "test_documents"
+
+import app as application
 from app import app
 
 
 class BasicTestCase(unittest.TestCase):
     def test_home(self):
         tester = app.test_client(self)
-        response = tester.get('/', content_type='html/text')
+        response = tester.get("/", content_type="html/text")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, b'Hello World!')
+        self.assertEqual(response.data, b"Hello World!")
 
     def test_health(self):
         tester = app.test_client(self)
-        response = tester.get('/health', content_type="application/json")
+        response = tester.get("/health", content_type="application/json")
         self.assertEqual(response.status_code, 200)
         data_response = json.loads(response.data)
-        health = data_response['status']
+        health = data_response["status"]
         self.assertEqual(health, "UP")
 
     def test_upload_file(self):
-
         if os.path.exists("./tmp/") == False:
             os.mkdir("./tmp")
         # delete file if it already exists
@@ -33,9 +45,13 @@ class BasicTestCase(unittest.TestCase):
 
         tester = app.test_client(self)
         # send test file
-        data = dict(fileKey=(io.BytesIO(b'abc'), "test_upload.test"))
+        data = dict(fileKey=(io.BytesIO(b"abc"), "test_upload.test"))
         response = tester.post(
-            '/upload', content_type='multipart/form-data', data=data, follow_redirects=True)
+            "/upload",
+            content_type="multipart/form-data",
+            data=data,
+            follow_redirects=True,
+        )
         # check status code
         self.assertEqual(response.status_code, 200)
         # check file
@@ -45,20 +61,23 @@ class BasicTestCase(unittest.TestCase):
         f.close()
         self.assertEqual(content, "abc")
 
+        # file got uploaded to solr?
+        solr_doc_id = os.path.abspath("tmp/test_upload.test")
+        self.assertTrue(solr_doc_id in application.solr.docs)
+
         # cleanup
         if os.path.exists("./tmp/test_upload.test"):
             os.remove("./tmp/test_upload.test")
-
-
+        application.solr.docs.clear()
 
     def test_documents(self):
         tester = app.test_client(self)
-        response = tester.get('/documents', content_type="application/json")
+        response = tester.get("/documents", content_type="application/json")
         self.assertEqual(response.status_code, 200)
 
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
