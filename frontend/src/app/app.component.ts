@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 
   public iconPath = 'assets/img/InfiniTag1.png';
 
+
   constructor(private httpClient: HttpClient) {
   }
   public ngOnInit(): void {

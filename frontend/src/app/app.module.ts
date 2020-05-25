@@ -21,9 +21,11 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
+
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import {MatButtonModule} from "@angular/material/button";
     HomeComponent,
     TagsComponent,
     FileUploadComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
