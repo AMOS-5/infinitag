@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IDocument } from '../models/IDocument.model';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 describe('DocumentViewTable', () => {
   let component: DocumentViewTableComponent;
@@ -27,7 +29,9 @@ describe('DocumentViewTable', () => {
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatCheckboxModule,
       ],
       declarations: [DocumentViewTableComponent]
     })
