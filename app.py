@@ -5,19 +5,21 @@ from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
-import os
-import signal
+
 from datetime import datetime, timedelta
 
-from documentdata import DocumentData
-from backend import config
-from backend.tagstorage import SolrTagStorage
-from backend.docstorage import SolrDocStorage
+from backend.service import SolrService, SolrMiddleware
+from backend.solr import SolrDoc
+
+
+import logging as log
+
+log.basicConfig(level=log.ERROR)
 
 app = Flask(__name__)
+solr = SolrService()
+app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
-SOLR_TAGS = None
-SOLR_DOCS = None
 
 
 @app.route('/')
@@ -33,58 +35,56 @@ def upload_file():
     """
     try:
         f = request.files['fileKey']
-        file_name = secure_filename(f.filename)
-
-        f.save('./tmp/' + file_name)
-        if(SOLR_DOCS != None):
-            SOLR_DOCS.add('./tmp/' + file_name)
-        print('Uploaded and saved file: ' + file_name, file=sys.stdout)
-        return jsonify(file_name + " was saved"), 200
+        file_name = f"tmp/{secure_filename(f.filename)}"
     except Exception as e:
-        print(str(e), file=sys.stderr)
-        return jsonify("error: " + str(e)), 500
+        return jsonify(f"Bad Request: {e}"), 400
+
+    try:
+        f.save(file_name)
+    except Exception as e:
+        return jsonify(f"Internal Server Error while saving file: {e}"), 500
+
+    try:
+        doc = SolrDoc(file_name)
+        solr.docs.add(doc)
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
+
+    print(f'Uploaded, saved and indexed file: {file_name}', file=sys.stdout)
+    return jsonify(file_name + " was saved and indexed"), 200
+
+
+
+@app.route('/changetags', methods=['PATCH'])
+def change_tags():
+    try:
+        iDoc = request.json
+        id = iDoc.get('id')
+        tags = iDoc.get('tags')
+    except Exception as e:
+        return jsonify(f"Bad Request: {e}"), 400
+
+    try:
+        solDoc = solr.SOLR_DOCS._get(id)
+        solDoc.tags = tags
+        solr.SOLR_DOCS.update(solDoc)
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
+
+    print('changed tags on file ' + id + ' to ' + ','.join(tags) , file=sys.stdout)
+    return jsonify("success"), 200
 
 
 @app.route('/documents')
 def get_documents():
-    """
-    Sends document data as json object to frontend.
-    Right now only sends dummy data
-    """
-    list = []
-    solr_tags = []
-    day = datetime.today()
-    if SOLR_TAGS is not None:
-        # load tags from solr
-        solr_tags = SOLR_TAGS.tags
-        solr_docs = SOLR_DOCS.search("*:*")
+    try:
+        # load docs from solr
+        res = solr.docs.search("*:*")
+        res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
+        return jsonify(res), 200
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-        for result in solr_docs:
-            tags = []
-            try:
-                if 'dc_title' in result:
-                    tags.append(result['dc_title'])
-                if 'author' in result:
-                    tags.append(result['author'])
-                # if(result['author']):
-                #     tags.append(result['author'])
-                doc = DocumentData(
-                    name=result['dc_title'],
-                    path=result['id'],
-                    type=result['stream_content_type'],
-                    lang='de',
-                    size=result['stream_size'],
-                    createdAt=day,
-                    tags=tags
-                )
-                list.append(doc.as_dict())
-                for tag in tags:
-                    SOLR_TAGS.add(tag)
-            except:
-                return jsonify("internal error"), 500
-    
-    jsonstr = jsonify(list)
-    return jsonstr
 
 
 @app.route('/health')
@@ -96,26 +96,27 @@ def get_health():
 def tags():
     if request.method == 'GET':
         try:
-            data = SOLR_TAGS.tags
-            return jsonify(data)
-        except:
-            return jsonify("internal error"), 500
-    if request.method == 'POST':
+            data = solr.tags.tags
+            return jsonify(data), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
         try:
             data = request.json.get('tag')
-            SOLR_TAGS.add(data)
+            solr.tags.add(data)
             return jsonify(data + " has been added"), 200
-        except:
-            return jsonify("internal error"), 500
+        except Exception as e:
+            log.error(f"/documents: {e}")
+            return jsonify(f"/tags internal error: {e}"), 500
 
 
 @app.route('/tags/<tag_id>', methods=['DELETE'])
 def remove_tags(tag_id):
     try:
-        SOLR_TAGS.delete(tag_id)
-        return jsonify(tag_id + "has been removed"), 200
-    except:
-        return jsonify(tag_id + "internal error"), 500
+        solr.tags.delete(tag_id)
+        return jsonify(f"{tag_id} has been removed"), 200
+    except Exception as e:
+        return jsonify(f"{tag_id} internal error: {e}"), 500
 
 
 @app.route('/stopServer', methods=['GET'])
@@ -129,12 +130,6 @@ def stop_server():
 
 
 if __name__ == '__main__':
-
-    SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
-    SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
-    # add sample tags
-    SOLR_TAGS.clear()
-    SOLR_TAGS.add("test-tag-1", "test-tag-2", "test-tag-3")
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)

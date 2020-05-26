@@ -1,10 +1,19 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { DocumentViewTableComponent } from './document-view-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatSortable, MatSortModule, } from '@angular/material/sort';
+import { MatSortable, MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {IDocument} from '../models/IDocument.model';
+import { IDocument } from '../models/IDocument.model';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 describe('DocumentViewTable', () => {
   let component: DocumentViewTableComponent;
@@ -17,6 +26,15 @@ describe('DocumentViewTable', () => {
         MatSortModule,
         MatTableModule,
         BrowserAnimationsModule,
+        MatMenuModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatCheckboxModule,
+        MatButtonToggleModule,
       ],
       declarations: [DocumentViewTableComponent]
     })
@@ -52,21 +70,23 @@ describe('DocumentViewTable', () => {
     const testDocuments: Array<IDocument> = [
       {
         size: 1,
-        lang: 'en',
-        createdAt: new Date(),
-        name: 'Test 1',
-        path: '/path',
+        language: 'en',
+        creation_date: new Date(),
+        title: 'Test 1',
+        id: '/path',
         tags: ['Tag 1', 'Test Document'],
-        type: 'pdf'
+        type: 'pdf',
+        content: ''
       },
       {
         size: 3,
-        lang: 'en',
-        createdAt: new Date(),
-        name: 'Test 2',
-        path: '/path',
+        language: 'de',
+        creation_date: new Date(),
+        title: 'Test 2',
+        id: '/path',
         tags: ['Tag 2', 'Test Document'],
-        type: 'eml'
+        type: 'eml',
+        content: ''
       }
     ];
 
@@ -75,6 +95,35 @@ describe('DocumentViewTable', () => {
     expect(component.documents).toEqual(testDocuments);
     component.dataSource.filter = 'pdf';
     expect(component.dataSource.filteredData.length).toEqual(1);
+  });
+
+  it('should correctly add tags to doc', () => {
+    let doc = {
+      size: 1,
+      language: 'en',
+      creation_date: new Date(),
+      title: 'Test 1',
+      id: '/path',
+      tags: ['b'],
+      type: 'pdf',
+      content: ''
+    };
+    expect(doc.tags.length).toEqual(1);
+
+    // @ts-ignore
+    component.addTagToDoc(doc, "b").subscribe(res => {
+      expect(res.tags.length).toEqual(1);
+    },
+    err => {
+      expect(err).toEqual("Tag already added to Test 1");
+    });
+
+    // @ts-ignore
+    component.addTagToDoc(doc, "a").subscribe(res => {
+      expect(res.tags.length).toEqual(2);
+      expect(res.tags).toEqual(["a", "b"]);
+    });
+
   });
 
 });

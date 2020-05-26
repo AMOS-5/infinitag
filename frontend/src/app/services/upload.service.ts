@@ -4,12 +4,14 @@ import { environment } from './../../environments/environment';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
+import { IDocument } from './../models/IDocument.model'
+
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
 
-  
+
   constructor(private httpClient: HttpClient) { }
 
 
@@ -23,7 +25,19 @@ export class UploadService {
           reportProgress: true,
           observe: 'events'
         });
-    
+
   }
+
+  public patchTags(iDoc: IDocument): Observable<object> {
+    console.log("sending doc: " + iDoc.id)
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+
+    return this.httpClient.patch(`${environment.serverUrl}/changetags`, iDoc, httpOptions);
+  }
+
 
 }
