@@ -5,7 +5,7 @@ import json
 
 # if you activate this you will see why some fields are unknown and maybe can
 # find the name of another metadata field to add to the solr parsers
-log.basicConfig(level=log.DEBUG)
+# log.basicConfig(level=log.DEBUG)
 
 
 class SolrDoc:
