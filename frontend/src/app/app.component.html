@@ -1,17 +1,27 @@
 <mat-toolbar color="secondary">
   <mat-toolbar-row>
-    <a mat-button [routerLink]="''"><img src="{{iconPath}}" class="logo" alt="InfiniTag"/></a>
+    <a mat-button [routerLink]="''"><img src="{{iconPath}}" class="logo" alt="InfiniTag" /></a>
     <span class="menu-spacer"></span>
     <div>
       <a mat-button [routerLink]="''">Home</a>
       <a mat-button [routerLink]="'/search'">Search</a>
       <a mat-button [routerLink]="'/settings'">Settings</a>
       <a mat-button [routerLink]="'/keywords'">Keywords</a>
+      <a mat-button [routerLink]="'/dashboard'">Dashboard</a>
     </div>
     <span class="fill-remaining-space"></span>
-    <div>
-      Server Status: {{serverStatus}}
-    </div>
+    <span class="nav-buttons"></span>
+    Server Status: {{serverStatus}}
+      <!--div><button mat-fab color="primary" aria-label="proPic">J</button>John Doe </div>
+      <div>
+        <mat-form-field>
+          <select matNativeControl required>
+            <option value="english">English</option>
+            <option value="deutch">Deutch</option>
+          </select>
+        </mat-form-field>
+      </div-->
+
   </mat-toolbar-row>
 </mat-toolbar>
 <router-outlet></router-outlet>

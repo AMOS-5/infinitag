@@ -3,3 +3,9 @@
      Every toolbar row uses a flexbox row layout. */
   flex: 1 1 auto;
 }
+
+.nav-buttons {
+  display: flex;
+  flex-direction: column;
+  padding-top: 10%;
+}

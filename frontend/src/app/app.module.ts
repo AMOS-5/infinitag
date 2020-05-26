@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +24,7 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
@@ -38,6 +40,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     HomeComponent,
     TagsComponent,
     FileUploadComponent,
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,6 +59,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     MatProgressBarModule,
     MatToolbarModule,
     MatButtonModule,
+    MatGridListModule,
     MatCheckboxModule,
     MatSelectModule,
     MatMenuModule,
