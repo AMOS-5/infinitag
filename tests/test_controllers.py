@@ -83,7 +83,7 @@ class BasicTestCase(unittest.TestCase):
         application.solr.docs.add(self.docs[0])
         id = self.docs[0].id
 
-        doc = application.solr.docs._get(id)
+        doc = application.solr.docs.get_doc(id)
         self.assertEqual(doc.tags, [])
 
         tester = app.test_client(self)
@@ -94,7 +94,7 @@ class BasicTestCase(unittest.TestCase):
         response=tester.patch('/changetags', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
-        doc = application.solr.docs._get(id)
+        doc = application.solr.docs.get_doc(id)
         self.assertEqual(doc.tags, ["a", "b", "c"])
 
 

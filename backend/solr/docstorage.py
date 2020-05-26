@@ -57,10 +57,10 @@ class SolrDocStorage:
             res = self.con.extract(f)
             return res
 
-    def get(self, *docs: str) -> SolrDoc:
-        return [self._get(doc) for doc in docs]
+    def get_docs(self, *docs: str) -> SolrDoc:
+        return [self.get_doc(doc) for doc in docs]
 
-    def _get(self, doc: str) -> SolrDoc:
+    def get_doc(self, doc: str) -> SolrDoc:
         # TODO don't know 100% whether this can fail or not
         query = f"id:*{doc}"
 

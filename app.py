@@ -65,7 +65,7 @@ def change_tags():
         return jsonify(f"Bad Request: {e}"), 400
 
     try:
-        solDoc = solr.SOLR_DOCS._get(id)
+        solDoc = solr.SOLR_DOCS.get_doc(id)
         solDoc.tags = tags
         solr.SOLR_DOCS.update(solDoc)
     except Exception as e:
