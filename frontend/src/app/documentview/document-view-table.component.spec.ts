@@ -113,6 +113,9 @@ describe('DocumentViewTable', () => {
     // @ts-ignore
     component.addTagToDoc(doc, "b").subscribe(res => {
       expect(res.tags.length).toEqual(1);
+    },
+    err => {
+      expect(err).toEqual("Tag already added to Test 1");
     });
 
     // @ts-ignore
