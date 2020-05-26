@@ -12,6 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IDocument } from '../models/IDocument.model';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+
 
 describe('DocumentViewTable', () => {
   let component: DocumentViewTableComponent;
@@ -32,6 +34,7 @@ describe('DocumentViewTable', () => {
         ReactiveFormsModule,
         MatSnackBarModule,
         MatCheckboxModule,
+        MatButtonToggleModule,
       ],
       declarations: [DocumentViewTableComponent]
     })
@@ -92,6 +95,32 @@ describe('DocumentViewTable', () => {
     expect(component.documents).toEqual(testDocuments);
     component.dataSource.filter = 'pdf';
     expect(component.dataSource.filteredData.length).toEqual(1);
+  });
+
+  it('should correctly add tags to doc', () => {
+    let doc = {
+      size: 1,
+      language: 'en',
+      creation_date: new Date(),
+      title: 'Test 1',
+      id: '/path',
+      tags: ['b'],
+      type: 'pdf',
+      content: ''
+    };
+    expect(doc.tags.length).toEqual(1);
+
+    // @ts-ignore
+    component.addTagToDoc(doc, "b").subscribe(res => {
+      expect(res.tags.length).toEqual(1);
+    });
+
+    // @ts-ignore
+    component.addTagToDoc(doc, "a").subscribe(res => {
+      expect(res.tags.length).toEqual(2);
+      expect(res.tags).toEqual(["a", "b"]);
+    });
+
   });
 
 });

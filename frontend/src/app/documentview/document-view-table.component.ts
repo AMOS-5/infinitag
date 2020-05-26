@@ -83,7 +83,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /** Whether all currently displayed items are selected */
-  isAllSelected() {
+  public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
       if (this.selection.selected.includes(filteredData[i]) === false) {
@@ -94,14 +94,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /** Selects all visible rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
+  public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
 
 
-  addTagToDoc = (iDoc, tag): Observable<IDocument> => {
+  private addTagToDoc = (iDoc, tag): Observable<IDocument> => {
     if (iDoc.tags.includes(tag) === false) {
       iDoc.tags.push(tag);
       iDoc.tags.sort();
@@ -111,7 +111,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  applyTag(doc, tag) {
+  public applyTag(doc, tag) {
     this.addTagToDoc(doc, tag).subscribe(
       res => {
         this.uploadService.patchTags(res).subscribe(() => {
@@ -127,7 +127,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  applyBulkTags(tag) {
+  public applyBulkTags(tag) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
@@ -136,11 +136,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
-  onKey(event) {
+  public onKey(event) {
     this.selectedTags = this.search(event.target.value);
   }
 
-  search(value: string) {
+  private search(value: string) {
     const filter = value.toLowerCase();
     return this.tags.filter(option => option.toLowerCase().startsWith(filter));
   }
