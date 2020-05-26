@@ -9,9 +9,11 @@ import { IDocument } from '../models/IDocument.model';
 import { concatMap } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('HomeComponent', () => {
@@ -29,7 +31,9 @@ describe('HomeComponent', () => {
         MatFormFieldModule,
         MatToolbarModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatSnackBarModule,
+        MatMenuModule,
       ],
       declarations: [HomeComponent, DocumentViewTableComponent],
       schemas: [

@@ -36,35 +36,55 @@ def upload_file():
     try:
         f = request.files['fileKey']
         file_name = f"tmp/{secure_filename(f.filename)}"
-        f.save(file_name)
-
-        if solr.docs is not None:
-            # doc = SolrDoc(file_name, "tag1", "tag2")
-            doc = SolrDoc(file_name)
-            solr.docs.add(doc)
-            print(f'Uploaded and saved file: {file_name}', file=sys.stdout)
-        else:
-            print('File only uploaded.')
-
-        return jsonify(file_name + " was saved"), 200
     except Exception as e:
-        print(str(e), file=sys.stderr)
-        return jsonify(f"internal error: {e}"), 500
+        return jsonify(f"Bad Request: {e}"), 400
+
+    try:
+        f.save(file_name)
+    except Exception as e:
+        return jsonify(f"Internal Server Error while saving file: {e}"), 500
+
+    try:
+        doc = SolrDoc(file_name)
+        solr.docs.add(doc)
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
+
+    print(f'Uploaded, saved and indexed file: {file_name}', file=sys.stdout)
+    return jsonify(file_name + " was saved and indexed"), 200
+
+
+
+@app.route('/changetags', methods=['PATCH'])
+def change_tags():
+    try:
+        iDoc = request.json
+        id = iDoc.get('id')
+        tags = iDoc.get('tags')
+    except Exception as e:
+        return jsonify(f"Bad Request: {e}"), 400
+
+    try:
+        solDoc = solr.SOLR_DOCS._get(id)
+        solDoc.tags = tags
+        solr.SOLR_DOCS.update(solDoc)
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
+
+    print('changed tags on file ' + id + ' to ' + ','.join(tags) , file=sys.stdout)
+    return jsonify("success"), 200
 
 
 @app.route('/documents')
 def get_documents():
-    if solr.docs is not None:
-        try:
-            # load docs from solr
-            res = solr.docs.search("*:*")
-            res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
-            response = (jsonify(res), 200)
-        except Exception as e:
-            log.error(f"/documents: {e}")
-            response = (jsonify(f"/documents internal error: {e}"), 500)
+    try:
+        # load docs from solr
+        res = solr.docs.search("*:*")
+        res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
+        return jsonify(res), 200
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    return response
 
 
 @app.route('/health')

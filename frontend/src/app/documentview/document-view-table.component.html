@@ -1,4 +1,30 @@
+<mat-button-toggle #edit>Edit</mat-button-toggle>
+<p>Editing is {{edit.checked ? 'enabled' : 'disabled'}}</p>
+<button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">Apply Tags</button>
+<mat-menu #menu="matMenu">
+  <mat-form-field (click)="$event.stopPropagation()">
+    <mat-label>Search Tags...</mat-label>
+    <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
+      autocomplete="off">
+  </mat-form-field>
+  <button *ngFor="let tag of selectedTags" mat-menu-item (click)="applyBulkTags(tag)">{{tag}}</button>
+</mat-menu>
+
+
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox [disabled]=!edit.checked (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+        [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox [disabled]=!edit.checked (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+        [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
 
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> Filename </th>
@@ -29,15 +55,16 @@
     <th mat-header-cell *matHeaderCellDef> MyTags </th>
     <td mat-cell *matCellDef="let element">
       {{element.tags}}
-      <button mat-button [matMenuTriggerFor]="menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>add_circle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <mat-form-field (click)="$event.stopPropagation()">
           <mat-label>Search Tags...</mat-label>
-          <input matInput #tagInput (keyup)="onKey($event)" (blur)="tagInput.focus()" autocomplete="off">
+          <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
+            autocomplete="off">
         </mat-form-field>
-        <button *ngFor="let tag of selectedTags" mat-menu-item>{{tag}}</button>
+        <button *ngFor="let tag of selectedTags" mat-menu-item (click)="applyTag(element, tag)">{{tag}}</button>
       </mat-menu>
     </td>
   </ng-container>
