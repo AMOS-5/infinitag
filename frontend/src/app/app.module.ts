@@ -21,6 +21,7 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -30,6 +31,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { KeywordsComponent } from './keywords/keywords.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     TagsComponent,
     FileUploadComponent,
     DashboardComponent,
+    KeywordsComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     MatSelectModule,
     MatMenuModule,
     MatButtonToggleModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
