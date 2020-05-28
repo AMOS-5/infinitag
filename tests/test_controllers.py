@@ -10,8 +10,8 @@ from werkzeug.datastructures import FileStorage
 from backend.solr import config, SolrDoc
 
 # reinit for test
-config_tags = config.tag_storage_solr
-config_tags["corename"] = "test_tags"
+config_keyword_model = config.keyword_model_solr
+config_keyword_model["corename"] = "test_keyword_model"
 
 config_docs = config.doc_storage_solr
 config_docs["corename"] = "test_documents"
