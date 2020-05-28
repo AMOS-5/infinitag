@@ -65,9 +65,9 @@ def change_tags():
         return jsonify(f"Bad Request: {e}"), 400
 
     try:
-        solDoc = solr.SOLR_DOCS.get_doc(id)
+        solDoc = solr.docs.get_doc(id)
         solDoc.tags = tags
-        solr.SOLR_DOCS.update(solDoc)
+        solr.docs.update(solDoc)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
@@ -96,14 +96,14 @@ def get_health():
 def tags():
     if request.method == 'GET':
         try:
-            data = solr.tags.tags
+            data = solr.kwm.tags
             return jsonify(data), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
     elif request.method == 'POST':
         try:
             data = request.json.get('tag')
-            solr.tags.add(data)
+            solr.kwm.add_tags(data)
             return jsonify(data + " has been added"), 200
         except Exception as e:
             log.error(f"/documents: {e}")
@@ -113,7 +113,7 @@ def tags():
 @app.route('/tags/<tag_id>', methods=['DELETE'])
 def remove_tags(tag_id):
     try:
-        solr.tags.delete(tag_id)
+        solr.kwm.delete_tags(tag_id)
         return jsonify(f"{tag_id} has been removed"), 200
     except Exception as e:
         return jsonify(f"{tag_id} internal error: {e}"), 500
