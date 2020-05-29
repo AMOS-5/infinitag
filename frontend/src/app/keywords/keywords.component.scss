@@ -6,22 +6,15 @@
     border-width: thin;
 }
 
-.footer {
-    width: 200px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
+.list-flex {
+  display: flex;
+  height: 100%;
 
+}
 .list-container {
-    width: auto;
-    max-width: 100%;
-    margin: 5px 5px 5px 5px;
-    display: inline-block;
-    vertical-align: top;
-    position: sticky;
-    top: 0;
-  }
+  overflow-y: scroll;
+  padding: 12px;
+}
 
 .list {
     width: auto;
