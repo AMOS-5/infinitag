@@ -1,4 +1,4 @@
-from backend.solr import SolrDocStorage, SolrKeywordModel, config
+from backend.solr import SolrKeywordModel, SolrKeywords, SolrDocStorage, config
 
 
 class SolrService:
@@ -11,7 +11,9 @@ class SolrService:
 
     def initialize_solr(self):
         self.SOLR_KEYWORD_MODEL = SolrKeywordModel(config.keyword_model_solr)
+        self.SOLR_KEYWORDS = SolrKeywords(config.keywords_solr)
         self.SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
+
         self.INITIALIZED = True
 
     @property
@@ -20,7 +22,11 @@ class SolrService:
 
     @property
     def kwm(self):
-        return self.SOLR_KEYWORD_MODEL
+        return self.keywordmodel
+
+    @property
+    def keywords(self):
+        return self.SOLR_KEYWORDS
 
     @property
     def docs(self):

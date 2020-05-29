@@ -6,7 +6,7 @@ import copy
 import json
 
 
-class SolrTag:
+class SolrKeyword:
     """
     Class representing an object in the TagStorage
     """
@@ -51,62 +51,72 @@ class SolrHierarchy:
         """
         return bytes(hierarchy, "utf-8").decode("unicode_escape")
 
+MAX_ROWS = 5000
 
-class SolrKeywordModel:
+class SolrAbstract:
     def __init__(self, config: dict):
-        # we'll modify the original configuration
         _conf = copy.deepcopy(config)
 
-        # build the full url
+        # build url for this connection
         corename = _conf.pop("corename")
         _conf["url"] = str(URL(_conf["url"]) / corename)
-        # connection to the solr instance
+
         self.con = pysolr.Solr(**_conf)
 
-    def add_tags(self, *tags: str) -> None:
-        tags = [SolrTag(tag).as_dict() for tag in tags]
-        self.con.add(tags)
-
-    @property
-    def tags(self) -> List[str]:
-        # search all max results = 5k currently
-        result = self.con.search("*:*", rows=5000)
-        # extract only the tag value
-        tags = [SolrTag.from_hit(hit) for hit in result]
-        return tags
-
-    def delete_tags(self, *tags: str) -> None:
-        self.con.delete(id=tags)
-
-    def add_hierarchies(self, *hierarchies: SolrHierarchy) -> None:
-        self.con.add([hierarchy.as_dict() for hierarchy in hierarchies])
-
-    def update_hierarchies(self, *hierarchies: SolrHierarchy) -> None:
-        self.add_hierarchies(*hierarchies)
-
-    @property
-    def hierarchies(self) -> List[SolrHierarchy]:
-        res = self.con.search("hierarchy:*", rows=5000)
-        return [SolrHierarchy.from_hit(hit) for hit in res]
-
-    def delete_hierarchies(self, *hierarchy_names: str) -> None:
-        self.con.delete(id=hierarchy_names)
+    def delete(self, *ids: str) -> None:
+        self.con.delete(id=ids)
 
     def clear(self):
         self.con.delete(q="*:*")
 
-    def __contains__(self, tag: str) -> bool:
+    def __contains__(self, id_: str) -> bool:
         """
-        Checks whether the given tag/id is in the storage
+        Checks whether the given id is in the storage
         """
-        query = f"id:*{tag}"
+        query = f"id:*{id_}"
         res = self.con.search(query)
-        hit = self._get_hit(res, tag)
+        hit = self._get_hit(res, id_)
         return hit is not None
 
-    def _get_hit(self, res: dict, tag: str) -> dict:
+    def _get_hit(self, res: dict, id_: str) -> dict:
         for hit in res:
-            if hit["id"] == tag:
+            if hit["id"] == id_:
                 return hit["id"]
 
         return None
+
+
+class SolrKeywords(SolrAbstract):
+    def __init__(self, config: dict):
+        super().__init__(config)
+
+    def add(self, *keywords: str) -> None:
+        keywords = [SolrKeyword(keyword).as_dict() for keyword in keywords]
+        self.con.add(keywords)
+
+    def get(self) -> List[str]:
+        # search all max results = 5k currently
+        result = self.con.search("*:*", rows=MAX_ROWS)
+        # extract only the keyword value
+        keywords = [SolrKeyword.from_hit(hit) for hit in result]
+        return keywords
+
+    def update(self, old: str, new: str) -> None:
+        self.delete(old)
+        self.add(new)
+
+
+class SolrKeywordModel(SolrAbstract):
+    def __init__(self, config: dict):
+        super().__init__(config)
+
+    def add(self, *hierarchies: SolrHierarchy) -> None:
+        hierarchies = [hierarchy.as_dict() for hierarchy in hierarchies]
+        self.con.add(hierarchies)
+
+    def get(self) -> List[SolrHierarchy]:
+        res = self.con.search("*:*", rows=MAX_ROWS)
+        return [SolrHierarchy.from_hit(hit) for hit in res]
+
+    def update(self, *hierarchies: SolrHierarchy) -> None:
+        self.add(*hierarchies)

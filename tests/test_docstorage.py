@@ -51,7 +51,7 @@ class DocStorageTestCase(unittest.TestCase):
     def test_empty_tags(self):
         doc = SolrDoc(self.doc_paths[0])
         SOLR_DOCS.add(doc)
-        doc = SOLR_DOCS.get_docs(doc.path)[0]
+        doc = SOLR_DOCS.get(doc.path)
 
         self.assertFalse(doc.tags)
 
@@ -59,7 +59,7 @@ class DocStorageTestCase(unittest.TestCase):
         doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
         SOLR_DOCS.add(doc)
 
-        doc = SOLR_DOCS.get_docs(doc.path)[0]
+        doc = SOLR_DOCS.get(doc.path)
 
         self.assertTrue("tag1" in doc.tags)
         self.assertTrue("tag2" in doc.tags)
@@ -68,12 +68,12 @@ class DocStorageTestCase(unittest.TestCase):
         doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
         SOLR_DOCS.add(doc)
 
-        doc = SOLR_DOCS.get_docs(doc.path)[0]
+        doc = SOLR_DOCS.get(doc.path)
         doc.tags.remove("tag1")
         doc.tags.append("tag3")
         SOLR_DOCS.update(doc)
 
-        doc = SOLR_DOCS.get_docs(doc.path)[0]
+        doc = SOLR_DOCS.get(doc.path)
         self.assertTrue("tag1" not in doc.tags)
         self.assertTrue("tag2" in doc.tags)
         self.assertTrue("tag3" in doc.tags)

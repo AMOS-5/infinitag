@@ -13,6 +13,9 @@ from backend.solr import config, SolrDoc
 config_keyword_model = config.keyword_model_solr
 config_keyword_model["corename"] = "test_keyword_model"
 
+config_keywords = config.keywords_solr
+config_keywords["corename"] = "test_keywords"
+
 config_docs = config.doc_storage_solr
 config_docs["corename"] = "test_documents"
 
