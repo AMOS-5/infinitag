@@ -118,6 +118,68 @@ def remove_tags(tag_id):
     except Exception as e:
         return jsonify(f"{tag_id} internal error: {e}"), 500
 
+dims_arr = ["country", "state", "city"]
+keys_arr = ["germany", "bavaria", "erlangen"]
+
+@app.route('/dims', methods=['GET', 'POST'])
+def dims():
+    if request.method == 'GET':
+        try:
+            data = dims_arr
+            #TODO query here
+            return jsonify(data), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
+        try:
+            data = request.json.get('dim')
+            #TODO add here
+            dims_arr.append(data)
+            log.critical(f"/dim: {data}")
+            return jsonify(data + " has been added"), 200
+        except Exception as e:
+            log.error(f"/dims: {e}")
+            return jsonify(f"/dims internal error: {e}"), 500
+
+
+@app.route('/dims/<dim_id>', methods=['DELETE'])
+def remove_dim(dim_id):
+    try:
+        #TODO delete here
+        dims_arr.remove(dim_id)
+        return jsonify(f"{dim_id} has been removed"), 200
+    except Exception as e:
+        return jsonify(f"{dim_id} internal error: {e}"), 500
+
+@app.route('/keys', methods=['GET', 'POST'])
+def keys():
+    if request.method == 'GET':
+        try:
+            data = keys_arr
+            #TODO query here
+            return jsonify(data), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
+        try:
+            data = request.json.get('key')
+            #TODO add here
+            keys_arr.append(data)
+            log.critical(f"/key: {data}")
+            return jsonify(data + " has been added"), 200
+        except Exception as e:
+            log.error(f"/dims: {e}")
+            return jsonify(f"/dims internal error: {e}"), 500
+
+
+@app.route('/keys/<key_id>', methods=['DELETE'])
+def remove_key(key_id):
+    try:
+        #TODO delete here
+        keys_arr.remove(key_id)
+        return jsonify(f"{key_id} has been removed"), 200
+    except Exception as e:
+        return jsonify(f"{key_id} internal error: {e}"), 500
 
 @app.route('/stopServer', methods=['GET'])
 def stop_server():
