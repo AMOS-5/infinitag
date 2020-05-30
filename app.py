@@ -60,18 +60,18 @@ def change_tags():
     try:
         iDoc = request.json
         id = iDoc.get('id')
-        tags = iDoc.get('tags')
+        keywords = iDoc.get('keywords')
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
 
     try:
         solDoc = solr.docs.get(id)
-        solDoc.tags = tags
+        solDoc.keywords = keywords
         solr.docs.update(solDoc)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print('changed tags on file ' + id + ' to ' + ','.join(tags) , file=sys.stdout)
+    print('changed tags on file ' + id + ' to ' + ','.join(keywords) , file=sys.stdout)
     return jsonify("success"), 200
 
 

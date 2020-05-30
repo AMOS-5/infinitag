@@ -23,11 +23,11 @@ import { UploadService } from '../services/upload.service';
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
 
-  tags: string[] = [];
-  selectedTags: string[] = [];
+  keywords: string[] = [];
+  selectedKeywords: string[] = [];
   constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
   // defines order of columns
-  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyTags'];
+  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -43,8 +43,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.setDatasource();
     this.api.getTags()
       .subscribe((data: []) => {
-        this.tags = data;
-        this.selectedTags = this.tags;
+        this.keywords = data;
+        this.selectedKeywords = this.keywords;
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
   }
@@ -101,18 +101,18 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
 
-  private addTagToDoc = (iDoc, tag): Observable<IDocument> => {
-    if (iDoc.tags.includes(tag) === false) {
-      iDoc.tags.push(tag);
-      iDoc.tags.sort();
+  private addTagToDoc = (iDoc, keyword): Observable<IDocument> => {
+    if (iDoc.keywords.includes(keyword) === false) {
+      iDoc.keywords.push(keyword);
+      iDoc.keywords.sort();
       return of(iDoc);
     } else {
       return throwError('Tag already added to ' + iDoc.title);
     }
   }
 
-  public applyTag(doc, tag) {
-    this.addTagToDoc(doc, tag).subscribe(
+  public applyTag(doc, keyword) {
+    this.addTagToDoc(doc, keyword).subscribe(
       res => {
         this.uploadService.patchTags(res).subscribe(() => {
           const index = this.documents.findIndex(document => document.id === doc.id);
@@ -127,22 +127,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  public applyBulkTags(tag) {
+  public applyBulkTags(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selection.selected.forEach(doc => {
-      this.applyTag(doc, tag);
+      this.applyTag(doc, keyword);
     });
   }
 
   public onKey(event) {
-    this.selectedTags = this.search(event.target.value);
+    this.selectedKeywords = this.search(event.target.value);
   }
 
   private search(value: string) {
     const filter = value.toLowerCase();
-    return this.tags.filter(option => option.toLowerCase().startsWith(filter));
+    return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
   }
 }
 

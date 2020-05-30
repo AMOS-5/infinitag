@@ -6,7 +6,7 @@ export interface IDocument {
   id: string;
   language: string;
   size: number;
-  tags: string[];
+  keywords: string[];
   title: string;
   type: string;
 }
