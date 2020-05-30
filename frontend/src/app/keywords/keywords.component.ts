@@ -16,12 +16,16 @@ export class KeywordsComponent implements OnInit {
 
   uncatDimensions = []
   uncatKeywords = []
-
+  keywords = []
 
 
   constructor(private api: ApiService, private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.api.getTags()
+    .subscribe((data: []) => {
+      this.keywords = data;
+    });
     this.api.getUncategorizedDimensions()
       .subscribe((data: []) => {
         this.uncatDimensions = data;
@@ -106,4 +110,30 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  todo = [
+    'Get to work',
+    'Pick up groceries',
+    'Go home',
+    'Fall asleep'
+  ];
+
+  done = [
+    'Get up',
+    'Brush teeth',
+    'Take a shower',
+    'Check e-mail',
+    'Walk dog'
+  ];
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
+  
 }
