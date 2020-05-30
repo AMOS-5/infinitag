@@ -48,35 +48,35 @@ class DocStorageTestCase(unittest.TestCase):
         not_existing = "/this/file/does/not/exist"
         self.assertTrue(not_existing not in SOLR_DOCS)
 
-    def test_empty_tags(self):
+    def test_empty_keywords(self):
         doc = SolrDoc(self.doc_paths[0])
         SOLR_DOCS.add(doc)
         doc = SOLR_DOCS.get(doc.path)
 
-        self.assertFalse(doc.tags)
+        self.assertFalse(doc.keywords)
 
-    def test_initial_tags(self):
-        doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
+    def test_initial_keywords(self):
+        doc = SolrDoc(self.doc_paths[0], "key1", "key2")
         SOLR_DOCS.add(doc)
 
         doc = SOLR_DOCS.get(doc.path)
 
-        self.assertTrue("tag1" in doc.tags)
-        self.assertTrue("tag2" in doc.tags)
+        self.assertTrue("key1" in doc.keywords)
+        self.assertTrue("key2" in doc.keywords)
 
-    def test_update_tags(self):
-        doc = SolrDoc(self.doc_paths[0], "tag1", "tag2")
+    def test_update_keywords(self):
+        doc = SolrDoc(self.doc_paths[0], "key1", "key2")
         SOLR_DOCS.add(doc)
 
         doc = SOLR_DOCS.get(doc.path)
-        doc.tags.remove("tag1")
-        doc.tags.append("tag3")
+        doc.keywords.remove("key1")
+        doc.keywords.append("key3")
         SOLR_DOCS.update(doc)
 
         doc = SOLR_DOCS.get(doc.path)
-        self.assertTrue("tag1" not in doc.tags)
-        self.assertTrue("tag2" in doc.tags)
-        self.assertTrue("tag3" in doc.tags)
+        self.assertTrue("key1" not in doc.keywords)
+        self.assertTrue("key2" in doc.keywords)
+        self.assertTrue("key3" in doc.keywords)
 
 
 SOLR_DOCS = SolrDocStorage(DocStorageTestCase.config)
