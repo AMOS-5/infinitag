@@ -7,7 +7,7 @@
     <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
       autocomplete="off">
   </mat-form-field>
-  <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyBulkTags(tag)">{{tag}}</button>
+  <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(tag)">{{tag}}</button>
 </mat-menu>
 
 
@@ -64,7 +64,7 @@
           <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
             autocomplete="off">
         </mat-form-field>
-        <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyTag(element, tag)">{{tag}}</button>
+        <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyKeyword(element, tag)">{{tag}}</button>
       </mat-menu>
     </td>
   </ng-container>

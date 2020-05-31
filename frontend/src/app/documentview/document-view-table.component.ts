@@ -111,7 +111,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  public applyTag(doc, keyword) {
+  public applyKeyword(doc, keyword) {
     this.addTagToDoc(doc, keyword).subscribe(
       res => {
         this.uploadService.patchTags(res).subscribe(() => {
@@ -127,12 +127,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  public applyBulkTags(keyword) {
+  public applyBulkKeywords(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selection.selected.forEach(doc => {
-      this.applyTag(doc, keyword);
+      this.applyKeyword(doc, keyword);
     });
   }
 
