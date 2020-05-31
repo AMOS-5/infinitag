@@ -16,7 +16,7 @@ class SolrDoc:
     def __init__(
         self,
         path: str,
-        *tags: str,
+        *keywords: str,
         title: str = None,
         file_type: str = None,
         lang: str = None,
@@ -25,7 +25,7 @@ class SolrDoc:
         content: str = None,
     ):
         self.id = os.path.abspath(path)
-        self.tags = list(tags)
+        self.keywords = list(keywords)
         self.title = title
         self.file_type = file_type
         self.lang = lang
@@ -53,7 +53,7 @@ class SolrDoc:
         """
         return SolrDoc(
             hit["id"],
-            *hit["tags"] if "tags" in hit else [],
+            *hit["keywords"] if "keywords" in hit else [],
             title=hit["title"][0],
             file_type=hit["type"][0],
             lang=hit["language"][0],
@@ -65,7 +65,7 @@ class SolrDoc:
     def as_dict(self) -> dict:
         return {
             "id": self.id,
-            "tags": self.tags,
+            "keywords": self.keywords,
             "title": self.title,
             "type": self.file_type,
             "language": self.lang,

@@ -10,8 +10,11 @@ from werkzeug.datastructures import FileStorage
 from backend.solr import config, SolrDoc
 
 # reinit for test
-config_tags = config.tag_storage_solr
-config_tags["corename"] = "test_tags"
+config_keyword_model = config.keyword_model_solr
+config_keyword_model["corename"] = "test_keyword_model"
+
+config_keywords = config.keywords_solr
+config_keywords["corename"] = "test_keywords"
 
 config_docs = config.doc_storage_solr
 config_docs["corename"] = "test_documents"
@@ -83,19 +86,19 @@ class BasicTestCase(unittest.TestCase):
         application.solr.docs.add(self.docs[0])
         id = self.docs[0].id
 
-        doc = application.solr.docs.get_doc(id)
-        self.assertEqual(doc.tags, [])
+        doc = application.solr.docs.get(id)
+        self.assertEqual(doc.keywords, [])
 
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "tags":["a", "b", "c"],
+            "keywords":["a", "b", "c"],
         })
         response=tester.patch('/changetags', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
-        doc = application.solr.docs.get_doc(id)
-        self.assertEqual(doc.tags, ["a", "b", "c"])
+        doc = application.solr.docs.get(id)
+        self.assertEqual(doc.keywords, ["a", "b", "c"])
 
 
     def test_documents(self):
