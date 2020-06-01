@@ -8,6 +8,7 @@ class SolrMiddleware(object):
             try:
                 self.solr_service.initialize_solr()
             except:
+                # TODO log errors
                 pass
 
         return self.app(environment, start_response)
