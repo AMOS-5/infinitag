@@ -30,32 +30,18 @@
       <div class="list-flex">
         <div class="list-container">
           <h2>Hierarchy</h2>
-          <!-- <div class="example-container">
-                <div 
-                  cdkDropList
-                  #hierarchyList="cdkDropList"
-                  [cdkDropListData]="done"
-                  [cdkDropListConnectedTo]="[uncatDimensionsList, uncatKeywordsList]"
-                  class="example-list"
-                  (cdkDropListDropped)="drop($event)">
-                  <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
-                </div>
-              </div> -->
           <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
-            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding cdkDropList #hirerchyKeywordList="cdkDropList" [cdkDropListData]="hirerchyKeywords" (cdkDropListDropped)="handleDrop($event, node);" [cdkDropListConnectedTo]="[uncatDimensionsList]">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
               <button mat-icon-button disabled></button>
               <div class="checklist-leaf-node"
                 [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
                                             'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
                                             'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
-                [checked]="checklistSelection.isSelected(node)" (change)="checklistSelection.toggle(node);"
-                draggable="true" (dragstart)="handleDragStart($event, node);" (dragover)="handleDragOver($event, node);"
-                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);"
-                cdkDropList #hirerchyKeywordList="cdkDropList" [cdkDropListData]="hirerchyKeywords" (cdkDropListDropped)="handleDrop($event, node);" [cdkDropListConnectedTo]="[uncatDimensionsList]"
-               >{{node.item}}</div>
+                draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
+                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">{{node.item}}</div>
             </mat-tree-node>
 
-            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding cdkDropList #hirerchyKeywordList="cdkDropList" [cdkDropListData]="hirerchyKeywords" (cdkDropListDropped)="handleDrop($event, node);" [cdkDropListConnectedTo]="[uncatDimensionsList]">
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
               <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.filename">
                 <mat-icon class="mat-icon-rtl-mirror">
                   {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
@@ -65,12 +51,8 @@
                 [ngClass]="{'drop-above': dragNodeExpandOverArea === 'above' && dragNodeExpandOverNode === node,
                                             'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
                                             'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
-                draggable="true" (dragstart)="handleDragStart($event, node);" (dragover)="handleDragOver($event, node);"
-                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);"
-                [checked]="descendantsAllSelected(node)" [indeterminate]="descendantsPartiallySelected(node)"
-                (change)="todoItemSelectionToggle(node)"
-                cdkDropList #hirerchyKeywordList="cdkDropList" [cdkDropListData]="hirerchyKeywords" (cdkDropListDropped)="handleDrop($event, node);" [cdkDropListConnectedTo]="[uncatDimensionsList]"
-                >{{node.item}}</div>
+                draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
+                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">{{node.item}}</div>
             </mat-tree-node>
           </mat-tree>
 
@@ -83,7 +65,7 @@
         <div class="list-container">
           <h2>Uncategorized Dimensions</h2>
           <div>
-            <div class="example-box" *ngFor="let item of uncatDimensions"  draggable="true" (dragstart)="handleDragStart($event, item, true);" (dragover)="handleDragOver($event, node);"
+            <div class="example-box" *ngFor="let item of uncatDimensions"  draggable="true" (dragstart)="handleDragStart($event, item, true);"
                 (dragend)="handleDragEnd($event);">
               {{item}}
               <button mat-icon-button (click)="deleteDimension(item)">
@@ -94,7 +76,7 @@
         </div>
         <div class="list-container">
           <h2>Uncategorized Keywords</h2>
-          <div class="example-box" *ngFor="let item of uncatKeywords"  draggable="true" (dragstart)="handleDragStart($event, item, true);" (dragover)="handleDragOver($event, node);"
+          <div class="example-box" *ngFor="let item of uncatKeywords"  draggable="true" (dragstart)="handleDragStart($event, item, true);"
                 (dragend)="handleDragEnd($event);">
               {{item}}
               <button mat-icon-button (click)="deleteKeyword(item)">

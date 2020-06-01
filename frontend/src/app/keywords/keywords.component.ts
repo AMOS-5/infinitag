@@ -5,7 +5,6 @@ import { ApiService } from '../services/api.service';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
-import { SelectionModel } from '@angular/cdk/collections';
 
 /**
  * Node for to-do item
@@ -255,8 +254,6 @@ export class KeywordsComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<TodoItemNode, TodoItemFlatNode>;
 
-  /** The selection for checklist */
-  checklistSelection = new SelectionModel<TodoItemFlatNode>(true /* multiple */);
 
   /* Drag and drop */
   dragNode: any;
@@ -399,28 +396,6 @@ export class KeywordsComponent implements OnInit {
                         event.previousIndex,
                         event.currentIndex);
     }
-  }
-
-  /** Whether all the descendants of the node are selected */
-  descendantsAllSelected(node: TodoItemFlatNode): boolean {
-    const descendants = this.treeControl.getDescendants(node);
-    return descendants.every(child => this.checklistSelection.isSelected(child));
-  }
-
-  /** Whether part of the descendants are selected */
-  descendantsPartiallySelected(node: TodoItemFlatNode): boolean {
-    const descendants = this.treeControl.getDescendants(node);
-    const result = descendants.some(child => this.checklistSelection.isSelected(child));
-    return result && !this.descendantsAllSelected(node);
-  }
-
-  /** Toggle the to-do item selection. Select/deselect all the descendants node */
-  todoItemSelectionToggle(node: TodoItemFlatNode): void {
-    this.checklistSelection.toggle(node);
-    const descendants = this.treeControl.getDescendants(node);
-    this.checklistSelection.isSelected(node)
-      ? this.checklistSelection.select(...descendants)
-      : this.checklistSelection.deselect(...descendants);
   }
 
   /** Select the category so we can insert the new item. */
