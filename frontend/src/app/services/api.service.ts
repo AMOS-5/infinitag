@@ -10,28 +10,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public getTags() {
-    return this.http.get(`${environment.serverUrl}/tags`);
-  }
-
-  public addTag(tag): Observable<object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    };
-    return this.http.post(`${environment.serverUrl}/tags`, tag, httpOptions);
-  }
-
-  public removeTag(tag): Observable<object> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.delete(`${environment.serverUrl}/tags/${tag}`, httpOptions);
-  }
-
   public getUncategorizedDimensions() {
     return this.http.get(`${environment.serverUrl}/dims`);
   }
