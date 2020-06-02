@@ -16,80 +16,10 @@ Classes
 - :py:class:`SolrDoc`:
   SolrDoc
 
-- :py:class:`FileContent`:
-  Undocumented.
-
-- :py:class:`Title`:
-  Undocumented.
-
-- :py:class:`Author`:
-  Undocumented.
-
-- :py:class:`FileSize`:
-  Undocumented.
-
-- :py:class:`FileType`:
-  Undocumented.
-
-- :py:class:`CreationDate`:
-  Undocumented.
-
-- :py:class:`Language`:
-  Undocumented.
-
 
 .. autoclass:: SolrDoc
    :members:
 
    .. rubric:: Inheritance
    .. inheritance-diagram:: SolrDoc
-      :parts: 1
-
-.. autoclass:: FileContent
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: FileContent
-      :parts: 1
-
-.. autoclass:: Title
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: Title
-      :parts: 1
-
-.. autoclass:: Author
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: Author
-      :parts: 1
-
-.. autoclass:: FileSize
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: FileSize
-      :parts: 1
-
-.. autoclass:: FileType
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: FileType
-      :parts: 1
-
-.. autoclass:: CreationDate
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: CreationDate
-      :parts: 1
-
-.. autoclass:: Language
-   :members:
-
-   .. rubric:: Inheritance
-   .. inheritance-diagram:: Language
       :parts: 1

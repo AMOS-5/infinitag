@@ -64,13 +64,6 @@
     <code>src/app/documentview/document-view-table.component.ts</code>
 </p>
 
-    <p class="comment">
-        <h3>Description</h3>
-    </p>
-    <p class="comment">
-        <p>Component gets document data from the backend and displays it as a table</p>
-
-    </p>
 
 
     <p class="comment">
@@ -81,6 +74,11 @@
                     <code><a href="https://angular.io/api/core/OnChanges" target="_blank" >OnChanges</a></code>
     </p>
 
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+    </div>
 
 <section>
     <h3>Metadata</h3>
@@ -139,7 +137,7 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#addTagToDoc">addTagToDoc</a>
+                                <a href="#addKeywordToDoc">addKeywordToDoc</a>
                             </li>
                             <li>
                                 <a href="#breakpoint">breakpoint</a>
@@ -214,10 +212,6 @@
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#onResize">onResize</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
                                 <a href="#search">search</a>
                             </li>
                             <li>
@@ -264,7 +258,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/documentview/document-view-table.component.ts:27</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/documentview/document-view-table.component.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -344,7 +338,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/app/documentview/document-view-table.component.ts:35</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/documentview/document-view-table.component.ts:39</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -365,7 +359,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-2" colspan="2">
-                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/documentview/document-view-table.component.ts:36</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/documentview/document-view-table.component.ts:40</a></div>
                             </td>
                         </tr>
             </tbody>
@@ -403,8 +397,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="134"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:134</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:169</a></div>
                 </td>
             </tr>
 
@@ -471,8 +465,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="118"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:118</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:148</a></div>
                 </td>
             </tr>
 
@@ -548,8 +542,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="79"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:79</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:90</a></div>
                 </td>
             </tr>
 
@@ -616,16 +610,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="89"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:89</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:102</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Whether all currently displayed items are selected</p>
-</div>
 
                     <div>
                     </div>
@@ -634,7 +626,7 @@
 
                     </div>
                     <div class="io-description">
-                        <p>boolean</p>
+                        <p>true if the items are selected, false otherwise</p>
 
                     </div>
                 </td>
@@ -665,16 +657,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="102"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:102</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:116</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Selects all visible rows if they are not all selected; otherwise clear selection.</p>
-</div>
 
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
@@ -708,8 +698,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:79</a></div>
                 </td>
             </tr>
 
@@ -780,8 +770,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:46</a></div>
                 </td>
             </tr>
 
@@ -821,76 +811,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="143"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:143</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>event</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="onResize"></a>
-                    <span class="name">
-                        <b>
-                            <span class="modifier">Private</span>
-                            onResize
-                        </b>
-                        <a href="#onResize"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>onResize(event)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="65"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:65</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="184"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:184</a></div>
                 </td>
             </tr>
 
@@ -957,8 +879,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="147"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:147</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:194</a></div>
                 </td>
             </tr>
 
@@ -999,7 +921,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>List of keywords matching search term</p>
+
                     </div>
                 </td>
             </tr>
@@ -1029,8 +952,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:60</a></div>
                 </td>
             </tr>
 
@@ -1056,12 +979,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="addTagToDoc"></a>
+                        <a name="addKeywordToDoc"></a>
                         <span class="name">
                             <b>
                                 <span class="modifier">Private</span>
-                            addTagToDoc</b>
-                            <a href="#addTagToDoc"><span class="icon ion-ios-link"></span></a>
+                            addKeywordToDoc</b>
+                            <a href="#addKeywordToDoc"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
@@ -1072,11 +995,33 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="108" class="link-to-prism">src/app/documentview/document-view-table.component.ts:108</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/app/documentview/document-view-table.component.ts:130</a></div>
                             </td>
                         </tr>
 
 
+                    <tr>
+                        <td class="col-md-4">
+                          <div class="io-description">
+                                  <b>Parameters :</b>
+                                  <table class="params">
+                                      <thead>
+                                          <tr>
+                                                <td>Name</td>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                                <tr>
+                                                        <td>document</td>
+                                                </tr>
+                                                <tr>
+                                                        <td>keyword</td>
+                                                </tr>
+                                      </tbody>
+                                  </table>
+                          </div>
+                        </td>
+                    </tr>
             </tbody>
         </table>
         <table class="table table-sm table-bordered">
@@ -1099,7 +1044,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/documentview/document-view-table.component.ts:39</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/documentview/document-view-table.component.ts:43</a></div>
                             </td>
                         </tr>
 
@@ -1125,7 +1070,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/documentview/document-view-table.component.ts:37</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/documentview/document-view-table.component.ts:41</a></div>
                             </td>
                         </tr>
 
@@ -1157,7 +1102,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/documentview/document-view-table.component.ts:30</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/documentview/document-view-table.component.ts:34</a></div>
                             </td>
                         </tr>
 
@@ -1184,7 +1129,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/documentview/document-view-table.component.ts:34</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/documentview/document-view-table.component.ts:38</a></div>
                             </td>
                         </tr>
 
@@ -1216,7 +1161,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/documentview/document-view-table.component.ts:26</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/documentview/document-view-table.component.ts:30</a></div>
                             </td>
                         </tr>
 
@@ -1248,7 +1193,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/documentview/document-view-table.component.ts:27</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/documentview/document-view-table.component.ts:31</a></div>
                             </td>
                         </tr>
 
@@ -1274,7 +1219,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/documentview/document-view-table.component.ts:38</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/documentview/document-view-table.component.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -1310,7 +1255,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/app/documentview/document-view-table.component.ts:32</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/documentview/document-view-table.component.ts:36</a></div>
                             </td>
                         </tr>
 
@@ -1346,7 +1291,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/documentview/document-view-table.component.ts:33</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/documentview/document-view-table.component.ts:37</a></div>
                             </td>
                         </tr>
 
@@ -1374,7 +1319,11 @@ import { UploadService } from &#x27;../services/upload.service&#x27;;
 
 
 /**
- * Component gets document data from the backend and displays it as a table
+ * @class DocumentViewTableComponent
+ *
+ * Component gets document data from the backend and displays it as a table.
+ * The data can be filtered through a search bar and new tags can be added
+ * to the documents
  */
 @Component({
   selector: &#x27;document-view-table&#x27;,
@@ -1402,7 +1351,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.setDatasource();
-    this.api.getTags()
+    this.api.getUncategorizedKeywords()
       .subscribe((data: []) &#x3D;&gt; {
         this.keywords &#x3D; data;
         this.selectedKeywords &#x3D; this.keywords;
@@ -1410,6 +1359,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.breakpoint &#x3D; (window.innerWidth &lt;&#x3D; 400) ? 1 : 6;
   }
 
+  /**
+  * @description
+  * Sets the data variable of this components MatTableDataSource instance
+  */
   public setDatasource() {
     if (this.documents !&#x3D;&#x3D; undefined) {
       this.documents.map((document: IDocument) &#x3D;&gt; {
@@ -1423,10 +1376,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  private onResize(event) {
-    this.breakpoint &#x3D; (event.target.innerWidth &lt;&#x3D; 400) ? 1 : 6;
-  }
 
+  /**
+  * @description
+  * Updates the documents list as well as the filter term
+  * @param {SimpleChanges} changes
+  */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.documents) {
       this.documents &#x3D; changes.documents.currentValue;
@@ -1437,16 +1392,19 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.filter &#x3D; changes.filter.currentValue;
     }
   }
+
   public focus(event) {
     setTimeout(() &#x3D;&gt; {
       event.target.focus();
     }, 0);
   }
 
+
   /**
-   * Whether all currently displayed items are selected
-   * @return boolean
-   */
+  * @description
+  * Checks if all currently displayed items are selected
+  * @returns true if the items are selected, false otherwise
+  */
   public isAllSelected() {
     const filteredData &#x3D; this.dataSource.filteredData;
     for (let i &#x3D; 0; i &lt; filteredData.length; i++) {
@@ -1458,28 +1416,45 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Selects all visible rows if they are not all selected; otherwise clear selection.
-   */
+  * @description
+  * Selects all visible rows if they are not all selected; otherwise clear selection.
+  */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row &#x3D;&gt; this.selection.select(row));
   }
 
-  private addTagToDoc &#x3D; (iDoc, keyword): Observable&lt;IDocument&gt; &#x3D;&gt; {
+  /**
+  * @description
+  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+  * is already added to the document
+  * @param {IDocument} document
+  * @param {string} keyword
+  * @returns {Observable} Observable of the document
+  */
+  private addKeywordToDoc &#x3D; (iDoc, keyword): Observable&lt;IDocument&gt; &#x3D;&gt; {
     if (iDoc.keywords.includes(keyword) &#x3D;&#x3D;&#x3D; false) {
       iDoc.keywords.push(keyword);
       iDoc.keywords.sort();
       return of(iDoc);
     } else {
-      return throwError(&#x27;Tag already added to &#x27; + iDoc.title);
+      return throwError(&#x27;Keyword already added to &#x27; + iDoc.title);
     }
   }
 
+  /**
+  * @description
+  * Adds a keyword to a document, then sends a PATCH request to the backend
+  * to update the document. If the request is succesfull the datasource gets
+  * updated.
+  * @param {IDocument} document
+  * @param {string} keyword
+  */
   public applyKeyword(doc, keyword) {
-    this.addTagToDoc(doc, keyword).subscribe(
+    this.addKeywordToDoc(doc, keyword).subscribe(
       res &#x3D;&gt; {
-        this.uploadService.patchTags(res).subscribe(() &#x3D;&gt; {
+        this.uploadService.patchKeywords(res).subscribe(() &#x3D;&gt; {
           const index &#x3D; this.documents.findIndex(document &#x3D;&gt; document.id &#x3D;&#x3D;&#x3D; doc.id);
           const data &#x3D; this.dataSource.data;
           data.splice(index, 1);
@@ -1492,6 +1467,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
+   /**
+  * @description
+  * Adds a keyword to all selected documents.
+  * @param {string} keyword
+  */
   public applyBulkKeywords(keyword) {
     if (this.selection.selected.length &#x3D;&#x3D;&#x3D; 0) {
       this.snackBar.open(&#x27;no rows selected&#x27;, &#x60;&#x60;, { duration: 3000 });
@@ -1501,10 +1481,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+  * @description
+  * Gets called when a key is pressed while the search field for the keywords
+  * is in focus. Updates the filter term.
+  * @param event
+  */
   public onKey(event) {
     this.selectedKeywords &#x3D; this.search(event.target.value);
   }
 
+  /**
+  * @description
+  * Searches the keywords list for a search term
+  * @param {string} search term
+  * @returns {string[]} List of keywords matching search term
+  */
   private search(value: string) {
     const filter &#x3D; value.toLowerCase();
     return this.keywords.filter(option &#x3D;&gt; option.toLowerCase().startsWith(filter));
@@ -1520,11 +1512,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 &lt;button [disabled]&#x3D;!edit.checked mat-button [matMenuTriggerFor]&#x3D;&quot;menu&quot;&gt;Apply Keywords&lt;/button&gt;
 &lt;mat-menu #menu&#x3D;&quot;matMenu&quot;&gt;
   &lt;mat-form-field (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
-    &lt;mat-label&gt;Search Tags...&lt;/mat-label&gt;
-    &lt;input matInput #tagInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
+    &lt;mat-label&gt;Search Keywords...&lt;/mat-label&gt;
+    &lt;input matInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
       autocomplete&#x3D;&quot;off&quot;&gt;
   &lt;/mat-form-field&gt;
-  &lt;button *ngFor&#x3D;&quot;let tag of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyBulkKeywords(tag)&quot;&gt;{{tag}}&lt;/button&gt;
+  &lt;button *ngFor&#x3D;&quot;let keyword of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyBulkKeywords(keyword)&quot;&gt;{{keyword}}&lt;/button&gt;
 &lt;/mat-menu&gt;
 
 
@@ -1577,11 +1569,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       &lt;/button&gt;
       &lt;mat-menu #menu&#x3D;&quot;matMenu&quot;&gt;
         &lt;mat-form-field (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
-          &lt;mat-label&gt;Search Tags...&lt;/mat-label&gt;
-          &lt;input matInput #tagInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
+          &lt;mat-label&gt;Search Keywords...&lt;/mat-label&gt;
+          &lt;input matInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
             autocomplete&#x3D;&quot;off&quot;&gt;
         &lt;/mat-form-field&gt;
-        &lt;button *ngFor&#x3D;&quot;let tag of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyKeyword(element, tag)&quot;&gt;{{tag}}&lt;/button&gt;
+        &lt;button *ngFor&#x3D;&quot;let keyword of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyKeyword(element, keyword)&quot;&gt;{{keyword}}&lt;/button&gt;
       &lt;/mat-menu&gt;
     &lt;/td&gt;
   &lt;/ng-container&gt;
@@ -1631,8 +1623,8 @@ button:focus {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><mat-button-toggle #edit>Edit</mat-button-toggle><p>Editing is {{edit.checked ? \'enabled\' : \'disabled\'}}</p><button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">Apply Keywords</button><mat-menu #menu="matMenu">  <mat-form-field (click)="$event.stopPropagation()">    <mat-label>Search Tags...</mat-label>    <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"      autocomplete="off">  </mat-form-field>  <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(tag)">{{tag}}</button></mat-menu><table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">  <!-- Checkbox Column -->  <ng-container matColumnDef="select">    <th mat-header-cell *matHeaderCellDef>      <mat-checkbox [disabled]=!edit.checked (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"        [indeterminate]="selection.hasValue() && !isAllSelected()">      </mat-checkbox>    </th>    <td mat-cell *matCellDef="let row">      <mat-checkbox [disabled]=!edit.checked (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"        [checked]="selection.isSelected(row)">      </mat-checkbox>    </td>  </ng-container>  <ng-container matColumnDef="title">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filename </th>    <td mat-cell *matCellDef="let element"> {{element.title}} </td>  </ng-container>  <ng-container matColumnDef="type">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>    <td mat-cell *matCellDef="let element"> {{element.type}} </td>  </ng-container>  <ng-container matColumnDef="language">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Language </th>    <td mat-cell *matCellDef="let element"> {{element.language}} </td>  </ng-container>  <ng-container matColumnDef="size">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Size </th>    <td mat-cell *matCellDef="let element"> {{element.size}} </td>  </ng-container>  <ng-container matColumnDef="creation_date">    <th mat-header-cell *matHeaderCellDef mat-sort-header> CreatedAt </th>    <td mat-cell *matCellDef="let element"> {{element.creation_date | date:\'dd.MM.yy HH:mm\'}} </td>  </ng-container>  <ng-container matColumnDef="MyKeywords">    <th mat-header-cell *matHeaderCellDef> MyKeywords </th>    <td mat-cell *matCellDef="let element">      {{element.keywords}}      <button mat-icon-button [matMenuTriggerFor]="menu">        <mat-icon>add_circle</mat-icon>      </button>      <mat-menu #menu="matMenu">        <mat-form-field (click)="$event.stopPropagation()">          <mat-label>Search Tags...</mat-label>          <input matInput #tagInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"            autocomplete="off">        </mat-form-field>        <button *ngFor="let tag of selectedKeywords" mat-menu-item (click)="applyKeyword(element, tag)">{{tag}}</button>      </mat-menu>    </td>  </ng-container>  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr></table></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'TagsComponent', 'selector': 'app-tags'}];
+        var COMPONENT_TEMPLATE = '<div><mat-button-toggle #edit>Edit</mat-button-toggle><p>Editing is {{edit.checked ? \'enabled\' : \'disabled\'}}</p><button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">Apply Keywords</button><mat-menu #menu="matMenu">  <mat-form-field (click)="$event.stopPropagation()">    <mat-label>Search Keywords...</mat-label>    <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"      autocomplete="off">  </mat-form-field>  <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button></mat-menu><table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">  <!-- Checkbox Column -->  <ng-container matColumnDef="select">    <th mat-header-cell *matHeaderCellDef>      <mat-checkbox [disabled]=!edit.checked (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"        [indeterminate]="selection.hasValue() && !isAllSelected()">      </mat-checkbox>    </th>    <td mat-cell *matCellDef="let row">      <mat-checkbox [disabled]=!edit.checked (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"        [checked]="selection.isSelected(row)">      </mat-checkbox>    </td>  </ng-container>  <ng-container matColumnDef="title">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filename </th>    <td mat-cell *matCellDef="let element"> {{element.title}} </td>  </ng-container>  <ng-container matColumnDef="type">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>    <td mat-cell *matCellDef="let element"> {{element.type}} </td>  </ng-container>  <ng-container matColumnDef="language">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Language </th>    <td mat-cell *matCellDef="let element"> {{element.language}} </td>  </ng-container>  <ng-container matColumnDef="size">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Size </th>    <td mat-cell *matCellDef="let element"> {{element.size}} </td>  </ng-container>  <ng-container matColumnDef="creation_date">    <th mat-header-cell *matHeaderCellDef mat-sort-header> CreatedAt </th>    <td mat-cell *matCellDef="let element"> {{element.creation_date | date:\'dd.MM.yy HH:mm\'}} </td>  </ng-container>  <ng-container matColumnDef="MyKeywords">    <th mat-header-cell *matHeaderCellDef> MyKeywords </th>    <td mat-cell *matCellDef="let element">      {{element.keywords}}      <button mat-icon-button [matMenuTriggerFor]="menu">        <mat-icon>add_circle</mat-icon>      </button>      <mat-menu #menu="matMenu">        <mat-form-field (click)="$event.stopPropagation()">          <mat-label>Search Keywords...</mat-label>          <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"            autocomplete="off">        </mat-form-field>        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">{{keyword}}</button>      </mat-menu>    </td>  </ng-container>  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr></table></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'DocumentViewTableComponent'};
 </script>

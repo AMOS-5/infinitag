@@ -179,7 +179,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/file-upload/file-upload.component.ts:22</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/file-upload/file-upload.component.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -250,8 +250,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:29</a></div>
                 </td>
             </tr>
 
@@ -291,16 +291,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:32</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="36"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:36</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Gets called when the file input element is used, parses the files and sends them to sendFileToService()</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -370,16 +368,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="45"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:45</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:50</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Takes IFile, sends it to the uploadService and updates the progress accordingly</p>
-</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -456,7 +452,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/app/file-upload/file-upload.component.ts:22</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/file-upload/file-upload.component.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -486,8 +482,11 @@ interface IFile {
   templateUrl: &#x27;./file-upload.component.html&#x27;,
   styleUrls: [&#x27;./file-upload.component.scss&#x27;]
 })
+
 /**
- * Component handleing the file input and displaying the progress
+ * @class FileUploadComponent
+ *
+ * Component handles the file input and displaying the progress
  */
 export class FileUploadComponent implements OnInit {
   files: Array&lt;IFile&gt; &#x3D; [];
@@ -497,8 +496,9 @@ export class FileUploadComponent implements OnInit {
   public ngOnInit(): void {}
 
   /**
+   * @description
    * Gets called when the file input element is used, parses the files and sends them to sendFileToService()
-   * @param files: FileList from the input html element
+   * @param {FileList} files: FileList from the input html element
    */
   public onSelectFile(files: FileList) {
     this.files &#x3D; [];
@@ -510,8 +510,9 @@ export class FileUploadComponent implements OnInit {
   }
 
   /**
+   * @description
    * Takes IFile, sends it to the uploadService and updates the progress accordingly
-   * @param file: IFile object containing the file to be send
+   * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
     this.uploadService.postFile(file.file)
@@ -601,7 +602,7 @@ mat-list {
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
         var COMPONENT_TEMPLATE = '<div><h2>File Upload</h2><input type=\'file\' (change)="onSelectFile($event.target.files)" multiple><mat-list>  <mat-list-item *ngFor="let file of files; index as i">    <mat-icon matListIcon>{{file.icon}}</mat-icon>    <h2 matLine> {{file.file.name}} </h2>    <span matLine> {{file.status}} </span>    <mat-progress-bar matLine mode="determinate" value={{file.progress}}></mat-progress-bar>  </mat-list-item></mat-list></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'},{'name': 'TagsComponent', 'selector': 'app-tags'}];
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'FileUploadComponent'};
 </script>

@@ -61,6 +61,11 @@
 
 
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -77,15 +82,27 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#addTag">addTag</a>
+                                <a href="#addUncategorizedDimension">addUncategorizedDimension</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#getTags">getTags</a>
+                                <a href="#addUncategorizedKeyword">addUncategorizedKeyword</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#removeTag">removeTag</a>
+                                <a href="#getUncategorizedDimensions">getUncategorizedDimensions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getUncategorizedKeywords">getUncategorizedKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeUncategorizedDimension">removeUncategorizedDimension</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeUncategorizedKeyword">removeUncategorizedKeyword</a>
                             </li>
                         </ul>
                     </td>
@@ -110,7 +127,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/app/services/api.service.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/app/services/api.service.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -157,28 +174,28 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="addTag"></a>
+                    <a name="addUncategorizedDimension"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            addTag
+                            addUncategorizedDimension
                         </b>
-                        <a href="#addTag"><span class="icon ion-ios-link"></span></a>
+                        <a href="#addUncategorizedDimension"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>addTag(tag)</code>
+                    <code>addUncategorizedDimension(dim)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/app/services/api.service.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="28"
+                            class="link-to-prism">src/app/services/api.service.ts:28</a></div>
                 </td>
             </tr>
 
@@ -197,7 +214,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>tag</td>
+                                    <td>dim</td>
 
                                     <td>
                                         No
@@ -225,28 +242,96 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getTags"></a>
+                    <a name="addUncategorizedKeyword"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            getTags
+                            addUncategorizedKeyword
                         </b>
-                        <a href="#getTags"><span class="icon ion-ios-link"></span></a>
+                        <a href="#addUncategorizedKeyword"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getTags()</code>
+                    <code>addUncategorizedKeyword(key)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="13"
-                            class="link-to-prism">src/app/services/api.service.ts:13</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/app/services/api.service.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>key</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUncategorizedDimensions"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getUncategorizedDimensions
+                        </b>
+                        <a href="#getUncategorizedDimensions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUncategorizedDimensions()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">src/app/services/api.service.ts:20</a></div>
                 </td>
             </tr>
 
@@ -266,28 +351,69 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="removeTag"></a>
+                    <a name="getUncategorizedKeywords"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            removeTag
+                            getUncategorizedKeywords
                         </b>
-                        <a href="#removeTag"><span class="icon ion-ios-link"></span></a>
+                        <a href="#getUncategorizedKeywords"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>removeTag(tag)</code>
+                    <code>getUncategorizedKeywords()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="26"
-                            class="link-to-prism">src/app/services/api.service.ts:26</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/app/services/api.service.ts:24</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeUncategorizedDimension"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            removeUncategorizedDimension
+                        </b>
+                        <a href="#removeUncategorizedDimension"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeUncategorizedDimension(dim)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/app/services/api.service.ts:46</a></div>
                 </td>
             </tr>
 
@@ -306,7 +432,75 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>tag</td>
+                                    <td>dim</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeUncategorizedKeyword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            removeUncategorizedKeyword
+                        </b>
+                        <a href="#removeUncategorizedKeyword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeUncategorizedKeyword(key)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">src/app/services/api.service.ts:55</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>key</td>
 
                                     <td>
                                         No
@@ -341,6 +535,13 @@ import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { environment } from &#x27;./../../environments/environment&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
 
+/**
+ *
+ * @class ApiService
+ *
+ * Service handling communication regarding the keywords with the backend
+ *
+ */
 @Injectable({
   providedIn: &#x27;root&#x27;
 })
@@ -348,27 +549,51 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public getTags() {
-    return this.http.get(&#x60;${environment.serverUrl}/tags&#x60;);
+  public getUncategorizedDimensions() {
+    return this.http.get(&#x60;${environment.serverUrl}/dims&#x60;);
   }
 
-  public addTag(tag): Observable&lt;object&gt; {
+  public getUncategorizedKeywords() {
+    return this.http.get(&#x60;${environment.serverUrl}/keys&#x60;);
+  }
+
+  public addUncategorizedDimension(dim): Observable&lt;object&gt; {
     const httpOptions &#x3D; {
       headers: new HttpHeaders({
         &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
       })
     };
-    return this.http.post(&#x60;${environment.serverUrl}/tags&#x60;, tag, httpOptions);
+    return this.http.post(&#x60;${environment.serverUrl}/dims&#x60;, { dim: dim }, httpOptions);
   }
 
-  public removeTag(tag): Observable&lt;object&gt; {
+  public addUncategorizedKeyword(key): Observable&lt;object&gt; {
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      })
+    };
+    return this.http.post(&#x60;${environment.serverUrl}/keys&#x60;, { key: key }, httpOptions);
+  }
+
+  public removeUncategorizedDimension(dim): Observable&lt;object&gt; {
     const httpOptions &#x3D; {
       headers: new HttpHeaders({
         &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
       })
     };
-    return this.http.delete(&#x60;${environment.serverUrl}/tags/${tag}&#x60;, httpOptions);
+    return this.http.delete(&#x60;${environment.serverUrl}/dims/${dim}&#x60;, httpOptions);
   }
+
+  public removeUncategorizedKeyword(key): Observable&lt;object&gt; {
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;
+      })
+    };
+    return this.http.delete(&#x60;${environment.serverUrl}/keys/${key}&#x60;, httpOptions);
+  }
+
+
 }
 </code></pre>
     </div>

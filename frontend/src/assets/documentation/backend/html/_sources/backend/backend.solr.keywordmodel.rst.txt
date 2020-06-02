@@ -20,7 +20,7 @@ Classes
   Undocumented.
 
 - :py:class:`SolrKeyword`:
-  Class representing an object in the TagStorage
+  Class representing an object in the KeywordStorage
 
 - :py:class:`SolrAbstract`:
   Undocumented.

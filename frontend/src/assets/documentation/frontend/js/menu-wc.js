@@ -55,13 +55,13 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppModule.html" data-type="entity-link">AppModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-AppModule-8bc83dad1e5b86921f179d619b7a84f8"' : 'data-target="#xs-components-links-module-AppModule-8bc83dad1e5b86921f179d619b7a84f8"' }>
+                                            'data-target="#components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' : 'data-target="#xs-components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-8bc83dad1e5b86921f179d619b7a84f8"' :
-                                            'id="xs-components-links-module-AppModule-8bc83dad1e5b86921f179d619b7a84f8"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' :
+                                            'id="xs-components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' }>
                                             <li class="link">
                                                 <a href="components/AppComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">AppComponent</a>
@@ -87,16 +87,16 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">HomeComponent</a>
                                             </li>
                                             <li class="link">
+                                                <a href="components/KeywordsComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">KeywordsComponent</a>
+                                            </li>
+                                            <li class="link">
                                                 <a href="components/SearchComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SearchComponent</a>
                                             </li>
                                             <li class="link">
                                                 <a href="components/SettingsComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">SettingsComponent</a>
-                                            </li>
-                                            <li class="link">
-                                                <a href="components/TagsComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">TagsComponent</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -116,6 +116,12 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         <ul class="links collapse " ${ isNormalMode ? 'id="classes-links"' : 'id="xs-classes-links"' }>
                             <li class="link">
                                 <a href="classes/AppPage.html" data-type="entity-link">AppPage</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/ItemFlatNode.html" data-type="entity-link">ItemFlatNode</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/ItemNode.html" data-type="entity-link">ItemNode</a>
                             </li>
                         </ul>
                     </li>
