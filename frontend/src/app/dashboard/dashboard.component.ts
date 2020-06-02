@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+/**
+ *
+ * @class DashboardComponent
+ *
+ * Component representing the dashboard tab (no functionality right now)
+ *
+ */
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',

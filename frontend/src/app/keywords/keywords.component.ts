@@ -3,6 +3,16 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
 
+
+
+/**
+ *
+ * @class KeywordsComponent
+ *
+ * Component handling the input of uncategorized keywords and dimensions as
+ * well as creating and managing the different keywordmodels
+ *
+ */
 @Component({
   selector: 'app-keywords',
   templateUrl: './keywords.component.html',
@@ -10,14 +20,11 @@ import { ApiService } from '../services/api.service';
 })
 export class KeywordsComponent implements OnInit {
 
-
   newDimension: string;
   newKeyword: string;
 
   uncatDimensions = []
   uncatKeywords = []
-
-
 
   constructor(private api: ApiService, private snackBar: MatSnackBar) { }
 
@@ -40,6 +47,12 @@ export class KeywordsComponent implements OnInit {
     moveItemInArray(this.uncatKeywords, event.previousIndex, event.currentIndex);
   }
 
+  /**
+  * @description
+  * Gets called when the enter key is pressed while the uncategorized dimension
+  * input field is in focus. The string gets read from the input, formatted
+  * and added to the list as well as send to the backend
+  */
   onDimEnter() {
     const dimFormatted = this.newDimension.trim().toLowerCase();
     console.log(dimFormatted);
@@ -57,6 +70,12 @@ export class KeywordsComponent implements OnInit {
     this.newDimension="";
   }
 
+  /**
+  * @description
+  * Gets called when the enter key is pressed while the uncategorized keyword
+  * input field is in focus. The string gets read from the input, formatted
+  * and added to the list as well as send to the backend
+  */
   onKeyEnter() {
     const keyFormatted = this.newKeyword.trim().toLowerCase();
     console.log(keyFormatted);
@@ -74,6 +93,13 @@ export class KeywordsComponent implements OnInit {
     this.newKeyword="";
   }
 
+  /**
+  * @description
+  * Checks if a value appears in an array
+  * @param array to be checked
+  * @param value to be checked
+  * @returns true if the value was found, false otherwise
+  */
   private isDuplicate(arr, value) {
     const index = arr.findIndex((elem) => elem === value);
     if (index === -1) {
@@ -82,6 +108,12 @@ export class KeywordsComponent implements OnInit {
     return true;
   }
 
+  /**
+  * @description
+  * Sends a DELETE request to the backend. If it succedes the dimension is
+  * removed from the list
+  * @param {string} dimension to be removed
+  */
   public deleteDimension(dimension: string) {
     const index = this.uncatDimensions.indexOf(dimension);
 
@@ -94,6 +126,12 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  /**
+  * @description
+  * Sends a DELETE request to the backend. If it succedes the keyword is
+  * removed from the list
+  * @param {string} keyword to be removed
+  */
   public deleteKeyword(keyword: string) {
     const index = this.uncatKeywords.indexOf(keyword);
 

@@ -3,6 +3,13 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
 
+/**
+ *
+ * @class ApiService
+ *
+ * Service handling communication regarding the keywords with the backend
+ *
+ */
 @Injectable({
   providedIn: 'root'
 })
