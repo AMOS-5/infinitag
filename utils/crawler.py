@@ -7,11 +7,13 @@ import os
 from time import sleep
 import xml.etree.ElementTree as ET
 import json
+from utils.crawler_dict import categories
 
 
-def crawl_arxiv(categories: List[str], max_results: int, sleep_time: int,
-                fetch_size: int, output: str):
-    documents = []
+def crawl_arxiv(categories: List[str], max_results: int = 1000,
+                sleep_time: int = 5,
+                fetch_size: int = 100, output: str = '.'):
+    docs = []
     base_url = 'http://export.arxiv.org/api/query?'
     base_oai = 'http://export.arxiv.org/oai2?verb=GetRecord&identifier=oai:arXiv.org:{}&metadataPrefix=arXiv'
     oai_tag = '{http://www.openarchives.org/OAI/2.0/}'
@@ -42,28 +44,27 @@ def crawl_arxiv(categories: List[str], max_results: int, sleep_time: int,
                     if is_cc_license(license_link):
                         setattr(entry, 'license', license_link)
                         meta = download_document(entry, output)
-                        documents.append(entry)
+                        docs.append(entry)
+
                         meta_list.append(meta)
-                        if len(documents) >= fetch_size:
+                        if len(docs) >= fetch_size:
                             break
 
             sleep(sleep_time)
 
-        if len(documents) >= fetch_size:
+        if len(docs) >= fetch_size:
             print("I found what I was looking for. We can stop searching.")
             break
-
+    print('Found {} documents'.format(len(docs)))
     with open('{}/meta.json'.format(output), 'w') as fout:
         json.dump(meta_list, fout)
 
-    return documents, meta_list
+    return docs, meta_list
 
 
 def is_cc_license(link_url):
-    if 'creativecommons' in link_url:
-        return True
-
-    return False
+    cc_license_link = 'http://creativecommons.org/licenses/'
+    return cc_license_link in link_url
 
 
 def download_document(entry, output):
@@ -106,8 +107,18 @@ def find_license(record):
         return ""
 
 
+def category_crawler(output_dir):
+    for key, value in categories.items():
+        dir = os.path.join(output_dir, value)
+        if not os.path.isdir(dir):
+            os.makedirs(dir)
+
+        crawl_arxiv([key], max_results=200, fetch_size=100, output=dir)
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description="Document Finder")
+    parser.add_argument("--all", type=bool, default=False)
     parser.add_argument("--categories", type=str, default='cs.CR')
     parser.add_argument("--max_results", type=int, default=1000)
     parser.add_argument("--source", type=str, default="arxiv")
@@ -119,7 +130,10 @@ if __name__ == "__main__":
     if not os.path.isdir(args.document_output):
         os.makedirs(args.document_output)
 
-    if args.source == "arxiv":
+    if args.all:
+        category_crawler(args.document_output)
+
+    if args.source == "arxiv" and not args.all:
 
         documents = crawl_arxiv(categories=args.categories.split(),
                                 max_results=args.max_results,
