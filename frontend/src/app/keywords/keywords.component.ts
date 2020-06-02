@@ -43,7 +43,7 @@ export class ChecklistDatabase {
   dataChange = new BehaviorSubject<ItemNode[]>([]);
 
   get data(): ItemNode[] { return this.dataChange.value; }
-  
+
   constructor(private api: ApiService) {
     this.initialize();
   }
@@ -51,7 +51,7 @@ export class ChecklistDatabase {
   initialize() {
     //Build the tree nodes from Json object. The result is a list of `ItemNode` with nested
     //    file node as children.
-    this.api.getTags()
+    this.api.getUncategorizedKeywords()
     .subscribe((data: []) => {
 
       for (var i = 0 ; i <= data.length; i++){
@@ -59,7 +59,7 @@ export class ChecklistDatabase {
         obj[data[i]] = null;
         TREE_DATA[i] = this.buildFileTree( obj , 0);
       }
-      
+
       // Notify the change.
       this.dataChange.next(TREE_DATA[0])
     });
@@ -168,7 +168,7 @@ export class ChecklistDatabase {
     } else {
       newItem = this.insertItem(to, from.item);
     }
-    
+
     if (from && from.children) {
       from.children.forEach(child => {
         this.copyPasteItem(child, newItem);
@@ -194,14 +194,14 @@ export class ChecklistDatabase {
   }
 
   copyPasteItemBelow(from: ItemNode, to: ItemNode, listItem?: ItemFlatNode): ItemNode {
-    
+
     let newItem;
     if(!from) {
       newItem = this.insertItemBelow(to, listItem.item);
     } else {
       newItem = this.insertItemBelow(to, from.item);
     }
-    
+
     if (from && from.children) {
       from.children.forEach(child => {
         this.copyPasteItem(child, newItem);
@@ -240,7 +240,7 @@ export class KeywordsComponent implements OnInit {
   uncatDimensions = []
   uncatKeywords = []
   keywords = []
-  
+
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<ItemFlatNode, ItemNode>();
@@ -268,7 +268,7 @@ export class KeywordsComponent implements OnInit {
   dragNodeExpandOverTime: number;
   dragNodeExpandOverArea: string;
   @ViewChild('emptyItem') emptyItem: ElementRef;
-  
+
   constructor(private api: ApiService, private snackBar: MatSnackBar, private database: ChecklistDatabase) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<ItemFlatNode>(this.getLevel, this.isExpandable);
@@ -307,7 +307,7 @@ export class KeywordsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getTags()
+    this.api.getUncategorizedKeywords()
     .subscribe((data: []) => {
       this.keywords = data;
     });
