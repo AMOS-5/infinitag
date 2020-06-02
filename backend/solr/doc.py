@@ -219,12 +219,5 @@ class CreationDate:
             return str(datetime.now())
 
 __all__ = [
-    'SolrDoc',
-    'FileContent',
-    'Title',
-    'Author',
-    'FileSize',
-    'FileType',
-    'CreationDate',
-    'Language'
+    'SolrDoc'
 ]
