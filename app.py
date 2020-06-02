@@ -127,6 +127,7 @@ def remove_dimension(dim_id):
     except Exception as e:
         return jsonify(f"{dim_id} internal error: {e}"), 500
 
+
 @app.route('/keys', methods=['GET', 'POST'])
 def keywords():
     """

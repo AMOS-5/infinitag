@@ -22,6 +22,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatTreeModule } from '@angular/material/tree';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -66,6 +67,7 @@ import { KeywordsComponent } from './keywords/keywords.component';
     MatMenuModule,
     MatButtonToggleModule,
     DragDropModule,
+    MatTreeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
