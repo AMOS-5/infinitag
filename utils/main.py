@@ -5,10 +5,11 @@ from utils.data_preprocessing import data_load
 from utils.tfidf_vector import tfidf_vector
 from utils.k_means_cluster import kmeans_clustering
 from utils.lda_model import lda
+from utils.hierarchichal_clustering import hierarchical_cluster
 
 if __name__ == "__main__":
 
-    directory = r"E:\utils\training.sets.released\2"
+    directory = r"..\utils\training.sets.released\2"
     unwanted = {'patient','order','showed','exam', 'number','home','left', 'right', 'history','daily','instruction', 'interaction', 'fooddrug', 'time','override', 'unit','potentially', 'march', 'added'}
     ####
     # clustering_type = Mention the type of clustering here
@@ -29,4 +30,4 @@ if __name__ == "__main__":
     elif clustering_type == 'lda':
         clustering = lda(flattened, num_topics, num_words)
     elif clustering_type == 'hierarchical':
-        print('Not Implemented')
+        clustering = hierarchical_cluster(dist,terms,file_list)

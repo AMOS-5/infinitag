@@ -8,15 +8,15 @@ import json
 
 class SolrKeyword:
     """
-    Class representing an object in the TagStorage
+    Class representing an object in the KeywordStorage
     """
 
-    def __init__(self, tag: str):
-        # the name of the field where the tag is stored
-        self.tag = tag
+    def __init__(self, keyword: str):
+        # the name of the field where the keyword is stored
+        self.keyword = keyword
 
     def as_dict(self) -> dict:
-        return {"id": self.tag}
+        return {"id": self.keyword}
 
     @staticmethod
     def from_hit(hit: dict) -> str:

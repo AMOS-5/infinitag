@@ -56,11 +56,11 @@ describe('UploadService', async () => {
       title: "test_file",
       type: "pdf",
     };
-    service.patchTags(iDoc).subscribe(event => {
+    service.patchKeywords(iDoc).subscribe(event => {
       attemptedEvent = event;
     });
 
-    const req = http.expectOne(`${environment.serverUrl}/changetags`);
+    const req = http.expectOne(`${environment.serverUrl}/changekeywords`);
     req.flush(iDoc);
     expect(req.request.method).toEqual('PATCH');
   });
