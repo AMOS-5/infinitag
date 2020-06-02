@@ -12,3 +12,5 @@ lxml
 gunicorn
 Werkzeug
 sklearn
+sphinx
+autoapi

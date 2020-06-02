@@ -1,0 +1,10 @@
+==============================
+``backend.service.middleware``
+==============================
+
+.. automodule:: backend.service.middleware
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.service.middleware

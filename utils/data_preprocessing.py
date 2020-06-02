@@ -19,6 +19,7 @@ def cleantext(doc):
 
     return cleaned_text
 
+
 def data_load(dir, unwanted):
     txts = {}
     overall =[]

@@ -1,0 +1,19 @@
+===========
+``backend``
+===========
+
+.. automodule:: backend
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   backend.service
+   backend.solr
+
+.. currentmodule:: backend

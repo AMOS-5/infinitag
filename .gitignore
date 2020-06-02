@@ -38,3 +38,6 @@ __pycache__/
 venv/
 *.pyc
 tmp/
+
+*.rst
+!index.rst

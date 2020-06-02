@@ -217,3 +217,14 @@ class CreationDate:
         else:
             log.debug("CreationDate is unknown.")
             return str(datetime.now())
+
+__all__ = [
+    'SolrDoc',
+    'FileContent',
+    'Title',
+    'Author',
+    'FileSize',
+    'FileType',
+    'CreationDate',
+    'Language'
+]

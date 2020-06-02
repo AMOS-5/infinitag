@@ -5,6 +5,7 @@ import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {DocumentationComponent} from './documentation/documentation.component';
 
 
 const routes: Routes = [
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'settings', component: SettingsComponent },
   { path: 'keywords', component: TagsComponent },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'documentation', component: DocumentationComponent },
   { path: '**', component: HomeComponent }
 ];
 

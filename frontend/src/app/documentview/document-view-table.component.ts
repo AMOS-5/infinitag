@@ -82,7 +82,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }, 0);
   }
 
-  /** Whether all currently displayed items are selected */
+  /**
+   * Whether all currently displayed items are selected
+   * @return boolean
+   */
   public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
@@ -93,13 +96,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return true;
   }
 
-  /** Selects all visible rows if they are not all selected; otherwise clear selection. */
+  /**
+   * Selects all visible rows if they are not all selected; otherwise clear selection.
+   */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
-
 
   private addTagToDoc = (iDoc, keyword): Observable<IDocument> => {
     if (iDoc.keywords.includes(keyword) === false) {

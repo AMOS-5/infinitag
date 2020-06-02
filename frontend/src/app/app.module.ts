@@ -30,6 +30,8 @@ import { SettingsComponent } from './settings/settings.component';
 import { TagsComponent } from './tags/tags.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -41,30 +43,32 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
     TagsComponent,
     FileUploadComponent,
     DashboardComponent,
+    DocumentationComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    BrowserAnimationsModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatButtonToggleModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        BrowserAnimationsModule,
+        MatChipsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatButtonToggleModule,
+        MatExpansionModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

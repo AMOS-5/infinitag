@@ -1,0 +1,10 @@
+======================
+``utils.tfidf_vector``
+======================
+
+.. automodule:: utils.tfidf_vector
+
+   .. contents::
+      :local:
+
+.. currentmodule:: utils.tfidf_vector

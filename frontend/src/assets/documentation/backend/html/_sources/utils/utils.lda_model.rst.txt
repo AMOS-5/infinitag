@@ -1,0 +1,10 @@
+===================
+``utils.lda_model``
+===================
+
+.. automodule:: utils.lda_model
+
+   .. contents::
+      :local:
+
+.. currentmodule:: utils.lda_model
