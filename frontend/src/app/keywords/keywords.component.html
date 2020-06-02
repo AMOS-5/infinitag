@@ -17,9 +17,9 @@
     <mat-grid-tile [colspan]="2" [rowspan]="3" class="no-center">
       <div class="list-flex">
         <div class="list-container">
-          <h2>Keywords</h2>
-          <mat-selection-list [multiple]="false">
-            <mat-list-option *ngFor="let keyword of keywords">
+          <h2>Keywords Model</h2>
+          <mat-selection-list #kwmList [multiple]="false" (selectionChange)="selectionChange(kwmList.selectedOptions.selected)">
+            <mat-list-option *ngFor="let keyword of keywords; let i = index" [value]="i">
               {{keyword}}
             </mat-list-option>
           </mat-selection-list>
