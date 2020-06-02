@@ -1,0 +1,46 @@
+<div class="container">
+    <h1>Keyword Model Setings</h1>
+    <mat-grid-list cols="8" rows="4" gutterSize="32px" rowHeight="1:1.3">
+        <mat-grid-tile [colspan]="3" [rowspan]="1">
+            <div>
+                <mat-form-field>
+                    <mat-label>Add Dimension ...</mat-label>
+                    <input matInput type="text" [(ngModel)]=newDimension (keyup.enter)="onDimEnter()">
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                    <mat-label>Add Keyword ...</mat-label>
+                    <input matInput type="text" [(ngModel)]=newKeyword (keyup.enter)="onKeyEnter()">
+                </mat-form-field>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="2" [rowspan]="4">keywordmodel</mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="4">hierarchy</mat-grid-tile>
+        <mat-grid-tile [colspan]="3" [rowspan]="3" >
+          <div class="list-flex">
+            <div class="list-container">
+                <h2>Uncategorized Dimensions</h2>
+                <cdk-drop cdkDropList class="list" (cdkDropListDropped)="dropDim($event)">
+                    <div class="list-box" *ngFor="let item of uncatDimensions" cdkDrag>
+                      {{item}}
+                      <button mat-icon-button (click)="deleteDimension(item)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                </cdk-drop>
+            </div>
+            <div class="list-container">
+                <h2>Uncategorized Keywords</h2>
+                <cdk-drop cdkDropList class="list" (cdkDropListDropped)="dropKey($event)">
+                    <div class="list-box" *ngFor="let item of uncatKeywords" cdkDrag>
+                      {{item}}
+                      <button mat-icon-button (click)="deleteKeyword(item)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                </cdk-drop>
+            </div>
+          </div>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
-import { TagsComponent } from './tags/tags.component';
+import { KeywordsComponent } from './keywords/keywords.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 
@@ -11,7 +11,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'search', component: SearchComponent },
   { path: 'settings', component: SettingsComponent },
-  { path: 'keywords', component: TagsComponent },
+  { path: 'keywords', component: KeywordsComponent },
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', component: HomeComponent }
 ];

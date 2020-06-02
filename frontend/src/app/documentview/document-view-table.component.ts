@@ -41,7 +41,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.setDatasource();
-    this.api.getTags()
+    this.api.getUncategorizedKeywords()
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
@@ -101,20 +101,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
 
-  private addTagToDoc = (iDoc, keyword): Observable<IDocument> => {
+  private addKeywordToDoc = (iDoc, keyword): Observable<IDocument> => {
     if (iDoc.keywords.includes(keyword) === false) {
       iDoc.keywords.push(keyword);
       iDoc.keywords.sort();
       return of(iDoc);
     } else {
-      return throwError('Tag already added to ' + iDoc.title);
+      return throwError('Keyword already added to ' + iDoc.title);
     }
   }
 
   public applyKeyword(doc, keyword) {
-    this.addTagToDoc(doc, keyword).subscribe(
+    this.addKeywordToDoc(doc, keyword).subscribe(
       res => {
-        this.uploadService.patchTags(res).subscribe(() => {
+        this.uploadService.patchKeywords(res).subscribe(() => {
           const index = this.documents.findIndex(document => document.id === doc.id);
           const data = this.dataSource.data;
           data.splice(index, 1);
