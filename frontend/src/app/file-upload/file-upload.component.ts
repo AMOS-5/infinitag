@@ -15,8 +15,11 @@ interface IFile {
   templateUrl: './file-upload.component.html',
   styleUrls: ['./file-upload.component.scss']
 })
+
 /**
- * Component handleing the file input and displaying the progress
+ * @class FileUploadComponent
+ *
+ * Component handles the file input and displaying the progress
  */
 export class FileUploadComponent implements OnInit {
   files: Array<IFile> = [];
@@ -26,8 +29,9 @@ export class FileUploadComponent implements OnInit {
   public ngOnInit(): void {}
 
   /**
+   * @description
    * Gets called when the file input element is used, parses the files and sends them to sendFileToService()
-   * @param files: FileList from the input html element
+   * @param {FileList} files: FileList from the input html element
    */
   public onSelectFile(files: FileList) {
     this.files = [];
@@ -39,8 +43,9 @@ export class FileUploadComponent implements OnInit {
   }
 
   /**
+   * @description
    * Takes IFile, sends it to the uploadService and updates the progress accordingly
-   * @param file: IFile object containing the file to be send
+   * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
     this.uploadService.postFile(file.file)

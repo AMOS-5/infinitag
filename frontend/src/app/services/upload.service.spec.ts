@@ -52,15 +52,15 @@ describe('UploadService', async () => {
       id: "test/test_file.pdf",
       language: "eng",
       size: 33,
-      tags: ["tag1", "tag2", "tag3"],
+      keywords: ["key1", "key2", "key3"],
       title: "test_file",
       type: "pdf",
     };
-    service.patchTags(iDoc).subscribe(event => {
+    service.patchKeywords(iDoc).subscribe(event => {
       attemptedEvent = event;
     });
 
-    const req = http.expectOne(`${environment.serverUrl}/changetags`);
+    const req = http.expectOne(`${environment.serverUrl}/changekeywords`);
     req.flush(iDoc);
     expect(req.request.method).toEqual('PATCH');
   });

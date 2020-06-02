@@ -1,5 +1,17 @@
-tag_storage_solr = {
-    "corename": "tags",
+keyword_model_solr = {
+    "corename": "keyword_model",
+    "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
+    "always_commit": True,  # will instantly apply changes, maybe change later
+}
+
+keywords_solr = {
+    "corename": "keywords",
+    "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
+    "always_commit": True,  # will instantly apply changes, maybe change later
+}
+
+dimensions_solr = {
+    "corename": "dimensions",
     "url": "http://ec2-52-87-180-131.compute-1.amazonaws.com:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }

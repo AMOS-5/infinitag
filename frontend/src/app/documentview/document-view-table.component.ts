@@ -13,7 +13,11 @@ import { UploadService } from '../services/upload.service';
 
 
 /**
- * Component gets document data from the backend and displays it as a table
+ * @class DocumentViewTableComponent
+ *
+ * Component gets document data from the backend and displays it as a table.
+ * The data can be filtered through a search bar and new tags can be added
+ * to the documents
  */
 @Component({
   selector: 'document-view-table',
@@ -23,11 +27,11 @@ import { UploadService } from '../services/upload.service';
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
 
-  tags: string[] = [];
-  selectedTags: string[] = [];
+  keywords: string[] = [];
+  selectedKeywords: string[] = [];
   constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
   // defines order of columns
-  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyTags'];
+  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -41,14 +45,18 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.setDatasource();
-    this.api.getTags()
+    this.api.getUncategorizedKeywords()
       .subscribe((data: []) => {
-        this.tags = data;
-        this.selectedTags = this.tags;
+        this.keywords = data;
+        this.selectedKeywords = this.keywords;
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
   }
 
+  /**
+  * @description
+  * Sets the data variable of this components MatTableDataSource instance
+  */
   public setDatasource() {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
@@ -62,10 +70,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  private onResize(event) {
-    this.breakpoint = (event.target.innerWidth <= 400) ? 1 : 6;
-  }
 
+  /**
+  * @description
+  * Updates the documents list as well as the filter term
+  * @param {SimpleChanges} changes
+  */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
@@ -76,6 +86,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.filter = changes.filter.currentValue;
     }
   }
+
   public focus(event) {
     setTimeout(() => {
       event.target.focus();
@@ -83,6 +94,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /** Whether all currently displayed items are selected */
+  /**
+  * @description
+  * Checks if all currently displayed items are selected
+  * @returns true if the items are selected, false otherwise
+  */
   public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
@@ -93,7 +109,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return true;
   }
 
-  /** Selects all visible rows if they are not all selected; otherwise clear selection. */
+  /**
+  * @description
+  * Selects all visible rows if they are not all selected; otherwise clear selection.
+  */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -101,20 +120,36 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
 
-  private addTagToDoc = (iDoc, tag): Observable<IDocument> => {
-    if (iDoc.tags.includes(tag) === false) {
-      iDoc.tags.push(tag);
-      iDoc.tags.sort();
+  /**
+  * @description
+  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+  * is already added to the document
+  * @param {IDocument} document
+  * @param {string} keyword
+  * @returns {Observable} Observable of the document
+  */
+  private addKeywordToDoc = (iDoc, keyword): Observable<IDocument> => {
+    if (iDoc.keywords.includes(keyword) === false) {
+      iDoc.keywords.push(keyword);
+      iDoc.keywords.sort();
       return of(iDoc);
     } else {
-      return throwError('Tag already added to ' + iDoc.title);
+      return throwError('Keyword already added to ' + iDoc.title);
     }
   }
 
-  public applyTag(doc, tag) {
-    this.addTagToDoc(doc, tag).subscribe(
+  /**
+  * @description
+  * Adds a keyword to a document, then sends a PATCH request to the backend
+  * to update the document. If the request is succesfull the datasource gets
+  * updated.
+  * @param {IDocument} document
+  * @param {string} keyword
+  */
+  public applyKeyword(doc, keyword) {
+    this.addKeywordToDoc(doc, keyword).subscribe(
       res => {
-        this.uploadService.patchTags(res).subscribe(() => {
+        this.uploadService.patchKeywords(res).subscribe(() => {
           const index = this.documents.findIndex(document => document.id === doc.id);
           const data = this.dataSource.data;
           data.splice(index, 1);
@@ -127,22 +162,39 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  public applyBulkTags(tag) {
+   /**
+  * @description
+  * Adds a keyword to all selected documents.
+  * @param {string} keyword
+  */
+  public applyBulkKeywords(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selection.selected.forEach(doc => {
-      this.applyTag(doc, tag);
+      this.applyKeyword(doc, keyword);
     });
   }
 
+  /**
+  * @description
+  * Gets called when a key is pressed while the search field for the keywords
+  * is in focus. Updates the filter term.
+  * @param event
+  */
   public onKey(event) {
-    this.selectedTags = this.search(event.target.value);
+    this.selectedKeywords = this.search(event.target.value);
   }
 
+  /**
+  * @description
+  * Searches the keywords list for a search term
+  * @param {string} search term
+  * @returns {string[]} List of keywords matching search term
+  */
   private search(value: string) {
     const filter = value.toLowerCase();
-    return this.tags.filter(option => option.toLowerCase().startsWith(filter));
+    return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
   }
 }
 

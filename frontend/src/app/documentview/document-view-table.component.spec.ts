@@ -74,7 +74,7 @@ describe('DocumentViewTable', () => {
         creation_date: new Date(),
         title: 'Test 1',
         id: '/path',
-        tags: ['Tag 1', 'Test Document'],
+        keywords: ['Key 1', 'Test Document'],
         type: 'pdf',
         content: ''
       },
@@ -84,7 +84,7 @@ describe('DocumentViewTable', () => {
         creation_date: new Date(),
         title: 'Test 2',
         id: '/path',
-        tags: ['Tag 2', 'Test Document'],
+        keywords: ['Key 2', 'Test Document'],
         type: 'eml',
         content: ''
       }
@@ -97,31 +97,31 @@ describe('DocumentViewTable', () => {
     expect(component.dataSource.filteredData.length).toEqual(1);
   });
 
-  it('should correctly add tags to doc', () => {
+  it('should correctly add keywords to doc', () => {
     let doc = {
       size: 1,
       language: 'en',
       creation_date: new Date(),
       title: 'Test 1',
       id: '/path',
-      tags: ['b'],
+      keywords: ['b'],
       type: 'pdf',
       content: ''
     };
-    expect(doc.tags.length).toEqual(1);
+    expect(doc.keywords.length).toEqual(1);
 
     // @ts-ignore
-    component.addTagToDoc(doc, "b").subscribe(res => {
-      expect(res.tags.length).toEqual(1);
+    component.addKeywordToDoc(doc, "b").subscribe(res => {
+      expect(res.keywords.length).toEqual(1);
     },
     err => {
-      expect(err).toEqual("Tag already added to Test 1");
+      expect(err).toEqual("Keyword already added to Test 1");
     });
 
     // @ts-ignore
-    component.addTagToDoc(doc, "a").subscribe(res => {
-      expect(res.tags.length).toEqual(2);
-      expect(res.tags).toEqual(["a", "b"]);
+    component.addKeywordToDoc(doc, "a").subscribe(res => {
+      expect(res.keywords.length).toEqual(2);
+      expect(res.keywords).toEqual(["a", "b"]);
     });
 
   });

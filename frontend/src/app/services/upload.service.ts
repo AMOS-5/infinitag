@@ -6,6 +6,14 @@ import { catchError } from 'rxjs/operators';
 
 import { IDocument } from './../models/IDocument.model'
 
+
+/**
+ *
+ * @class UploadService
+ *
+ * Service handling uploading and updateing documents
+ *
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -28,14 +36,14 @@ export class UploadService {
 
   }
 
-  public patchTags(iDoc: IDocument): Observable<object> {
+  public patchKeywords(iDoc: IDocument): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })
     };
 
-    return this.httpClient.patch(`${environment.serverUrl}/changetags`, iDoc, httpOptions);
+    return this.httpClient.patch(`${environment.serverUrl}/changekeywords`, iDoc, httpOptions);
   }
 
 

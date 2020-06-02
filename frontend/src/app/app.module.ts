@@ -29,7 +29,6 @@ import { DocumentViewTableComponent } from './documentview/document-view-table.c
 import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
-import { TagsComponent } from './tags/tags.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { KeywordsComponent } from './keywords/keywords.component';
@@ -41,7 +40,6 @@ import { KeywordsComponent } from './keywords/keywords.component';
     SettingsComponent,
     DocumentViewTableComponent,
     HomeComponent,
-    TagsComponent,
     FileUploadComponent,
     DashboardComponent,
     KeywordsComponent,

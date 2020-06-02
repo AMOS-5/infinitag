@@ -11,3 +11,4 @@ atoma
 lxml
 gunicorn
 Werkzeug
+sklearn

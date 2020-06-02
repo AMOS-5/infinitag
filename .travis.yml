@@ -10,9 +10,9 @@ matrix:
               - npm run build:ci
 
         - language: python
-          python: 3.8.0
+          python: 3.7.3
           install:
               - pip install -r requirements.txt
           script:
-              - python -c "import nltk; nltk.download('wordnet'); nltk.download('stopwords')"
+              - python -c "import nltk; nltk.download('all')"
               - python -m unittest discover -s tests

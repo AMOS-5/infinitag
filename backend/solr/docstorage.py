@@ -4,7 +4,7 @@ import pysolr
 
 import os
 import logging as log
-from typing import List
+from typing import List, Union
 from pathlib import Path
 from urlpath import URL
 import copy
@@ -57,10 +57,11 @@ class SolrDocStorage:
             res = self.con.extract(f)
             return res
 
-    def get_docs(self, *docs: str) -> SolrDoc:
-        return [self.get_doc(doc) for doc in docs]
+    def get(self, *docs: str) -> Union[SolrDoc, List[SolrDoc]]:
+        docs = [self._get(doc) for doc in docs]
+        return docs[0] if len(docs) == 1 else docs
 
-    def get_doc(self, doc: str) -> SolrDoc:
+    def _get(self, doc: str) -> SolrDoc:
         # TODO don't know 100% whether this can fail or not
         query = f"id:*{doc}"
 
