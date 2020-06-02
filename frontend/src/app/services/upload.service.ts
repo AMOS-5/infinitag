@@ -6,6 +6,14 @@ import { catchError } from 'rxjs/operators';
 
 import { IDocument } from './../models/IDocument.model'
 
+
+/**
+ *
+ * @class UploadService
+ *
+ * Service handling uploading and updateing documents
+ *
+ */
 @Injectable({
   providedIn: 'root'
 })
