@@ -36,3 +36,8 @@ class SolrService:
     @property
     def docs(self):
         return self.SOLR_DOCS
+
+
+__all__ = [
+    'SolrService'
+]

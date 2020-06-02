@@ -1,0 +1,25 @@
+========================
+``backend.service.solr``
+========================
+
+.. automodule:: backend.service.solr
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.service.solr
+
+
+Classes
+=======
+
+- :py:class:`SolrService`:
+  Undocumented.
+
+
+.. autoclass:: SolrService
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrService
+      :parts: 1

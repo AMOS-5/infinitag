@@ -217,3 +217,7 @@ class CreationDate:
         else:
             log.debug("CreationDate is unknown.")
             return str(datetime.now())
+
+__all__ = [
+    'SolrDoc'
+]

@@ -93,7 +93,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }, 0);
   }
 
-  /** Whether all currently displayed items are selected */
+
   /**
   * @description
   * Checks if all currently displayed items are selected
@@ -118,7 +118,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
-
 
   /**
   * @description

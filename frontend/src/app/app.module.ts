@@ -17,8 +17,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule } from "@angular/material/toolbar";
-import { MatButtonModule } from "@angular/material/button";
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -31,7 +31,10 @@ import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { KeywordsComponent } from './keywords/keywords.component';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +45,7 @@ import { KeywordsComponent } from './keywords/keywords.component';
     HomeComponent,
     FileUploadComponent,
     DashboardComponent,
+    DocumentationComponent,
     KeywordsComponent,
   ],
   imports: [
@@ -67,7 +71,8 @@ import { KeywordsComponent } from './keywords/keywords.component';
     MatMenuModule,
     MatButtonToggleModule,
     DragDropModule,
-    MatTreeModule
+    MatTreeModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]

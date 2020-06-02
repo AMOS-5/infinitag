@@ -1,0 +1,25 @@
+====================
+``backend.solr.doc``
+====================
+
+.. automodule:: backend.solr.doc
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.solr.doc
+
+
+Classes
+=======
+
+- :py:class:`SolrDoc`:
+  SolrDoc
+
+
+.. autoclass:: SolrDoc
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrDoc
+      :parts: 1

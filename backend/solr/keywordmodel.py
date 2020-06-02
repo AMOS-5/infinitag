@@ -106,11 +106,21 @@ class SolrKeywords(SolrAbstract):
         self.add(new)
 
 
+"""
+Class representing the keyword model as it appears in solr
+"""
+
+
 class SolrKeywordModel(SolrAbstract):
     def __init__(self, config: dict):
         super().__init__(config)
 
     def add(self, *hierarchies: SolrHierarchy) -> None:
+        """
+        Add a hierarchy to the database
+        :param hierarchies:
+        :return:
+        """
         hierarchies = [hierarchy.as_dict() for hierarchy in hierarchies]
         self.con.add(hierarchies)
 
@@ -120,3 +130,12 @@ class SolrKeywordModel(SolrAbstract):
 
     def update(self, *hierarchies: SolrHierarchy) -> None:
         self.add(*hierarchies)
+
+
+__all__ = [
+    'SolrKeywordModel',
+    'SolrKeywords',
+    'SolrKeyword',
+    'SolrAbstract',
+    'SolrHierarchy'
+]

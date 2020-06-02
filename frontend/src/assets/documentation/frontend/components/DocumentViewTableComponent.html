@@ -1,0 +1,1696 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>infinitag documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">infinitag documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>DocumentViewTableComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/documentview/document-view-table.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+                    <code><a href="https://angular.io/api/core/OnChanges" target="_blank" >OnChanges</a></code>
+    </p>
+
+    <p class="comment">
+        <h3>Example</h3>
+    </p>
+    <div class="io-description">
+    </div>
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>document-view-table</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>document-view-table.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>document-view-table.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#addKeywordToDoc">addKeywordToDoc</a>
+                            </li>
+                            <li>
+                                <a href="#breakpoint">breakpoint</a>
+                            </li>
+                            <li>
+                                <a href="#dataSource">dataSource</a>
+                            </li>
+                            <li>
+                                <a href="#displayedColumns">displayedColumns</a>
+                            </li>
+                            <li>
+                                <a href="#interval">interval</a>
+                            </li>
+                            <li>
+                                <a href="#keywords">keywords</a>
+                            </li>
+                            <li>
+                                <a href="#selectedKeywords">selectedKeywords</a>
+                            </li>
+                            <li>
+                                <a href="#selection">selection</a>
+                            </li>
+                            <li>
+                                <a href="#sort">sort</a>
+                            </li>
+                            <li>
+                                <a href="#table">table</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#applyBulkKeywords">applyBulkKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#applyKeyword">applyKeyword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#focus">focus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#isAllSelected">isAllSelected</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#masterToggle">masterToggle</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#ngOnChanges">ngOnChanges</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onKey">onKey</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#search">search</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#setDatasource">setDatasource</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#documents">documents</a>
+                            </li>
+                            <li>
+                                <a href="#filter">filter</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html">ApiService</a>, uploadService: <a href="../injectables/UploadService.html">UploadService</a>, snackBar: MatSnackBar)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/documentview/document-view-table.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>uploadService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UploadService.html" target="_self" >UploadService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackBar</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatSnackBar</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="documents"></a>
+                        <b>documents</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/IDocument.html" target="_self" >Array&lt;IDocument&gt; | undefined</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/documentview/document-view-table.component.ts:39</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filter"></a>
+                        <b>filter</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string | undefined</code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/documentview/document-view-table.component.ts:40</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyBulkKeywords"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            applyBulkKeywords
+                        </b>
+                        <a href="#applyBulkKeywords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyBulkKeywords(keyword)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="169"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:169</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>keyword</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyKeyword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            applyKeyword
+                        </b>
+                        <a href="#applyKeyword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyKeyword(doc, keyword)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="148"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:148</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>doc</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>keyword</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="focus"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            focus
+                        </b>
+                        <a href="#focus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>focus(event)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:90</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isAllSelected"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            isAllSelected
+                        </b>
+                        <a href="#isAllSelected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isAllSelected()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:102</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>true if the items are selected, false otherwise</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="masterToggle"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            masterToggle
+                        </b>
+                        <a href="#masterToggle"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>masterToggle()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="116"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:116</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnChanges"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            ngOnChanges
+                        </b>
+                        <a href="#ngOnChanges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnChanges(changes: <a href="https://angular.io/api/core/SimpleChanges" target="_blank">SimpleChanges</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="79"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:79</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>changes</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/core/SimpleChanges" target="_blank" >SimpleChanges</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:46</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onKey"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            onKey
+                        </b>
+                        <a href="#onKey"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onKey(event)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="184"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:184</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="search"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            search
+                        </b>
+                        <a href="#search"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>search(value: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="194"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:194</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>List of keywords matching search term</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setDatasource"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            setDatasource
+                        </b>
+                        <a href="#setDatasource"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setDatasource()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="60"
+                            class="link-to-prism">src/app/documentview/document-view-table.component.ts:60</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="addKeywordToDoc"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            addKeywordToDoc</b>
+                            <a href="#addKeywordToDoc"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/app/documentview/document-view-table.component.ts:130</a></div>
+                            </td>
+                        </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                          <div class="io-description">
+                                  <b>Parameters :</b>
+                                  <table class="params">
+                                      <thead>
+                                          <tr>
+                                                <td>Name</td>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                                <tr>
+                                                        <td>document</td>
+                                                </tr>
+                                                <tr>
+                                                        <td>keyword</td>
+                                                </tr>
+                                      </tbody>
+                                  </table>
+                          </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="breakpoint"></a>
+                        <span class="name">
+                            <b>
+                            breakpoint</b>
+                            <a href="#breakpoint"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/documentview/document-view-table.component.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dataSource"></a>
+                        <span class="name">
+                            <b>
+                            dataSource</b>
+                            <a href="#dataSource"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new MatTableDataSource()</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/documentview/document-view-table.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="displayedColumns"></a>
+                        <span class="name">
+                            <b>
+                            displayedColumns</b>
+                            <a href="#displayedColumns"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[&#x27;select&#x27;, &#x27;title&#x27;, &#x27;type&#x27;, &#x27;language&#x27;, &#x27;size&#x27;, &#x27;creation_date&#x27;, &#x27;MyKeywords&#x27;]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/documentview/document-view-table.component.ts:34</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="interval"></a>
+                        <span class="name">
+                            <b>
+                            interval</b>
+                            <a href="#interval"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Subscription</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/documentview/document-view-table.component.ts:38</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keywords"></a>
+                        <span class="name">
+                            <b>
+                            keywords</b>
+                            <a href="#keywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/documentview/document-view-table.component.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedKeywords"></a>
+                        <span class="name">
+                            <b>
+                            selectedKeywords</b>
+                            <a href="#selectedKeywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>string[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/documentview/document-view-table.component.ts:31</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selection"></a>
+                        <span class="name">
+                            <b>
+                            selection</b>
+                            <a href="#selection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new SelectionModel(true, [])</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/documentview/document-view-table.component.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sort"></a>
+                        <span class="name">
+                            <b>
+                            sort</b>
+                            <a href="#sort"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatSort</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(MatSort, {static: true})<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/documentview/document-view-table.component.ts:36</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="table"></a>
+                        <span class="name">
+                            <b>
+                            table</b>
+                            <a href="#table"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatTable&lt;any&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(MatTable, {static: true})<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/documentview/document-view-table.component.ts:37</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpClient } from &#x27;@angular/common/http&#x27;;
+import { IDocument } from &#x27;../models/IDocument.model&#x27;;
+
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from &#x27;@angular/core&#x27;;
+import { MatSort } from &#x27;@angular/material/sort&#x27;;
+import { MatTableDataSource, MatTable } from &#x27;@angular/material/table&#x27;;
+import { SelectionModel } from &#x27;@angular/cdk/collections&#x27;;
+import { MatSnackBar } from &#x27;@angular/material/snack-bar&#x27;;
+import { of, throwError, Observable, Subscription, interval } from &#x27;rxjs&#x27;;
+import { ApiService } from &#x27;../services/api.service&#x27;;
+
+import { UploadService } from &#x27;../services/upload.service&#x27;;
+
+
+/**
+ * @class DocumentViewTableComponent
+ *
+ * Component gets document data from the backend and displays it as a table.
+ * The data can be filtered through a search bar and new tags can be added
+ * to the documents
+ */
+@Component({
+  selector: &#x27;document-view-table&#x27;,
+  styleUrls: [&#x27;document-view-table.component.scss&#x27;],
+  templateUrl: &#x27;document-view-table.component.html&#x27;,
+})
+
+export class DocumentViewTableComponent implements OnInit, OnChanges {
+
+  keywords: string[] &#x3D; [];
+  selectedKeywords: string[] &#x3D; [];
+  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
+  // defines order of columns
+  displayedColumns: string[] &#x3D; [&#x27;select&#x27;, &#x27;title&#x27;, &#x27;type&#x27;, &#x27;language&#x27;, &#x27;size&#x27;, &#x27;creation_date&#x27;, &#x27;MyKeywords&#x27;];
+
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatTable, { static: true }) table: MatTable&lt;any&gt;;
+  interval: Subscription;
+  @Input() documents: Array&lt;IDocument&gt; | undefined;
+  @Input() filter: string | undefined;
+  dataSource &#x3D; new MatTableDataSource();
+  selection &#x3D; new SelectionModel(true, []);
+  breakpoint: number;
+
+
+  public ngOnInit() {
+    this.setDatasource();
+    this.api.getUncategorizedKeywords()
+      .subscribe((data: []) &#x3D;&gt; {
+        this.keywords &#x3D; data;
+        this.selectedKeywords &#x3D; this.keywords;
+      });
+    this.breakpoint &#x3D; (window.innerWidth &lt;&#x3D; 400) ? 1 : 6;
+  }
+
+  /**
+  * @description
+  * Sets the data variable of this components MatTableDataSource instance
+  */
+  public setDatasource() {
+    if (this.documents !&#x3D;&#x3D; undefined) {
+      this.documents.map((document: IDocument) &#x3D;&gt; {
+        document.creation_date &#x3D; new Date(document.creation_date);
+      });
+
+      this.dataSource.data &#x3D; this.documents;
+      setTimeout(() &#x3D;&gt; {
+        this.dataSource.sort &#x3D; this.sort;
+      });
+    }
+  }
+
+
+  /**
+  * @description
+  * Updates the documents list as well as the filter term
+  * @param {SimpleChanges} changes
+  */
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.documents) {
+      this.documents &#x3D; changes.documents.currentValue;
+      this.ngOnInit();
+    }
+
+    if (changes.filter) {
+      this.dataSource.filter &#x3D; changes.filter.currentValue;
+    }
+  }
+
+  public focus(event) {
+    setTimeout(() &#x3D;&gt; {
+      event.target.focus();
+    }, 0);
+  }
+
+
+  /**
+  * @description
+  * Checks if all currently displayed items are selected
+  * @returns true if the items are selected, false otherwise
+  */
+  public isAllSelected() {
+    const filteredData &#x3D; this.dataSource.filteredData;
+    for (let i &#x3D; 0; i &lt; filteredData.length; i++) {
+      if (this.selection.selected.includes(filteredData[i]) &#x3D;&#x3D;&#x3D; false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+  * @description
+  * Selects all visible rows if they are not all selected; otherwise clear selection.
+  */
+  public masterToggle() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.filteredData.forEach(row &#x3D;&gt; this.selection.select(row));
+  }
+
+  /**
+  * @description
+  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+  * is already added to the document
+  * @param {IDocument} document
+  * @param {string} keyword
+  * @returns {Observable} Observable of the document
+  */
+  private addKeywordToDoc &#x3D; (iDoc, keyword): Observable&lt;IDocument&gt; &#x3D;&gt; {
+    if (iDoc.keywords.includes(keyword) &#x3D;&#x3D;&#x3D; false) {
+      iDoc.keywords.push(keyword);
+      iDoc.keywords.sort();
+      return of(iDoc);
+    } else {
+      return throwError(&#x27;Keyword already added to &#x27; + iDoc.title);
+    }
+  }
+
+  /**
+  * @description
+  * Adds a keyword to a document, then sends a PATCH request to the backend
+  * to update the document. If the request is succesfull the datasource gets
+  * updated.
+  * @param {IDocument} document
+  * @param {string} keyword
+  */
+  public applyKeyword(doc, keyword) {
+    this.addKeywordToDoc(doc, keyword).subscribe(
+      res &#x3D;&gt; {
+        this.uploadService.patchKeywords(res).subscribe(() &#x3D;&gt; {
+          const index &#x3D; this.documents.findIndex(document &#x3D;&gt; document.id &#x3D;&#x3D;&#x3D; doc.id);
+          const data &#x3D; this.dataSource.data;
+          data.splice(index, 1);
+          this.dataSource.data &#x3D; data;
+          data.splice(index, 0, doc);
+          this.dataSource.data &#x3D; data;
+        });
+      },
+      err &#x3D;&gt; this.snackBar.open(err, &#x60;&#x60;, { duration: 3000 })
+    );
+  }
+
+   /**
+  * @description
+  * Adds a keyword to all selected documents.
+  * @param {string} keyword
+  */
+  public applyBulkKeywords(keyword) {
+    if (this.selection.selected.length &#x3D;&#x3D;&#x3D; 0) {
+      this.snackBar.open(&#x27;no rows selected&#x27;, &#x60;&#x60;, { duration: 3000 });
+    }
+    this.selection.selected.forEach(doc &#x3D;&gt; {
+      this.applyKeyword(doc, keyword);
+    });
+  }
+
+  /**
+  * @description
+  * Gets called when a key is pressed while the search field for the keywords
+  * is in focus. Updates the filter term.
+  * @param event
+  */
+  public onKey(event) {
+    this.selectedKeywords &#x3D; this.search(event.target.value);
+  }
+
+  /**
+  * @description
+  * Searches the keywords list for a search term
+  * @param {string} search term
+  * @returns {string[]} List of keywords matching search term
+  */
+  private search(value: string) {
+    const filter &#x3D; value.toLowerCase();
+    return this.keywords.filter(option &#x3D;&gt; option.toLowerCase().startsWith(filter));
+  }
+}
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;mat-button-toggle #edit&gt;Edit&lt;/mat-button-toggle&gt;
+&lt;p&gt;Editing is {{edit.checked ? &#x27;enabled&#x27; : &#x27;disabled&#x27;}}&lt;/p&gt;
+&lt;button [disabled]&#x3D;!edit.checked mat-button [matMenuTriggerFor]&#x3D;&quot;menu&quot;&gt;Apply Keywords&lt;/button&gt;
+&lt;mat-menu #menu&#x3D;&quot;matMenu&quot;&gt;
+  &lt;mat-form-field (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+    &lt;mat-label&gt;Search Keywords...&lt;/mat-label&gt;
+    &lt;input matInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
+      autocomplete&#x3D;&quot;off&quot;&gt;
+  &lt;/mat-form-field&gt;
+  &lt;button *ngFor&#x3D;&quot;let keyword of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyBulkKeywords(keyword)&quot;&gt;{{keyword}}&lt;/button&gt;
+&lt;/mat-menu&gt;
+
+
+&lt;table mat-table [dataSource]&#x3D;&quot;dataSource&quot; matSort class&#x3D;&quot;mat-elevation-z8&quot;&gt;
+  &lt;!-- Checkbox Column --&gt;
+  &lt;ng-container matColumnDef&#x3D;&quot;select&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef&gt;
+      &lt;mat-checkbox [disabled]&#x3D;!edit.checked (change)&#x3D;&quot;$event ? masterToggle() : null&quot; [checked]&#x3D;&quot;selection.hasValue() &amp;&amp; isAllSelected()&quot;
+        [indeterminate]&#x3D;&quot;selection.hasValue() &amp;&amp; !isAllSelected()&quot;&gt;
+      &lt;/mat-checkbox&gt;
+    &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let row&quot;&gt;
+      &lt;mat-checkbox [disabled]&#x3D;!edit.checked (click)&#x3D;&quot;$event.stopPropagation()&quot; (change)&#x3D;&quot;$event ? selection.toggle(row) : null&quot;
+        [checked]&#x3D;&quot;selection.isSelected(row)&quot;&gt;
+      &lt;/mat-checkbox&gt;
+    &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;title&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt; Filename &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt; {{element.title}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;type&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt; Type &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt; {{element.type}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;language&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt; Language &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt; {{element.language}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;size&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt; Size &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt; {{element.size}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;creation_date&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef mat-sort-header&gt; CreatedAt &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt; {{element.creation_date | date:&#x27;dd.MM.yy HH:mm&#x27;}} &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;ng-container matColumnDef&#x3D;&quot;MyKeywords&quot;&gt;
+    &lt;th mat-header-cell *matHeaderCellDef&gt; MyKeywords &lt;/th&gt;
+    &lt;td mat-cell *matCellDef&#x3D;&quot;let element&quot;&gt;
+      {{element.keywords}}
+      &lt;button mat-icon-button [matMenuTriggerFor]&#x3D;&quot;menu&quot;&gt;
+        &lt;mat-icon&gt;add_circle&lt;/mat-icon&gt;
+      &lt;/button&gt;
+      &lt;mat-menu #menu&#x3D;&quot;matMenu&quot;&gt;
+        &lt;mat-form-field (click)&#x3D;&quot;$event.stopPropagation()&quot;&gt;
+          &lt;mat-label&gt;Search Keywords...&lt;/mat-label&gt;
+          &lt;input matInput (keyup)&#x3D;&quot;onKey($event)&quot; (blur)&#x3D;&quot;focus($event)&quot; (click)&#x3D;&quot;$event.stopPropagation()&quot;
+            autocomplete&#x3D;&quot;off&quot;&gt;
+        &lt;/mat-form-field&gt;
+        &lt;button *ngFor&#x3D;&quot;let keyword of selectedKeywords&quot; mat-menu-item (click)&#x3D;&quot;applyKeyword(element, keyword)&quot;&gt;{{keyword}}&lt;/button&gt;
+      &lt;/mat-menu&gt;
+    &lt;/td&gt;
+  &lt;/ng-container&gt;
+
+  &lt;tr mat-header-row *matHeaderRowDef&#x3D;&quot;displayedColumns&quot;&gt;&lt;/tr&gt;
+  &lt;tr mat-row *matRowDef&#x3D;&quot;let row; columns: displayedColumns;&quot;&gt;&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>document-view-table.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">table {
+    width: 100%;
+}
+button:focus {
+    outline: none;
+}
+
+
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><mat-button-toggle #edit>Edit</mat-button-toggle><p>Editing is {{edit.checked ? \'enabled\' : \'disabled\'}}</p><button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">Apply Keywords</button><mat-menu #menu="matMenu">  <mat-form-field (click)="$event.stopPropagation()">    <mat-label>Search Keywords...</mat-label>    <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"      autocomplete="off">  </mat-form-field>  <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button></mat-menu><table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">  <!-- Checkbox Column -->  <ng-container matColumnDef="select">    <th mat-header-cell *matHeaderCellDef>      <mat-checkbox [disabled]=!edit.checked (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"        [indeterminate]="selection.hasValue() && !isAllSelected()">      </mat-checkbox>    </th>    <td mat-cell *matCellDef="let row">      <mat-checkbox [disabled]=!edit.checked (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"        [checked]="selection.isSelected(row)">      </mat-checkbox>    </td>  </ng-container>  <ng-container matColumnDef="title">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Filename </th>    <td mat-cell *matCellDef="let element"> {{element.title}} </td>  </ng-container>  <ng-container matColumnDef="type">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>    <td mat-cell *matCellDef="let element"> {{element.type}} </td>  </ng-container>  <ng-container matColumnDef="language">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Language </th>    <td mat-cell *matCellDef="let element"> {{element.language}} </td>  </ng-container>  <ng-container matColumnDef="size">    <th mat-header-cell *matHeaderCellDef mat-sort-header> Size </th>    <td mat-cell *matCellDef="let element"> {{element.size}} </td>  </ng-container>  <ng-container matColumnDef="creation_date">    <th mat-header-cell *matHeaderCellDef mat-sort-header> CreatedAt </th>    <td mat-cell *matCellDef="let element"> {{element.creation_date | date:\'dd.MM.yy HH:mm\'}} </td>  </ng-container>  <ng-container matColumnDef="MyKeywords">    <th mat-header-cell *matHeaderCellDef> MyKeywords </th>    <td mat-cell *matCellDef="let element">      {{element.keywords}}      <button mat-icon-button [matMenuTriggerFor]="menu">        <mat-icon>add_circle</mat-icon>      </button>      <mat-menu #menu="matMenu">        <mat-form-field (click)="$event.stopPropagation()">          <mat-label>Search Keywords...</mat-label>          <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"            autocomplete="off">        </mat-form-field>        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">{{keyword}}</button>      </mat-menu>    </td>  </ng-container>  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr></table></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'DocumentViewTableComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'DocumentViewTableComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

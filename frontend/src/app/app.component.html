@@ -8,6 +8,12 @@
       <a mat-button [routerLink]="'/settings'">Settings</a>
       <a mat-button [routerLink]="'/keywords'">Keywords</a>
       <a mat-button [routerLink]="'/dashboard'">Dashboard</a>
+      <a mat-button [matMenuTriggerFor]="beforeMenu">Documentation</a>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <a mat-menu-item [routerLink]="'/documentation'">API Documentation</a>
+        <a mat-menu-item href="assets/documentation/frontend/index.html" target="_blank">Front End Documentation <mat-icon>open_in_new</mat-icon></a>
+        <a mat-menu-item href="assets/documentation/backend/html/index.html" target="_blank">Back End Documentation <mat-icon>open_in_new</mat-icon></a>
+      </mat-menu>
     </div>
     <span class="fill-remaining-space"></span>
     <span class="nav-buttons"></span>

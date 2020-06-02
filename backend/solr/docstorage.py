@@ -99,3 +99,8 @@ class SolrDocStorage:
                 return hit
 
         return None
+
+
+__all__ = [
+    'SolrDocStorage'
+]
