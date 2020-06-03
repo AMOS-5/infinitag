@@ -14,3 +14,8 @@ Werkzeug
 sklearn
 sphinx
 autoapi
+pandas
+scipy
+matplotlib
+numpy
+snowballstemmer
