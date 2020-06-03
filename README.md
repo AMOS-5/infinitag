@@ -4,13 +4,14 @@
 # Table of Contents
 1. [InfiniTag](#infinitag)
 2. [User Documentation](#user-documentation)
-2. [Getting Started](#getting-started)
+3. [Architecture](#architecture)
+4. [Getting Started](#getting-started)
     1. [Front End](#frontend)
     2. [Back End](#backend)
-3. [Running Software](#running-software)
+5. [Running Software](#running-software)
     1. [Front End](#running-software-frontend)
     2. [REST Server](#running-backend)
-4. [Start Script](#start-script)
+6. [Start Script](#start-script)
     1. [Linux / Mac](#start-script-linux)
     2. [Windows](#start-script-windows)
 
@@ -22,6 +23,10 @@ documents using the power of machine learning!
 <a name="user-documentation"></a>
 # User Documentation
 Please find the PDF for the user documentation in `docs/user/user_manual.pdf`
+
+<a name="architecture"></a>
+# Architecture
+Please find the PDF for the architecture of the project in `docs/architecture/Software-Architecture-Description-AMOS.pdf`
 
 <a name="getting-started"></a>
 ## Getting Started
