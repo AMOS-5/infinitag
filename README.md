@@ -38,6 +38,15 @@ documents using the power of machine learning!
 
 <a name="running-software-frontend"></a>
 ### Front End
+#### Prerequisites:
+Make sure the correct server URL is set in `frontend/src/environments/environment.ts` or `environment.prod.ts`
+if you are going to build the front end with the `--prod` flag. If you are
+running the flask server on localhost with the default port (5000) this
+should not be an issue. Otherwise you will not be able to connect
+to the server.
+
+### Commands
+
 - `cd frontend`
 - `npm ci`
 - `ng serve`
