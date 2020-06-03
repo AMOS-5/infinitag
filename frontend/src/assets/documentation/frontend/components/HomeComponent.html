@@ -780,6 +780,8 @@ export class HomeComponent implements OnInit {
 
     <div class="tab-pane fade " id="c-templateData">
         <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container&quot;&gt;
+  &lt;h1&gt;Dashboard InfiniTag&lt;/h1&gt;
+  &lt;h3&gt; Welcome to InfiniTag - The automated machine learning software solution of Infineon&lt;/h3&gt;
   &lt;form class&#x3D;&quot;form-inline my-2 my-lg-0&quot;&gt;
     &lt;mat-form-field class&#x3D;&quot;example-full-width&quot;&gt;
       &lt;mat-label&gt;Search for documents&lt;/mat-label&gt;
@@ -788,7 +790,8 @@ export class HomeComponent implements OnInit {
   &lt;/form&gt;
   &lt;h5&gt;Available Documents&lt;/h5&gt;
   &lt;document-view-table [documents]&#x3D;&quot;documents&quot; [filter]&#x3D;&quot;filterString&quot;&gt;&lt;/document-view-table&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-styleData">
@@ -823,7 +826,7 @@ export class HomeComponent implements OnInit {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container">  <form class="form-inline my-2 my-lg-0">    <mat-form-field class="example-full-width">      <mat-label>Search for documents</mat-label>      <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">    </mat-form-field>  </form>  <h5>Available Documents</h5>  <document-view-table [documents]="documents" [filter]="filterString"></document-view-table></div></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container">  <h1>Dashboard InfiniTag</h1>  <h3> Welcome to InfiniTag - The automated machine learning software solution of Infineon</h3>  <form class="form-inline my-2 my-lg-0">    <mat-form-field class="example-full-width">      <mat-label>Search for documents</mat-label>      <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">    </mat-form-field>  </form>  <h5>Available Documents</h5>  <document-view-table [documents]="documents" [filter]="filterString"></document-view-table></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'HomeComponent'};

@@ -135,8 +135,9 @@ export class SettingsComponent { }
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;p&gt;settings works!&lt;/p&gt;
-&lt;app-file-upload&gt;&lt;/app-file-upload&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container&quot;&gt;
+  &lt;app-file-upload&gt;&lt;/app-file-upload&gt;
+&lt;/div&gt;
 </code></pre>
     </div>
 
@@ -172,7 +173,7 @@ export class SettingsComponent { }
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><p>settings works!</p><app-file-upload></app-file-upload></div>'
+        var COMPONENT_TEMPLATE = '<div><div class="container">  <app-file-upload></app-file-upload></div></div>'
     var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
     var DIRECTIVES = [];
     var ACTUAL_COMPONENT = {'name': 'SettingsComponent'};

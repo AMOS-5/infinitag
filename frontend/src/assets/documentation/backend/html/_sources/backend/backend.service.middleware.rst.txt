@@ -8,3 +8,18 @@
       :local:
 
 .. currentmodule:: backend.service.middleware
+
+
+Classes
+=======
+
+- :py:class:`SolrMiddleware`:
+  Undocumented.
+
+
+.. autoclass:: SolrMiddleware
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrMiddleware
+      :parts: 1

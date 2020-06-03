@@ -3,6 +3,7 @@
 
 # Table of Contents
 1. [InfiniTag](#infinitag)
+2. [User Documentation](#user-documentation)
 2. [Getting Started](#getting-started)
     1. [Front End](#frontend)
     2. [Back End](#backend)
@@ -18,6 +19,9 @@
 The repository for the AMOS Team 5 Project for tagging
 documents using the power of machine learning!
 
+<a name="user-documentation"></a>
+# User Documentation
+Please find the PDF for the user documentation in `docs/user/user_manual.pdf`
 
 <a name="getting-started"></a>
 ## Getting Started
