@@ -448,6 +448,15 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  public deleteFromHierarchy(node: ItemFlatNode) {
+    console.log(node)
+    if(node.expandable === true) {
+      this.removeItem(node)
+    } else { //leaf
+      this.removeItem(node)
+    }
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -457,6 +466,11 @@ export class KeywordsComponent implements OnInit {
                         event.previousIndex,
                         event.currentIndex);
     }
+  }
+
+  removeItem(flatNode: ItemFlatNode) {
+    const node = this.flatNodeMap.get(flatNode)
+    this.database.deleteItem(node)
   }
 
   /** Select the category so we can insert the new item. */

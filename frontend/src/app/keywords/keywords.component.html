@@ -38,7 +38,12 @@
                                             'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
                                             'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
                 draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
-                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">{{node.item}}</div>
+                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">
+                {{node.item}}
+                <button mat-icon-button (click)="deleteFromHierarchy(node)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
             </mat-tree-node>
 
             <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
@@ -52,7 +57,12 @@
                                             'drop-below': dragNodeExpandOverArea === 'below' && dragNodeExpandOverNode === node,
                                             'drop-center': dragNodeExpandOverArea === 'center' && dragNodeExpandOverNode === node}"
                 draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
-                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">{{node.item}}</div>
+                (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">
+                  {{node.item}}
+                  <button mat-icon-button (click)="deleteFromHierarchy(node)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
             </mat-tree-node>
           </mat-tree>
 
