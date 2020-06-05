@@ -40,6 +40,7 @@
                 draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
                 (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">
                 {{node.item}}
+                {{node.nodeType}}
                 <button mat-icon-button (click)="deleteFromHierarchy(node)">
                   <mat-icon>delete</mat-icon>
                 </button>
@@ -59,6 +60,7 @@
                 draggable="true" (dragstart)="handleDragStart($event, node, false);" (dragover)="handleDragOver($event, node);"
                 (drop)="handleDrop($event, node);" (dragend)="handleDragEnd($event);">
                   {{node.item}}
+                  {{node.nodeType}}
                   <button mat-icon-button (click)="deleteFromHierarchy(node)">
                     <mat-icon>delete</mat-icon>
                   </button>
@@ -75,7 +77,7 @@
         <div class="list-container">
           <h2>Uncategorized Dimensions</h2>
           <div>
-            <div class="example-box" *ngFor="let item of uncatDimensions"  draggable="true" (dragstart)="handleDragStart($event, item, true);"
+            <div class="example-box" *ngFor="let item of uncatDimensions"  draggable="true" (dragstart)="handleDragStart($event, item, true, NodeType.DIMENSION);"
                 (dragend)="handleDragEnd($event);">
               {{item}}
               <button mat-icon-button (click)="deleteDimension(item)">
@@ -86,7 +88,7 @@
         </div>
         <div class="list-container">
           <h2>Uncategorized Keywords</h2>
-          <div class="example-box" *ngFor="let item of uncatKeywords"  draggable="true" (dragstart)="handleDragStart($event, item, true);"
+          <div class="example-box" *ngFor="let item of uncatKeywords"  draggable="true" (dragstart)="handleDragStart($event, item, true, NodeType.KEYWORD);"
                 (dragend)="handleDragEnd($event);">
               {{item}}
               <button mat-icon-button (click)="deleteKeyword(item)">

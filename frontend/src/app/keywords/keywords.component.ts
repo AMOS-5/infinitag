@@ -29,13 +29,20 @@ import { ApiService } from '../services/api.service';
 import {FlatTreeControl} from '@angular/cdk/tree';
 import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
-
+/**
+ * Type of the item of a node
+ */
+const NodeType = {
+  DIMENSION : "DIMENSION",
+  KEYWORD : "KEYWORD",
+}
 /**
  * Node for item
  */
 export class ItemNode {
   children: ItemNode[];
   item: string;
+  nodeType: string;
 }
 
 /** Flatitem node with expandable and level information */
@@ -43,6 +50,7 @@ export class ItemFlatNode {
   item: string;
   level: number;
   expandable: boolean;
+  nodeType: string;
 }
 
 /**
@@ -112,19 +120,19 @@ export class ChecklistDatabase {
   }
 
   /** Add an item to list */
-  insertItem(parent: ItemNode, name: string): ItemNode {
+  insertItem(parent: ItemNode, name: string, nodeType: string): ItemNode {
     if (!parent.children) {
       parent.children = [];
     }
-    const newItem = { item: name } as ItemNode;
+    const newItem = { item: name, nodeType: nodeType } as ItemNode;
     parent.children.push(newItem);
     this.dataChange.next(this.data);
     return newItem;
   }
 
-  insertItemAbove(node: ItemNode, name: string): ItemNode {
+  insertItemAbove(node: ItemNode, name: string, nodeType: string): ItemNode {
     const parentNode = this.getParentFromNodes(node);
-    const newItem = { item: name } as ItemNode;
+    const newItem = { item: name, nodeType: nodeType } as ItemNode;
     if (parentNode != null) {
       parentNode.children.splice(parentNode.children.indexOf(node), 0, newItem);
     } else {
@@ -134,9 +142,9 @@ export class ChecklistDatabase {
     return newItem;
   }
 
-  insertItemBelow(node: ItemNode, name: string): ItemNode {
+  insertItemBelow(node: ItemNode, name: string, nodeType: string): ItemNode {
     const parentNode = this.getParentFromNodes(node);
-    const newItem = { item: name } as ItemNode;
+    const newItem = { item: name, nodeType: nodeType } as ItemNode;
     if (parentNode != null) {
       parentNode.children.splice(parentNode.children.indexOf(node) + 1, 0, newItem);
     } else {
@@ -188,9 +196,9 @@ export class ChecklistDatabase {
     let newItem;
 
     if(!from) {
-      newItem = this.insertItem(to, listItem.item);
+      newItem = this.insertItem(to, listItem.item, listItem.nodeType);
     } else {
-      newItem = this.insertItem(to, from.item);
+      newItem = this.insertItem(to, from.item, from.nodeType);
     }
 
     if (from && from.children) {
@@ -205,9 +213,9 @@ export class ChecklistDatabase {
     let newItem;
 
     if(!from) {
-      newItem = this.insertItemAbove(to, listItem.item);
+      newItem = this.insertItemAbove(to, listItem.item, listItem.nodeType);
     } else {
-      newItem = this.insertItemAbove(to, from.item);
+      newItem = this.insertItemAbove(to, from.item, from.nodeType);
     }
     if (from && from.children) {
       from.children.forEach(child => {
@@ -221,9 +229,9 @@ export class ChecklistDatabase {
 
     let newItem;
     if(!from) {
-      newItem = this.insertItemBelow(to, listItem.item);
+      newItem = this.insertItemBelow(to, listItem.item, listItem.nodeType);
     } else {
-      newItem = this.insertItemBelow(to, from.item);
+      newItem = this.insertItemBelow(to, from.item, from.nodeType);
     }
 
     if (from && from.children) {
@@ -246,6 +254,25 @@ export class ChecklistDatabase {
       });
     }
   }
+
+  /**
+  * @description
+  * Returns the start node and all of its descendants
+  * @param {ItemNode} start node
+  * @returns {List[ItemNode]} List of the start node and all descendants
+  */
+  getDescendants(node: ItemNode) {
+    let ret = []
+    let toCheck = [node]
+    while(toCheck.length !== 0) {
+      let cur = toCheck.pop();
+      ret.push(cur);
+      if(cur.children) {
+        toCheck = toCheck.concat(cur.children);
+      }
+    }
+    return ret;
+  }
 }
 
 @Component({
@@ -255,15 +282,15 @@ export class ChecklistDatabase {
   providers: [ChecklistDatabase]
 })
 export class KeywordsComponent implements OnInit {
-
+  NodeType = NodeType; //add enum as variable so it is usable in html file
 
   newDimension: string;
   newKeyword: string;
   isNewItem:boolean = false;
   newItem:any;
-  uncatDimensions = []
-  uncatKeywords = []
-  keywords = []
+  uncatDimensions = [];
+  uncatKeywords = [];
+  keywords = [];
 
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -325,6 +352,7 @@ export class KeywordsComponent implements OnInit {
     flatNode.item = node.item;
     flatNode.level = level;
     flatNode.expandable = (node.children && node.children.length > 0);
+    flatNode.nodeType = node.nodeType;
     this.flatNodeMap.set(flatNode, node);
     this.nestedNodeMap.set(node, flatNode);
     return flatNode;
@@ -345,13 +373,6 @@ export class KeywordsComponent implements OnInit {
       });
   }
 
-  dropDim(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.uncatDimensions, event.previousIndex, event.currentIndex);
-  }
-
-  dropKey(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.uncatKeywords, event.previousIndex, event.currentIndex);
-  }
 
   /**
   * @description
@@ -448,13 +469,34 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  /**
+  * @description
+  * Deletes an item and all it descendants. Adds the removed keywords/dimensions
+  * to their respective lists if necessary.
+  * @param {ItemFlatNode} node to delete
+  */
   public deleteFromHierarchy(node: ItemFlatNode) {
-    console.log(node)
-    if(node.expandable === true) {
-      this.removeItem(node)
-    } else { //leaf
-      this.removeItem(node)
-    }
+    const descendants = this.database.getDescendants(this.flatNodeMap.get(node))
+    //re-add to uncatgegorized dimensions/keywords
+    descendants.forEach(node => {
+      if(node.nodeType === NodeType.DIMENSION) {
+        if(!this.isDuplicate(this.uncatDimensions, node.item)) {
+          this.uncatDimensions.push(node.item)
+          this.api.addUncategorizedDimension(node.item)
+            .subscribe(res => {});
+        }
+      } else if(node.nodeType === NodeType.KEYWORD) {
+        if(!this.isDuplicate(this.uncatKeywords, node.item)) {
+          this.uncatKeywords.push(node.item)
+          this.api.addUncategorizedKeyword(node.item)
+            .subscribe(res => {});
+        }
+      } else {
+        console.error("undefined type")
+      }
+    });
+    this.removeItem(node)
+
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -476,20 +518,21 @@ export class KeywordsComponent implements OnInit {
   /** Select the category so we can insert the new item. */
   addNewItem(node: ItemFlatNode) {
     const parentNode = this.flatNodeMap.get(node);
-    this.database.insertItem(parentNode, '');
+    this.database.insertItem(parentNode, '', node.nodeType);
     this.treeControl.expand(node);
   }
 
   /** Save the node to database */
-  saveNode(node: ItemFlatNode, itemValue: string) {
+  /*saveNode(node: ItemFlatNode, itemValue: string) {
     const nestedNode = this.flatNodeMap.get(node);
     this.database.updateItem(nestedNode, itemValue);
-  }
+  }*/
 
-  handleDragStart(event, node, newItem) {
+  handleDragStart(event, node, newItem, type?) {
     if(newItem) {
       this.dragNode = new ItemFlatNode;
       this.dragNode.item = node;
+      this.dragNode.nodeType = type;
       this.isNewItem = true;
       this.newItem = this.dragNode;
     } else {
