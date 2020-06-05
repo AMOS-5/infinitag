@@ -133,6 +133,33 @@ def category_crawler(output_dir):
         crawl_arxiv([category_key], max_results=200, fetch_size=100, output=dir)
 
 
+def crawl_gov(type: str, count: int, output: str = '.'):
+    base_url = 'http://catalog.data.gov/api/3/action/package_search?q=res_format:{}&rows={}'.format(
+        type, count)
+    response = requests.get(base_url).json()
+
+    result_dict = response['result']
+    results = result_dict['results']
+    for result in results:
+        license_title = result['license_title']
+        if license_title is not None and 'Creative Commons' in license_title:
+            resources = result['resources']
+            for resource in resources:
+                if resource['format'] == type:
+                    url = resource['url']
+                    try:
+                        file = requests.get(url)
+                        path = os.path.join(output, resource['name'])
+                        with open(path, 'wb') as f:
+                            f.write(file.content)
+                        sleep(5)
+                    except Exception:
+                        pass
+                    pass
+            pass
+    pass
+
+
 if __name__ == "__main__":
     parser = ArgumentParser(description="Document Finder")
     parser.add_argument("--all", type=bool, default=False)
@@ -142,21 +169,21 @@ if __name__ == "__main__":
     parser.add_argument("--sleep_time", type=int, default=5)
     parser.add_argument("--fetch_size", type=int, default=100)
     parser.add_argument("--document_output", type=str, default="output")
+    parser.add_argument("--document_type", type=str, default="pdf")
     args = parser.parse_args()
 
     if not os.path.isdir(args.document_output):
         os.makedirs(args.document_output)
 
-    if args.all:
-        category_crawler(args.document_output)
-
-    if args.source == "arxiv" and not args.all:
-
-        documents = crawl_arxiv(categories=args.categories.split(),
-                                max_results=args.max_results,
-                                sleep_time=max(5, args.sleep_time),
-                                fetch_size=args.fetch_size,
-                                output=args.document_output)
-
+    if args.source == "arxiv":
+        crawl_arxiv(categories=args.categories.split(),
+                    max_results=args.max_results,
+                    sleep_time=max(5, args.sleep_time),
+                    fetch_size=args.fetch_size,
+                    output=args.document_output)
+    elif args.source == "gov":
+        crawl_gov(type=args.document_type,
+                  count=args.max_results,
+                  output=args.document_output)
     else:
-        print("Only arxiv is supported as a source at the moment")
+        print("Only arxiv and gov are supported as sources at the moment")
