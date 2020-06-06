@@ -22,11 +22,12 @@ from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
+import json
 
 from datetime import datetime, timedelta
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc
+from backend.solr import SolrDoc, SolrHierarchy
 
 
 import logging as log
@@ -178,6 +179,33 @@ def remove_keyword(key_id):
         return jsonify(f"{key_id} has been removed from keywords"), 200
     except Exception as e:
         return jsonify(f"{key_id} internal error: {e}"), 500
+
+
+
+@app.route('/models', methods=['GET', 'POST'])
+def keywordmodels():
+    """
+    Handles GET and POST request for keyword models
+    :return: json object containing the keyword models and/or a status message
+    """
+    if request.method == 'GET':
+        try:
+            data = solr.keywordmodel.get()
+            #print("kwm: " + data , file=sys.stdout)
+            return jsonify(data), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
+        try:
+            data = request.json
+            solrHierarchy = SolrHierarchy(data.get("name"), data.get("hierarchy"))
+            solr.keywordmodel.add(solrHierarchy)
+            return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
+        except Exception as e:
+            log.error(f"/models: {e}")
+            return jsonify(f"/models internal error: {e}"), 500
+
+
 
 @app.route('/stopServer', methods=['GET'])
 def stop_server():

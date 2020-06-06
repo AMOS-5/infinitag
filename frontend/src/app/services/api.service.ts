@@ -85,5 +85,16 @@ export class ApiService {
     return this.http.delete(`${environment.serverUrl}/keys/${key}`, httpOptions);
   }
 
+  public getKeywordModels() {
+    return this.http.get(`${environment.serverUrl}/models`);
+  }
 
+  public addKeywordModel(kwm): Observable<object> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post(`${environment.serverUrl}/models`, kwm, httpOptions);
+  }
 }

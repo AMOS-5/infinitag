@@ -17,12 +17,23 @@
     <mat-grid-tile [colspan]="2" [rowspan]="4" class="no-center">
       <div class="list-flex">
         <div class="list-container">
-          <h2>Keywords Model</h2>
+          <h2>Keywords Models</h2>
           <mat-selection-list #kwmList [multiple]="false" (selectionChange)="selectionChange(kwmList.selectedOptions.selected)">
-            <mat-list-option *ngFor="let keyword of keywords; let i = index" [value]="i">
-              {{keyword}}
+            <mat-list-option *ngFor="let keywordModel of keywordModels; let i = index" [value]="i">
+              <div>
+                <button mat-icon-button (click)="renameKeywordModel(keywordModel)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteKeywordModel(keywordModel)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                {{keywordModel}}
+            </div>
             </mat-list-option>
           </mat-selection-list>
+          <button mat-icon-button (click)="newKeywordModel()">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
       </div>
     </mat-grid-tile>

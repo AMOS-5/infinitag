@@ -96,7 +96,7 @@ import { KeywordsComponent } from './keywords/keywords.component';
     MatButtonToggleModule,
     DragDropModule,
     MatTreeModule,
-    MatExpansionModule
+    MatExpansionModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

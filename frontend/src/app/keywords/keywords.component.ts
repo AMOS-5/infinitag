@@ -26,9 +26,10 @@ import { Component, OnInit, Injectable, ViewChild, ElementRef } from '@angular/c
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApiService } from '../services/api.service';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
+
 /**
  * Type of the item of a node
  */
@@ -83,9 +84,9 @@ export class ChecklistDatabase {
   initialize() {
     //Build the tree nodes from Json object. The result is a list of `ItemNode` with nested
     //    file node as children.
-    this.api.getUncategorizedKeywords()
+    this.api.getKeywordModels()
     .subscribe((data: []) => {
-
+      console.log("kwm: ", data)
       for (var i = 0 ; i <= data.length; i++){
         let obj:any = new Object();
         obj[data[i]] = null;
@@ -290,7 +291,7 @@ export class KeywordsComponent implements OnInit {
   newItem:any;
   uncatDimensions = [];
   uncatKeywords = [];
-  keywords = [];
+  keywordModels = [];
 
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
@@ -328,6 +329,15 @@ export class KeywordsComponent implements OnInit {
     database.dataChange.subscribe(data => {
       this.dataSource.data = [];
       this.dataSource.data = data;
+      const tmp = {
+        "name" : "test",
+        "hierarchy" : this.dataSource.data,
+      };
+      const tmp_json = JSON.stringify(tmp);
+      console.log(tmp_json)
+      this.api.addKeywordModel(tmp_json).subscribe(res => {
+
+      });
     });
    }
 
@@ -359,9 +369,9 @@ export class KeywordsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getUncategorizedKeywords()
+    this.api.getKeywordModels()
     .subscribe((data: []) => {
-      this.keywords = data;
+      this.keywordModels = data;
     });
     this.api.getUncategorizedDimensions()
       .subscribe((data: []) => {
@@ -467,6 +477,22 @@ export class KeywordsComponent implements OnInit {
         this.snackBar.open(`${keyword} deleted from the database`, '', { duration: 3000 });
       });
     }
+  }
+
+
+  public newKeywordModel() {
+    //open dialog here
+    let name = "test"
+    this.keywordModels.push(name)
+  }
+
+  public renameKeywordModel(keywordModel) {
+
+  }
+
+
+  public deleteKeywordModel(keywordModel) {
+
   }
 
   /**
