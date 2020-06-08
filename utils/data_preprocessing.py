@@ -26,6 +26,9 @@ stemmer = SnowballStemmer("english")
 stop = set(stopwords.words('english'))
 exclude = set(string.punctuation)
 lemma = WordNetLemmatizer()
+from tika import parser,detector,language
+import io
+from pptx import Presentation
 
 
 def cleantext(doc):
@@ -37,29 +40,61 @@ def cleantext(doc):
     return cleaned_text
 
 
-def data_load(dir, unwanted):
+def data_load(dir, unwanted_keywords,extensions_allowed):
+
+    # done: txt,pdf,email,pptx,docx, html,xml,ods
+    filenames =[]
     txts = {}
-    overall =[]
-    file_list = os.listdir(dir)
-    #print('fl',file_list)
-    for file in file_list:
+    overall = []
+    count = 0
+    for path, directories, files in os.walk(dir):
+        for file in files:
+            count += 1
+            paths = os.path.join(path, file)
+            extension = os.path.splitext(paths)[1]
+            print("\n\nFile extension: " + extension)
+            print("file type: " + detector.from_file(paths))
+            print(file)
+            filenames.append(file)
 
-        path = os.path.join(dir, file)
-        #print('path',path)
-        file_open = open(path, 'r', encoding="latin")
-        txts[file] = file_open.read()
-        file_open.close()
-        '''Creating Dictionary with Cleaned docs'''
-        doc_clean = [cleantext(txts[file]).split()]
+            file_data = parser.from_file(paths,requestOptions={'timeout': 300})
+            text_meta = file_data['metadata']
+            texts = file_data['content']
 
-        for i in doc_clean:
-            new_items = [item for item in i if not item.isdigit()]
-            new_list = [test for test in new_items if (len(test)>3)]
-            new_lists = [items for items in new_list if items not in unwanted]
-            overall.append([new_lists])
+            if (text_meta is None):
+                 print ("File meta-data not recognized") #by apache tika
+
+            if (extension == ".pptx"):
+                # If PPT files are too large then the content is None. As an alternative, we can use Presentation library to read PPT files fro now
+                prs = Presentation(paths)
+                print(paths)
+                print("If PPT files are too large then the content is None. As an alternative, we can use Presentation library to read PPT files fro now")
+                info = []
+                for slide in prs.slides:
+                    for shape in slide.shapes:
+                        if hasattr(shape, "text"):
+                            powerpoint_text = shape.text
+                            info.append(powerpoint_text)
+
+                txts[paths] = str(info)
+
+            elif extension in extensions_allowed:
+                txts[paths] = str(texts)
+
+            else:
+                print("\n file format not recognized \n")
+
+            doc_clean = [cleantext(txts[paths]).split()]
+
+            for i in doc_clean:
+                new_items = [item for item in i if not item.isdigit()]
+                new_list = [test for test in new_items if (len(test) > 3)]
+                new_lists = [items for items in new_list if items not in unwanted_keywords]
+                overall.append([new_lists])
 
     flattened = [val for sublist in overall for val in sublist]
     vocab_frame = pd.DataFrame({'words': flattened})
     print('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
 
-    return flattened, vocab_frame, file_list
+    return flattened, vocab_frame, filenames
+
