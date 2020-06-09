@@ -60,7 +60,7 @@
       </button>
       <mat-menu #menu="matMenu">
         <mat-form-field (click)="$event.stopPropagation()">
-          <mat-label>Search Keywords...</mat-label>
+          <mat-label>Search Keywords and keyword models...</mat-label>
           <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
             autocomplete="off">
         </mat-form-field>
