@@ -20,4 +20,5 @@ matplotlib
 numpy
 snowballstemmer
 tika
-pptx
+python-pptx
+
