@@ -76,7 +76,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
       });
-    this.api.getKeywordModels()
+    this.api.getKWMModels()
       .subscribe((data: any) => {
         this.keywordModels = data
         for (var i = 0; i < data.length; i++) {

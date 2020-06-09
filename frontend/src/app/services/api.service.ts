@@ -49,7 +49,7 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keys`);
   }
 
-  public getKeywordModels() {
+  public getKWMModels() {
     return this.http.get(`${environment.serverUrl}/keywordmodels`);
   }
 
