@@ -22,13 +22,21 @@
  * SOFTWARE.
  */
 
-import { Component, OnInit, Injectable, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Injectable, Inject, ViewChild, ElementRef } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogClose } from '@angular/material/dialog';
 import { ApiService } from '../services/api.service';
-import {FlatTreeControl} from '@angular/cdk/tree';
-import {MatTreeFlatDataSource, MatTreeFlattener} from '@angular/material/tree';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { BehaviorSubject } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { throwError } from 'rxjs';
+
+import { IKeyWordModel } from '../models/IKeyWordModel.model';
+
+
+
 /**
  * Type of the item of a node
  */
@@ -58,10 +66,7 @@ export class ItemFlatNode {
  */
 let TREE_DATA: any = [];
 
-/**
- * Currently selected tree data.
- */
-let selectedKwm: string;
+
 /**
  * Checklist database, it can build a tree structured Json object.
  * Each node in Json object represents a item or a category.
@@ -83,13 +88,10 @@ export class ChecklistDatabase {
   initialize() {
     //Build the tree nodes from Json object. The result is a list of `ItemNode` with nested
     //    file node as children.
-    this.api.getUncategorizedKeywords()
-    .subscribe((data: []) => {
-
-      for (var i = 0 ; i <= data.length; i++){
-        let obj:any = new Object();
-        obj[data[i]] = null;
-        TREE_DATA[i] = this.buildFileTree( obj , 0);
+    this.api.getKeywordModels()
+    .subscribe((data: Array<IKeyWordModel>) => {
+      for (var i = 0 ; i < data.length; i++){
+        TREE_DATA[i] = JSON.parse(data[i].hierarchy);
       }
 
       // Notify the change.
@@ -117,6 +119,14 @@ export class ChecklistDatabase {
 
       return accumulator.concat(node);
     }, []);
+  }
+
+  /** Adds a root node */
+  insertRoot(name: string, nodeType: string): ItemNode {
+    const newItem = { item: name, nodeType: nodeType, children: []} as ItemNode;
+    this.data[0] = newItem
+    this.dataChange.next(this.data);
+    return newItem;
   }
 
   /** Add an item to list */
@@ -284,14 +294,28 @@ export class ChecklistDatabase {
 export class KeywordsComponent implements OnInit {
   NodeType = NodeType; //add enum as variable so it is usable in html file
 
+  /** contains the input string for the new dimension input field */
   newDimension: string;
+
+  /** contains the input string for the new keyword input field */
   newKeyword: string;
+
+  /** array of the uncategorized dimensions */
+  uncatDimensions = [];
+
+  /** array of the uncategorized keywords */
+  uncatKeywords = [];
+
+  /** array of the keywordModels */
+  keywordModels: Array<IKeyWordModel> = [];
+
   isNewItem:boolean = false;
   newItem:any;
-  uncatDimensions = [];
-  uncatKeywords = [];
-  keywords = [];
 
+  /**
+   * Currently selected tree data.
+   */
+  selectedKwmIdx: number = -1;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<ItemFlatNode, ItemNode>();
@@ -320,7 +344,10 @@ export class KeywordsComponent implements OnInit {
   dragNodeExpandOverArea: string;
   @ViewChild('emptyItem') emptyItem: ElementRef;
 
-  constructor(private api: ApiService, private snackBar: MatSnackBar, private database: ChecklistDatabase) {
+  constructor(private api: ApiService,
+              private snackBar: MatSnackBar,
+              private database: ChecklistDatabase,
+              public dialog: MatDialog) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl<ItemFlatNode>(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -328,6 +355,13 @@ export class KeywordsComponent implements OnInit {
     database.dataChange.subscribe(data => {
       this.dataSource.data = [];
       this.dataSource.data = data;
+
+      if(this.selectedKwmIdx !== -1) {
+        this.keywordModels[this.selectedKwmIdx].hierarchy = this.dataSource.data;
+        this.api.addKeywordModel(this.keywordModels[this.selectedKwmIdx]).subscribe(res => {
+
+        });
+      }
     });
    }
 
@@ -359,9 +393,9 @@ export class KeywordsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.api.getUncategorizedKeywords()
+    this.api.getKeywordModels()
     .subscribe((data: []) => {
-      this.keywords = data;
+      this.keywordModels = data;
     });
     this.api.getUncategorizedDimensions()
       .subscribe((data: []) => {
@@ -471,6 +505,55 @@ export class KeywordsComponent implements OnInit {
 
   /**
   * @description
+  * Opens a dialog for inputing a name. If the name is valid a new empty
+  * keyword model is created.
+  * @param {IKeyWordModel} kwm to remove
+  */
+  public newKeywordModel() {
+    const dialogRef = this.dialog.open(KWMNameDialog, {
+      width: '300px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      let name = result;
+
+      if(name === "" || name === undefined) {
+        //invalid name
+        this.snackBar.open(`invalid name`, '', { duration: 3000 });
+      } else if(this.keywordModels.filter(function(kwm){ return kwm.id === name }).length !== 0) {
+        //duplicate
+        this.snackBar.open(`${name} already exists`, '', { duration: 3000 });
+      } else {
+        //add new kwm
+        let newKwm: IKeyWordModel = {id: name, hierarchy: []};
+        this.api.addKeywordModel(newKwm).subscribe(res => {
+          const newIdx = this.keywordModels.length;
+          this.keywordModels[newIdx] = newKwm;
+          TREE_DATA[newIdx] = newKwm.hierarchy;
+          this.snackBar.open(`added new kwm with name: ${name}`, '', { duration: 3000 });
+        });
+
+      }
+    })
+  }
+
+  /**
+  * @description
+  * Deletes an keyword model.
+  * @param {IKeyWordModel} kwm to remove
+  */
+  public removeKeywordModel(keywordModel: IKeyWordModel) {
+    this.api.removeKeywordModel(keywordModel).subscribe(res => {
+      const removeIdx = this.selectedKwmIdx;
+      this.keywordModels.splice(removeIdx, 1);
+      TREE_DATA.splice(removeIdx, 1);
+      this.selectedKwmIdx = -1;
+      this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
+    });
+  }
+
+  /**
+  * @description
   * Deletes an item and all it descendants. Adds the removed keywords/dimensions
   * to their respective lists if necessary.
   * @param {ItemFlatNode} node to delete
@@ -522,11 +605,25 @@ export class KeywordsComponent implements OnInit {
     this.treeControl.expand(node);
   }
 
-  /** Save the node to database */
-  /*saveNode(node: ItemFlatNode, itemValue: string) {
-    const nestedNode = this.flatNodeMap.get(node);
-    this.database.updateItem(nestedNode, itemValue);
-  }*/
+  /**
+   * Handles dragOver of the mat-grid-tile
+   * @param event
+   */
+  dragOverEmptyTree(event) {
+    event.preventDefault();
+  }
+
+  /**
+   * handles droping an item over the mat-grid-tile if the tree is empty
+   * @param event
+   */
+  dropOverEmptyTree(event) {
+    if(this.selectedKwmIdx !== -1) {
+      if(this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
+        this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+      }
+    }
+  }
 
   handleDragStart(event, node, newItem, type?) {
     if(newItem) {
@@ -598,6 +695,23 @@ export class KeywordsComponent implements OnInit {
   }
 
   selectionChange(event){
-    this.database.dataChange.next(TREE_DATA[event[0].value])
+    this.selectedKwmIdx = event[0].value;
+    this.database.dataChange.next(TREE_DATA[this.selectedKwmIdx]);
+  }
+}
+
+
+@Component({
+  selector: 'input-dialog',
+  templateUrl: 'input-dialog.html',
+})
+export class KWMNameDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<KWMNameDialog>,
+    @Inject(MAT_DIALOG_DATA) public name: string) {}
+
+  onClose(): void {
+    this.dialogRef.close();
   }
 }

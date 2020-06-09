@@ -47,6 +47,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTreeModule } from '@angular/material/tree';
+import { MatDialogModule } from "@angular/material/dialog";
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -56,8 +58,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { KeywordsComponent } from './keywords/keywords.component';
+import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component';
 
 
 @NgModule({
@@ -71,6 +72,7 @@ import { KeywordsComponent } from './keywords/keywords.component';
     DashboardComponent,
     DocumentationComponent,
     KeywordsComponent,
+    KWMNameDialog
   ],
   imports: [
     BrowserModule,
@@ -96,9 +98,10 @@ import { KeywordsComponent } from './keywords/keywords.component';
     MatButtonToggleModule,
     DragDropModule,
     MatTreeModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

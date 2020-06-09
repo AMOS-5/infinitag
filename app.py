@@ -22,11 +22,12 @@ from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
 import sys
+import json
 
 from datetime import datetime, timedelta
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc
+from backend.solr import SolrDoc, SolrHierarchy
 
 
 import logging as log
@@ -74,6 +75,10 @@ def upload_file():
 
 @app.route('/changekeywords', methods=['PATCH'])
 def change_keywords():
+    """
+    Handles the updating of keywords for a document
+    :return: json object containing a success/error message
+    """
     try:
         iDoc = request.json
         id = iDoc.get('id')
@@ -94,6 +99,10 @@ def change_keywords():
 
 @app.route('/documents')
 def get_documents():
+    """
+    Queries all documents form solr and sends them to the front end
+    :return: json object containing the documents or an error message
+    """
     try:
         # load docs from solr
         res = solr.docs.search("*:*")
@@ -178,6 +187,44 @@ def remove_keyword(key_id):
         return jsonify(f"{key_id} has been removed from keywords"), 200
     except Exception as e:
         return jsonify(f"{key_id} internal error: {e}"), 500
+
+
+
+@app.route('/models', methods=['GET', 'POST'])
+def keywordmodels():
+    """
+    Handles GET and POST request for keyword models
+    :return: json object containing the keyword models and/or a status message
+    """
+    if request.method == 'GET':
+        try:
+            solrHierarchies = solr.keywordmodel.get()
+            list = [hierarchy.as_dict() for hierarchy in solrHierarchies]
+            #print("kwm: " + data , file=sys.stdout)
+            return json.dumps(list), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
+        try:
+            data = request.json
+            solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
+            solr.keywordmodel.add(solrHierarchy)
+            return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
+        except Exception as e:
+            log.error(f"/models: {e}")
+            return jsonify(f"/models internal error: {e}"), 500
+
+@app.route('/models/<model_id>', methods=['DELETE'])
+def remove_keyword_model(model_id):
+    """
+    Handles DELETE request for keyword models
+    :return: json object containing a status message
+    """
+    try:
+        solr.keywordmodel.delete(model_id)
+        return jsonify(f"{model_id} has been removed from keyword models"), 200
+    except Exception as e:
+        return jsonify(f"{model_id} internal error: {e}"), 500
 
 @app.route('/stopServer', methods=['GET'])
 def stop_server():

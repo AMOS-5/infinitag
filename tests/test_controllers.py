@@ -8,7 +8,7 @@ from flask_jsonpify import jsonify
 # TODO hack to modify the config before the app gets initialized
 # we should use a better fixture where the app gets initialized with our
 # desired configurations
-from backend.solr import config, SolrDoc
+from backend.solr import config, SolrDoc, SolrHierarchy
 
 # reinit for test
 config_keyword_model = config.keyword_model_solr
@@ -172,6 +172,43 @@ class BasicTestCase(unittest.TestCase):
 
         keys = application.solr.keywords.get()
         self.assertEqual(keys, ["a", "c"])
+
+    def test_keywordmodels(self):
+        application.solr.keywordmodel.clear()
+        tester = app.test_client(self)
+        data=json.dumps(dict(
+            id="test",
+            hierarchy=[],
+        ))
+        response = tester.post("/models", content_type="application/json", data=data, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(application.solr.keywordmodel.get()), 1)
+
+        response = tester.get("/models", content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+
+        data_response = json.loads(response.data)
+        self.assertIsNotNone(data_response)
+        self.assertEqual(data_response, [{"id": "test", "hierarchy": "[]"}])
+
+    def test_remove_keywordmodel(self):
+        application.solr.keywordmodel.clear()
+        tester = app.test_client(self)
+        list = [None]*3
+        for i in range(0, 3):
+            list[i] = SolrHierarchy(str(i), [])
+            application.solr.keywordmodel.add(list[i])
+
+        response = tester.delete("/models/1")
+        self.assertEqual(response.status_code, 200)
+
+        del list[1]
+
+        models = application.solr.keywordmodel.get()
+        self.assertEqual(len(models), len(list))
+        for i in range(0, len(models)):
+            self.assertEqual(models[i].name, list[i].name)
+
 
 if __name__ == "__main__":
     unittest.main()
