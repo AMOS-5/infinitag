@@ -183,30 +183,44 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   */
   public applyKeyword(doc, keyword) {
     if(this.findByNode(keyword)) {
+      var fixedArray = this.removeDublicate(this.kwmToAdd)
       keyword = ''
-      for (var i = 0; i < this.kwmToAdd.length; i++){
+      for (var i = 0; i < fixedArray.length; i++){
         if(i === 0) {
-          keyword = keyword + this.kwmToAdd[i] ;
+          keyword = keyword + fixedArray[i] ;
         } else {
-          keyword = keyword + "->" + this.kwmToAdd[i] ;
+          keyword = keyword + "->" + fixedArray[i] ;
         }
+        
       }
+      console.log(keyword)
       this.kwmToAdd = []
     }
-    this.addKeywordToDoc(doc, keyword).subscribe(
-      res => {
-        this.uploadService.patchKeywords(res).subscribe(() => {
-          const index = this.documents.findIndex(document => document.id === doc.id);
-          const data = this.dataSource.data;
-          data.splice(index, 1);
-          this.dataSource.data = data;
-          data.splice(index, 0, doc);
-          this.dataSource.data = data;
-        });
-      },
-      err => this.snackBar.open(err, ``, { duration: 3000 })
-    );
+
+    // this.addKeywordToDoc(doc, keyword).subscribe(
+    //   res => {
+    //     this.uploadService.patchKeywords(res).subscribe(() => {
+    //       const index = this.documents.findIndex(document => document.id === doc.id);
+    //       const data = this.dataSource.data;
+    //       data.splice(index, 1);
+    //       this.dataSource.data = data;
+    //       data.splice(index, 0, doc);
+    //       this.dataSource.data = data;
+    //     });
+    //   },
+    //   err => this.snackBar.open(err, ``, { duration: 3000 })
+    // );
   }
+
+  private  removeDublicate = function(arr){
+    var res = []
+    for (var i = 0; i < arr.length; i++) {
+           if(arr[ i + 1] !== arr[i] ){
+            res.push(arr[i])
+           }
+    };
+     return res
+   }  
 
   /**
  * @description
