@@ -288,6 +288,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   findByNode(text) {
     var found = false;
+    var isNameAdded = false;
     for (var i = 0; i < this.keywordModels.length; i++) {
       
       if (this.keywordModels[i].hierarchy) {
@@ -295,7 +296,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
           if (hierarchy.children) {
             if(this.findKeywordRecursively(hierarchy.children, text)){
               found = true
-              this.kwmToAdd.splice(0, 0, this.keywordModels[i].name);
+              if(!isNameAdded) {
+                this.kwmToAdd.splice(0, 0, this.keywordModels[i].name);
+                isNameAdded = true;
+              }
               this.kwmToAdd.push(text);
               return found
             }
@@ -308,7 +312,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
     /**
   * @description
-  * Recursively finds children with specifickeyword
+  * Recursively finds children with specific keyword
   * @param {string} text term
   * @param {Array} children term
   * @returns {boolean} Found or not
