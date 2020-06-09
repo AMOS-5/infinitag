@@ -44,7 +44,7 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,word
         print("Cluster %d words:" % clustering, end='')
         print('')
 
-        for tags in order_centroids[clustering, : words_per_cluster]: #replace 6 with n words per cluster
+        for tags in order_centroids[clustering, : words_per_cluster]:
             kmeans_tags = terms[tags]
             print(' %s' % kmeans_tags  )
         print('')
@@ -55,3 +55,5 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,word
             print(' %s,' % title, end='')
         print('')
         print('')
+
+        return clustering,title

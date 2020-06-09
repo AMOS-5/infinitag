@@ -19,3 +19,4 @@ scipy
 matplotlib
 numpy
 snowballstemmer
+tika
