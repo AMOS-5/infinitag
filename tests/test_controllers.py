@@ -3,6 +3,7 @@ import unittest
 import io
 import os
 from werkzeug.datastructures import FileStorage
+from flask_jsonpify import jsonify
 
 # TODO hack to modify the config before the app gets initialized
 # we should use a better fixture where the app gets initialized with our
@@ -10,11 +11,17 @@ from werkzeug.datastructures import FileStorage
 from backend.solr import config, SolrDoc
 
 # reinit for test
-config_tags = config.tag_storage_solr
-config_tags["corename"] = "test_tags"
+config_keyword_model = config.keyword_model_solr
+config_keyword_model["corename"] = "test_keyword_model"
+
+config_keywords = config.keywords_solr
+config_keywords["corename"] = "test_keywords"
 
 config_docs = config.doc_storage_solr
 config_docs["corename"] = "test_documents"
+
+config_dims = config.dimensions_solr
+config_dims["corename"] = "test_dimensions"
 
 import app as application
 from app import app
@@ -78,24 +85,24 @@ class BasicTestCase(unittest.TestCase):
             os.remove("./tmp/test_upload.test")
         application.solr.docs.clear()
 
-    def test_change_tags(self):
+    def test_change_keywords(self):
         application.solr.docs.clear()
         application.solr.docs.add(self.docs[0])
         id = self.docs[0].id
 
-        doc = application.solr.docs.get_doc(id)
-        self.assertEqual(doc.tags, [])
+        doc = application.solr.docs.get(id)
+        self.assertEqual(doc.keywords, [])
 
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "tags":["a", "b", "c"],
+            "keywords":["a", "b", "c"],
         })
-        response=tester.patch('/changetags', data=data, content_type='application/json')
+        response=tester.patch('/changekeywords', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
-        doc = application.solr.docs.get_doc(id)
-        self.assertEqual(doc.tags, ["a", "b", "c"])
+        doc = application.solr.docs.get(id)
+        self.assertEqual(doc.keywords, ["a", "b", "c"])
 
 
     def test_documents(self):
@@ -109,6 +116,62 @@ class BasicTestCase(unittest.TestCase):
         self.assertIsNotNone(data_response)
         self.assertEqual(len(data_response), len(self.docs))
 
+
+    def test_dimensions(self):
+        application.solr.dimensions.clear()
+        tester = app.test_client(self)
+        data=json.dumps(dict(
+            dim="test"
+        ))
+        response = tester.post("/dims", content_type="application/json", data=data, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(application.solr.dimensions.get()), 1)
+
+        response = tester.get("/dims", content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+
+        data_response = json.loads(response.data)
+        self.assertIsNotNone(data_response)
+        self.assertEqual(data_response, ["test"])
+
+    def test_remove_dimension(self):
+        application.solr.dimensions.clear()
+        tester = app.test_client(self)
+
+        application.solr.dimensions.add("a", "b", "c")
+        response = tester.delete("/dims/b")
+        self.assertEqual(response.status_code, 200)
+
+        dims = application.solr.dimensions.get()
+        self.assertEqual(dims, ["a", "c"])
+
+    def test_keywords(self):
+        application.solr.keywords.clear()
+        tester = app.test_client(self)
+        data=json.dumps(dict(
+            key="test"
+        ))
+        response = tester.post("/keys", content_type="application/json", data=data, follow_redirects=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(application.solr.keywords.get()), 1)
+
+        response = tester.get("/keys", content_type="application/json")
+        self.assertEqual(response.status_code, 200)
+
+        data_response = json.loads(response.data)
+        self.assertIsNotNone(data_response)
+        self.assertEqual(data_response, ["test"])
+
+    def test_remove_keyword(self):
+        application.solr.keywords.clear()
+        tester = app.test_client(self)
+
+        application.solr.keywords.add("a", "b", "c")
+        response = tester.delete("/keys/b")
+        self.assertEqual(response.status_code, 200)
+
+        keys = application.solr.keywords.get()
+        self.assertEqual(keys, ["a", "c"])
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,0 +1,21 @@
+================
+``backend.solr``
+================
+
+.. automodule:: backend.solr
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   backend.solr.config
+   backend.solr.doc
+   backend.solr.docstorage
+   backend.solr.keywordmodel
+
+.. currentmodule:: backend.solr

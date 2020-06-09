@@ -1,0 +1,24 @@
+=========
+``utils``
+=========
+
+.. automodule:: utils
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   utils.crawler
+   utils.data_preprocessing
+   utils.hierarchichal_clustering
+   utils.k_means_cluster
+   utils.lda_model
+   utils.main
+   utils.tfidf_vector
+
+.. currentmodule:: utils

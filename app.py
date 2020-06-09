@@ -1,3 +1,20 @@
+# InfiniTag Copyright © 2020 AMOS-5
+# Permission is hereby granted,
+# free of charge, to any person obtaining a copy of this software and
+# associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy,
+# modify, merge, publish, distribute, sublicense, and/or sell copies of the
+# Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions: The above copyright notice and this
+# permission notice shall be included in all copies or substantial portions
+# of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+# KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+# NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+# USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request
@@ -55,23 +72,23 @@ def upload_file():
 
 
 
-@app.route('/changetags', methods=['PATCH'])
-def change_tags():
+@app.route('/changekeywords', methods=['PATCH'])
+def change_keywords():
     try:
         iDoc = request.json
         id = iDoc.get('id')
-        tags = iDoc.get('tags')
+        keywords = iDoc.get('keywords')
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
 
     try:
-        solDoc = solr.SOLR_DOCS.get_doc(id)
-        solDoc.tags = tags
-        solr.SOLR_DOCS.update(solDoc)
+        solDoc = solr.docs.get(id)
+        solDoc.keywords = keywords
+        solr.docs.update(solDoc)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print('changed tags on file ' + id + ' to ' + ','.join(tags) , file=sys.stdout)
+    print('changed keywords on file ' + id + ' to ' + ','.join(keywords) , file=sys.stdout)
     return jsonify("success"), 200
 
 
@@ -92,32 +109,75 @@ def get_health():
     return jsonify({"status": "UP"})
 
 
-@app.route('/tags', methods=['GET', 'POST'])
-def tags():
+
+@app.route('/dims', methods=['GET', 'POST'])
+def dimensions():
+    """
+    Handles GET and POST request for uncategorized dimensions
+    :return: json object containing the uncategorized dimensions and/or a status message
+    """
     if request.method == 'GET':
         try:
-            data = solr.tags.tags
+            data = solr.dimensions.get()
             return jsonify(data), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
     elif request.method == 'POST':
         try:
-            data = request.json.get('tag')
-            solr.tags.add(data)
-            return jsonify(data + " has been added"), 200
+            data = request.json.get('dim')
+            solr.dimensions.add(data)
+            return jsonify(data + " has been added to dimensions"), 200
         except Exception as e:
-            log.error(f"/documents: {e}")
-            return jsonify(f"/tags internal error: {e}"), 500
+            log.error(f"/dims: {e}")
+            return jsonify(f"/dims internal error: {e}"), 500
 
 
-@app.route('/tags/<tag_id>', methods=['DELETE'])
-def remove_tags(tag_id):
+@app.route('/dims/<dim_id>', methods=['DELETE'])
+def remove_dimension(dim_id):
+    """
+    Handles DELETE request for uncategorized dimensions
+    :return: json object containing a status message
+    """
     try:
-        solr.tags.delete(tag_id)
-        return jsonify(f"{tag_id} has been removed"), 200
+        solr.dimensions.delete(dim_id)
+        return jsonify(f"{dim_id} has been removed from dimensions"), 200
     except Exception as e:
-        return jsonify(f"{tag_id} internal error: {e}"), 500
+        return jsonify(f"{dim_id} internal error: {e}"), 500
 
+
+@app.route('/keys', methods=['GET', 'POST'])
+def keywords():
+    """
+    Handles GET and POST request for uncategorized keywords
+    :return: json object containing the uncategorized keywords and/or a status message
+    """
+    if request.method == 'GET':
+        try:
+            data = solr.keywords.get()
+            return jsonify(data), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+    elif request.method == 'POST':
+        try:
+            data = request.json.get('key')
+            solr.keywords.add(data)
+            return jsonify(data + " has been added to keywords"), 200
+        except Exception as e:
+            log.error(f"/dims: {e}")
+            return jsonify(f"/dims internal error: {e}"), 500
+
+
+@app.route('/keys/<key_id>', methods=['DELETE'])
+def remove_keyword(key_id):
+    """
+    Handles DELETE request for uncategorized keywords
+    :return: json object containing a status message
+    """
+    try:
+        solr.keywords.delete(key_id)
+        return jsonify(f"{key_id} has been removed from keywords"), 200
+    except Exception as e:
+        return jsonify(f"{key_id} internal error: {e}"), 500
 
 @app.route('/stopServer', methods=['GET'])
 def stop_server():

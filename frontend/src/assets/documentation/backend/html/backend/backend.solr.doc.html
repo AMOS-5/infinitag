@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>backend.solr.doc &#8212; infinitag 6 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-backend.solr.doc">
+<span id="backend-solr-doc"></span><h1><code class="docutils literal notranslate"><span class="pre">backend.solr.doc</span></code><a class="headerlink" href="#module-backend.solr.doc" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#classes" id="id1">Classes</a></p></li>
+</ul>
+</div>
+<div class="section" id="classes">
+<h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#backend.solr.doc.SolrDoc" title="backend.solr.doc.SolrDoc"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrDoc</span></code></a>:
+SolrDoc</p></li>
+</ul>
+<dl class="class">
+<dt id="backend.solr.doc.SolrDoc">
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.doc.</code><code class="sig-name descname">SolrDoc</code><span class="sig-paren">(</span><em class="sig-param">path: str</em>, <em class="sig-param">*keywords: str</em>, <em class="sig-param">title: str = None</em>, <em class="sig-param">file_type: str = None</em>, <em class="sig-param">lang: str = None</em>, <em class="sig-param">size: str = None</em>, <em class="sig-param">creation_date: str = None</em>, <em class="sig-param">content: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.doc.SolrDoc" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+<dl class="method">
+<dt id="backend.solr.doc.SolrDoc.from_extract">
+<em class="property">static </em><code class="sig-name descname">from_extract</code><span class="sig-paren">(</span><em class="sig-param">doc: backend.solr.doc.SolrDoc</em>, <em class="sig-param">res: dict</em><span class="sig-paren">)</span> &#x2192; backend.solr.doc.SolrDoc<a class="headerlink" href="#backend.solr.doc.SolrDoc.from_extract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populates a SolrDoc with extraction results performed by Solr/Tika.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="backend.solr.doc.SolrDoc.from_hit">
+<em class="property">static </em><code class="sig-name descname">from_hit</code><span class="sig-paren">(</span><em class="sig-param">hit: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.doc.SolrDoc.from_hit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a SolrDoc from a search hit</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">infinitag</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Barnhill, Hanif, Vinokour, Wich, Sakib.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/backend/backend.solr.doc.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

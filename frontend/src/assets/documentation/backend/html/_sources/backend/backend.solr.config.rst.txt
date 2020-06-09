@@ -1,0 +1,10 @@
+=======================
+``backend.solr.config``
+=======================
+
+.. automodule:: backend.solr.config
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.solr.config

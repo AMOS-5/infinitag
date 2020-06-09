@@ -1,0 +1,65 @@
+=============================
+``backend.solr.keywordmodel``
+=============================
+
+.. automodule:: backend.solr.keywordmodel
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.solr.keywordmodel
+
+
+Classes
+=======
+
+- :py:class:`SolrKeywordModel`:
+  Undocumented.
+
+- :py:class:`SolrKeywords`:
+  Undocumented.
+
+- :py:class:`SolrKeyword`:
+  Class representing an object in the KeywordStorage
+
+- :py:class:`SolrAbstract`:
+  Undocumented.
+
+- :py:class:`SolrHierarchy`:
+  Undocumented.
+
+
+.. autoclass:: SolrKeywordModel
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrKeywordModel
+      :parts: 1
+
+.. autoclass:: SolrKeywords
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrKeywords
+      :parts: 1
+
+.. autoclass:: SolrKeyword
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrKeyword
+      :parts: 1
+
+.. autoclass:: SolrAbstract
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrAbstract
+      :parts: 1
+
+.. autoclass:: SolrHierarchy
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrHierarchy
+      :parts: 1

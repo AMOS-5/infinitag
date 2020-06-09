@@ -1,23 +1,60 @@
-from backend.solr import SolrDocStorage, SolrTagStorage, config
+# InfiniTag Copyright © 2020 AMOS-5
+# Permission is hereby granted,
+# free of charge, to any person obtaining a copy of this software and
+# associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy,
+# modify, merge, publish, distribute, sublicense, and/or sell copies of the
+# Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions: The above copyright notice and this
+# permission notice shall be included in all copies or substantial portions
+# of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+# KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+# NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+# USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+from backend.solr import SolrKeywordModel, SolrKeywords, SolrDocStorage, config
 
 
 class SolrService:
     INITIALIZED = False
-    SOLR_TAGS = None
+    SOLR_KEYWORD_MODEL = None
     SOLR_DOCS = None
 
     def __init__(self):
         self.initialize_solr()
 
     def initialize_solr(self):
-        self.SOLR_TAGS = SolrTagStorage(config.tag_storage_solr)
+        self.SOLR_KEYWORD_MODEL = SolrKeywordModel(config.keyword_model_solr)
+        self.SOLR_KEYWORDS = SolrKeywords(config.keywords_solr)
+        self.SOLR_DIMENSIONS = SolrKeywords(config.dimensions_solr)
         self.SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
+
         self.INITIALIZED = True
 
     @property
-    def tags(self):
-        return self.SOLR_TAGS
+    def keywordmodel(self):
+        return self.SOLR_KEYWORD_MODEL
+
+    @property
+    def kwm(self):
+        return self.keywordmodel
+
+    @property
+    def keywords(self):
+        return self.SOLR_KEYWORDS
+
+    @property
+    def dimensions(self):
+        return self.SOLR_DIMENSIONS
 
     @property
     def docs(self):
         return self.SOLR_DOCS
+
+
+__all__ = [
+    'SolrService'
+]

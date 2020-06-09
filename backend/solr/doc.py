@@ -1,3 +1,20 @@
+# InfiniTag Copyright © 2020 AMOS-5
+# Permission is hereby granted,
+# free of charge, to any person obtaining a copy of this software and
+# associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy,
+# modify, merge, publish, distribute, sublicense, and/or sell copies of the
+# Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions: The above copyright notice and this
+# permission notice shall be included in all copies or substantial portions
+# of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+# KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+# NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+# USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 import logging as log
 from datetime import datetime
 import os
@@ -16,7 +33,7 @@ class SolrDoc:
     def __init__(
         self,
         path: str,
-        *tags: str,
+        *keywords: str,
         title: str = None,
         file_type: str = None,
         lang: str = None,
@@ -25,7 +42,7 @@ class SolrDoc:
         content: str = None,
     ):
         self.id = os.path.abspath(path)
-        self.tags = list(tags)
+        self.keywords = list(keywords)
         self.title = title
         self.file_type = file_type
         self.lang = lang
@@ -53,7 +70,7 @@ class SolrDoc:
         """
         return SolrDoc(
             hit["id"],
-            *hit["tags"] if "tags" in hit else [],
+            *hit["keywords"] if "keywords" in hit else [],
             title=hit["title"][0],
             file_type=hit["type"][0],
             lang=hit["language"][0],
@@ -65,7 +82,7 @@ class SolrDoc:
     def as_dict(self) -> dict:
         return {
             "id": self.id,
-            "tags": self.tags,
+            "keywords": self.keywords,
             "title": self.title,
             "type": self.file_type,
             "language": self.lang,
@@ -217,3 +234,7 @@ class CreationDate:
         else:
             log.debug("CreationDate is unknown.")
             return str(datetime.now())
+
+__all__ = [
+    'SolrDoc'
+]

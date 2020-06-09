@@ -1,0 +1,10 @@
+==================================
+``utils.hierarchichal_clustering``
+==================================
+
+.. automodule:: utils.hierarchichal_clustering
+
+   .. contents::
+      :local:
+
+.. currentmodule:: utils.hierarchichal_clustering

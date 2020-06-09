@@ -1,10 +1,27 @@
+# InfiniTag Copyright © 2020 AMOS-5
+# Permission is hereby granted,
+# free of charge, to any person obtaining a copy of this software and
+# associated documentation files (the "Software"), to deal in the Software
+# without restriction, including without limitation the rights to use, copy,
+# modify, merge, publish, distribute, sublicense, and/or sell copies of the
+# Software, and to permit persons to whom the Software is furnished to do so,
+# subject to the following conditions: The above copyright notice and this
+# permission notice shall be included in all copies or substantial portions
+# of the Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+# KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+# NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+# OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+# USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 from .doc import SolrDoc
 
 import pysolr
 
 import os
 import logging as log
-from typing import List
+from typing import List, Union
 from pathlib import Path
 from urlpath import URL
 import copy
@@ -57,10 +74,11 @@ class SolrDocStorage:
             res = self.con.extract(f)
             return res
 
-    def get_docs(self, *docs: str) -> SolrDoc:
-        return [self.get_doc(doc) for doc in docs]
+    def get(self, *docs: str) -> Union[SolrDoc, List[SolrDoc]]:
+        docs = [self._get(doc) for doc in docs]
+        return docs[0] if len(docs) == 1 else docs
 
-    def get_doc(self, doc: str) -> SolrDoc:
+    def _get(self, doc: str) -> SolrDoc:
         # TODO don't know 100% whether this can fail or not
         query = f"id:*{doc}"
 
@@ -98,3 +116,8 @@ class SolrDocStorage:
                 return hit
 
         return None
+
+
+__all__ = [
+    'SolrDocStorage'
+]
