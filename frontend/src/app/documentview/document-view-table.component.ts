@@ -193,7 +193,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         }
         
       }
-      console.log(keyword)
       this.kwmToAdd = []
     }
 
