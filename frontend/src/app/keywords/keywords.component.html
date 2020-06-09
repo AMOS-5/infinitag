@@ -35,7 +35,7 @@
         </div>
       </div>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="3" [rowspan]="4">
+    <mat-grid-tile [colspan]="3" [rowspan]="4" (dragover)="dragOverEmptyTree($event)" (drop)="dropOverEmptyTree($event)">
       <div class="list-flex">
         <div class="list-container">
           <h2>Hierarchy</h2>

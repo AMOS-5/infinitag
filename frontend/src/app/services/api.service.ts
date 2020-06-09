@@ -109,7 +109,6 @@ export class ApiService {
         'Content-Type': 'application/json',
       })
     };
-    console.log("deleting: ", kwm.id);
     return this.http.delete(`${environment.serverUrl}/models/${kwm.id}`, httpOptions);
   }
 }

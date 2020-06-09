@@ -91,10 +91,7 @@ export class ChecklistDatabase {
     this.api.getKeywordModels()
     .subscribe((data: Array<IKeyWordModel>) => {
       for (var i = 0 ; i < data.length; i++){
-        //let obj:any = new Object();
-        //obj[data[i].id] = JSON.parse(data[i].hierarchy);
-        TREE_DATA[i] = JSON.parse(data[i].hierarchy);//this.buildFileTree( obj , 0);
-        //console.log(i , ": ", obj)
+        TREE_DATA[i] = JSON.parse(data[i].hierarchy);
       }
 
       // Notify the change.
@@ -122,6 +119,14 @@ export class ChecklistDatabase {
 
       return accumulator.concat(node);
     }, []);
+  }
+
+  /** Adds a root node */
+  insertRoot(name: string, nodeType: string): ItemNode {
+    const newItem = { item: name, nodeType: nodeType, children: []} as ItemNode;
+    this.data[0] = newItem
+    this.dataChange.next(this.data);
+    return newItem;
   }
 
   /** Add an item to list */
@@ -520,7 +525,7 @@ export class KeywordsComponent implements OnInit {
         this.snackBar.open(`${name} already exists`, '', { duration: 3000 });
       } else {
         //add new kwm
-        let newKwm: IKeyWordModel = {id: name, hierarchy: ["root"]};
+        let newKwm: IKeyWordModel = {id: name, hierarchy: []};
         this.api.addKeywordModel(newKwm).subscribe(res => {
           const newIdx = this.keywordModels.length;
           this.keywordModels[newIdx] = newKwm;
@@ -600,11 +605,25 @@ export class KeywordsComponent implements OnInit {
     this.treeControl.expand(node);
   }
 
-  /** Save the node to database */
-  /*saveNode(node: ItemFlatNode, itemValue: string) {
-    const nestedNode = this.flatNodeMap.get(node);
-    this.database.updateItem(nestedNode, itemValue);
-  }*/
+  /**
+   * Handles dragOver of the mat-grid-tile
+   * @param event
+   */
+  dragOverEmptyTree(event) {
+    event.preventDefault();
+  }
+
+  /**
+   * handles droping an item over the mat-grid-tile if the tree is empty
+   * @param event
+   */
+  dropOverEmptyTree(event) {
+    if(this.selectedKwmIdx !== -1) {
+      if(this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
+        this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+      }
+    }
+  }
 
   handleDragStart(event, node, newItem, type?) {
     if(newItem) {
