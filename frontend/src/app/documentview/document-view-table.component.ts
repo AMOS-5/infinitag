@@ -53,6 +53,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   keywords: string[] = [];
   selectedKeywords: string[] = [];
+  keywordModels: any = [];
+  kwmToAdd = []
   constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
@@ -73,6 +75,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
+      });
+    this.api.getKeywordModels()
+      .subscribe((data: any) => {
+        this.keywordModels = data
+        for (var i = 0; i < data.length; i++) {
+          data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
+            this.findByNodeType(hierarchy, "KEYWORD")
+          }) : null;
+        }
+
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
   }
@@ -170,6 +182,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {string} keyword
   */
   public applyKeyword(doc, keyword) {
+    if(this.findByNode(keyword)) {
+      var fixedArray = this.removeDublicate(this.kwmToAdd)
+      keyword = ''
+      for (var i = 0; i < fixedArray.length; i++){
+        if(i === 0) {
+          keyword = keyword + fixedArray[i] ;
+        } else {
+          keyword = keyword + "->" + fixedArray[i] ;
+        }
+        
+      }
+      console.log(keyword)
+      this.kwmToAdd = []
+    }
+
     this.addKeywordToDoc(doc, keyword).subscribe(
       res => {
         this.uploadService.patchKeywords(res).subscribe(() => {
@@ -185,11 +212,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-   /**
-  * @description
-  * Adds a keyword to all selected documents.
-  * @param {string} keyword
-  */
+  private  removeDublicate = function(arr){
+    var res = []
+    for (var i = 0; i < arr.length; i++) {
+           if(arr[ i + 1] !== arr[i] ){
+            res.push(arr[i])
+           }
+    };
+     return res
+   }  
+
+  /**
+ * @description
+ * Adds a keyword to all selected documents.
+ * @param {string} keyword
+ */
   public applyBulkKeywords(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
@@ -218,6 +255,87 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   private search(value: string) {
     const filter = value.toLowerCase();
     return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
+  }
+
+  /**
+  * @description
+  * Searches the keywordModelList list for a search term
+  * @param {Array} data term
+  * @param {string} nodeType term
+  * @returns {void}
+  */
+
+  private findByNodeType(data, nodeType) {
+    if (data.nodeType === nodeType) {
+      if (!(this.keywords).includes(data.item)) {
+        this.keywords.push(data.item)
+        this.selectedKeywords.push(data.item)
+      }
+      if (data.children) {
+        data.children.forEach(child => {
+          this.findByNodeType(child, "KEYWORD")
+        });
+      }
+    }
+  }
+
+  /**
+  * @description
+  * Finds a node with specific keyword
+  * @param {string} text term
+  * @returns {boolean} Found or not
+  */
+
+  findByNode(text) {
+    var found = false;
+    var isNameAdded = false;
+    for (var i = 0; i < this.keywordModels.length; i++) {
+      
+      if (this.keywordModels[i].hierarchy) {
+        this.keywordModels[i].hierarchy.forEach(hierarchy => {
+          if (hierarchy.children) {
+            if(this.findKeywordRecursively(hierarchy.children, text)){
+              found = true
+              if(!isNameAdded) {
+                this.kwmToAdd.splice(0, 0, this.keywordModels[i].name);
+                isNameAdded = true;
+              }
+              this.kwmToAdd.push(text);
+              return found
+            }
+          }
+        });
+      }
+    }
+    return found
+  }
+
+    /**
+  * @description
+  * Recursively finds children with specific keyword
+  * @param {string} text term
+  * @param {Array} children term
+  * @returns {boolean} Found or not
+  */
+
+  findKeywordRecursively(children, text) {
+    for (let index = 0; index < children.length; index++) {
+      const element = children[index];
+      if (element.item === text) {
+        return element;
+      } else {
+        if (element.children) {
+          const found = this.findKeywordRecursively(element.children, text);
+          if (found) {
+            if(element.nodeType === "KEYWORD"){
+              this.kwmToAdd.push(element.item)
+            }
+            this.kwmToAdd = this.kwmToAdd.reverse();
+            return found;
+          }
+        }
+      }
+    }
   }
 }
 
