@@ -26,7 +26,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
-
+import { IKeyWordModel } from './../models/IKeyWordModel.model'
 /**
  *
  * @class ApiService
@@ -89,12 +89,27 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/models`);
   }
 
-  public addKeywordModel(kwm): Observable<object> {
+  public addKeywordModel(kwm: IKeyWordModel): Observable<object> {
+    const dict = {
+      "id" : kwm.id,
+      "hierarchy" : kwm.hierarchy,
+    };
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/models`, kwm, httpOptions);
+    return this.http.post(`${environment.serverUrl}/models`, JSON.stringify(dict), httpOptions);
+  }
+
+  public removeKeywordModel(kwm: IKeyWordModel): Observable<object> {
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    console.log("deleting: ", kwm.id);
+    return this.http.delete(`${environment.serverUrl}/models/${kwm.id}`, httpOptions);
   }
 }

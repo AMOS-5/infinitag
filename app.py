@@ -75,6 +75,10 @@ def upload_file():
 
 @app.route('/changekeywords', methods=['PATCH'])
 def change_keywords():
+    """
+    Handles the updating of keywords for a document
+    :return: json object containing a success/error message
+    """
     try:
         iDoc = request.json
         id = iDoc.get('id')
@@ -95,6 +99,10 @@ def change_keywords():
 
 @app.route('/documents')
 def get_documents():
+    """
+    Queries all documents form solr and sends them to the front end
+    :return: json object containing the documents or an error message
+    """
     try:
         # load docs from solr
         res = solr.docs.search("*:*")
@@ -190,22 +198,33 @@ def keywordmodels():
     """
     if request.method == 'GET':
         try:
-            data = solr.keywordmodel.get()
+            solrHierarchies = solr.keywordmodel.get()
+            list = [hierarchy.as_dict() for hierarchy in solrHierarchies]
             #print("kwm: " + data , file=sys.stdout)
-            return jsonify(data), 200
+            return json.dumps(list), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
     elif request.method == 'POST':
         try:
             data = request.json
-            solrHierarchy = SolrHierarchy(data.get("name"), data.get("hierarchy"))
+            solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
             solr.keywordmodel.add(solrHierarchy)
             return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
         except Exception as e:
             log.error(f"/models: {e}")
             return jsonify(f"/models internal error: {e}"), 500
 
-
+@app.route('/models/<model_id>', methods=['DELETE'])
+def remove_keyword_model(model_id):
+    """
+    Handles DELETE request for keyword models
+    :return: json object containing a status message
+    """
+    try:
+        solr.keywordmodel.delete(model_id)
+        return jsonify(f"{model_id} has been removed from keyword models"), 200
+    except Exception as e:
+        return jsonify(f"{model_id} internal error: {e}"), 500
 
 @app.route('/stopServer', methods=['GET'])
 def stop_server():

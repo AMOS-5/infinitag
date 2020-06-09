@@ -1,5 +1,6 @@
+
 <div class="container">
-  <h1>Keyword Model Setings</h1>
+  <h1>Keyword Model Settings</h1>
   <mat-grid-list cols="8" rows="4" gutterSize="32px" rowHeight="1:1.3">
     <mat-grid-tile [colspan]="3" [rowspan]="1">
       <div>
@@ -21,14 +22,11 @@
           <mat-selection-list #kwmList [multiple]="false" (selectionChange)="selectionChange(kwmList.selectedOptions.selected)">
             <mat-list-option *ngFor="let keywordModel of keywordModels; let i = index" [value]="i">
               <div>
-                <button mat-icon-button (click)="renameKeywordModel(keywordModel)">
-                  <mat-icon>edit</mat-icon>
-                </button>
-                <button mat-icon-button (click)="deleteKeywordModel(keywordModel)">
+                <button mat-icon-button [disabled]="i !== selectedKwmIdx" (click)="removeKeywordModel(keywordModel)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                {{keywordModel}}
-            </div>
+                {{keywordModel.id}}
+              </div>
             </mat-list-option>
           </mat-selection-list>
           <button mat-icon-button (click)="newKeywordModel()">

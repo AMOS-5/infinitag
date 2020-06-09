@@ -9,7 +9,9 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { KeywordsComponent, ItemFlatNode } from './keywords.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTreeModule } from '@angular/material/tree';
+import {MatListModule} from '@angular/material/list';
 
 describe('KeywordsComponent', () => {
   let component: KeywordsComponent;
@@ -27,7 +29,10 @@ describe('KeywordsComponent', () => {
         MatFormFieldModule,
         FormsModule,
         MatInputModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatTreeModule,
+        MatListModule,
       ]
     })
     .compileComponents();
@@ -52,7 +57,7 @@ describe('KeywordsComponent', () => {
   });
 
   it('test should receive keywordmodel data', () => {
-    expect(component.keywords).toBeTruthy();
+    expect(component.keywordModels).toBeTruthy();
   });
 
   it('test should add item in keywordmodel', () => {
