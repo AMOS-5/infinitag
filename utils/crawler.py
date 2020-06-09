@@ -155,9 +155,6 @@ def crawl_gov(type: str, count: int, output: str = '.'):
                         sleep(5)
                     except Exception:
                         pass
-                    pass
-            pass
-    pass
 
 
 if __name__ == "__main__":
@@ -175,7 +172,10 @@ if __name__ == "__main__":
     if not os.path.isdir(args.document_output):
         os.makedirs(args.document_output)
 
-    if args.source == "arxiv":
+
+    if args.all:
+        category_crawler(args.document_output)
+    elif args.source == "arxiv":
         crawl_arxiv(categories=args.categories.split(),
                     max_results=args.max_results,
                     sleep_time=max(5, args.sleep_time),
@@ -185,5 +185,6 @@ if __name__ == "__main__":
         crawl_gov(type=args.document_type,
                   count=args.max_results,
                   output=args.document_output)
+
     else:
         print("Only arxiv and gov are supported as sources at the moment")
