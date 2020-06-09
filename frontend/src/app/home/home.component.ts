@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit {
   public ngOnInit(): void {
     this.httpClient.get(this.documentsUrl)
       .subscribe((value: Array<IDocument>) => {
-        console.log(value)
         this.documents = value;
       });
   }

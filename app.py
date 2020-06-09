@@ -235,6 +235,26 @@ def stop_server():
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
+@app.route('/keywordmodels', methods=['GET'])
+def keywordmodel():
+    """
+    Handles GET and POST request for keyword model
+    :return: json object containing the keyword model and/or a status message
+    """
+    if request.method == 'GET':
+        res = []
+        try:
+            data = solr.keywordmodel.get()
+            for model in data:
+                modelDict = {
+                    "name": model.name,
+                    "hierarchy": model.hierarchy
+                }
+                res.append(modelDict)
+            return jsonify(res), 200
+        except Exception as e:
+            return jsonify(f"internal error: {e}"), 500
+
 
 if __name__ == '__main__':
 

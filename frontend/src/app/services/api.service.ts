@@ -49,6 +49,10 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keys`);
   }
 
+  public getKWMModels() {
+    return this.http.get(`${environment.serverUrl}/keywordmodels`);
+  }
+
   public addUncategorizedDimension(dim): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
