@@ -1,0 +1,1824 @@
+Delivered-To: adarshbhandaryp@gmail.com
+Received: by 2002:a05:6102:20c5:0:0:0:0 with SMTP id i5csp639636vsr;
+        Wed, 3 Jun 2020 12:02:14 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxupf9pnnroMxuK3newET26Z0kZ33h4Hy9zsmGr+4Ea5gZN/914Za5EPKAtGlT6PEayLtWx
+X-Received: by 2002:aed:2861:: with SMTP id r88mr779078qtd.207.1591210933064;
+        Wed, 03 Jun 2020 12:02:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1591210933; cv=none;
+        d=google.com; s=arc-20160816;
+        b=DbpI0hPwdXJMHSRaY/lL0sLdiOVUL8PTpYiihqL2cKo+5BcpEVk+/Uy7nuSa/IgAV1
+         uEdudG9GzV9iXIgrXBJVcPhHBPhLFy6r0E28MDaj/fKU/iOktPzTdq6/KZOZd70qZxSU
+         Ll+ge+Tys6c5XuDecZI93Mb+cb2b0oqN5H1uY/ZVQJ/e5tEW9EF2FKQXwtk2JsCkNbMZ
+         NbLVmWj1BU5HtYktqQxY9Kz/ImA8rVVp4IDNZpRinQrX+eeICOiVz7TyI9QHlhK1zoFg
+         W4LLu0kiSyhJ05MGFEFAKHInTa7vc94tQChYKyRihcb0gU1LZmhnD0A7687eMUYW7sju
+         qcIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20160816;
+        h=feedback-id:precedence:mime-version:subject:message-id:to:reply-to
+         :from:date:list-unsubscribe:dkim-signature:dkim-signature;
+        bh=JvI4/8dF4I5i9T00WriTVT0Bk+Ktjl9NKDHAgmdPBDM=;
+        b=GGZXuor7mqcLHgUWSSwPtc0P+qVevP7NNFdMVkI3DP9pcAbB6CwkBAyx3nsqdPs4wL
+         bPA54HZA3FhxkTVP+6Dx6+Tgeh6wAE4OXIv3QGzzfcGN5lVjylUKJGxF67IpZA+x7HMR
+         nlg+b+J6tvv6rgFhi5ipwZFEd0T1gjXPzalpgl0GugNDPjucZ96aeRaT9crW/MamNN0U
+         TnTleZ/ANqp6S/WjrqV6aNRQ7c0jeyyvdkp5UU8+7XOQj/WoT/2zZ9FfXJ1IbZu/0E0T
+         7VZugjoInK4U9iwT8VzpH+BO0PSMgNG+V+ipSNbERfCCbnaaYTQB1cw7C2YGzMtRi9z6
+         36dg==
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@bf06x.hubspotemail.net header.s=hs1 header.b=i0E5cU7z;
+       dkim=pass header.i=@deeplearning.ai header.s=hs1 header.b=OzLCMc+N;
+       spf=pass (google.com: domain of 1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net designates 158.247.18.160 as permitted sender) smtp.mailfrom="1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net"
+Return-Path: <1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net>
+Received: from bid46pe.bf06x.hubspotemail.net (bid46pe.bf06x.hubspotemail.net. [158.247.18.160])
+        by mx.google.com with ESMTPS id g1si1598622qtp.280.2020.06.03.12.02.12
+        for <adarshbhandaryp@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 03 Jun 2020 12:02:13 -0700 (PDT)
+Received-SPF: pass (google.com: domain of 1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net designates 158.247.18.160 as permitted sender) client-ip=158.247.18.160;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@bf06x.hubspotemail.net header.s=hs1 header.b=i0E5cU7z;
+       dkim=pass header.i=@deeplearning.ai header.s=hs1 header.b=OzLCMc+N;
+       spf=pass (google.com: domain of 1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net designates 158.247.18.160 as permitted sender) smtp.mailfrom="1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net"
+Received: by 172.16.47.42 with SMTP id awr0u7ftm42nwmqnh5cm2up06i53m8av0026;
+        Wed, 3 Jun 2020 19:02:12 GMT
+DKIM-Signature: v=1; s=hs1; d=bf06x.hubspotemail.net; 
+        i=@bf06x.hubspotemail.net; 
+        h=sender:from:reply-to:to:subject:mime-version:content-type:list-unsubscribe:x-report-abuse:form-sub:feedback-id; 
+        a=rsa-sha256; c=relaxed/relaxed; 
+        bh=JvI4/8dF4I5i9T00WriTVT0Bk+Ktjl9NKDHAgmdPBDM=; 
+        b=i0E5cU7zUxAGYjmMoB1a4XxOlJFA2/ZJJxgiIXr+RVqC4UQ9iY8jd+aD+1Ef6t
+         prdqPmfAxJrgKAky1DHbbgLTbXh0uy+/QOf3q7YZ06gwexVoHIwrqHUBYzoKROR
+         Y2nuhvPzGVwyKxGXbn32RV5EqPIrlK9NHov7/1Be1Y73pE48zWfyLDAPcYZSURk
+         vCM+1bkoQAeHlG4NMfOMB/ADqe6T7OfGIyoDxlsRAZ/A7zATFgJzUNEGSXQkNcb
+         n0NzlSeV2PYQlKqdRbzN06pnmW0wijSCVzchd2ML+jQiK2gggROgULOf6DgTMBq
+         7SorT0A7Doq+wtEE4VfOJi62j/uQ==; q=dns/txt; t=1591210932;
+DKIM-Signature: v=1; s=hs1; d=deeplearning.ai; 
+        i=@deeplearning.ai; 
+        h=sender:from:reply-to:to:subject:mime-version:content-type:list-unsubscribe:x-report-abuse:form-sub:feedback-id; 
+        a=rsa-sha256; c=relaxed/relaxed; 
+        bh=JvI4/8dF4I5i9T00WriTVT0Bk+Ktjl9NKDHAgmdPBDM=; 
+        b=OzLCMc+NOhgSZ7pfWGqE7nrecph92W9reUYT09EJP+RC5EkKdNwwuUq4/3TcpE
+         6qmnh2CuIijSgDQpaQ7Eaoo+cLxgvmi2aTgwsti7Vv36/I85emL8KpshSkev7PM
+         ZcE8ouI9nMGaWdK/ipxuphSxlThL8d9zRvWg7gUX7uH4yV8zOzdcsUNoPoYqhZa
+         XAwMkSZnLe4m17Q6coenjEDy0ayCq20TceXGRb+XNI7tZuSs9XkvBNi7eUtUlFz
+         6lfTUEw0piuVeF4AtWy3yxJ69fBQq+nXFXaXEK1QG18MwlDwI2Oxy/8wQ8mN9hJ
+         UEN/yi2UHE4D0KTDdu0HyuVejI1Q==; q=dns/txt; t=1591210932;
+Return-Path: <1axbxlrmd1zhs5y4bxb15qcc7ifl7dc6n8m076-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net>
+X-HS-Cid: 1axe5nhkdpy2kn54381zevzg0mjj80t7p2yiuu
+List-Unsubscribe: <mailto:1axcz98x3tfiotpvr79uoafaf5gy16hoaia55y-adarshbhandaryp=gmail.com@bf06x.hubspotemail.net?subject=unsubscribe>
+Date: Wed, 3 Jun 2020 12:02:12 -0700
+From: "deeplearning.ai" <thebatch@deeplearning.ai>
+Reply-To: thebatch@deeplearning.ai
+To: adarshbhandaryp@gmail.com
+Message-ID: <1591210201732.7b8c3197-7fba-441f-9ae9-03086602c169@bf06x.hubspotemail.net>
+Subject: =?utf-8?Q?The_Batch:_Facebook=E2=80=99s_Unruly_Alg?=
+ =?utf-8?Q?orithm,_AI_That_Does_the_Dishes,?=
+ =?utf-8?Q?_New_Life_for_Old_Data,_Models_T?=
+ =?utf-8?Q?hat_Take_Shortcuts,_YOLO_Returns?=
+MIME-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_16135672_667799991.1591210931256"
+Precedence: bulk
+X-Report-Abuse-To: abuse@hubspot.com (see
+ https://www.hubspot.com/abuse-complaints)
+Feedback-ID: aedr4ve:aibq8gnn:aidf:HubSpot
+
+------=_Part_16135672_667799991.1591210931256
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+Dear friends,
+
+Like many of you, I=E2=80=99m deeply saddened by the events of the past wee=
+k.
+
+Subscribe (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5R=
+NT7m92LgbbW4vVpZL5pM85jdBzP8M04 )    Tips (mailto:thebatch@deeplearning.ai?=
+subject=3DRE%3A%20Tips%20and%20News)
+
+Dear friends,
+
+Like many of you, I=E2=80=99m deeply saddened by the events of the past wee=
+k. I=E2=80=99m horrified by the senseless violence perpetrated against Blac=
+k communities and appalled by the persistent racial injustice of our societ=
+y. It=E2=80=99s long past time to right these terrible wrongs.
+
+The tragic deaths of George Floyd, Ahmaud Arbery, Breonna Taylor, Sean Reed=
+, and innumerable others remind us that life is precious, and that we have =
+much more work to do to build an inclusive society. Minority voices are oft=
+en marginalized, and that creates a responsibility for the rest of us to ke=
+ep our ears and minds open, and add our voices to theirs when the occasion =
+calls.
+
+The AI community itself has a diversity problem. The number of Black people=
+ in the field is vanishingly small. A narrow perspective can lead to severe=
+ly flawed work if we overlook factors like skin color when we collect and a=
+nnotate datasets or validate results. Without diverse teams, instead of bui=
+lding AI systems that help a cross section of people, we open doors for som=
+e while locking out others.
+
+Lack of diversity in the AI community has another effect: It reinforces the=
+ belief, often unconscious, that certain people can=E2=80=99t make importan=
+t contributions to the field. We need to fight this sort of bias as well.
+
+If you are Black and working in AI, we would like to know about your experi=
+ences in the field. If you have Black colleagues whom you admire, please le=
+t us know about them as well. We hope to share some of your stories. Please=
+ write to us at hello@deeplearning.ai (mailto:hello@deeplearning.ai) .
+
+Maybe I'm naive, but the protests this time do feel different, and I=E2=80=
+=99m cautiously optimistic that this may be the time when we finally make a=
+ huge dent in racism. As members of the AI community, let us join this move=
+ment, condemn racism everywhere we see it, and settle for nothing less than=
+ a fair and inclusive world.
+
+Keep learning!
+
+Andrew
+
+News
+
+Facebook Likes Extreme Content
+
+Facebook=E2=80=99s leadership has thwarted changes in its algorithms aimed =
+at making the site less polarizing, according to the Wall Street Journal (h=
+ttps://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4=
+vVpZL5pM85jdBzP8N04 ) .
+
+What=E2=80=99s new: The social network=E2=80=99s own researchers determined=
+ that its AI software promotes divisive content. But the company=E2=80=99s =
+management rejected or weakened proposed reforms, concerned that such chang=
+es might cut into profits or give the appearance of muzzling conservatives.
+
+Fizzled reforms: Facebook=E2=80=99s recommender system promotes posts from =
+its most active users: those who do the most commenting, sharing, and likin=
+g. Internal investigations conducted between 2016 and 2018 showed that such=
+ so-called superusers disproportionately spread misinformation, much of it =
+politically divisive. Internal committees proposed ways to address the issu=
+e, but the company ultimately made changes that blunted their potential imp=
+act.
+
+- One proposal called for lowering recommendation scores for content posted=
+ by superusers on the far right or far left of the political spectrum. Cont=
+ent from moderates would receive higher scores.
+- The company accepted the approach but lowered the penalties applied to ex=
+tremist posts by 80 percent.
+- Facebook also nixed the building of a classification system for polarizin=
+g content and quashed plans to suppress political clickbait.
+
+Behind the news: Conservatives in the U.S. have long accused social media p=
+latforms of left-wing bias, a charge to which Facebook has been particularl=
+y sensitive (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW=
+5RNT7m92LgbbW4vVpZL5pM85jdBzP8P04 ) .
+
+- In 2018, lawmakers grilled (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykB=
+z43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8Q04 ) Facebook CEO Mark Zuck=
+erberg over accusations that the platform marginalized conservatives.
+- Last week, Twitter put warning labels on tweets by Donald Trump that it d=
+eemed misleading or inciting violence. The president responded with an exec=
+utive order (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW=
+5RNT7m92LgbbW4vVpZL5pM85jdBzP8R04 ) that would strip social media companies=
+ of legal protections from liability for content posted by users.
+- Facebook publishes similarly inflammatory posts by the president without =
+challenge. Some Facebook employees protested that stance with a virtual wal=
+kout (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m9=
+2LgbbW4vVpZL5pM85jdBzP8S04 ) on Monday.
+
+Facebook's response: =E2=80=9CWe=E2=80=99ve built a robust integrity team, =
+strengthened our policies and practices to limit harmful content, and used =
+research to understand our platform=E2=80=99s impact on society so we conti=
+nue to improve,=E2=80=9D the company said in a statement.
+
+Why it matters: The algorithms that govern popular social media platforms h=
+ave an outsized influence on political discourse worldwide, contributing to=
+ polarization, unrest, and hate crimes. Divisive rhetoric distributed by Fa=
+cebook has been linked (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6s=
+jj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8T04 ) to violence in Sri Lanka, My=
+anmar, and India.
+
+We=E2=80=99re thinking: Social media is a double-edged sword. It has been h=
+elpful for quickly disseminating (mostly accurate) information about concer=
+ns like Covid-19. But what brings people together can also drive them apart=
+. The AI community has a responsibility to craft algorithms that support a =
+just society even as they promote business.
+
+When Models Take Shortcuts
+
+Neuroscientists once thought they could train rats to navigate mazes by col=
+or. It turns out that rats don=E2=80=99t perceive colors at all. Instead, t=
+hey rely on the distinct odors of different colors of paint. New work finds=
+ that neural networks are especially prone to this sort of misalignment bet=
+ween training goals and learning.
+
+What=E2=80=99s new: Robert Geirhos, J=C3=B6rn-Henrik Jacobsen, and Claudios=
+ Michaelis led a study of neural network hiccups conducted by the Universit=
+y of T=C3=BCbingen, Max Planck Research School for Intelligent Systems, and=
+ the University of Toronto. They argue that many of deep learning=E2=80=99s=
+ shortcomings reveal shortcut learning (https://info.deeplearning.ai/e2t/sc=
+2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8V04 ) .
+
+Key insight: Shortcuts are pathways to solving a problem that result in goo=
+d performance on standard benchmarks but don=E2=80=99t require understandin=
+g of the problem and therefore don=E2=80=99t transfer well to real-world si=
+tuations.
+
+How it works: The authors identify apparent causes of shortcut learning in =
+neural networks, circumstances that tend to encourage it, and techniques av=
+ailable to discourage it.
+
+- Dataset bias can cause models to focus on spurious correlations (https://=
+info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5p=
+M85jdBzP8W04 ) rather than valid relationships. For instance, cows often st=
+and in pastures, so black, white, and green textures can indicate their pre=
+sence =E2=80=94 but a lawn is not an identifying mark of cattle. Models hav=
+e a hard time learning true bovine characteristics when their training data=
+ offers this simpler approach.
+- Training data may be free of spurious correlations and still fail to repr=
+esent the task at hand. For example, cats have fur while elephants have wri=
+nkled skin, so an animal classifier may wind up becoming a texture detector=
+ instead.
+- To address such issues, the authors propose training and testing on out-o=
+f-distribution, augmented, and adversarial examples. If a model incorrectly=
+ recognizes a test sample that has been altered to change, say, the color o=
+f grass from green to brown, it=E2=80=99s likely the model relied on shortc=
+uts.
+- In the animal classification tasks described above, domain experts can ma=
+ke sure the training set depicts animals in a variety of scenes and breeds =
+such as hairless cats that exhibit a range of textures.
+
+Why it matters: The authors shed light on an issue that has troubled machin=
+e learning engineers for decades and highlight the lack of robustness of cu=
+rrent algorithms. Addressing these issues will be key to scaling up practic=
+al neural network deployments.
+
+We=E2=80=99re thinking: Humans also use shortcuts; we=E2=80=99ve all memori=
+zed formulas by rote instead of fully understanding them. Our misbehaving m=
+odels may be more like us than we=E2=80=99d like to admit.
+
+AI Does the Dishes
+
+A pioneer in dishwashing robots is reaching into commercial kitchens.
+
+What=E2=80=99s new: Dishcraft Robotics uses machines equipped with computer=
+ vision to scrub dirties for corporate food services and, soon, restaurants=
+.
+
+How it works: Every morning, Dishcraft=E2=80=99s biodiesel-fueled trucks de=
+liver clean dishes and utensils to corporate clients near its Silicon Valle=
+y hub. At the day=E2=80=99s end, the trucks retrieve them. Back at headquar=
+ters, workers load racks of dirty dishes and cutlery into an automated wash=
+ing machine.
+
+- The system classifies each item and tailors its cleaning cycle accordingl=
+y, a company rep told The Batch.
+- A pose estimation model helps suction-powered robotic arms pass items bet=
+ween scrubbing and rinsing stations, as seen above.
+- Another model inspects items for cleanliness. The company says its sensor=
+s can detect particles too small for humans to see.
+- A recent $20 million investment will fund the company=E2=80=99s expansion=
+ into reusable takeout containers (https://info.deeplearning.ai/e2t/sc2/MmZ=
+-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8X04 ) . Customers will =
+drop off soiled plasticware at set locations, and the company will clean an=
+d redistribute it to its restaurant partners.
+
+Behind the news: Other robotics companies are also aiming to disrupt the ki=
+tchen.
+
+- Last year, Toyota Research Institute showed off a mechanical prototype (h=
+ttps://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4=
+vVpZL5pM85jdBzP8Y04 ) that organizes dishes and silverware in a household d=
+ishwasher.
+- Robotics startup Moley built a pair of AI-guided arms (https://info.deepl=
+earning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8Z=
+04 ) capable of cooking everything from soups to macarons. The company plan=
+s to release a consumer model this year.
+
+Why it matters: Dishcraft estimates its system saves clients as much as 1.6=
+ gallons of water per meal. Its plan to clean reusable to-go containers cou=
+ld keep tons of waste out of landfills.
+
+We=E2=80=99re thinking: Such machines also could mean fewer bodies in food-=
+service kitchens =E2=80=94 a plus in the Covid era but not so much for huma=
+n staff who may find themselves out of a job.
+
+A MESSAGE FROM DEEPLEARNING.AI (https://info.deeplearning.ai/e2t/sc2/MmZ-8y=
+kBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8-04 )
+
+Use machine learning to estimate treatment effects on individual patients. =
+Take the final course of the AI For Medicine Specialization, now available =
+on Coursera. Enroll now (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6=
+sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP8_04 )
+
+Cars Idled, AV Makers Keep Rolling
+
+The pandemic has forced self-driving car companies off the road. Now they=
+=E2=80=99re moving forward by refining their mountains of training data.
+
+What=E2=80=99s new: Self-driving cars typically collect real-world training=
+ data with two human operators onboard, but Covid-19 makes that unsafe at a=
+ny speed. Instead, several companies are squeezing more value out of work t=
+hey=E2=80=99ve already done, according to MIT Technology Review (https://in=
+fo.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM8=
+5jdBzP9004 ) .
+
+What they=E2=80=99re doing: Makers of autonomous vehicles are relabeling ol=
+d data and fine-tuning simulations.
+
+- Drivers at the autonomous truck company Embark (https://info.deeplearning=
+.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9104 ) ar=
+e sifting through four years of past driving records, flagging noteworthy e=
+vents and annotating how vehicles should react.
+- Pittsburgh-based Aurora Innovation (https://info.deeplearning.ai/e2t/sc2/=
+MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9204 ) reassigned veh=
+icle operators to scan its data for unusual situations that can be converte=
+d into simulated training scenarios.
+- Scale AI (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5=
+RNT7m92LgbbW4vVpZL5pM85jdBzP9304 ) , a data-labeling firm, is adding detail=
+ to its datasets. It=E2=80=99s also developing a tool that predicts the int=
+entions of drivers and pedestrians by tracking their gaze.
+- GM=E2=80=99s Cruise (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sj=
+j1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9404 ) is updating its simulations. =
+For instance, the company is improving the way it scores vehicle responses =
+to uncommon occurrences such as encounters with ambulances.
+
+Behind the news: With little income, $1.6 million in average monthly overhe=
+ad, and increasingly tight funding, autonomous vehicle companies are making=
+ tough choices. Lyft, Kodiak Robotics, and Ike have laid off employees (htt=
+ps://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vV=
+pZL5pM85jdBzP9504 ) , while Zoox (https://info.deeplearning.ai/e2t/sc2/MmZ-=
+8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9604 ) is looking for a b=
+uyer.
+
+Why it matters: Data can be a renewable resource: By adding new labels and =
+sharpening old ones, AI teams can imbue old datasets with new life. Using r=
+efurbished datasets to improve simulations compounds the effect.
+
+We=E2=80=99re thinking: Development of self-driving cars had moved into the=
+ slow lane even before the pandemic. It=E2=80=99s better to keep making inc=
+remental progress than none at all.
+
+Another Look at YOLO
+
+The latest update of the acclaimed real-time object detector You Only Look =
+Once is more accurate than ever.
+
+What=E2=80=99s new: Alexey Bochovskiy, Chien-Yao Wang, and Hong-Yuan Mark L=
+iao at Taiwan=E2=80=99s Institute of Information Science Academia Sinica of=
+fer YOLOv4 (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5=
+RNT7m92LgbbW4vVpZL5pM85jdBzP9704 ) =E2=80=94 the first version not to inclu=
+de the architecture=E2=80=99s original creators.
+
+Key insight: Rapid inference is YOLO=E2=80=99s claim to fame. The authors p=
+rioritized newer techniques that improve accuracy without impinging on spee=
+d (their so-called =E2=80=9Cbag of freebies=E2=80=9D). In addition, they ma=
+de improvements that boost accuracy at a minimal cost to speed (the =E2=80=
+=9Cbag of specials=E2=80=9D). All told, these tweaks enable the new version=
+ to outperform both its predecessor and high-accuracy competitors running a=
+t real-time frame rates.
+
+How it works: YOLO, as well as most object detectors since, tack a model th=
+at predicts bounding boxes and classes onto a pre-trained ImageNet feature =
+extractor.
+
+- Techniques under the heading =E2=80=9Cbag of freebies=E2=80=9D boost accu=
+racy by adding computation during training. These include alternate boundin=
+g box loss functions, data augmentation, and decreasing the model=E2=80=99s=
+ confidence for ambiguous classes.
+- The authors introduce new data augmentation techniques such as Mosaic, wh=
+ich mixes elements drawn from four training images to place objects in nove=
+l contexts.
+- =E2=80=9CBag of specials=E2=80=9D techniques include the choice of activa=
+tion function: ReLU variants are marginally slower, but they can yield bett=
+er accuracy.
+- The authors accommodate users with limited hardware resources by choosing=
+ techniques that allow training on a single, reasonably affordable GPU.
+
+Results: The authors pitted YOLOv4 against other object detectors that proc=
+ess at least 30 frames per second, using the COCO (https://info.deeplearnin=
+g.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9804 ) i=
+mage dataset. YOLOv4 achieved 0.435 average precision (AP), running at 62 f=
+rames per second (FPS). It achieved 0.41 AP at its maximum rate of 96 FPS. =
+The previous state of the art, EfficientDet (https://info.deeplearning.ai/e=
+2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9904 ) , achie=
+ved 0.43 AP running at nearly 42 FPS and 0.333 AP at its top speed of 62 FP=
+S.
+
+Why it matters: YOLOv4 locates and classifies objects faster than measureme=
+nts (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92=
+LgbbW4vVpZL5pM85jdBzP9b04 ) of human performance. While it=E2=80=99s not as=
+ accurate as slower networks such as EfficientDet, the new version boosts a=
+ccuracy without sacrificing speed.
+
+We=E2=80=99re thinking: You only look once . . . twice . . . thrice . . . f=
+our times and counting!
+
+Goodbye Tourists, Hello Labelers
+
+Covid-19 has cost many workers their livelihood, but it has provided a luck=
+y few on the lowest rungs of Africa=E2=80=99s machine learning industry wit=
+h luxury suites.
+
+What=E2=80=99s new: Samasource, a data labeling company headquartered in Sa=
+n Francisco, California, is housing its East African workforce in hotels an=
+d resorts so they can continue to work while maintaining social distance, W=
+ired reports (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1b=
+W5RNT7m92LgbbW4vVpZL5pM85jdBzP9c04 ) .
+
+How it works: The pandemic prompted strict lockdowns in Kenya and Uganda, w=
+here Samasource employs some 2,000 workers. Many live in communities with n=
+o internet connectivity. So the company put up its workforce in four intern=
+et-equipped hotels that were vacant amid the coronavirus-driven collapse of=
+ tourism.
+
+- Over half the company=E2=80=99s workforce in East Africa agreed to the ar=
+rangement. Employees each get a suite where they must remain throughout the=
+ workday. Housekeepers handle their laundry and nurses check their temperat=
+ure daily.
+- Wired profiled data-labeler Mary Akol (pictured in one of the photos abov=
+e), one of 140 employees staying at the four-star Ole Sereni hotel, which o=
+verlooks Nairobi National Park.
+- Workers there are allowed to leave their rooms at sunset to watch wildlif=
+e like rhinos, zebras, and giraffes from a terrace. They also engage in soc=
+ially distanced group exercise. Akol has been teaching her co-workers salsa=
+ dancing =E2=80=94 sans partners, of course.
+
+Behind the news: Several companies are providing jobs that help feed both t=
+he AI industry=E2=80=99s hunger for data and underserved communities.
+
+- U.S.- and India-based iMerit has an all-female center in Kolkata (https:/=
+/info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5=
+pM85jdBzP9d04 ) that employs nearly 500 Muslim women who label computer vis=
+ion data for companies like eBay, Microsoft, and TripAdvisor (https://info.=
+deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jd=
+BzP9f04 ) .
+- Based in New York, Daivergent (https://info.deeplearning.ai/e2t/sc2/MmZ-8=
+ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9g04 ) hires people on the=
+ autism spectrum to label data and helps neurodivergent people find tech jo=
+bs.
+
+Why it matters: Socially conscious outsourcing increases the tech industry=
+=E2=80=99s talent pool by providing decent jobs to people who, because of g=
+eography, gender, race, or other factors, otherwise might be locked out.
+
+We=E2=80=99re thinking: The grocery industry=E2=80=99s Fair Trade (https://=
+info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5p=
+M85jdBzP9h04 ) labels help consumers distinguish between socially responsib=
+le employers and their wage-slashing competitors. A similar measure for AI =
+would foster both growth and diversity.
+
+Work With Andrew Ng
+
+Chief Technology Officer: Rustle, an AI Fund portfolio company, seeks a CTO=
+. You will be responsible for building customer and company interactions le=
+veraging AI, natural-language processing, and a mobile-first user interface=
+. Apply here (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1b=
+W5RNT7m92LgbbW4vVpZL5pM85jdBzP9j04 )
+
+Senior Full-Stack Engineer in Medell=C3=ADn, Colombia: Bearing AI, an AI Fu=
+nd portfolio company, is looking for an experienced full-stack engineer. Yo=
+u will be responsible for building out the API to support our web app as we=
+ll as helping to develop new AI-driven products. Contact our team directly =
+at estephania@aifund.ai (mailto:estephania@aifund.ai) or apply here (https:=
+//info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL=
+5pM85jdBzP9k04 )
+
+ML Curriculum Development Director: FourthBrain.ai (https://info.deeplearni=
+ng.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9l04 ) =
+, an AI Fund portfolio company focused on AI-based training, is looking for=
+ an experienced curriculum developer. You will leverage machine learning to=
+ design comprehensive project instructions, assessments, and learning exper=
+iences to help students develop a portfolio. Contact our team directly at e=
+stephania@aifund.ai (mailto:estephania@aifund.ai) or apply here (https://in=
+fo.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM8=
+5jdBzP9m04 )
+
+Academic Operations Director: FourthBrain.ai (https://info.deeplearning.ai/=
+e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9n04 ) , an A=
+I Fund portfolio company focused on AI-based training, is looking for a dir=
+ector of operations. You will oversee program management, design selection =
+and recruiting processes for students, lead external communications, and en=
+sure fast execution. Contact our team directly at estephania@aifund.ai (mai=
+lto:estephania@aifund.ai) or apply here. (https://info.deeplearning.ai/e2t/=
+sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9p04 )
+
+Thoughts, suggestions, feedback? Please send to thebatch@deeplearning.ai (m=
+ailto:thebatch@deeplearning.ai?subject=3DRE:%20Thoughts,%20Suggestions,%20f=
+eedback) .
+
+Subscribe here (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq=
+1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9q04 ) and add our address to your contacts=
+ list so our mailings don't end up in the spam folder. You can unsubscribe =
+from this newsletter or update your preferences=E2=80=8B here (https://info=
+.deeplearning.ai/hs/manage-preferences/unsubscribe?d=3DVngby26t1VZdVY4brB49=
+Rk7nW3QZn4H3zgFCsW2m40Kf3T0pbmW43T2PQ5PXBZRW15gBJz8xLFgdW4Y79bd5DTBsZW507Jl=
+V6xhSv3VWnkgw83mP3jMXk_7QbvWhJW14wGWN71kLQdW8BMH4D6V5NSt2TJ2&v=3D3&_hsenc=
+=3Dp2ANqtz--5uPhy2F7EJxNQB8WZEIgJLgtb9t8f7iwS884sLeJVk8JgbZCgl6o0EZAkfvS50T=
+wTEIcW3ij47aQN4qJEVbyyAzIcN6slFuPTBPqOcMgbp3KjxIA&_hsmi=3D88934593 ) =E2=80=
+=8B.
+
+Copyright 2020  deeplearning.ai (https://info.deeplearning.ai/e2t/sc2/MmZ-8=
+ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdBzP9r04 ) ,  195 Page Mill Ro=
+ad, Suite 115, Palo Alto, California 94306, United States. All rights reser=
+ved.
+
+Unsubscribe (https://info.deeplearning.ai/hs/manage-preferences/unsubscribe=
+?d=3DVngby26t1VZdVY4brB49Rk7nW3QZn4H3zgFCsW2m40Kf3T0pbmW43T2PQ5PXBZRW15gBJz=
+8xLFgdW4Y79bd5DTBsZW507JlV6xhSv3VWnkgw83mP3jMXk_7QbvWhJW14wGWN71kLQdW8BMH4D=
+6V5NSt2TJ2&v=3D3&_hsenc=3Dp2ANqtz--5uPhy2F7EJxNQB8WZEIgJLgtb9t8f7iwS884sLeJ=
+Vk8JgbZCgl6o0EZAkfvS50TwTEIcW3ij47aQN4qJEVbyyAzIcN6slFuPTBPqOcMgbp3KjxIA&_h=
+smi=3D88934593 )
+
+Behance (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT=
+7m92LgbbW4vVpZL5pM85jdBzP9s04 )
+tw (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92L=
+gbbW4vVpZL5pM85jdBzP9t04 )
+link (https://info.deeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m9=
+2LgbbW4vVpZL5pM85jdBzP9v04 )
+
+deeplearning.ai
+
+195 Page Mill Road
+
+Suite 115
+
+Palo Alto
+California
+94306
+United States
+
+Not rendering correctly? View this email as a web page here (https://info.d=
+eeplearning.ai/e2t/sc2/MmZ-8ykBz43W6sjj1b8YDq1bW5RNT7m92LgbbW4vVpZL5pM85jdB=
+zP9w04 ) .
+------=_Part_16135672_667799991.1591210931256
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org=
+/TR/xhtml1/DTD/xhtml1-strict.dtd"><!-- start coded_template: id:9563172397 =
+path:Custom/email/default/optin.html --><html xmlns=3D"http://www.w3.org/19=
+99/xhtml"><head>
+  <title>The Batch: Facebook=E2=80=99s Unruly Algorithm, AI That Does the D=
+ishes, New Life for Old Data, Models That Take Shortcuts, YOLO Returns</tit=
+le>
+  <meta property=3D"og:title" content=3D"The Batch: Facebook=E2=80=99s Unru=
+ly Algorithm, AI That Does the Dishes, New Life for Old Data, Models That T=
+ake Shortcuts, YOLO Returns">
+  <meta name=3D"twitter:title" content=3D"The Batch: Facebook=E2=80=99s Unr=
+uly Algorithm, AI That Does the Dishes, New Life for Old Data, Models That =
+Take Shortcuts, YOLO Returns">
+  <meta name=3D"og:image" content=3D"https://deeplearning-assets.s3.amazona=
+ws.com/content/uploads/2019/08/the_batch_cover-1.jpg">
+  <meta name=3D"twitter:card" content=3D"summary_large_image">
+  <meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+ =20
+  <meta name=3D"description" content=3D"Dear friends,
+Like many of you, I=E2=80=99m deeply saddened by the events of the past wee=
+k.">
+ =20
+  <style type=3D"text/css" id=3D"hs-inline-css">
+        /*<![CDATA[*/
+        body, #backgroundTable {
+            font-family: sans-serif;
+        }
+        p{
+            font-size:1.25em;
+        }
+        table{
+            border: none!important;
+        }
+        h1,h2,h3,h4,h5,p{
+            margin: 0;
+            padding: 0;
+        }
+        #templateTable {
+            -webkit-font-smoothing: antialiased;
+        }
+        /* =3D=3D=3D=3D Standard Resets =3D=3D=3D=3D */
+        .ExternalClass{
+            width:100%;
+        }
+        .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalCla=
+ss font, .ExternalClass td, .ExternalClass div {
+            line-height: 100%;
+        }
+        body, table, td, p, a, li, blockquote{
+            -webkit-text-size-adjust:100%;
+            -ms-text-size-adjust:100%;
+        }
+        table, td {
+            mso-table-lspace:0pt;
+            mso-table-rspace:0pt;
+        }
+        img {
+            vertical-align: bottom;
+            -ms-interpolation-mode:bicubic;
+        }
+        table {
+            border-collapse:collapse !important;
+        }
+        a:link, a:visited {
+            border-bottom: none;
+        }
+        #footer a {
+            color: #999999;;
+            -webkit-text-size-adjust: none;
+            text-decoration: underline;
+            font-weight: normal
+        }
+        #top-bar {
+          height: 81px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 1px solid #FF6B58;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          background: #fff;
+          padding: 0 50px;
+        }
+        #logo {
+          display: inline-block;
+          float: none;
+          max-height: 54%;
+          margin-bottom: 0;
+          vertical-align: middle;
+          filter: grayscale(1) brightness(0.555);
+          transition: all .2s ease-in-out;
+        }
+        #logo:hover {
+          filter: none;
+        }
+        #backToSite a,
+        #backToSite a:hover,
+        #backToSite a:active,
+        #backToSite a:focus {
+          display: inline-block;
+          color: #FFFFFF;
+          padding: 6px 20px;
+          border: 0;
+          border-radius: 8px;
+          background: #FF3A3E !important;
+          position: relative;
+          font-weight: 500;
+          line-height: 1.7em;
+          transition: all .2s;
+          cursor: pointer;
+          text-decoration: none;
+          font-family: 'Assistant', Helvetica, Arial, Lucida, sans-serif;
+          font-size: 18px;
+        }
+        #top-bar-spacer {
+          margin-top: 120px;
+        }
+        @media only screen and (max-width: 980px) {
+          #top-bar {
+            padding: 0 10px;
+            position: relative;
+          }
+          #logo {
+            max-width: 80%;
+            max-height: auto;
+          }
+          #backToSite a {
+            font-size: 14px;
+            white-space: nowrap;=20
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+          #backToSite a:hover,
+          #backToSite a:focus,
+          #backToSite a:active {
+            font-size: 14px;
+          }
+          #top-bar-spacer {
+            margin-top: 20px;
+          }
+        }
+        /*]]>*/
+  </style>
+  <!-- http://www.emailon@cid.com/blog/details/C13/ensure_that_your_entire_=
+email_is_rendered_by_default_in_the_iphone_ipad -->
+  <!--                                                                     =
+                                                -->
+  <!--                                                                     =
+                                                -->
+  <!--                            _/    _/            _/          _/_/_/   =
+                     _/                         -->
+  <!--                           _/    _/  _/    _/  _/_/_/    _/        _/=
+_/_/      _/_/    _/_/_/_/                      -->
+  <!--                          _/_/_/_/  _/    _/  _/    _/    _/_/    _/ =
+   _/  _/    _/    _/                           -->
+  <!--                         _/    _/  _/    _/  _/    _/        _/  _/  =
+  _/  _/    _/    _/                            -->
+  <!--                        _/    _/    _/_/_/  _/_/_/    _/_/_/    _/_/_=
+/      _/_/        _/_/                         -->
+  <!--                                                               _/    =
+                                                -->
+  <!--                                                              _/     =
+                                                -->
+  <!--                                                                     =
+                                                -->
+  <!--                                                 Extra White Space!  =
+                                                -->
+  <!--                                                                     =
+                                                -->
+  <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - =
+- - - - - - - - - - - - - - - - - - - - - - - - -->
+<meta name=3D"generator" content=3D"HubSpot"><meta property=3D"og:url" cont=
+ent=3D"https://info.deeplearning.ai/the-batch-facebooks-unruly-algorithm-ai=
+-that-does-the-dishes-new-life-for-old-data-models-that-take-shortcuts-yolo=
+-returns"><meta name=3D"x-apple-disable-message-reformatting"><meta name=3D=
+"robots" content=3D"noindex,follow"></head>
+<body leftmargin=3D"" marginwidth=3D"0" topmargin=3D"0" marginheight=3D"0" =
+offset=3D"0" style=3D"font-family:sans-serif; -webkit-text-size-adjust:100%=
+; -ms-text-size-adjust:100%">
+<script>document.write( '<header id=3D\"top-bar\"><div id=3D\"logo\"> <a hr=
+ef=3D\"https://www.deeplearning.ai/\" target=3D\"_self\"> <img src=3D\"http=
+s://deeplearning-assets.s3.amazonaws.com/content/uploads/2018/09/deeplearni=
+ng-logo.svg\" alt=3D\"deeplearning.ai\" id=3D\"logo\"> </a></div><div id=3D=
+\"backToSite\"> <a href=3D\"https://www.deeplearning.ai/thebatch/\" target=
+=3D\"_self\">Subscribe to The Batch</a></div> </header><div id=3D\"top-bar-=
+spacer\"></div>' );</script>
+<!-- Preview text (text which appears right after subject) -->
+<div id=3D"preview_text" style=3D"display:none;font-size:1px;color:#f2f2f2;=
+line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">
+  Dear friends,
+Like many of you, I=E2=80=99m deeply saddened by the events of the past wee=
+k.
+</div>
+<!--  The  backgroundTable table manages the color of the background and th=
+en the templateTable maintains the body of
+the email template, including preheader & footer. This is the only table yo=
+u set the width of to, everything else is set to
+100% and in the CSS above. Having the width here within the table is just a=
+ small win for Lotus Notes. -->
+<!-- Begin backgroundTable -->
+<table border=3D"0" cellpadding=3D"10" cellspacing=3D"0" height=3D"100%" wi=
+dth=3D"100%" style=3D"border:none !important; -webkit-text-size-adjust:100%=
+; -ms-text-size-adjust:100%; mso-table-lspace:0pt; mso-table-rspace:0pt; bo=
+rder-collapse:collapse !important">
+  <tbody><tr>
+    <td valign=3D"top" style=3D"-webkit-text-size-adjust:100%; -ms-text-siz=
+e-adjust:100%; mso-table-lspace:0pt; mso-table-rspace:0pt">
+     =20
+      <div class=3D"widget-span widget-type-email_body " style=3D"" data-wi=
+dget-type=3D"email_body"> <div id=3D"hs_cos_wrapper_hs_email_body" class=3D=
+"hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style=
+=3D"color: inherit; font-size: inherit; line-height: inherit;" data-hs-cos-=
+general-type=3D"widget" data-hs-cos-type=3D"rich_text"><table style=3D"bord=
+er:none !important; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100=
+%; mso-table-lspace:0pt; mso-table-rspace:0pt; border-collapse:collapse !im=
+portant; width:100%; font-family:Helvetica, sans-serif; font-size:18px; lin=
+e-height:1.5" width=3D"100%">
+<tbody>
+<tr>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; width:100%" width=3D"100%">
+<table style=3D"border:none !important; -webkit-text-size-adjust:100%; -ms-=
+text-size-adjust:100%; mso-table-lspace:0pt; mso-table-rspace:0pt; border-c=
+ollapse:collapse !important; max-width:576px; margin:0px auto; width:579px"=
+ width=3D"579">
+<tbody>
+<tr>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; width:576px" width=3D"576">
+<div style=3D"text-align: center;"><img src=3D"https://info.deeplearning.ai=
+/hubfs/TheBatchHeaderJune32020.png" style=3D"vertical-align:bottom; -ms-int=
+erpolation-mode:bicubic; max-width:576px; width:100%; height:auto" height=
+=3D"auto"></div>
+<div style=3D"text-align: center;">&nbsp;</div>
+<div style=3D"text-align: center;"><span style=3D"font-size: 15px;"><a styl=
+e=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font-size:15=
+px; font-style:initial; color:#f53b0d; text-decoration:underline" href=3D"h=
+ttps://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4R=
+syfQ3p_8SV1-WJV7CgKrmW6lvTmK2-nPvWN8dtCVp7vjD0V90Ptt4_bfd1VPlGYC5s6kcWW9lrZ=
+PT5RNDjRW8Sd6P-3XW9kcN1rPCs--x415W1WzZXH5jk8LJW2YPjwZ6pLYNPM-MGngjdn6WW1Z8W=
+3T6FWLszW2s2jJP8q5trLW7w7qY76D7LkyW7ZPj9D6n2rRtW7mgfjy5SG4pyW8Wk3184QYCXCW8=
+386GL2z91mGW4jnD6g7K4BR0W8D9XB43VcTb9W17HTfH3WMYgGW29M6zh4PM5VGN469CV0BRN_s=
+3p2c1" target=3D"_blank" rel=3D"noopener" data-hs-link-id=3D"0">Subscribe</=
+a>&nbsp;&nbsp;&nbsp;<a style=3D"-webkit-text-size-adjust:100%; -ms-text-siz=
+e-adjust:100%; font-size:15px; font-style:initial; color:#f53b0d; text-deco=
+ration:underline" href=3D"mailto:thebatch@deeplearning.ai?subject=3DRE%3A%2=
+0Tips%20and%20News" target=3D"_blank" rel=3D"noopener" data-hs-link-id=3D"0=
+">Tips</a></span></div>
+<div style=3D"text-align: center; font-size: 18px;">&nbsp;</div>
+<br>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px"><em>Dear friends,</em><=
+/p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px; font-=
+style:italic">&nbsp;</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic">Like=
+ many of you, I=E2=80=99m deeply saddened by the events of the past week. I=
+=E2=80=99m horrified by the senseless violence perpetrated against Black co=
+mmunities and appalled by the persistent racial injustice of our society. I=
+t=E2=80=99s long past time to right these terrible wrongs.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic"><br>=
+The tragic deaths of George Floyd, Ahmaud Arbery, Breonna Taylor, Sean Reed=
+, and innumerable others remind us that life is precious, and that we have =
+much more work to do to build an inclusive society. Minority voices are oft=
+en marginalized, and that creates a responsibility for the rest of us to ke=
+ep our ears and minds open, and add our voices to theirs when the occasion =
+calls.</p>
+<span style=3D"color: 000000;"> <img src=3D"https://info.deeplearning.ai/hu=
+bfs/Andrews%20Letter%20ASPECT%20(7).png" style=3D"vertical-align:bottom; -m=
+s-interpolation-mode:bicubic; max-width:576px; width:100%; height:auto" hei=
+ght=3D"auto"></span><br>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic">The =
+AI community itself has a diversity problem. The number of Black people in =
+the field is vanishingly small. A narrow perspective can lead to severely f=
+lawed work if we overlook factors like skin color when we collect and annot=
+ate datasets or validate results. Without diverse teams, instead of buildin=
+g AI systems that help a cross section of people, we open doors for some wh=
+ile locking out others.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic"><br>=
+Lack of diversity in the AI community has another effect: It reinforces the=
+ belief, often unconscious, that certain people can=E2=80=99t make importan=
+t contributions to the field. We need to fight this sort of bias as well.</=
+p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic"><br>=
+If you are Black and working in AI, we would like to know about your experi=
+ences in the field. If you have Black colleagues whom you admire, please le=
+t us know about them as well. We hope to share some of your stories. Please=
+ write to us at <a href=3D"mailto:hello@deeplearning.ai" style=3D"-webkit-t=
+ext-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" targ=
+et=3D"_blank">hello@deeplearning.ai</a>.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; font-style:italic"><br>=
+Maybe I'm naive, but the protests this time do feel different, and I=E2=80=
+=99m cautiously optimistic that this may be the time when we finally make a=
+ huge dent in racism. As members of the AI community, let us join this move=
+ment, condemn racism everywhere we see it, and settle for nothing less than=
+ a fair and inclusive world.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px; font-=
+style:italic">&nbsp;</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px; font-=
+style:italic">Keep learning!</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px"><em>A=
+ndrew</em></p>
+<p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding:0; -web=
+kit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+<p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding:0; -web=
+kit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+<strong style=3D"font-size: 1.25em; color: inherit;"><span style=3D"font-si=
+ze: 32px; color: inherit;">News</span></strong><br><span style=3D"color: 00=
+0000;"><span style=3D"color: 000000;"><span style=3D"color: 000000;"> <img =
+src=3D"https://info.deeplearning.ai/hubfs/FACEBOOK.gif" style=3D"vertical-a=
+lign:bottom; -ms-interpolation-mode:bicubic; max-width:576px; width:100%; h=
+eight:auto" height=3D"auto"></span></span></span>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">Facebook Likes Extreme Content</span></s=
+trong></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">Facebo=
+ok=E2=80=99s leadership has thwarted changes in its algorithms aimed at mak=
+ing the site less polarizing, according to the <em><a href=3D"https://info.=
+deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsydX5nxG7V3Z=
+sc37CgBZ0W7-fV_77xbfXsW3X-xMn45Lm08N5wdDbbPSB4FV7bdpH5Zz7mgVKYmM62sqBRfW8C3=
+T857FJHS9W4PHw067J0P4XW8Df_pv7qpW4vMcLskpVzdd_W2Mw65P2DdK2-W2hcZk_37_Zx0W28=
+B-cY7DCM_HW7qYGP36gjGHwW8_fphg2dghF1W5QxnYv4hBjDcN128bNLJlz1pW5VDF-c6M2jrSW=
+5_QwGl6BKQmYW6HBG8m3-xBKdW5PzCJ77_4M4jW8sVCM74sfNbSW6Tg6Fd6wfcfZVwcYqw1kLMM=
+LN80M4NG4Br6XW5h6R833xMsR5W51KyFH15xqj7W3-ZXrB7CXPFxW1vWRLW2pmCb-W8FT9mf6qK=
+cGKW685RkW1ccx64N7ftjDdPDNFVW6sZptB4ZjgH63bBS1" rel=3D" noopener" style=3D"=
+-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=
+=3D"0" target=3D"_blank">Wall Street Journal</a></em>.<br><span style=3D"fo=
+nt-weight: bold;">What=E2=80=99s new:</span> The social network=E2=80=99s o=
+wn researchers determined that its AI software promotes divisive content. B=
+ut the company=E2=80=99s management rejected or weakened proposed reforms, =
+concerned that such changes might cut into profits or give the appearance o=
+f muzzling conservatives.&nbsp;<br><span style=3D"font-weight: bold;">Fizzl=
+ed reforms:</span> Facebook=E2=80=99s recommender system promotes posts fro=
+m its most active users: those who do the most commenting, sharing, and lik=
+ing. Internal investigations conducted between 2016 and 2018 showed that su=
+ch so-called superusers disproportionately spread misinformation, much of i=
+t politically divisive. Internal committees proposed ways to address the is=
+sue, but the company ultimately made changes that blunted their potential i=
+mpact.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">One proposal called for lowering recommendatio=
+n scores for content posted by superusers on the far right or far left of t=
+he political spectrum. Content from moderates would receive higher scores.<=
+/li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">The company accepted the approach but lowered =
+the penalties applied to extremist posts by 80 percent.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Facebook also nixed the building of a classifi=
+cation system for polarizing content and quashed plans to suppress politica=
+l clickbait.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Behind the news:</strong> Conservatives in the U.S. have long accused soc=
+ial media platforms of left-wing bias, a charge to which Facebook has been =
+particularly <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18=
+mq8mjzRHNW3S9mTt49VJrdN4Rsyg_3p_b1V1-WJV7CgWdyW1w9VcV7xZPpPW8yrpRj9cjWFDVrj=
+lp28SSZQPW30Yt-82PNx7FW3kgLtn4nj7BrW4m-Kqd3C0JDsW375n3_9b36wVW1gfrGV39brsdW=
+8Vzj1V17qSC4N3xz-vfMqKLpW9dZY6z4vzQvxW1W7l445zJQlvW1cFy426kT1jBW2mFtbH24t8J=
+tV_YvgB3Vqx91W8w2rnZ5H0lC1W6MYS511sJrXcW2PGl4f7cyPgrW2_g-cJ1ZJfQwW6JqWlc8Jn=
+VlKW4xBmS83kbkY1W3rZb6R4ZzZzNW8tL_hm5l6FsKW605zfy49KzjBVNfmL-6q5qj9VyNvK08z=
+6kCTW1fgzxd994BCmV-M1kF5CWDrCW2hyTgB97Md3SW7wG_Hq2V1qmB3l4C1" rel=3D" noope=
+ner" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" dat=
+a-hs-link-id=3D"0" target=3D"_blank">sensitive</a>.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">In 2018, lawmakers <a href=3D"https://info.dee=
+plearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsydX5nxG7V3Zsc3=
+7CgYM3W8p76YC2Xj321W7Ghn585MqdwqW6tRFMt1Dp3T-N8zLwP3y79RCW3Qgzts5mvn5rVhTDd=
+X2-CNblW5VMZMJ8_HQXDW2x5QtR4v05_xW24fjRj68g1v3W4MFSq-36Hs7fW5WTMSD2c5l9sW5Z=
+rl8V7JDKqNW8z1VpC21sxv7Vjr33g6CgXcbVXGFd95k1QfqW8Jg7Qj1Zcd81W2nRX7V5ZVLlpW7=
+7_N1H462JbDW3Wh_rv304YwcW44D_pP7nK6GwW2ctwNY4YhhnWW4Dqwf17583zPW12_Vrn123Nn=
+bW5xGwzd7mF0pyDkd1H3BzdnW2513Tj7J-tDVN2bGt072yf92W5w4vH46ksSrDW1WWSvQ599blz=
+W5Lbrc05hVBCfVYBk43887vzvW77NNT91XC7Zt33P11" rel=3D" noopener" style=3D"-we=
+bkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0=
+" target=3D"_blank">grilled</a> Facebook CEO Mark Zuckerberg over accusatio=
+ns that the platform marginalized conservatives.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Last week, Twitter put warning labels on tweet=
+s by Donald Trump that it deemed misleading or inciting violence. The presi=
+dent responded with an <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxN=
+w5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfc5nxGrV3Zsc37CgzSnW853nlS4HBzvrW36nn9=
+c7G09zjN82pMZVFZ8czW3w9gmV8cdsCXW2cBN5s2j3TYmW106HkG3SVd_pN7YFdJLB882vW82N3=
+876mwWsLN3Nd_N5Y-ZPMW72d_BS7gCgyyW78RjGN5hShZXN8c08YJNz5wlW6jJH796YV-BgW1lg=
+zCN8lx-HgMPfKSXNY7DSW6kQypK209yH3W2sl0Mx74_zlfVgp4t-7tG9xQN3nYG4RYkYFSW27Jh=
+b84tR2b8W85WJcf2CG-Q6W1M_vz63v_tjHN1wr-d1F2yZNW6Hj9jS3yZZ7pN3JmMS4qbx2WW1sp=
+N3S1XchB4W2XZx0s2KqCZlW205XPX4p_qKZW5Cf_HT7KPFKtW2N8WYQ628RWYW2KwNNn6DbYgsW=
+2MrYq05rTpZ8W1X3QYX7Pz4MtN210RdsKgwrY2kQ1" rel=3D" noopener" style=3D"-webk=
+it-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" =
+target=3D"_blank">executive order</a> that would strip social media compani=
+es of legal protections from liability for content posted by users.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Facebook publishes similarly inflammatory post=
+s by the president without challenge. Some Facebook employees protested tha=
+t stance with a <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-=
+N18mq8mjzRHNW3S9mTt49VJrdN4RsygJ3p_9LV1-WJV7CgG-FV_btMz5dV4w_W2HRcVM5zLdJ2W=
+2nyFFb35K9LZVjVvpj8kYRzXW65Y-_v8_sY0dW5j1XGl5JyrmhW7yFfSp4JFbmZVNWKdX6byZBw=
+N7t8lfY23B8-W3hmcJF1TqypyN5KkgSCtSbfKW8CTdF_7xNnVSW1HT24b8PrF5LW3-5j9Q347mh=
+FW5tv46S3n1g6hW32znTz2fFG1pW5dZtPp9gvDnQW33yC-w4Dw56dW64Rmpx2spsbdMm9jNFZrz=
+6VW3PhtQK2GQ9QPN5f_psbXp83fW4VXhDm2XsCH6W8xwlyP1r3B5dW1hJf5n2HGwSNVrTv_536f=
+7NLW1dYtgR5GJtlYV_9XN86lx7_V3lV41" rel=3D" noopener" style=3D"-webkit-text-=
+size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=
+=3D"_blank">virtual walkout</a> on Monday.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Facebook's response:</strong> =E2=80=9CWe=E2=80=99ve built a robust integ=
+rity team, strengthened our policies and practices to limit harmful content=
+, and used research to understand our platform=E2=80=99s impact on society =
+so we continue to improve,=E2=80=9D the company said in a statement. <br><s=
+trong>Why it matters:</strong> The algorithms that govern popular social me=
+dia platforms have an outsized influence on political discourse worldwide, =
+contributing to polarization, unrest, and hate crimes. Divisive rhetoric di=
+stributed by Facebook has been <a href=3D"https://info.deeplearning.ai/e2t/=
+tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsydX5nxG7V3Zsc37CgTtKW2WKG4K6pXB=
+vPVd_K-v678GpTW5vlHGm2TLBjqMtHT46mvbTrW6kBLqY6Y1n5kW4kwdHG8Q6TS8W73pJr78lwF=
+J6N7nDx80ghgP6W38ZHHZ8hmMs9W67mTh07Wzc46W4yHM3_3gdRXjN4r6n0b1wh6RN1hH4mbPrc=
+DSN8s1Ck5Ypnc0W6T1WKD3Vblw-VVsgq76qsJqsV_3qvZ3G7xB3W5CsBpG48k_QCW1RDsZJ5J1_=
+yCN6MpwM9FKqfsW94xwV828FFcSVZ5PyC8C-MYJVWLYbM4J8d2NW9drF552xkYFrW2kKg-q72GG=
+nFW4czRw96mnC1sW3S17Cl85RglSW7VlLn98rZ5m6W60T8s-90QxJBW8r76wD2zG3mRW2MxCkQ5=
+ksjnGW8GzBD21vKKQV3n_t1" rel=3D" noopener" style=3D"-webkit-text-size-adjus=
+t:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">=
+linked</a> to violence in Sri Lanka, Myanmar, and India.<br><strong>We=E2=
+=80=99re thinking:</strong> Social media is a double-edged sword. It has be=
+en helpful for quickly disseminating (mostly accurate) information about co=
+ncerns like Covid-19. But what brings people together can also drive them a=
+part. The AI community has a responsibility to craft algorithms that suppor=
+t a just society even as they promote business.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px">&nbsp=
+;</p>
+<hr><span style=3D"color: 000000;"><span style=3D"color: 000000;"><span sty=
+le=3D"color: 000000;"> <img src=3D"https://info.deeplearning.ai/hubfs/SHORT=
+CUT.gif" style=3D"vertical-align:bottom; -ms-interpolation-mode:bicubic; ma=
+x-width:576px; width:100%; height:auto" height=3D"auto"></span></span></spa=
+n>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">When Models Take Shortcuts</span></stron=
+g></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">Neuros=
+cientists once thought they could train rats to navigate mazes by color. It=
+ turns out that rats don=E2=80=99t perceive colors at all. Instead, they re=
+ly on the distinct odors of different colors of paint. New work finds that =
+neural networks are especially prone to this sort of misalignment between t=
+raining goals and learning.<br><strong>What=E2=80=99s new:</strong> Robert =
+Geirhos, J=C3=B6rn-Henrik Jacobsen, and Claudios Michaelis led a study of n=
+eural network hiccups conducted by the University of T=C3=BCbingen, Max Pla=
+nck Research School for Intelligent Systems, and the University of Toronto.=
+ They argue that many of deep learning=E2=80=99s shortcomings reveal <a hre=
+f=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49V=
+JrdN4RsyfQ3p_8SV1-WJV7Cg_5SVSJlnv5-b9CKW1khLJj7TLpS_W57vtkl51yNzNW6TQsTf56w=
+dG1W3H2xn97DH748W7-m1Zn65D9dFW10zzjp1qcKx2W3xlChJ2YDzLSW3JgZZR9lkwF3W73dwdQ=
+3g-0trV8Tg284w-L7TW3KGYcc7sLpnMW35RCVZ37Z77gW7yx4j66LN6VdV__8s349Rlx0W7XLb8=
+G1K4p3DW2xnHyv6P_fFtW3p-YHn65b88XVz652W7pzHGyW1j7R2g467s22W5PkXZp8FT7MmW9fC=
+kQ17qGq_t3c7z1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -=
+ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">shortcut =
+learning</a>.<br><strong>Key insight:</strong> Shortcuts are pathways to so=
+lving a problem that result in good performance on standard benchmarks but =
+don=E2=80=99t require understanding of the problem and therefore don=E2=80=
+=99t transfer well to real-world situations.<br><strong>How it works:</stro=
+ng> The authors identify apparent causes of shortcut learning in neural net=
+works, circumstances that tend to encourage it, and techniques available to=
+ discourage it.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Dataset bias can cause models to focus on <a h=
+ref=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt4=
+9VJrdN4Rsyg53p_97V1-WJV7CgSkmW5HclKX7F09nGW2-qxNT8fVtM5W5r2KdL4ZD8j1W85Qh7r=
+5_ynJrW3scPL678-ghFW24Hgj61_FcqXW3wbSD-3wdpshW3qJdgH47s_6-W29LNWf446XGdW2lH=
+dMf7pl84VW3syy7814RSd3N4Qc__r7CFTpW1Mf5-p4fl9g4W4dV6qb6-FPxgVvqTwV3XwXtJV6r=
+L556Hmq3zN2CymGMYThylW8vDNxS8PD_sqW2H9_9j1mG3W0N4SJY9Q9Gg5NW8QGRh95W_wcpW8Q=
+mPr1753QR2V_5ZlX2zfkynW1hrgTZ7f3GBP3l2p1" rel=3D" noopener" style=3D"-webki=
+t-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" t=
+arget=3D"_blank">spurious correlations</a> rather than valid relationships.=
+ For instance, cows often stand in pastures, so black, white, and green tex=
+tures can indicate their presence =E2=80=94 but a lawn is not an identifyin=
+g mark of cattle. Models have a hard time learning true bovine characterist=
+ics when their training data offers this simpler approach.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Training data may be free of spurious correlat=
+ions and still fail to represent the task at hand. For example, cats have f=
+ur while elephants have wrinkled skin, so an animal classifier may wind up =
+becoming a texture detector instead.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">To address such issues, the authors propose tr=
+aining and testing on out-of-distribution, augmented, and adversarial examp=
+les. If a model incorrectly recognizes a test sample that has been altered =
+to change, say, the color of grass from green to brown, it=E2=80=99s likely=
+ the model relied on shortcuts.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">In the animal classification tasks described a=
+bove, domain experts can make sure the training set depicts animals in a va=
+riety of scenes and breeds such as hairless cats that exhibit a range of te=
+xtures.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Why it matters:</strong> The authors shed light on an issue that has trou=
+bled machine learning engineers for decades and highlight the lack of robus=
+tness of current algorithms. Addressing these issues will be key to scaling=
+ up practical neural network deployments.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>We=E2=80=99re thinking:</strong> Humans also use shortcuts; we=E2=80=99ve=
+ all memorized formulas by rote instead of fully understanding them. Our mi=
+sbehaving models may be more like us than we=E2=80=99d like to admit.</p>
+<hr><span style=3D"color: 000000;"><span style=3D"color: 000000;"><span sty=
+le=3D"color: 000000;"><img src=3D"https://info.deeplearning.ai/hubfs/Dishes=
+2-optimized.gif" style=3D"vertical-align:bottom; -ms-interpolation-mode:bic=
+ubic; max-width:576px; width:100%; height:auto" height=3D"auto"></span></sp=
+an></span>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">AI Does the Dishes</span></strong></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">A pion=
+eer in dishwashing robots is reaching into commercial kitchens.<br><strong>=
+What=E2=80=99s new:</strong> Dishcraft Robotics uses machines equipped with=
+ computer vision to scrub dirties for corporate food services and, soon, re=
+staurants.<br><strong>How it works:</strong> Every morning, Dishcraft=E2=80=
+=99s biodiesel-fueled trucks deliver clean dishes and utensils to corporate=
+ clients near its Silicon Valley hub. At the day=E2=80=99s end, the trucks =
+retrieve them. Back at headquarters, workers load racks of dirty dishes and=
+ cutlery into an automated washing machine.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">The system classifies each item and tailors it=
+s cleaning cycle accordingly, a company rep told <em>The Batch</em>.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">A pose estimation model helps suction-powered =
+robotic arms pass items between scrubbing and rinsing stations, as seen abo=
+ve.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Another model inspects items for cleanliness. =
+The company says its sensors can detect particles too small for humans to s=
+ee.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">A recent $20 million investment will fund the =
+company=E2=80=99s expansion into <a href=3D"https://info.deeplearning.ai/e2=
+t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfc5nxGrV3Zsc37CgNtvW9grQS-4G=
+jdvcN64c70xmT0k1VLLDnB8wq6DbW8D3s4j35FcPmVmXK915RRgwKW7fNSwy4ts5hhW291nw63N=
+Yw0LW6CPNSJ3sL0tzW4cl0P12QcZnQW6RzV_n6nxj9KW1FZ11P3mrGVsW1WzFL92vqvYtW1jCgk=
+92VnVJvW3Y-nsq13fjqmW2zqM5R47YwSPW2rXVjG7LTFSPW3Xtz3c2whysDW5qfHpy4Fnf7XVqN=
+CjY8Tbg5rVVZfXn4M7JdCW25P-SF47jTxMW4MH7Mm9k0P2xN8tM4k04zwv5Vwpkyw33z2QHW5PL=
+sTD8WmwncW1xt6d53Cy4ZBW5N8Vsh4kyN_QW6wxCsT4hmWpGW8vpy_Y6p1TlGW1BSKk529l17xW=
+6qdzvy1czh_tW5VHpN07RxTsRVwcZ4M3g845vW6J_RLm7TKrdg345Z1" rel=3D" noopener" =
+style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-=
+link-id=3D"0" target=3D"_blank">reusable takeout containers</a>. Customers =
+will drop off soiled plasticware at set locations, and the company will cle=
+an and redistribute it to its restaurant partners.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Behind the news:</strong> Other robotics companies are also aiming to dis=
+rupt the kitchen.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Last year, Toyota Research Institute showed of=
+f a mechanical <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N=
+18mq8mjzRHNW3S9mTt49VJrdN4Rsyg_3p_b1V1-WJV7CgQNDW6Z2mc_3PhHW-W37Vszl8jJRYtW=
+2PPb9Z8G6WJ4W3dwfGL4PsmKDW4pMWsV6nFwt7W1GXB4P1nw9m9W8dvRxZ56TJMRW4xvlGf89_j=
+0mW5J0brd3GpTcDW684xgv1CWgKWW32yGf21lS4yTW5TB89W3cwHHBW6RQN6v1Bt-SCN23T-TVk=
+1CNxW8L-VD81gvQ9SW6MffP48s-fBrW8vbshK24BB9JW7rtD__6kCsVzW8wccpN4F3DyCW4v9dP=
+q7Z6jSxW2QmCPb2hw7zKW1tx8Bz7XY9sMW4L4H-S4xtWW_W1HnLb_8MsD_RW3k6YJf8CRV9jW1v=
+pHF13qPY9CW1XbjMy7Wwj_CW8SH6Q_6h85yGW2bcfNL4-nXJnN5399kS5rS3x3bBf1" rel=3D"=
+ noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100=
+%" data-hs-link-id=3D"0" target=3D"_blank">prototype</a> that organizes dis=
+hes and silverware in a household dishwasher.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Robotics startup Moley built a pair of AI-guid=
+ed <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW=
+3S9mTt49VJrdN4Rsyfw3p_8yV1-WJV7CgVVDVgf2LM2g2xW0W38gR_55C024RM6HgpLr9p8wW8z=
+gNtQ7Gm8YgN8HQj2VVDR2FVgdDp92Qg27sW4LGTBb6vywx4VkCBtP2b5zD-W5MSj2W5S2gLlW5y=
+DN_P6mNz77N1_HXzrVzmXhW3FM2kj1B9SpLW8z3lnN4RKKmPW97MtMx8Y3l46N545bv3Xv-W0W4=
+jPMJd2hZhsXW25vxJY8GtfFxW6ljKwm253gb9W9jyMm_3XzFZZN8XRRps1DmX33n811" rel=3D=
+" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:10=
+0%" data-hs-link-id=3D"0" target=3D"_blank">arms</a> capable of cooking eve=
+rything from soups to macarons. The company plans to release a consumer mod=
+el this year.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Why it matters:</strong> Dishcraft estimates its system saves clients as =
+much as 1.6 gallons of water per meal. Its plan to clean reusable to-go con=
+tainers could keep tons of waste out of landfills.&nbsp;<br><strong>We=E2=
+=80=99re thinking:</strong> Such machines also could mean fewer bodies in f=
+ood-service kitchens =E2=80=94 a plus in the Covid era but not so much for =
+human staff who may find themselves out of a job.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px">&nbsp=
+;</p>
+<hr>
+<p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding:0; -web=
+kit-text-size-adjust:100%; -ms-text-size-adjust:100%"><span style=3D"font-s=
+ize: 16px; color: #000000;">A MESSAGE FROM </span><span style=3D"font-size:=
+ 16px; color: #000000;"><a href=3D"https://info.deeplearning.ai/e2t/tc/VWjx=
+Nw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgZ9mW1W4Lk_5ZZxKZW46zv=
+xb21pl57N2VcdD_rVZrQW6clSVJ53WnwTW5XBKwD3f43_JW1yLsBd1_Ys9MW9clCdr8-vtWLW2M=
+cvwR6jyDCZN1fSydPzkCnPW6QtjF_7Xlj4CW6_y3Fn3v-C35W4Vbz7X423fMRW81w7Wy1XktNNN=
+5F0BRdzNtd5W1T7j8p3Bt-5FW5thYVL26ptb5W5KTHcP7_ZdCZW5tSWDB5nKnJRVJ0XY75crydJ=
+W2tPFQc2WKmmyW7dL-RJ7nPW3qN1QGWcfx1WB-32hg1" target=3D"_blank" style=3D"-we=
+bkit-text-size-adjust:100%; -ms-text-size-adjust:100%; text-decoration:none=
+; color:#000000" rel=3D"noopener" data-hs-link-id=3D"0">DEEPLEARNING.AI</a>=
+</span></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><span =
+style=3D"color: 000000;"><a href=3D"https://info.deeplearning.ai/e2t/tc/VWj=
+xNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfw3p_8yV1-WJV7CgGnsW4YHn1b6BpcFpW30Z=
+T_48cSTyLW4K9Lt43QQDDkW7Kr-yM4n5jcWW8BTQw24ynL6gW1qRVlg5JdcfQW1lSWgm54FnlYW=
+8RNKjl4ST2m7N5jkbBBXsLtcW82VfC173yc_nW5G-Bp733N-pQVcCY9q5Bc7VbW3zvDj-6Q59HW=
+W8HZsJR5mHzjgW3DgGfZ8WwMwcW3QWyqS2Vx2vpW7K_T1J6x18jwW1HCGGx59JP_VW1x1bv_69t=
+Tc_W1yt0FY8KRjNQ39F21" rel=3D" noopener" linktext=3D" " style=3D"-webkit-te=
+xt-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" targe=
+t=3D"_blank"><span style=3D"font-size: 32px;"><img src=3D"https://info.deep=
+learning.ai/hubfs/AI4MC3BatchAd.gif" style=3D"vertical-align:bottom; -ms-in=
+terpolation-mode:bicubic; max-width:576px; width:100%; height:auto" height=
+=3D"auto"> </span></a></span></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">Use ma=
+chine learning to estimate treatment effects on individual patients. Take t=
+he final course of the AI For Medicine Specialization, now available on Cou=
+rsera. <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjz=
+RHNW3S9mTt49VJrdN4Rsyfw3p_8yV1-WJV7CgKFgW8KPtbj7scJF_W3llpZ12ljxJ7W5-N4Y794=
+zx9tW1cjQ7M22K6GtW6L0cKn8RvmTMW4BYdjF6Kj3cLW6wmgTB4bJnMyW4QtWmQ5FCjZ1W31yYQ=
+T3v-KxPW50_4vs6xKL8RW4bN5BP6Z8N3wVwL0p94kXn5RW1kfz7Z1vr4LNW8_tVLF9bXsNjW3b4=
+GVx2H8lFwW3Kyk2M9hCQNRW4hn9NZ6QgyfPW1kjKQv1-Dt8MW6PZ4r33BCGdQW7Zx_Bq79Dsmw3=
+56j1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-si=
+ze-adjust:100%" data-hs-link-id=3D"1" target=3D"_blank">Enroll now</a></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px">&nbsp=
+; &nbsp;</p>
+<hr><span style=3D"color: 000000;"><span style=3D"color: 000000;"><span sty=
+le=3D"color: 000000;"><span style=3D"color: 000000;"> <img src=3D"https://i=
+nfo.deeplearning.ai/hubfs/Drive1.gif" style=3D"vertical-align:bottom; -ms-i=
+nterpolation-mode:bicubic; max-width:576px; width:100%; height:auto" height=
+=3D"auto"></span></span></span></span>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">Cars Idled, AV Makers Keep Rolling</span=
+></strong></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">The pa=
+ndemic has forced self-driving car companies off the road. Now they=E2=80=
+=99re moving forward by refining their mountains of training data. <br><str=
+ong>What=E2=80=99s new:</strong> Self-driving cars typically collect real-w=
+orld training data with two human operators onboard, but Covid-19 makes tha=
+t unsafe at any speed. Instead, several companies are squeezing more value =
+out of work they=E2=80=99ve already done, according to <em><a href=3D"https=
+://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyg_=
+3p_b1V1-WJV7CgNkGW1B1c303n4KdQW4BJQ_g9b7dNdN4bCKcQ5MFqNN3RW0ztvrGfmW76HZH48=
+VtgJzVMp1bX6HmwJ2W3lyMB323xWJzW6ZwXZ21XvLyZW4pxVp-2MJKg0W7Zknhf8bR-rZW2qFd9=
+c8ZdQ3sW5CqbSt2hCcWKW6vfvsh846jqXW8JZd3s9hd0hcW90P5s56W7prwW41HmFZ7TLmmNW1M=
+YBVw2ZXl_lW3wlMd_4CtkJ-W3SskBL4Qx4Z9W2MMbB55_vJyRW2RmXrb35KjTlW46hLdQ8j5kGQ=
+N49Q-5QPqQk-W5TsWlv3slvS6Vz0XrY82Tp3pW3QHZnJ3gp2LnW1kqJCB1sTh8JW2P6fgq8HDw_=
+SW476q1c2Yqn_LW5mNpvn8h7cGn3hbt1" rel=3D" noopener" style=3D"-webkit-text-s=
+ize-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D=
+"_blank">MIT Technology Review</a></em>.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>What they=E2=80=99re doing:</strong> Makers of autonomous vehicles are re=
+labeling old data and fine-tuning simulations.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Drivers at the autonomous truck company <a hre=
+f=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49V=
+JrdN4RsyfQ3p_8SV1-WJV7CgGz7W4rJB-G81PXs-W7-qZ2T6jRmh1W1W2d-b3TKDnzW4rT3J41T=
+PXBTN1hfS7sdKsYyW8ZZyYZ5qRqGRW5jXhLQ7mxfMWW91PLrc3XwP67W56ppkw5cdq80N8zHtQL=
+wHztxW8NQzr232WBjcW4tPhph1tbVnPW7z1gqz1lJlyRW7MWXTp1N8FBrW8TZCx27ypHR5W3pLy=
+jg7bSpd4W1MXHY23W0bfVW7ML8Vk2J3DHcW6thBg15GkWMBW2W36Hz8ddgNxW4v20NY7-TYWJW5=
+90xln8s2-wh3cCh1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%;=
+ -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">Embark<=
+/a> are sifting through four years of past driving records, flagging notewo=
+rthy events and annotating how vehicles should react.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Pittsburgh-based <a href=3D"https://info.deepl=
+earning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfw3p_8yV1-WJV7C=
+gB1KW7sZtwt3cLTgDN1ZKPYQ3pnZzW4kD2dG6Q-jk-W2yGl8w53VRlSW7yrFrH4v17XbW6Nvxwt=
+7gfs0LW5wSVDB4mrZ3yW6x3JwB5kV0zVW2vxGF61t63gbVx6Myr1SDBzwW3Kms_45g6dpPW7B9j=
+YP7ZS-HHW7rCQZz6NH_kmW35sjJP28GgrvN4ckjHdlM18tW6szgmF93NXC9W1XKw8B9kM-bSW3S=
+crGB82qQ2NW13TfSg84yd3ZW8wxTY37XXtWg3jxz1" rel=3D" noopener" style=3D"-webk=
+it-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" =
+target=3D"_blank">Aurora Innovation</a> reassigned vehicle operators to sca=
+n its data for unusual situations that can be converted into simulated trai=
+ning scenarios.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5"><a href=3D"https://info.deeplearning.ai/e2t/tc=
+/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfw3p_8yV1-WJV7CgF3gW8jHXT917VTtf=
+W45HW_132VDn4W8wXBVQ3y7Yj9N9kc7DgLvHc8W6_hvwW6y83FRW5lhCN12XKyrsW2Yk23D5sFS=
+fYV1M1gq3vfxx0N61CLyy5LwtkN8wmTH2wD6cKW26j4Zm1ghqgrW76N4Jj880xqWW8FjgLM54--=
+LBW336xk85LPJp-W6YrZfL50n6LSVXlf2B8kV6T-W6mZS2b7Rr_QrW30F66P2x7qHgW1JglPg8Q=
+w2VFW403mvb4wZvyX31rl1" rel=3D" noopener" style=3D"-webkit-text-size-adjust=
+:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">S=
+cale AI</a>, a data-labeling firm, is adding detail to its datasets. It=E2=
+=80=99s also developing a tool that predicts the intentions of drivers and =
+pedestrians by tracking their gaze.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">GM=E2=80=99s <a href=3D"https://info.deeplearn=
+ing.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgTnr=
+W5Qv1T65yBn2VW7QM3w75wPXkRVlTKmb6yfZcsW6gW3RM5G9m6KW6lktyn2GPv6jW8K96zh1m0V=
+C6W9g9ssh80b8RfW2jwtSm5FwClmW19kZSD7F3wzfW1f03KJ7Cy12DW8kfpgM2Ytpp9W431BW38=
+HK9sVW2q8jQv19QdmrW86TyPT5JF1HVW1SBq5P4X3c_7N5yS4N1P_NC_W4Z4jDr8kdzTtW3qkBn=
+T3k4R73W5sD2py45QxH_W4V7xX896Qs7MW3KtcFh3v-1y5W1wvyqR1vnSwN32_D1" rel=3D" n=
+oopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%"=
+ data-hs-link-id=3D"0" target=3D"_blank">Cruise</a> is updating its simulat=
+ions. For instance, the company is improving the way it scores vehicle resp=
+onses to uncommon occurrences such as encounters with ambulances.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Behind the news:</strong> With little income, $1.6 million in average mon=
+thly overhead, and increasingly tight funding, autonomous vehicle companies=
+ are making tough choices. Lyft, Kodiak Robotics, and Ike have <a href=3D"h=
+ttps://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4R=
+sygJ3p_9LV1-WJV7CgRVSW8xcpjy1wtf0CW8-LdlP8n-sYNW363_fd5Zv7mcW1k0N908N3G-2N7=
+QSnxrv5vScW4g8bJZ85zvnLV1_Ft14lpGSvW7hjvQ_3lQ3g0W3H5f6m80WtlNW6FKRTT4_byM3W=
+73pnjS5ft4CkN5BVtcQLZTlLW1LBq8H1PQw5rW4qfYQf7DQgfwW41K1bz1hYcgWN48KHY_C2hnj=
+N8m2CF4Kk_sXW5rZ3K78CNyG-W3YlHsC4fzKxmW8ZjSwz8l_YnGW7R9GRg3WK_xwW3r6gTw5xRk=
+yQM1pjSDN7FNcW4095WN8_Pnj2W8hPTDr8VckJJN1KQkthT1Z29W58Nt0K8vDvLpW8LLDJR3p36=
+2Q36Xz1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text=
+-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">laid off employe=
+es</a>, while <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N1=
+8mq8mjzRHNW3S9mTt49VJrdN4Rsyg_3p_b1V1-WJV7Cg-D3N4fRckdGYXN-W5tFJVc4k9jS4W4S=
+MhxX7C7HTpW585Pq6381kMXW8X6Bny6hzrVGW6GljDy57nXhMW8qJYyV2WY029W13dC3K8R7f19=
+W5d4Yq41Fy-TzN59Y2dGmjlR_W5XzdZx4d_761W4zYHVH89SMjzW7MS2K42s5yDyW3ghf_q7lTv=
+CNW2ZLqH057C5BqW8ylzP16nWlLwW52t9v_2tvr9YW59Z0pG10t9wTW8TS6Z18BlyxqW6MVFtK2=
+Yp1_9W1rSQf35VKNbHN4cVj0YNcQ-qW1S4_RP1KVY3RW4ZRM4C4SmVV2W3KLtfp53F8YgW6BRT2=
+h39G4mfW7sPCQH7187qyW7H36gR8phghdN57VWBFYmYgnW543YR41kmZYm3pNh1" rel=3D" no=
+opener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" =
+data-hs-link-id=3D"0" target=3D"_blank">Zoox</a> is looking for a buyer.<br=
+><strong>Why it matters:</strong> Data can be a renewable resource: By addi=
+ng new labels and sharpening old ones, AI teams can imbue old datasets with=
+ new life. Using refurbished datasets to improve simulations compounds the =
+effect.<br><strong>We=E2=80=99re thinking:</strong> Development of self-dri=
+ving cars had moved into the slow lane even before the pandemic. It=E2=80=
+=99s better to keep making incremental progress than none at all.</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px">&nbsp=
+;</p>
+<hr><span style=3D"color: 000000;"><span style=3D"color: 000000;"><span sty=
+le=3D"color: 000000;"><span style=3D"color: 000000;"> <img src=3D"https://i=
+nfo.deeplearning.ai/hubfs/YOLO.gif" style=3D"vertical-align:bottom; -ms-int=
+erpolation-mode:bicubic; max-width:576px; width:100%; height:auto" height=
+=3D"auto"></span></span></span></span>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">Another Look at YOLO</span></strong></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">The la=
+test update of the acclaimed real-time object detector You Only Look Once i=
+s more accurate than ever.<br><strong>What=E2=80=99s new:</strong> Alexey B=
+ochovskiy, Chien-Yao Wang, and Hong-Yuan Mark Liao at Taiwan=E2=80=99s Inst=
+itute of Information Science Academia Sinica offer <a href=3D"https://info.=
+deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-=
+WJV7CgW-CW8M7GR77gZdFpW70K9df6p6z7GW8pY-lP6Wzzp2W5z8XFk5jqX26W2F8jzW3_mppYW=
+1HtLJq46x8r2N4J49sNPVkGyW1qj03B8TWRGdVdmlhS5mZMkxW6TzsKl4VHFFxW5gJ4jM25vFrl=
+W5qq3Nh10kjVnW4lXpSL6KR9hVW4SF37r5dlk79W1PxwJL5QtrsgW8KrsZM7DHPHwW90zxTd1Bk=
+t03Vw8vLT2HPy-ZW6wvscZ6kFCCVW353gf27v8snsW4RT-cD66r8wSW4wYRgq5dNLMk35Rj1" r=
+el=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adju=
+st:100%" data-hs-link-id=3D"0" target=3D"_blank">YOLOv4</a> =E2=80=94 the f=
+irst version not to include the architecture=E2=80=99s original creators.<b=
+r><strong>Key insight:</strong> Rapid inference is YOLO=E2=80=99s claim to =
+fame. The authors prioritized newer techniques that improve accuracy withou=
+t impinging on speed (their so-called =E2=80=9Cbag of freebies=E2=80=9D). I=
+n addition, they made improvements that boost accuracy at a minimal cost to=
+ speed (the =E2=80=9Cbag of specials=E2=80=9D). All told, these tweaks enab=
+le the new version to outperform both its predecessor and high-accuracy com=
+petitors running at real-time frame rates.<br><strong>How it works:</strong=
+> YOLO, as well as most object detectors since, tack a model that predicts =
+bounding boxes and classes onto a pre-trained ImageNet feature extractor.</=
+p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Techniques under the heading =E2=80=9Cbag of f=
+reebies=E2=80=9D boost accuracy by adding computation during training. Thes=
+e include alternate bounding box loss functions, data augmentation, and dec=
+reasing the model=E2=80=99s confidence for ambiguous classes.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">The authors introduce new data augmentation te=
+chniques such as Mosaic, which mixes elements drawn from four training imag=
+es to place objects in novel contexts.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">=E2=80=9CBag of specials=E2=80=9D techniques i=
+nclude the choice of activation function: ReLU variants are marginally slow=
+er, but they can yield better accuracy.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">The authors accommodate users with limited har=
+dware resources by choosing techniques that allow training on a single, rea=
+sonably affordable GPU.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Results:</strong> The authors pitted YOLOv4 against other object detector=
+s that process at least 30 frames per second, using the <a href=3D"https://=
+info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyfw3p_=
+8yV1-WJV7CgGzhW85Lbx27C-y8sW624dLm94ZzjSW8tNL6S6YDxgTW2vGWks55yD_sW99khFr8g=
+PbR0N1JBrH4Z28bNW1MX75r1cZnwRV3_fRk7H5XJ8W1LlHL82zgJ04VfFjXV8G7gqvVYT46J7hg=
+lhBVHGCwN5G1MJ4W2GXDwk83WGQkW1-_rxp1ZyyBRW84cQbf2H9cvqW7GW82C1-bw7qW7b50dt6=
+fngLkW2ds9Yw40Bn8fW7Qz0D-3ByDn6W3FlX8T2w3sBy3bnx1" rel=3D" noopener" style=
+=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-=
+id=3D"0" target=3D"_blank">COCO</a> image dataset. YOLOv4 achieved 0.435 av=
+erage precision (AP), running at 62 frames per second (FPS). It achieved 0.=
+41 AP at its maximum rate of 96 FPS. The previous state of the art, <a href=
+=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJ=
+rdN4RsyfQ3p_8SV1-WJV7CgXBmW8Vp8Xx5nRJVFW8kmSpg8MQ3njW27_8dX5MLMHyW3FGsnh6ht=
+mdLW2pWH-N8-YkD9W7PKnNl2lNpqzV-r-Gp426WmqW7zY1Fc1hXSFTW4Ndk-N7g5CVKW5w1ZnM4=
+FXShMN8J-BxKcX72jW8j6mGD3D8jWKW8h13Md4hkBvXW5tF_HP45XqRXW4d1VDr4GKL8VN2hSc2=
+rC6d9CW6B6WyC3bBy_pW1kbycq5WkHXnN3shppkhHWXgW8DDG9g7syr69W43W9qR5j4NtpW46dx=
+215fnPDY3d1W1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -m=
+s-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">EfficientD=
+et</a>, achieved 0.43 AP running at nearly 42 FPS and 0.333 AP at its top s=
+peed of 62 FPS.<br><strong>Why it matters:</strong> YOLOv4 locates and clas=
+sifies objects faster than <a href=3D"https://info.deeplearning.ai/e2t/tc/V=
+WjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsyg53p_97V1-WJV7CgJTFW8CQ7k-4rwL3yW1=
+GBW5t78KnkgW85xXRd4Fn4c7W1GrPR57hvD6hW4_wkV-3Qp3YrW4H-jNp3sCPWWW6JRc-v4_6b9=
+dN1nyyGzdcwStW6pMW9W3gvbW1W4YSMFj1XJhS9W70RjqJ5Mx-XtVGV4bt47szlDW55b2qh19jD=
+_CW4HH6j95YKqPfW14GBK044HLqbW3mHHVT6WXpt1W6MLN-J7PYP-dW2MjCKp1Nq1MvW5Mcrv54=
+Xrrt6N32-sNCyz2b8W1myZlC54VByNW11Bj023SF6s0W50L5cp7FlZS7W2ffSnX7WzSmx3gs11"=
+ rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-ad=
+just:100%" data-hs-link-id=3D"0" target=3D"_blank">measurements</a> of huma=
+n performance. While it=E2=80=99s not as accurate as slower networks such a=
+s EfficientDet, the new version boosts accuracy without sacrificing speed.<=
+br><strong>We=E2=80=99re thinking</strong>: You only look <span style=3D"te=
+xt-decoration: line-through;">once</span> . . . <span style=3D"text-decorat=
+ion: line-through;">twice</span> . . . <span style=3D"text-decoration: line=
+-through;">thrice</span> . . . four times and counting!</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:27px">&nbsp=
+;</p>
+<hr><span style=3D"color: 000000;"><span style=3D"color: 000000;"><span sty=
+le=3D"color: 000000;"><span style=3D"color: 000000;"> <img src=3D"https://i=
+nfo.deeplearning.ai/hubfs/AFRICA.gif" style=3D"vertical-align:bottom; -ms-i=
+nterpolation-mode:bicubic; max-width:576px; width:100%; height:auto" height=
+=3D"auto"></span></span></span></span>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">Goodbye Tourists, Hello Labelers</span><=
+/strong></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">Covid-=
+19 has cost many workers their livelihood, but it has provided a lucky few =
+on the lowest rungs of Africa=E2=80=99s machine learning industry with luxu=
+ry suites. <br><strong>What=E2=80=99s new:</strong> Samasource, a data labe=
+ling company headquartered in San Francisco, California, is housing its Eas=
+t African workforce in hotels and resorts so they can continue to work whil=
+e maintaining social distance, <em>Wired</em> <a href=3D"https://info.deepl=
+earning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsygJ3p_9LV1-WJV7C=
+gZ3hW8x44mD5NpZqrW64Hj5s4GhxtxW7HrdsP2G6XlMW2r-bh02CYc0kW4zTcv82lqSsyW457_T=
+r8973bvW8QnnL15X8mTHW4y_kM285BbN7VWtPxn7BHJmYW1q-XL18DrXQ-W71zJkX4QhY-FW2M4=
+lS95R4GShW5bGf1L35WLNQN2xlx-Q4_YCRW49z6fR8fvxGgW6KnT2688l_0zW3Y864b55qkCZW2=
+hFKqg9lvzwmN3DQZ0d576F5W4my3YZ22Z6VFW6qCKzy7TpvCpW2xqrGK5318PqW6VZ6c16jmBTQ=
+W3sN8Hd1H75TwW48wlWJ3JlzqDM5Y0c-t7x4mW7B4V8B3S7xfjW98p2p_8RYZvJ38k61" rel=
+=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust=
+:100%" data-hs-link-id=3D"0" target=3D"_blank">reports</a>. <br><strong>How=
+ it works:</strong> The pandemic prompted strict lockdowns in Kenya and Uga=
+nda, where Samasource employs some 2,000 workers. Many live in communities =
+with no internet connectivity. So the company put up its workforce in four =
+internet-equipped hotels that were vacant amid the coronavirus-driven colla=
+pse of tourism.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Over half the company=E2=80=99s workforce in E=
+ast Africa agreed to the arrangement. Employees each get a suite where they=
+ must remain throughout the workday. Housekeepers handle their laundry and =
+nurses check their temperature daily.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5"><em>Wired</em> profiled data-labeler Mary Akol=
+ (pictured in one of the photos above), one of 140 employees staying at the=
+ four-star Ole Sereni hotel, which overlooks Nairobi National Park.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Workers there are allowed to leave their rooms=
+ at sunset to watch wildlife like rhinos, zebras, and giraffes from a terra=
+ce. They also engage in socially distanced group exercise. Akol has been te=
+aching her co-workers salsa dancing =E2=80=94 sans partners, of course.</li=
+>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Behind the news:</strong> Several companies are providing jobs that help =
+feed both the AI industry=E2=80=99s hunger for data and underserved communi=
+ties.</p>
+<ul>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">U.S.- and India-based iMerit has an all-female=
+ center in <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq=
+8mjzRHNW3S9mTt49VJrdN4Rsygp3p_9rV1-WJV7CgPYjW36KmPg6whx5pW5qV56j6h70T8W2Zl1=
+Rw7-4LDDW8Tdnwv2h5FgmVBmGVJ3Q5XlDW8SyvMg6FtkP4MNxySmBjxhJW6Ffjc83knZNgW3Vf1=
+ll6rdf7FW681gcF8y2r6NW5s5fST7gftv0W2LV2jz8hyS4ZW2BWWvf5VMQSRW1YjhS45hF4KdW8=
+Tl9w73Tt6LzW4R4Sxh4T5KDBN7-yjQJ27dlHW4-fQz72q8q2DW7D3gJl4xr6d0VFr1RQ8D3b8YW=
+5679_08vFJnZW1NCXDd8pL-W8W9cZC8j4KbnW5W7BpB3w5RC7DxW7vKT4C2bqzyMW3rBSjg90MS=
+Fg2t31" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -ms-text-=
+size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">Kolkata</a> that =
+employs nearly 500 Muslim women who label computer vision data for companie=
+s like <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjz=
+RHNW3S9mTt49VJrdN4RsygJ3p_9LV1-WJV7CgQ53W4B4DK142_jhBV1Bclf5sdd51W3JW6ww8Gw=
+GCqW8j9bRs2fg_JXW5GCT0P5bNpxTW35M-bt642GtfVBBz7X741vHZW1d3DM-2P638SW4k5pyM3=
+2DwplW6y6WL47HX6tlN3ssbXYH-nF3W634vM390NxKSVVXmSv7l2lGsW2872hC2P4cwbW2-QYb9=
+8RynbLW7z-BpP5lXhLvW99rJ955M5g_4W48WQ1L965dp0Vdz4YP5hbQRYN1ZsPhy3fdbDW84xG5=
+p933BLRW6zxdLj8-4ykPW5KVknb420X9sVXTBYV95V-5RW8F3f6W4jj6WBW6_PxX_699T0MW7Mk=
+k3p3B0bhDN2tsSXnywW973cVP1" rel=3D" noopener" style=3D"-webkit-text-size-ad=
+just:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blan=
+k">eBay, Microsoft, and TripAdvisor</a>.</li>
+<li style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; font=
+-size:18px; line-height:1.5">Based in New York, <a href=3D"https://info.dee=
+plearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsygp3p_9rV1-WJV=
+7CgK_zVxYhrB18msqjW5Xdftx7jSdw_W6g0bLt1-D0GBW8lZCF261KYXXW5FqNJ01FDBRSW77cZ=
+tv291jtZW7rzyHV6p_NXSN8crNfcl_-k6W7lqVH246DznNW6p23V_2r_3NFW5W2Jdx3p3N6JW4B=
+9QjT1qpcPKW7lBp-32fvzHtW7Qzfvq5wW_YQW3BYzx94Yskp_N8m6FtjHSdBtW6W9l7v3MSKjMW=
+25R2b43l0w4cW3nNXZz1sj6cgW115j3m3y59HtW6LQdMC67VHY0W57Hg2t5l4j2qW33VLcz99nB=
+j2W56dSJs7yfjwSW4gXVlg3rstnLW7Tt_jh6FS4qQ34mb1" rel=3D" noopener" style=3D"=
+-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=
+=3D"0" target=3D"_blank">Daivergent</a> hires people on the autism spectrum=
+ to label data and helps neurodivergent people find tech jobs.</li>
+</ul>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Why it matters:</strong> Socially conscious outsourcing increases the tec=
+h industry=E2=80=99s talent pool by providing decent jobs to people who, be=
+cause of geography, gender, race, or other factors, otherwise might be lock=
+ed out. <br><strong>We=E2=80=99re thinking:</strong> The grocery industry=
+=E2=80=99s <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq=
+8mjzRHNW3S9mTt49VJrdN4Rsyg53p_97V1-WJV7CgFw9V2SHKH3LVBmkW5czc5K6J8t1_W2Qvzd=
+b3hN6tXW8Vwxbv1-DyqZW61PLgj4V0WDtW1S7j3M3dHQXTW7yRCcr5qVVrrW1mycKY1wln8gW6J=
+SmHk8zHpxMW6p9bs-7BrXm1W2ttfT27ckfYGW1gTZhg1TVdT1W1xhq-s8lkfWYW3ch52l1Th7Xy=
+W6443PK5Jw8tHW64G7nr5jWkhwW5-cf2c1NXBb4W88WczH6zYd5VW2YV8Hc2KZs__W20NRKm1lC=
+K1DW53FNF435y05LV_r8-43GS5B-N8rlFy8Xr1JVF2WMhF0YzRK32cz1" rel=3D" noopener"=
+ style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs=
+-link-id=3D"0" target=3D"_blank">Fair Trade</a> labels help consumers disti=
+nguish between socially responsible employers and their wage-slashing compe=
+titors. A similar measure for AI would foster both growth and diversity.</p=
+>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">&nbsp;=
+</p>
+<hr>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g><span style=3D"font-size: 32px;">Work With Andrew Ng</span></strong><a hr=
+ef=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49=
+VJrdN4RsyfQ3p_8SV1-WJV7Cg-9xN1N2FSDf9RmvW1TDHMZ3LhpdrW6HsTVp7x3qBhW4vj4-Z8J=
+dY5gN7_tFrBBj5nrW7zw3RC5kBT-SVS9-q-39LnzLW2FVtr-3rQvrZW5f5kMm5B4BL6W92-WVh7=
+fhhrQW4J_pKG3SfkMgW2yFxL13WQ-_lW3XhJrD4V7QKqW65yqTs4hJ466W1_Jmz19gmgtpW7TVJ=
+wT3dsL1MW305mYS3xVDskW297F7Q2ydvwDW4xcX1X6nHxXkN1y5-djpj-GKN90FXbszbSVvW2zb=
+V7Y1V-Mj033CY1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; -=
+ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank"></a></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><br><s=
+trong>Chief Technology Officer:</strong> Rustle, an AI Fund portfolio compa=
+ny, seeks a CTO. You will be responsible for building customer and company =
+interactions leveraging AI, natural-language processing, and a mobile-first=
+ user interface. <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF=
+-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgH4PN6v1KhYq_N3QW8hkpcr5_9YFw=
+V_3JDZ9ltRkvN4nQBg3gp6txW3VzSR_8D-nHxN6zwBfJ5MyMKW49lWfJ7W156MW8-_XB862PWNb=
+W4THjHQ8gH_z9W8s6C1C2pmJf4W26t-Ch8_l4cXVkLf7n8qW2lJW6flF-K2btdg5W22PGgV7R_g=
+YnW38RzTF5Cm8d8W3pM6WL4bK6-_W5P5h0s3mPWNcW4g-zs18N1QXcVbms4C6NYRtRW6mdNMD4M=
+pt2FN76H0mvBnYWkW92gMm899Y9X03pVd1" rel=3D" noopener" style=3D"-webkit-text=
+-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"1" target=
+=3D"_blank">Apply here</a></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">&nbsp;=
+</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Senior Full-Stack Engineer in Medell=C3=ADn, Colombia:</strong> Bearing A=
+I, an AI Fund portfolio company, is looking for an experienced full-stack e=
+ngineer. You will be responsible for building out the API to support our we=
+b app as well as helping to develop new AI-driven products. Contact our tea=
+m directly at <a href=3D"mailto:estephania@aifund.ai" rel=3D"noopener" targ=
+et=3D"_blank" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:=
+100%" data-hs-link-id=3D"0">estephania@aifund.ai</a> or <a href=3D"https://=
+info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsygp3p_=
+9rV1-WJV7CgXR1W426cyH34QZZgN1ln4vWpc-vjW2MvPQc1DQLz6VY8TB33qhR7XW2g7nq15kJ0=
+NcW1k5k4J89NxpqW4lGlrc7sQqT5W8xGpFg5j4v4NW1hmc5W2CxWbhM67sHNGF2wxN8lXQb9rdS=
+ktW2xm3Yd2r8QWsW1gCPnV3P8W3-W4RjjZ_7xqrgQW5qQQpJ7lnDpSVH46jn266z58W5qKMLX5F=
+qnYFW8SSyzM24fPTsW2g7j8M9jMWJ9W67MWKw6P0-tQW7KdbZr5_-NsDW4jVzth86KG3gW73zBY=
+k7YJgs0N73Bg6PlMmNLV6Ld9z8Qpz7wN6R5PqpJ2MdD3j1b1" rel=3D" noopener" style=
+=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-=
+id=3D"0" target=3D"_blank">apply here</a></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><br><s=
+trong>ML Curriculum Development Director:</strong> <span style=3D"font-size=
+: 18px; color: #000000;"><a href=3D"https://info.deeplearning.ai/e2t/tc/VWj=
+xNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgzL8VF2D6K3_ZYgCW6WPk=
+4N1SdRLGW2SVbns2T7TT5W930r2-1Hmjc7W55WLtk8VBRzFW2TbZYv3Z4WJjW7B0BSm8Hjgs8W9=
+2GW737l14mkW4SRmyF2ZtYcpN7tCCHhc2H7NW2KYcq16NGNf0N8GSwvTDn1-CW4-D1Sx2BGT3BW=
+7F9xC192wypqW96vY1d203zm5W6SFpw0481zK_N5QZWRRjvdVqW5KZqvN2DWwP2W5GCx185FGXn=
+ZN3hRMTfDRw8hVsPRbP1PKdSlW4c1w6g4Q_-V736_x1" target=3D"_blank" style=3D"-we=
+bkit-text-size-adjust:100%; -ms-text-size-adjust:100%; text-decoration:none=
+; color:#000000" rel=3D"noopener" data-hs-link-id=3D"0">FourthBrain.ai</a><=
+/span>, an AI Fund portfolio company focused on AI-based training, is looki=
+ng for an experienced curriculum developer. You will leverage machine learn=
+ing to design comprehensive project instructions, assessments, and learning=
+ experiences to help students develop a portfolio. Contact our team directl=
+y at <a href=3D"mailto:estephania@aifund.ai" rel=3D"noopener" target=3D"_bl=
+ank" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" dat=
+a-hs-link-id=3D"1">estephania@aifund.ai</a> or <a href=3D"https://info.deep=
+learning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsygp3p_9rV1-WJV7=
+CgR35N1Lp0kMDC1gjN8s7m5vlYzpKW7LgjbF8gbYfgW6-gdgh3jx5HMW6wv-sZ1CKPxtW3P3XZY=
+4qXq_tW6lzW7668g4C2W5vkKcz5W_TdHW4ZRJfn5gZCrGW7fpsGp7mhkCWW6QDCP51WKCkYW3qW=
+tZj1g2Nw0W84mG_s4L2hN7W3dcyWX4Lyy-5W2sw13X6yDS8-N7L2_3-GXDw_W1FLYHK1ZRL7fVR=
+Tw3N4JfmVVW985BNb2YVpG8M1S5NlwYGmbV15QwK83JxfMW7TgxKx9lsQB1W6DVX2r3zk9l6W3r=
+MBm55yRkr_VSMxgG7Ww5lbW8dnZZt2JDhPR3kxP1" rel=3D" noopener" style=3D"-webki=
+t-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"0" t=
+arget=3D"_blank">apply here</a></p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5">&nbsp;=
+</p>
+<p style=3D"margin-bottom: 1em; margin:0; padding:0; -webkit-text-size-adju=
+st:100%; -ms-text-size-adjust:100%; font-size:18px; line-height:1.5"><stron=
+g>Academic Operations Director:</strong> <span style=3D"font-size: 18px; co=
+lor: #000000;"><a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N=
+18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgPq1VlpCDb2VtN59W73zfdf8bGmb2N6=
+l0ybGKbqw-VYZZKR7TYgqBW2dYPr165ZvlDW91dZwK8VMvvVW2ghMMP7D9jSbW7_wZcW5hXzKsW=
+2mB4Yq5s0VqhVpKx9g8W3GXXW6gMFnR8DBGv9Vhht0F7B-lH3W1C8Yhf6r-2gVW8W68wJ4hScGK=
+W1lqrTX2lVx44W3_l4H634hpb2W62ds4p2lxyLNW2PrkSd756kKgW4_f5YB8Pr8-ZW737n8k78b=
+ZJ3W7HrTNZ3dqsNHVrYm4z58jm6j3lgK1" target=3D"_blank" style=3D"-webkit-text-=
+size-adjust:100%; -ms-text-size-adjust:100%; text-decoration:none; color:#0=
+00000" rel=3D"noopener" data-hs-link-id=3D"1">FourthBrain.ai</a></span>, an=
+ AI Fund portfolio company focused on AI-based training, is looking for a d=
+irector of operations. You will oversee program management, design selectio=
+n and recruiting processes for students, lead external communications, and =
+ensure fast execution. Contact our team directly at <a href=3D"mailto:estep=
+hania@aifund.ai" rel=3D"noopener" target=3D"_blank" style=3D"-webkit-text-s=
+ize-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-id=3D"2">estephani=
+a@aifund.ai</a> or <a href=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xX=
+GF-N18mq8mjzRHNW3S9mTt49VJrdN4Rsygp3p_9rV1-WJV7CgK1gW4_0WmC50HxscN6-dy2PXpY=
+-dW5wmYtt54_CfdW8qwyBl28Jg1xN3Zs8Zb4VgnyW7h7YcS526rKqW7Z8T1K38vvMzN7mw39jzw=
+zDsW6HYB6-7h-jrxW3LkJg55RHhTxW8N-Nn742MSVzW1mXfV45QlbXcW1zgcj35fF62ZW8rtKN4=
+4r26RWW7-8zj690jSHNW83tqG_14yqt9W5k9Kvq4rMt6hW1mT2cz17ZLF8W1Rrg2d8frVNsN3-4=
+5ghd9380W7qmsS53gT331Vjp7Z73z7Dj_W7d2dns6mD6HkW415Jz18tWKyBW47hNlT95-twwW67=
+Skpq4wG_l83gdl1" rel=3D" noopener" style=3D"-webkit-text-size-adjust:100%; =
+-ms-text-size-adjust:100%" data-hs-link-id=3D"0" target=3D"_blank">apply he=
+re.</a></p>
+<p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding:0; -web=
+kit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+<hr>
+<p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding:0; -web=
+kit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+<div style=3D"text-align: center; line-height: 27px; font-weight: 400;">Tho=
+ughts, suggestions, feedback? Please send to <a style=3D"-webkit-text-size-=
+adjust:100%; -ms-text-size-adjust:100%; color:#f53b0d" href=3D"mailto:theba=
+tch@deeplearning.ai?subject=3DRE:%20Thoughts,%20Suggestions,%20feedback" ta=
+rget=3D"_blank" rel=3D"noopener" data-hs-link-id=3D"0">thebatch@deeplearnin=
+g.ai</a>.<br><br>Subscribe&nbsp;<a style=3D"-webkit-text-size-adjust:100%; =
+-ms-text-size-adjust:100%; color:#f53b0d"  href=3D"https://info.deeplearnin=
+g.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgD54W3=
+45gVD2228NFW6l4GQ35wnjHTW1XRYnn2txfT7N3PQtBt76yFhW7rSrDD19bRn3W1pyd-F1y7Sfh=
+W87Y9QL5GphjzW7rstRs21DvgZW1d4jWf7NVC64W1NR2x6870HGcN2pW2Yxb258qV59bqs4mWCp=
+kM8GTbrLVbL5W53ZdM34-M3kbW5b5Mxv6FhNn7W7gbgMp3nf1B0N8RRdCxSWDDsW8kKgKJ8nrmb=
+GW4T0lHN58v4TVW3Jpxsc2Kz_34VynPcq8JL3j9W6SMZf08zJjf53fyH1" target=3D"_blank=
+" rel=3D"noopener" data-hs-link-id=3D"1">here</a> and add our address to yo=
+ur contacts list so our mailings don't end up in the spam folder. You can u=
+nsubscribe from this newsletter or update your preferences=E2=80=8B <a href=
+=3D"https://info.deeplearning.ai/hs/manage-preferences/unsubscribe?d=3DVngb=
+y26t1VZdVY4brB49Rk7nW3QZn4H3zgFCsW2m40Kf3T0pbmW43T2PQ5PXBZRW15gBJz8xLFgdW4Y=
+79bd5DTBsZW507JlV6xhSv3VWnkgw83mP3jMXk_7QbvWhJW14wGWN71kLQdW8BMH4D6V5NSt2TJ=
+2&amp;v=3D3&amp;utm_campaign=3DThe%20Batch&amp;utm_source=3Dhs_email&amp;ut=
+m_medium=3Demail&amp;utm_content=3D88934593&amp;_hsenc=3Dp2ANqtz-_gwT3tDPtD=
+0QIQ52lObxyvS6UJIK8VZxk3i4Ai22eDzEnV1Hf9gAebBzfLmDLKKUydHtUsExCkL9PEE_RK3dh=
+M6WAsKaEwpUGZTQY3UDwLlinydAI&amp;_hsmi=3D88934593" rel=3D" noopener" style=
+=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-link-=
+id=3D"0" target=3D"_blank">here</a>=E2=80=8B.<br>
+<div><br>Copyright 2020&nbsp; <a style=3D"-webkit-text-size-adjust:100%; -m=
+s-text-size-adjust:100%; color:#f53b0d" href=3D"https://info.deeplearning.a=
+i/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsyfQ3p_8SV1-WJV7CgWbCW3Rmn=
+j01vfs3gW6B0Z-S3kW3f4N5S6R8t86ZjQVZ9pmL7J79kxW3hShqT1h6K2kW7kwf-q72LPtyW76M=
+h9K7wXP8wW1B2xkQ7Ls0HqN4xr1f8nnHGVW1V3wh868Pb1GW5xjWTY5fNK76N6-DdkYf3MG-W1B=
+9vb93wr9rxW69bdP_4zTGbkMg6c2DYCZ9fW2zzbZx8X5j1WW3lPrlb2rC6yVW8Mlk4r6FH6QmN3=
+5xP3_lwgtpW8df63r44TM-NW2KqcZk1pXFMnW7Q0Pf48Y95fN3dJz1" data-hs-link-id=3D"=
+0" target=3D"_blank">deeplearning.ai</a>,  195 Page Mill Road, Suite 115, P=
+alo Alto, California 94306, United States. All <span style=3D"color: inheri=
+t;">rights reserved.</span></div>
+</div>
+<div style=3D"text-align: center; line-height: 27px; font-weight: 400;"><a =
+href=3D"https://info.deeplearning.ai/hs/manage-preferences/unsubscribe?d=3D=
+Vngby26t1VZdVY4brB49Rk7nW3QZn4H3zgFCsW2m40Kf3T0pbmW43T2PQ5PXBZRW15gBJz8xLFg=
+dW4Y79bd5DTBsZW507JlV6xhSv3VWnkgw83mP3jMXk_7QbvWhJW14wGWN71kLQdW8BMH4D6V5NS=
+t2TJ2&amp;v=3D3&amp;utm_campaign=3DThe%20Batch&amp;utm_source=3Dhs_email&am=
+p;utm_medium=3Demail&amp;utm_content=3D88934593&amp;_hsenc=3Dp2ANqtz-_gwT3t=
+DPtD0QIQ52lObxyvS6UJIK8VZxk3i4Ai22eDzEnV1Hf9gAebBzfLmDLKKUydHtUsExCkL9PEE_R=
+K3dhM6WAsKaEwpUGZTQY3UDwLlinydAI&amp;_hsmi=3D88934593" rel=3D" noopener" st=
+yle=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%" data-hs-li=
+nk-id=3D"1" target=3D"_blank"><span style=3D"color: #000000; font-family: s=
+ans-serif; font-size: medium;">Unsubscribe</span></a></div>
+</td>
+</tr>
+<tr>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; width:576px" width=3D"576">
+<table align=3D"center" style=3D"border:none !important; -webkit-text-size-=
+adjust:100%; -ms-text-size-adjust:100%; mso-table-lspace:0pt; mso-table-rsp=
+ace:0pt; min-width:280px !important; border-collapse:separate; border-spaci=
+ng:10px 5px">
+<tbody>
+<tr>
+<td width=3D"auto" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-ad=
+just:100%; mso-table-lspace:0pt; mso-table-rspace:0pt">&nbsp;</td>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; height:50px; text-align:center; wid=
+th:50px" align=3D"center" valign=3D"middle" height=3D"50" width=3D"50"><a h=
+ref=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt4=
+9VJrdN4Rsyg53p_97V1-WJV7CgWG5W3cnvFS2yPK5qW6fzzyH9gc6qlN80mNlwr5nXhVdLCgt68=
+l8KYW7HWzT8550F7RW3zv3SV3kVNrbVdMtL07S8BB7W4KRBhy5HNC4jN2q5-HyMVBHhW2cCFSS5=
+f5xKPW6tDMFz1hVnZ_N591xRzP5byYW57zpVP2RQm0qW1kKvts3lXMNjW40HMvf923_F2W3-zXS=
+37J3PGZW3w9-Sg7-j7Q3W9cph2r50JtTGW4_B4kP878pRqW3xN-ZG4ZdMDcW2vh0dP7L3KRzW5n=
+f8BP63ZrhpW5C94V03L7Q1bW7lkhn-2Jr7wC3lkc1" border=3D"0" style=3D"-webkit-te=
+xt-size-adjust:100%; -ms-text-size-adjust:100%; border:none" rel=3D" noopen=
+er" data-hs-link-id=3D"0" target=3D"_blank"><span style=3D"color: #000000; =
+font-family: sans-serif; font-size: medium;"> <img src=3D"https://info.deep=
+learning.ai/hs-fs/hubfs/Newsletter-1/Behance.png?width=3D64&amp;upscale=3Dt=
+rue&amp;name=3DBehance.png" alt=3D"Behance" width=3D"32" style=3D"vertical-=
+align:bottom; -ms-interpolation-mode:bicubic; width:32px; border-style:none=
+; max-width:32px" srcset=3D"https://info.deeplearning.ai/hs-fs/hubfs/Newsle=
+tter-1/Behance.png?upscale=3Dtrue&amp;width=3D64&amp;upscale=3Dtrue&amp;nam=
+e=3DBehance.png 32w, https://info.deeplearning.ai/hs-fs/hubfs/Newsletter-1/=
+Behance.png?upscale=3Dtrue&amp;width=3D128&amp;upscale=3Dtrue&amp;name=3DBe=
+hance.png 64w" sizes=3D"(max-width: 32px) 100vw, 32px"> </span></a></td>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; height:50px; text-align:center; wid=
+th:50px" valign=3D"middle" height=3D"50" align=3D"center" width=3D"50"><a h=
+ref=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt4=
+9VJrdN4RsyfQ3p_8SV1-WJV7CgZpfVnX5NB6HKnQVN5HSpw762MS-W7ww3_88qkwvXN938MMLkW=
+Q-6W2Fgh7j74tyTLVXsZZ52Y74W7N9fYyltY6JmmW7j07lm3LPnZyW5kWHbG3gkxfNV1r7Bq3QB=
+CZ3W3cyF0H7tltTWW4tNXwx8VDG-jW7H4Lk06M-JtrN4tl8BYB1rt-W6RSwf52sntDjW4tgmml3=
+z8VQjW98-Hzc8vC3cKVdGJr-2vxgrqW86D-X43ghbLJW3G_Mhr8dY5BPW4GfLzg64yv1WN4YntN=
+0PCWW-39jK1" border=3D"0" style=3D"-webkit-text-size-adjust:100%; -ms-text-=
+size-adjust:100%; border:none" rel=3D" noopener" data-hs-link-id=3D"0" targ=
+et=3D"_blank"><span style=3D"color: #000000; font-family: sans-serif; font-=
+size: medium;"> <img src=3D"https://info.deeplearning.ai/hs-fs/hubfs/Newsle=
+tter-1/tw.png?width=3D60&amp;upscale=3Dtrue&amp;name=3Dtw.png" alt=3D"tw" w=
+idth=3D"30" style=3D"vertical-align:bottom; -ms-interpolation-mode:bicubic;=
+ width:30px; border-style:none; max-width:32px" srcset=3D"https://info.deep=
+learning.ai/hs-fs/hubfs/Newsletter-1/tw.png?upscale=3Dtrue&amp;width=3D60&a=
+mp;upscale=3Dtrue&amp;name=3Dtw.png 30w, https://info.deeplearning.ai/hs-fs=
+/hubfs/Newsletter-1/tw.png?upscale=3Dtrue&amp;width=3D120&amp;upscale=3Dtru=
+e&amp;name=3Dtw.png 60w" sizes=3D"(max-width: 30px) 100vw, 30px"> </span></=
+a></td>
+<td style=3D"-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; mso-=
+table-lspace:0pt; mso-table-rspace:0pt; height:50px; text-align:center; wid=
+th:50px" valign=3D"middle" height=3D"50" align=3D"center" width=3D"50"><a h=
+ref=3D"https://info.deeplearning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt4=
+9VJrdN4Rsyg53p_97V1-WJV7CgGxbW3v7ycw4dF1WdW558QCQ349mn0W3D92VR4ttfPVW7FfKys=
+49BBknW4SctpX7tRZQ_W57v6C77RndntN7RzDlrkDj-JW6l4b468lcDscW7W1Mv01SSbktW4yZt=
+C67Ztcm6N92J6XRcM33TW8XFY0d76VhT4N8TJPTC30_vWV64VWm7QXmQ5N8YbB6yWNw2qVd3Sk9=
+7vy5QDW8p9kXc45WcW8W85P0Gm1LhJ7qW5pSyc58lf6GQW3Mh3fs6myyDjW4FClxb3FcMzYW2-k=
+DJX5bQGCHW3gHMN81NFvyFW4-W5CY5sDk-F35B-1" border=3D"0" style=3D"-webkit-tex=
+t-size-adjust:100%; -ms-text-size-adjust:100%; border:none" rel=3D" noopene=
+r" data-hs-link-id=3D"0" target=3D"_blank"><span style=3D"color: #000000; f=
+ont-family: sans-serif; font-size: medium;"> <img src=3D"https://info.deepl=
+earning.ai/hs-fs/hubfs/Newsletter-1/link.png?width=3D60&amp;upscale=3Dtrue&=
+amp;name=3Dlink.png" alt=3D"link" width=3D"30" style=3D"vertical-align:bott=
+om; -ms-interpolation-mode:bicubic; width:30px; border-style:none; max-widt=
+h:32px" srcset=3D"https://info.deeplearning.ai/hs-fs/hubfs/Newsletter-1/lin=
+k.png?upscale=3Dtrue&amp;width=3D60&amp;upscale=3Dtrue&amp;name=3Dlink.png =
+30w, https://info.deeplearning.ai/hs-fs/hubfs/Newsletter-1/link.png?upscale=
+=3Dtrue&amp;width=3D120&amp;upscale=3Dtrue&amp;name=3Dlink.png 60w" sizes=
+=3D"(max-width: 30px) 100vw, 30px"> </span></a></td>
+<td width=3D"auto" style=3D"-webkit-text-size-adjust:100%; -ms-text-size-ad=
+just:100%; mso-table-lspace:0pt; mso-table-rspace:0pt">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table></div>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+      </div><!--end widget-span -->
+      <div class=3D"widget-span widget-type-email_optin " style=3D"" data-w=
+idget-type=3D"email_optin">
+        <div class=3D"layout-widget-wrapper"> <div id=3D"hs_cos_wrapper_ema=
+il_optin" class=3D"hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type=
+_email_optin" style=3D"color: inherit; font-size: inherit; line-height: inh=
+erit;" data-hs-cos-general-type=3D"widget" data-hs-cos-type=3D"email_optin"=
+></div>
+        </div><!--end layout-widget-wrapper --> </div><!--end widget-span -=
+->
+      <div id=3D"company-details">
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; display:none"=
+>
+          deeplearning.ai
+        </p>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; display:none"=
+>
+          195 Page Mill Road
+        </p>
+       =20
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; display:none"=
+>
+          Suite 115
+        </p>
+       =20
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%; display:none"=
+>
+          Palo Alto
+          California
+          94306
+          United States
+        </p>
+      </div>
+      <div>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%">&nbsp;</p>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%">
+          </p><div id=3D"hs_cos_wrapper_unsubscribe_links" class=3D"hs_cos_=
+wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style=3D"color=
+: inherit; font-size: inherit; line-height: inherit;" data-hs-cos-general-t=
+ype=3D"widget" data-hs-cos-type=3D"rich_text"></div>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%"></p>
+      </div>
+      <div>
+        <p style=3D"margin-bottom: 1em; font-size:1.25em; margin:0; padding=
+:0; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%"> Not renderin=
+g correctly? View this email as a web page <a href=3D"https://info.deeplear=
+ning.ai/e2t/tc/VWjxNw5xXGF-N18mq8mjzRHNW3S9mTt49VJrdN4RsydX7m48kV5X_Kf7CgMr=
+pW3X-p0X79JW9cW94RnLv4SnbL_W8Nrll87QNm79W27rhcT4CZ-C_W1mtcc32bk9F8W3S5qxP3y=
+GP-fW8L3_2k8s0xbnW2zPR6T8-gf7bW1n6m4B4mG8WmW893GZ04xWhKmW6bftn43k_nkzVfVgBv=
+134pB7W1z59PF2k6vPnW6yL3ZX1kmMVQVs1mKn75QJ3zW4S35k-69ng8mW7WYktw1Kggt5W2pqk=
+sy4fXlW6W87pCF32XmVddW2Tn44Z3XFlLsW1HD1SL1VRPddW30QMZq5WXWzbW8Mcqq52x5LtbW8=
+K_N_y2Q5WtNW1Gk05t2KbTrLW9010lH2NdwqbW5thc6c66MKTzW93HGf74LDZdkW9bgC173QFYN=
+cN7PT3R3lhHfmW1NWx_-2kgZdnW40dV4f7hMyd4W4nYbZb3BqTJ0VkvsKx2pJL_0VJmsxj3js7q=
+tW7g-gSY2CQZsqW8Mkq0S1sbFfJW7zsGDq1gGbD5W14DZDS5pmrp2N3g3QJ3FxW00VthSzf4WCL=
+csN8ssg8Ygg2ZQW2_gtWs74QwhdW872xl07LX7v-W6C1gqP2jbYD1W8JLG4w78BWJ3W2BPlNs4R=
+9FDSW3R8mXt2Txb9V3gMQ1" style=3D"-webkit-text-size-adjust:100%; -ms-text-si=
+ze-adjust:100%; color:#999999; text-decoration:underline; white-space:nowra=
+p" target=3D"_blank" data-hs-link-id=3D"0">here</a>. </p>
+      </div>
+    </td>
+  </tr>
+</tbody></table>
+<!-- end coded_template: id:9563172397 path:Custom/email/default/optin.html=
+ -->
+<img src=3D"https://info.deeplearning.ai/e2t/to/VWjxNw5xXGF-N18mq8mjzRHNW3S=
+9mTt49VJrdf4Rsy0S22" alt=3D"" width=3D"1" height=3D"1" border=3D"0" style=
+=3D"display:none!important;min-height:1px!important;width:1px!important;bor=
+der-width:0!important;margin-top:0!important;margin-bottom:0!important;marg=
+in-right:0!important;margin-left:0!important;padding-top:0!important;paddin=
+g-bottom:0!important;padding-right:0!important;padding-left:0!important"></=
+body></html>
+------=_Part_16135672_667799991.1591210931256--
+

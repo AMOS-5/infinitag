@@ -22,7 +22,7 @@ stemmer = SnowballStemmer("english")
 from sklearn.cluster import KMeans
 
 
-def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters ):
+def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,words_per_cluster ):
 
     km = KMeans(n_clusters=num_clusters)
 
@@ -44,14 +44,16 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters ):
         print("Cluster %d words:" % clustering, end='')
         print('')
 
-        for tags in order_centroids[clustering, :5]: #replace 6 with n words per cluster
+        for tags in order_centroids[clustering, : words_per_cluster]:
             kmeans_tags = terms[tags]
             print(' %s' % kmeans_tags  )
         print('')
         print('')
         print("Cluster %d titles:" % clustering, end='')
 
-        for title in frame.ix[clustering]['title'].values.tolist():
+        for title in frame.loc[clustering]['title'].values.tolist():
             print(' %s,' % title, end='')
         print('')
         print('')
+
+        return clustering,title

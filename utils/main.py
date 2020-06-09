@@ -26,24 +26,30 @@ from utils.hierarchichal_clustering import hierarchical_cluster
 
 if __name__ == "__main__":
 
-    directory = r"..\utils\training.sets.released\2"
-    unwanted = {'patient','order','showed','exam', 'number','home','left', 'right', 'history','daily','instruction', 'interaction', 'fooddrug', 'time','override', 'unit','potentially', 'march', 'added'}
+    directory =  r'..\tests\test_dataset'
+    unwanted_keywords = {'patient','order','showed','exam', 'number','home','left', 'right', 'history','daily','instruction', 'interaction', 'fooddrug', 'time','override', 'unit','potentially', 'march', 'added'}
+    extensions_allowed = ['.txt', '.pdf', '.eml', '.docx', '.html', '.xml',
+                          '.ods']
     ####
     # clustering_type = Mention the type of clustering here
     # 'k-means' : Mention the number of cluster in num_clusters_kmeans
     # 'lda' : Mention the num_words and num_topics if using lda
     # 'hierarchical' : to be implemented
     ####
-    clustering_type = 'hierarchical'
-    num_clusters_kmeans = 8
+    clustering_type = 'k-means'
 
+    # Change number of words and number of topics below for LDA model
     num_words = 4
     num_topics = 5
 
-    flattened, vocab_frame, file_list = data_load(directory, unwanted)
+    # Change hyperparameters below for customizing k-means clustering
+    num_clusters_kmeans = 8
+    words_per_cluster = 5
+
+    flattened, vocab_frame, file_list = data_load(directory, unwanted_keywords,extensions_allowed)
     dist, tfidf_matrix, terms = tfidf_vector(flattened)
     if clustering_type == 'k-means':
-        clustering = kmeans_clustering(tfidf_matrix, flattened,terms,  file_list, num_clusters_kmeans)
+        clustering = kmeans_clustering(tfidf_matrix, flattened,terms,  file_list, num_clusters_kmeans,words_per_cluster)
     elif clustering_type == 'lda':
         clustering = lda(flattened, num_topics, num_words)
     elif clustering_type == 'hierarchical':
