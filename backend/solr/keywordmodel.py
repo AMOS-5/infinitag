@@ -68,7 +68,9 @@ class SolrHierarchy:
         """
         return bytes(hierarchy, "utf-8").decode("unicode_escape")
 
+
 MAX_ROWS = 5000
+
 
 class SolrAbstract:
     def __init__(self, config: dict):
@@ -81,9 +83,17 @@ class SolrAbstract:
         self.con = pysolr.Solr(**_conf)
 
     def delete(self, *ids: str) -> None:
+        """
+        Deletes items from Solr
+        :param ids: Ids to be deleted
+        :return:
+        """
         self.con.delete(id=ids)
 
     def clear(self):
+        """
+        Clears the whole Solr core associated with this object
+        """
         self.con.delete(q="*:*")
 
     def __contains__(self, id_: str) -> bool:
@@ -108,10 +118,19 @@ class SolrKeywords(SolrAbstract):
         super().__init__(config)
 
     def add(self, *keywords: str) -> None:
+        """
+        Adds new keywords to Solr
+        :param keywords:
+        """
         keywords = [SolrKeyword(keyword).as_dict() for keyword in keywords]
         self.con.add(keywords)
 
     def get(self) -> List[str]:
+        """
+        Get every keyword
+        :return:
+        """
+
         # search all max results = 5k currently
         result = self.con.search("*:*", rows=MAX_ROWS)
         # extract only the keyword value
@@ -119,16 +138,22 @@ class SolrKeywords(SolrAbstract):
         return keywords
 
     def update(self, old: str, new: str) -> None:
+        """
+        Replaces an existing keyword with a new one (rename)
+        :param old:
+        :param new:
+        :return:
+        """
+
         self.delete(old)
         self.add(new)
 
 
-"""
-Class representing the keyword model as it appears in solr
-"""
-
-
 class SolrKeywordModel(SolrAbstract):
+    """
+    Class representing the keyword model as it appears in solr
+    """
+
     def __init__(self, config: dict):
         super().__init__(config)
 
@@ -142,6 +167,10 @@ class SolrKeywordModel(SolrAbstract):
         self.con.add(hierarchies)
 
     def get(self) -> List[SolrHierarchy]:
+        """
+        Get all keyword models
+        :return:
+        """
         res = self.con.search("*:*", rows=MAX_ROWS)
         return [SolrHierarchy.from_hit(hit) for hit in res]
 
@@ -150,9 +179,9 @@ class SolrKeywordModel(SolrAbstract):
 
 
 __all__ = [
-    'SolrKeywordModel',
-    'SolrKeywords',
-    'SolrKeyword',
-    'SolrAbstract',
-    'SolrHierarchy'
+    "SolrKeywordModel",
+    "SolrKeywords",
+    "SolrKeyword",
+    "SolrAbstract",
+    "SolrHierarchy",
 ]
