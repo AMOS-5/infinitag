@@ -100,6 +100,7 @@ class SolrDoc:
 def exists_and_not_empty(res: dict, field: str) -> bool:
     return field in res and res[field][0]
 
+
 class FileContent:
     @staticmethod
     def from_result(res: dict) -> str:
@@ -211,8 +212,7 @@ class Language:
             lang = "unknown"
 
         if lang not in Language.mapping:
-            log.debug(
-                f"LANGUAGE UNKNOWN / NOT FOUND: {json.dumps(res, indent=3)}")
+            log.debug(f"LANGUAGE UNKNOWN / NOT FOUND: {json.dumps(res, indent=3)}")
             return lang
 
         return Language.mapping[lang]
@@ -223,7 +223,9 @@ class CreationDate:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if exists_and_not_empty(res, "meta:creation-date"):  # this should persist through saving
+        if exists_and_not_empty(
+            res, "meta:creation-date"
+        ):  # this should persist through saving
             return res["meta:creation-date"][0]
         elif exists_and_not_empty(res, "date"):
             return res["date"][0]
@@ -235,6 +237,6 @@ class CreationDate:
             log.debug("CreationDate is unknown.")
             return str(datetime.now())
 
-__all__ = [
-    'SolrDoc'
-]
+
+__all__ = ["SolrDoc"]
+
