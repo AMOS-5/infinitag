@@ -44,7 +44,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    public translate: TranslateService) {
+    public translate: TranslateService
+  ) {
     translate.addLangs(this.availableLanguages);
     translate.setDefaultLang(this.selectedLanguage);
 
