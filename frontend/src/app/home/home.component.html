@@ -1,12 +1,12 @@
 <div class="container">
   <h1>Dashboard InfiniTag</h1>
-  <h3> Welcome to InfiniTag - The automated machine learning software solution of Infineon</h3>
+  <h3>{{'HOME.MOTTO' | translate}}</h3>
   <form class="form-inline my-2 my-lg-0">
     <mat-form-field class="example-full-width">
-      <mat-label>Search for documents</mat-label>
-      <input matInput placeholder="Search Term" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">
+      <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
+      <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="filterString" [ngModelOptions]="{standalone: true}">
     </mat-form-field>
   </form>
-  <h5>Available Documents</h5>
+  <h5>{{'DOCUMENTS.AVAILABLE_DOCUMENTS' | translate}}</h5>
   <document-view-table [documents]="documents" [filter]="filterString"></document-view-table>
 </div>

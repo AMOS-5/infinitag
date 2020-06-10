@@ -1,0 +1,45 @@
+{
+  "HOME": {
+    "TITLE": "Home",
+    "ADD_DOCUMENTS": "Add Documents",
+    "KEYWORDS": "Keywords",
+    "DOCUMENTATION": "Documentation",
+    "SERVER_STATUS": "Server Status",
+    "UP": "UP",
+    "LANGUAGE": "Language",
+    "MOTTO": "Welcome to InfiniTag - The automated machine learning software solution of Infineon\n"
+  },
+  "DOCUMENTS": {
+    "AVAILABLE_DOCUMENTS": "Available Documents",
+    "SEARCH_FOR_DOCUMENTS": "Search for Documents",
+    "FILENAME": "File Name",
+    "MY_KEYWORDS": "MyKeywords",
+    "APPLY_KEYWORDS": "Apply Keywords",
+    "FILE_TYPE": "Type",
+    "CREATEDAT": "Created At",
+    "EDITING_IS": "Editing Is"
+  },
+  "KEYWORDS": {
+    "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
+    "ADD_DIMENSION": "Add Dimension",
+    "ADD_KEYWORD": "Add Keyword",
+    "UNCATEGORIZED_DIMENSIONS": "Uncategorized Dimensions",
+    "UNCATEGORIZED_KEYWORDS": "Uncategorized Keywords",
+    "KEYWORD_MODELS": "Keyword Models",
+    "HIERARCHY": "Hierarchy",
+    "NEW_KEYWORD_MODEL_DIALOG": "Enter a name for the new keyword model",
+    "NEW_KEYWORD_MODEL": "New Keyword Model"
+  },
+  "SEARCH": "Search",
+  "SEARCH_TERM": "Search Term",
+  "EDIT": "Edit",
+  "TYPE": "Type",
+  "SIZE": "Size",
+  "FILE_UPLOAD": "File Upload",
+  "ENABLED": "Enabled",
+  "DISABLED": "Disabled",
+  "ADD": "Add",
+  "REMOVE": "Remove",
+  "CLOSE": "Close",
+  "OK": "Ok"
+}
