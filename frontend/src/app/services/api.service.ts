@@ -27,6 +27,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
 import { IKeyWordModel } from './../models/IKeyWordModel.model'
+import {ITaggingRequest} from "../models/ITaggingRequest.model";
 /**
  *
  * @class ApiService
@@ -114,5 +115,14 @@ export class ApiService {
       })
     };
     return this.http.delete(`${environment.serverUrl}/models/${kwm.id}`, httpOptions);
+  }
+
+  public applyTaggingMethod(request: ITaggingRequest) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post(`${environment.serverUrl}/apply`, JSON.stringify(request), httpOptions);
   }
 }

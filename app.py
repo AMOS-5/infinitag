@@ -256,6 +256,19 @@ def keywordmodel():
             return jsonify(f"internal error: {e}"), 500
 
 
+@app.route('/apply', methods=['POST'])
+def apply_tagging_method():
+    data = request.json
+
+    if data['keywordModel'] is not None and data['taggingMethod']['type'] == 'keyword':
+        print('Applying keyword model')
+
+    else:
+        print('Applying automated tagging')
+
+    return jsonify("{message: 'success'}"), 200
+
+
 if __name__ == '__main__':
 
     parser = ArgumentParser(description="Infinitag Rest Server")

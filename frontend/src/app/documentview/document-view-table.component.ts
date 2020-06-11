@@ -34,6 +34,8 @@ import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
+import {ITaggingMethod} from '../models/ITaggingMethod';
+import {FormBuilder} from '@angular/forms';
 
 
 /**
@@ -54,8 +56,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   keywords: string[] = [];
   selectedKeywords: string[] = [];
   keywordModels: any = [];
-  kwmToAdd = []
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar) { }
+  kwmToAdd = [];
+  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+    this.taggingForm = this.formBuilder.group({
+      taggingMethod: this.selectedTaggingMethod,
+      keywordModel: undefined,
+      documents: []
+    });
+  }
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
@@ -68,6 +76,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
 
+  public taggingMethods: Array<ITaggingMethod> = [
+    {
+      name: 'Keyword Model',
+      type: 'keyword'
+    },
+    {
+      name: 'Automated',
+      type: 'automated'
+    }
+  ];
+
+  public taggingForm;
+
+  public selectedTaggingMethod = this.taggingMethods[0];
+
 
   public ngOnInit() {
     this.setDatasource();
@@ -78,10 +101,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       });
     this.api.getKWMModels()
       .subscribe((data: any) => {
-        this.keywordModels = data
-        for (var i = 0; i < data.length; i++) {
+        this.keywordModels = data;
+        for (let i = 0; i < data.length; i++) {
           data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
-            this.findByNodeType(hierarchy, "KEYWORD")
+            this.findByNodeType(hierarchy, 'KEYWORD');
           }) : null;
         }
 
@@ -182,18 +205,18 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {string} keyword
   */
   public applyKeyword(doc, keyword) {
-    if(this.findByNode(keyword)) {
-      var fixedArray = this.removeDublicate(this.kwmToAdd)
-      keyword = ''
-      for (var i = 0; i < fixedArray.length; i++){
-        if(i === 0) {
+    if (this.findByNode(keyword)) {
+      let fixedArray = this.removeDublicate(this.kwmToAdd);
+      keyword = '';
+      for (let i = 0; i < fixedArray.length; i++){
+        if (i === 0) {
           keyword = keyword + fixedArray[i] ;
         } else {
-          keyword = keyword + "->" + fixedArray[i] ;
+          keyword = keyword + '->' + fixedArray[i] ;
         }
-        
+
       }
-      this.kwmToAdd = []
+      this.kwmToAdd = [];
     }
 
     this.addKeywordToDoc(doc, keyword).subscribe(
@@ -212,14 +235,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   private  removeDublicate = function(arr){
-    var res = []
-    for (var i = 0; i < arr.length; i++) {
-           if(arr[ i + 1] !== arr[i] ){
-            res.push(arr[i])
+    let res = [];
+    for (let i = 0; i < arr.length; i++) {
+           if (arr[ i + 1] !== arr[i] ){
+            res.push(arr[i]);
            }
-    };
-     return res
-   }  
+    }
+    return res;
+   };
 
   /**
  * @description
@@ -267,12 +290,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   private findByNodeType(data, nodeType) {
     if (data.nodeType === nodeType) {
       if (!(this.keywords).includes(data.item)) {
-        this.keywords.push(data.item)
-        this.selectedKeywords.push(data.item)
+        this.keywords.push(data.item);
+        this.selectedKeywords.push(data.item);
       }
       if (data.children) {
         data.children.forEach(child => {
-          this.findByNodeType(child, "KEYWORD")
+          this.findByNodeType(child, 'KEYWORD');
         });
       }
     }
@@ -286,27 +309,27 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   */
 
   findByNode(text) {
-    var found = false;
-    var isNameAdded = false;
-    for (var i = 0; i < this.keywordModels.length; i++) {
-      
+    let found = false;
+    let isNameAdded = false;
+    for (let i = 0; i < this.keywordModels.length; i++) {
+
       if (this.keywordModels[i].hierarchy) {
         this.keywordModels[i].hierarchy.forEach(hierarchy => {
           if (hierarchy.children) {
-            if(this.findKeywordRecursively(hierarchy.children, text)){
-              found = true
-              if(!isNameAdded) {
+            if (this.findKeywordRecursively(hierarchy.children, text)){
+              found = true;
+              if (!isNameAdded) {
                 this.kwmToAdd.splice(0, 0, this.keywordModels[i].name);
                 isNameAdded = true;
               }
               this.kwmToAdd.push(text);
-              return found
+              return found;
             }
           }
         });
       }
     }
-    return found
+    return found;
   }
 
     /**
@@ -326,8 +349,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         if (element.children) {
           const found = this.findKeywordRecursively(element.children, text);
           if (found) {
-            if(element.nodeType === "KEYWORD"){
-              this.kwmToAdd.push(element.item)
+            if (element.nodeType === 'KEYWORD'){
+              this.kwmToAdd.push(element.item);
             }
             this.kwmToAdd = this.kwmToAdd.reverse();
             return found;
@@ -335,6 +358,17 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         }
       }
     }
+  }
+
+  public changeTaggingMethod(event: any) {
+    this.selectedTaggingMethod = event.value;
+  }
+
+  public onSubmit(taggingData) {
+    taggingData.documents = this.selection.selected;
+    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
+      console.log(response);
+    });
   }
 }
 

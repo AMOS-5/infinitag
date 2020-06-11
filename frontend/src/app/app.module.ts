@@ -27,7 +27,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatChipsModule } from '@angular/material/chips';
@@ -82,40 +82,41 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     KWMNameDialog,
     DragdropDirective
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    BrowserAnimationsModule,
-    MatChipsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatSnackBarModule,
-    MatListModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatGridListModule,
-    MatCheckboxModule,
-    MatSelectModule,
-    MatMenuModule,
-    MatButtonToggleModule,
-    DragDropModule,
-    MatTreeModule,
-    MatExpansionModule,
-    MatDialogModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
-      }
-    })
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        BrowserAnimationsModule,
+        MatChipsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatListModule,
+        MatProgressBarModule,
+        MatToolbarModule,
+        MatButtonModule,
+        MatGridListModule,
+        MatCheckboxModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatButtonToggleModule,
+        DragDropModule,
+        MatTreeModule,
+        MatExpansionModule,
+        MatDialogModule,
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        ReactiveFormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent],
 })

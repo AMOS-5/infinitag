@@ -19,7 +19,11 @@
     "CREATEDAT": "Erestellt am",
     "EDITING_IS": "Bearbeiten ist",
     "DRAG_DROP_DIALOG": "Packen und ziehen sie ihre Dateien hier hin um sie hochzuladen",
-    "BROWSE_FOR_FILES": "Dokumente durchsuchen"
+    "BROWSE_FOR_FILES": "Dokumente durchsuchen",
+    "MANUAL_TAGGING": "Manual Tagging",
+    "AUTOMATED_TAGGING": "Automatisiertes Tagging",
+    "SELECT_TAGGING_METHOD": "Select Tagging method",
+    "SELECT_KEYWORD_MODEL": "Select Keyword Model"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
