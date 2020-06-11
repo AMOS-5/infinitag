@@ -1,11 +1,26 @@
-<h2>{{'FILE_UPLOAD' | translate}}</h2>
-<input type='file' (change)="onSelectFile($event.target.files)" multiple>
+<div class="container">
+  <h2>{{'FILE_UPLOAD' | translate}}</h2>
+  <mat-grid-list cols="8" rows="4" gutterSize="32px" rowHeight="200px">
+    <mat-grid-tile [rowspan]="1" [colspan]="8" appDragdrop (fileDropped)="onSelectFile($event)" class="dropzone">
+      <div class="title">
+        <mat-icon color="primary">cloud_upload</mat-icon>
+        <h3>{{'DOCUMENTS.DRAG_DROP_DIALOG' | translate}}</h3>
+        <h3>{{'OR' | translate}}</h3>
+        <input type='file' id="file-select" (change)="onSelectFile($event.target.files)" multiple>
+        <button mat-raised-button color="primary">{{'DOCUMENTS.BROWSE_FOR_FILES' | translate}}</button>
+      </div>
+    </mat-grid-tile>
+    <mat-grid-tile [rowspan]="3" [colspan]="8">
+      <mat-list>
+        <mat-list-item *ngFor="let file of files; index as i">
+          <mat-icon matListIcon>{{file.icon}}</mat-icon>
+          <h2 matLine> {{file.file.name}} </h2>
+          <span matLine> {{file.status | translate}} </span>
+          <mat-progress-bar matLine mode="determinate" value={{file.progress}}></mat-progress-bar>
+        </mat-list-item>
+      </mat-list>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
 
-<mat-list>
-  <mat-list-item *ngFor="let file of files; index as i">
-    <mat-icon matListIcon>{{file.icon}}</mat-icon>
-    <h2 matLine> {{file.file.name}} </h2>
-    <span matLine> {{file.status}} </span>
-    <mat-progress-bar matLine mode="determinate" value={{file.progress}}></mat-progress-bar>
-  </mat-list-item>
-</mat-list>
+

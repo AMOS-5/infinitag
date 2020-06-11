@@ -17,7 +17,9 @@
     "APPLY_KEYWORDS": "Apply Keywords",
     "FILE_TYPE": "Type",
     "CREATEDAT": "Created At",
-    "EDITING_IS": "Editing Is"
+    "EDITING_IS": "Editing Is",
+    "DRAG_DROP_DIALOG": "Drag and drop your files here to upload them",
+    "BROWSE_FOR_FILES": "Browse For Files"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
@@ -41,5 +43,11 @@
   "ADD": "Add",
   "REMOVE": "Remove",
   "CLOSE": "Close",
-  "OK": "Ok"
+  "OK": "Ok",
+  "OR": "Or",
+  "AND": "And",
+  "ENQUEUED": "Enqueued",
+  "SUCCESS": "Success",
+  "UPLOADING": "Uploading",
+  "ERROR": "Error"
 }

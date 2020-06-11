@@ -26,6 +26,7 @@ import { UploadService } from '../services/upload.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 interface IFile {
   file: File;
@@ -47,7 +48,7 @@ interface IFile {
 export class FileUploadComponent implements OnInit {
   files: Array<IFile> = [];
 
-  constructor(private uploadService: UploadService) { }
+  constructor(private uploadService: UploadService, private translate: TranslateService) { }
 
   public ngOnInit(): void {}
 
@@ -57,9 +58,10 @@ export class FileUploadComponent implements OnInit {
    * @param {FileList} files: FileList from the input html element
    */
   public onSelectFile(files: FileList) {
+    console.log(files);
     this.files = [];
     for (let idx = 0; idx < files.length; idx++) {
-      let file: IFile = { file: files[idx], status: "enqueued", progress:0, icon:"schedule" };
+      const file: IFile = { file: files[idx], status: 'ENQUEUED', progress: 0, icon: 'schedule' };
       this.files.push(file);
       this.sendFileToService(file);
     }
@@ -73,33 +75,33 @@ export class FileUploadComponent implements OnInit {
   private sendFileToService(file: IFile) {
     this.uploadService.postFile(file.file)
     .pipe(
-      //catch errors
+      // catch errors
       catchError(error => {
-        file.status = "failed(check console for info)";
-        file.icon = "close";
+        file.status = 'ERROR';
+        file.icon = 'close';
         return throwError(error);
       })
     ).subscribe((event: HttpEvent<any>) => {
       switch (event.type) {
         case HttpEventType.Sent:
-          file.status = "request send";
+          file.status = 'request send';
           break;
         case HttpEventType.ResponseHeader:
-          file.status = "response received";
+          file.status = 'response received';
           break;
         case HttpEventType.UploadProgress:
-          //update progress
+          // update progress
           file.progress = Math.round(event.loaded / event.total * 100);
-          file.status = "uploading...";
-          file.icon = "cloud_upload";
+          file.status = 'UPLOADING';
+          file.icon = 'cloud_upload';
           break;
         case HttpEventType.Response:
-          file.status = "success";
+          file.status = 'SUCCESS';
           console.log('Document send', event.body);
-          file.icon = "cloud_done";
+          file.icon = 'cloud_done';
           break;
       }
-    })
+    });
   }
 
 }

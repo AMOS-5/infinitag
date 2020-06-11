@@ -17,7 +17,9 @@
     "APPLY_KEYWORDS": "Keywords anwenden",
     "FILE_TYPE": "Dateityp",
     "CREATEDAT": "Erestellt am",
-    "EDITING_IS": "Bearbeiten ist"
+    "EDITING_IS": "Bearbeiten ist",
+    "DRAG_DROP_DIALOG": "Packen und ziehen sie ihre Dateien hier hin um sie hochzuladen",
+    "BROWSE_FOR_FILES": "Dokumente durchsuchen"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
@@ -41,5 +43,12 @@
   "ADD": "Hinzufügen",
   "REMOVE": "Entfernen",
   "CLOSE": "Schließen",
-  "OK": "Ok"
+  "OK": "Ok",
+  "OR": "Oder",
+  "AND": "Und",
+  "ENQUEUED": "In der Warteschlange",
+  "SUCCESS": "Erfolg",
+  "UPLOADING": "wird hochgeladen",
+  "ERROR": "Fehler"
 }
+
