@@ -58,7 +58,6 @@ export class FileUploadComponent implements OnInit {
    * @param {FileList} files: FileList from the input html element
    */
   public onSelectFile(files: FileList) {
-    console.log(files);
     this.files = [];
     for (let idx = 0; idx < files.length; idx++) {
       const file: IFile = { file: files[idx], status: 'ENQUEUED', progress: 0, icon: 'schedule' };

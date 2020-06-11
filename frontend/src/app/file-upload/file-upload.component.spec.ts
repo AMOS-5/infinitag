@@ -5,6 +5,7 @@ import { MatListModule } from '@angular/material/list';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
 import {HttpClient} from '@angular/common/http';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -20,6 +21,7 @@ describe('FileUploadComponent', () => {
       imports: [
         HttpClientTestingModule,
         MatListModule,
+        MatGridListModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
