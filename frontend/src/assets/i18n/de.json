@@ -12,13 +12,13 @@
   "DOCUMENTS": {
     "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
     "SEARCH_FOR_DOCUMENTS": "Nach Dokumenten Suchen",
-    "FILENAME": "Filename",
+    "FILENAME": "Dateiname",
     "MY_KEYWORDS": "Meine Keywords",
     "APPLY_KEYWORDS": "Keywords anwenden",
     "FILE_TYPE": "Dateityp",
     "CREATEDAT": "Erestellt am",
     "EDITING_IS": "Bearbeiten ist",
-    "DRAG_DROP_DIALOG": "Packen und ziehen sie ihre Dateien hier hin um sie hochzuladen",
+    "DRAG_DROP_DIALOG": "Packen und ziehen Sie Ihre Dateien hier hin um sie hochzuladen",
     "BROWSE_FOR_FILES": "Dokumente durchsuchen"
   },
   "KEYWORDS": {
