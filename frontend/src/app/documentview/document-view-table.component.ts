@@ -68,6 +68,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
 
+  KEYWORD_TYPES = {
+    "MANUALL"   : "#3399ff",
+    "KWM"       : "#ff4d4d",
+    "ML"        : "#33cc33",
+  };
 
   public ngOnInit() {
     this.setDatasource();
@@ -191,7 +196,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         } else {
           keyword = keyword + "->" + fixedArray[i] ;
         }
-        
+
       }
       this.kwmToAdd = []
     }
@@ -219,7 +224,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
            }
     };
      return res
-   }  
+   }
 
   /**
  * @description
@@ -232,6 +237,26 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
     this.selection.selected.forEach(doc => {
       this.applyKeyword(doc, keyword);
+    });
+  }
+
+  /**
+  * @description
+  * Gets called when the delete button is pressed on a mat-chip.
+  * Removes the keyword from the document and sends the change to the backend.
+  * @param {IDocument} document the keyword should be removed from
+  * @param keyword to be removed
+  */
+  removeKeywordFromDocument(document: IDocument, keyword) {
+    console.log("rm: ", document, ", ", keyword);
+
+    const index = document.keywords.indexOf(keyword);
+    if (index >= 0) {
+      document.keywords.splice(index, 1);
+    }
+
+    this.uploadService.patchKeywords(document).subscribe(res => {
+
     });
   }
 
@@ -289,7 +314,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     var found = false;
     var isNameAdded = false;
     for (var i = 0; i < this.keywordModels.length; i++) {
-      
+
       if (this.keywordModels[i].hierarchy) {
         this.keywordModels[i].hierarchy.forEach(hierarchy => {
           if (hierarchy.children) {
