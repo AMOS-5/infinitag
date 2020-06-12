@@ -263,7 +263,7 @@ def apply_tagging_method():
     data = request.json
 
                                                                              # TODO change to KWM
-    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "keywords":
+    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "keyword":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
