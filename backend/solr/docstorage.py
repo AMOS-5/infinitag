@@ -16,6 +16,7 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from .doc import SolrDoc
+from .keywordmodel import SolrHierarchy
 
 import pysolr
 
@@ -41,6 +42,11 @@ except:
 
 
 class SolrDocStorage:
+    """
+    Provides functionality to strore / modify and retrive documents
+    from Solr
+    """
+
     def __init__(self, config: dict):
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
@@ -118,6 +124,4 @@ class SolrDocStorage:
         return None
 
 
-__all__ = [
-    'SolrDocStorage'
-]
+__all__ = ["SolrDocStorage"]

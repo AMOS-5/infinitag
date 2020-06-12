@@ -27,7 +27,7 @@ import json
 from datetime import datetime, timedelta
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
 
 
 import logging as log
@@ -88,9 +88,11 @@ def change_keywords():
 
     try:
         solDoc = solr.docs.get(id)
-        solDoc.keywords = keywords
+        # TODO change SolrDocKeyWordType.KWM to the correct model
+        solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords]
         solr.docs.update(solDoc)
     except Exception as e:
+        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print('changed keywords on file ' + id + ' to ' + ','.join(keywords) , file=sys.stdout)
