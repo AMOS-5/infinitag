@@ -7,7 +7,7 @@
     "SERVER_STATUS": "Server Status",
     "UP": "Aktiv",
     "LANGUAGE": "Sprache",
-    "MOTTO": "Wilkommen bei InfiniTag - Der automatischen Tagging Software, betrrieben durch maschinelles lernen."
+    "MOTTO": "Wilkommen bei InfiniTag - Der automatischen Tagging Software, betrieben durch maschinelles lernen."
   },
   "DOCUMENTS": {
     "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
@@ -17,7 +17,7 @@
     "APPLY_KEYWORDS": "Keywords anwenden",
     "SEARCH_KEYWORDS": "Nach Keywords suchen",
     "FILE_TYPE": "Dateityp",
-    "CREATEDAT": "Erestellt am",
+    "CREATEDAT": "Erstellt am",
     "EDITING_IS": "Bearbeiten ist",
     "DRAG_DROP_DIALOG": "Ziehen Sie ihre Dateien in dieses Feld um sie hochzuladen",
     "BROWSE_FOR_FILES": "Dokumente durchsuchen"
