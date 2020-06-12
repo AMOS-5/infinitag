@@ -69,6 +69,8 @@ class SolrHierarchy:
         return bytes(hierarchy, "utf-8").decode("unicode_escape")
 
 
+
+
 MAX_ROWS = 5000
 
 
@@ -144,7 +146,6 @@ class SolrKeywords(SolrAbstract):
         :param new:
         :return:
         """
-
         self.delete(old)
         self.add(new)
 
