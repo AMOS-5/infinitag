@@ -16,6 +16,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { HttpClient } from '@angular/common/http';
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 describe('DocumentViewTable', () => {
@@ -47,7 +48,8 @@ describe('DocumentViewTable', () => {
           }
         })
       ],
-      declarations: [DocumentViewTableComponent]
+      declarations: [DocumentViewTableComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
     translate = TestBed.get(TranslateService);

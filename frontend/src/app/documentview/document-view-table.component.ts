@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-import { HttpClient } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
@@ -36,12 +35,10 @@ import { ApiService } from '../services/api.service';
 import { UploadService } from '../services/upload.service';
 import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
-import {ITaggingRequest} from "../models/ITaggingRequest.model";
+import {ITaggingRequest} from '../models/ITaggingRequest.model';
 
 
 /**
- * @class DocumentViewTableComponent
- *
  * Component gets document data from the backend and displays it as a table.
  * The data can be filtered through a search bar and new tags can be added
  * to the documents
@@ -58,7 +55,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  applyingTaggingMechanism = false;
+  constructor(private api: ApiService,
+              private uploadService: UploadService,
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
@@ -114,19 +115,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Sets the data variable of this components MatTableDataSource instance
-  */
+   * @description
+   * Sets the data variable of this components MatTableDataSource instance
+   */
   public setDatasource() {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
         document.keywords = document.keywords.map( (keyword: string) => {
-          const keywordObj = JSON.parse(keyword);
-          if (keywordObj.value !== undefined) {
-            return keywordObj.value;
+          try {
+            const keywordObj = JSON.parse(keyword);
+            if (keywordObj.value !== undefined) {
+              return keywordObj.value;
+            }
+          } catch (e) {
+            return keyword;
           }
-          return keyword;
         });
       });
 
@@ -139,10 +143,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-  * @description
-  * Updates the documents list as well as the filter term
-  * @param {SimpleChanges} changes
-  */
+   * @description
+   * Updates the documents list as well as the filter term
+   */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
@@ -162,10 +165,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-  * @description
-  * Checks if all currently displayed items are selected
-  * @returns true if the items are selected, false otherwise
-  */
+   * @description
+   * Checks if all currently displayed items are selected
+   * @returns true if the items are selected, false otherwise
+   */
   public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
@@ -177,9 +180,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Selects all visible rows if they are not all selected; otherwise clear selection.
-  */
+   * @description
+   * Selects all visible rows if they are not all selected; otherwise clear selection.
+   */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -187,13 +190,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
-  * is already added to the document
-  * @param {IDocument} document
-  * @param {string} keyword
-  * @returns {Observable} Observable of the document
-  */
+   * @description
+   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+   * is already added to the document
+   */
   private addKeywordToDoc = (iDoc, keyword): Observable<IDocument> => {
     if (iDoc.keywords.includes(keyword) === false) {
       iDoc.keywords.push(keyword);
@@ -205,16 +205,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Adds a keyword to a document, then sends a PATCH request to the backend
-  * to update the document. If the request is succesfull the datasource gets
-  * updated.
-  * @param {IDocument} document
-  * @param {string} keyword
-  */
+   * @description
+   * Adds a keyword to a document, then sends a PATCH request to the backend
+   * to update the document. If the request is succesfull the datasource gets
+   * updated.
+   */
   public applyKeyword(doc, keyword) {
     if (this.findByNode(keyword)) {
-      let fixedArray = this.removeDublicate(this.kwmToAdd);
+      const fixedArray = this.removeDuplicate(this.kwmToAdd);
       keyword = '';
       for (let i = 0; i < fixedArray.length; i++){
         if (i === 0) {
@@ -242,21 +240,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  private  removeDublicate = function(arr){
-    let res = [];
+  private removeDuplicate(arr) {
+    const res = [];
     for (let i = 0; i < arr.length; i++) {
            if (arr[ i + 1] !== arr[i] ){
             res.push(arr[i]);
            }
     }
     return res;
-   };
+   }
 
   /**
- * @description
- * Adds a keyword to all selected documents.
- * @param {string} keyword
- */
+   * @description
+   * Adds a keyword to all selected documents.
+   */
   public applyBulkKeywords(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
@@ -267,34 +264,27 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Gets called when a key is pressed while the search field for the keywords
-  * is in focus. Updates the filter term.
-  * @param event
-  */
+   * @description
+   * Gets called when a key is pressed while the search field for the keywords
+   * is in focus. Updates the filter term.
+   */
   public onKey(event) {
     this.selectedKeywords = this.search(event.target.value);
   }
 
   /**
-  * @description
-  * Searches the keywords list for a search term
-  * @param {string} search term
-  * @returns {string[]} List of keywords matching search term
-  */
+   * @description
+   * Searches the keywords list for a search term
+   */
   private search(value: string) {
     const filter = value.toLowerCase();
     return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
   }
 
   /**
-  * @description
-  * Searches the keywordModelList list for a search term
-  * @param {Array} data term
-  * @param {string} nodeType term
-  * @returns {void}
-  */
-
+   * @description
+   * Searches the keywordModelList list for a search term
+   */
   private findByNodeType(data, nodeType) {
     if (data.nodeType === nodeType) {
       if (!(this.keywords).includes(data.item)) {
@@ -310,12 +300,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Finds a node with specific keyword
-  * @param {string} text term
-  * @returns {boolean} Found or not
-  */
-
+   * @description
+   * Finds a node with specific keyword
+   */
   findByNode(text) {
     let found = false;
     let isNameAdded = false;
@@ -340,14 +327,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return found;
   }
 
-    /**
-  * @description
-  * Recursively finds children with specific keyword
-  * @param {string} text term
-  * @param {Array} children term
-  * @returns {boolean} Found or not
-  */
-
+  /**
+   * @description
+   * Recursively finds children with specific keyword
+   */
   findKeywordRecursively(children, text) {
     for (let index = 0; index < children.length; index++) {
       const element = children[index];
@@ -377,12 +360,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
+    this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( () => {
       this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
         this.documents = documents;
         this.setDatasource();
+
       });
+      this.applyingTaggingMechanism = false;
     });
   }
 }

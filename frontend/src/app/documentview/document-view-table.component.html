@@ -30,7 +30,18 @@
           <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">{{'DOCUMENTS.APPLY_TAGGING' | translate}}</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="applyingTaggingMechanism">
+        <span *ngIf="!applyingTaggingMechanism">
+          {{'DOCUMENTS.APPLY_TAGGING' | translate}}
+        </span>
+        <mat-progress-spinner *ngIf="applyingTaggingMechanism"
+        class="apply-spinner"
+        [color]="'primary'"
+        [mode]="'indeterminate'"
+        [diameter]="30">
+        </mat-progress-spinner>
+      </button>
+
     </form>
   </mat-grid-tile>
 </mat-grid-list>
