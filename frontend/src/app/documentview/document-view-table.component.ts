@@ -36,6 +36,7 @@ import { ApiService } from '../services/api.service';
 import { UploadService } from '../services/upload.service';
 import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
+import {ITaggingRequest} from "../models/ITaggingRequest.model";
 
 
 /**
@@ -120,6 +121,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
+        document.keywords = document.keywords.map( (keyword: string) => {
+          const keywordObj = JSON.parse(keyword);
+          if (keywordObj.value !== undefined) {
+            return keywordObj.value;
+          }
+          return keyword;
+        });
       });
 
       this.dataSource.data = this.documents;
@@ -364,10 +372,17 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.selectedTaggingMethod = event.value;
   }
 
-  public onSubmit(taggingData) {
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit(taggingData: ITaggingRequest) {
     taggingData.documents = this.selection.selected;
-    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-      console.log(response);
+    this.api.applyTaggingMethod(taggingData).subscribe( () => {
+      this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
+        this.documents = documents;
+        this.setDatasource();
+      });
     });
   }
 }
