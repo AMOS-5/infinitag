@@ -24,6 +24,7 @@
 
 import { HttpClient } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
+import { IKeyword } from '../models/IKeyword.model';
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
@@ -76,19 +77,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
 
-  KEYWORD_TYPES = {
-    "MANUALL"   : "#3399ff",
-    "KWM"       : "#ff4d4d",
-    "ML"        : "#33cc33",
+  KEYWORD_TYPE_COLORS = {
+    "MANUAL"   : "#a6a6a6",
+    "KWM"       : "#66ff66",
+    "ML"        : "#3399ff",
   };
+
   public taggingMethods: Array<ITaggingMethod> = [
     {
       name: 'Keyword Model',
-      type: 'keyword'
+      type: 'KWM'
     },
     {
       name: 'Automated',
-      type: 'automated'
+      type: 'ML'
     }
   ];
 
@@ -191,10 +193,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {string} keyword
   * @returns {Observable} Observable of the document
   */
-  private addKeywordToDoc = (iDoc, keyword): Observable<IDocument> => {
-    if (iDoc.keywords.includes(keyword) === false) {
+  private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {
+    if (iDoc.keywords.filter(kw => kw.value === keyword.value).length === 0) {
       iDoc.keywords.push(keyword);
-      iDoc.keywords.sort();
+      iDoc.keywords.sort((a,b) => a.value.localeCompare(b.value));
       return of(iDoc);
     } else {
       return throwError('Keyword already added to ' + iDoc.title);
@@ -209,22 +211,23 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {IDocument} document
   * @param {string} keyword
   */
-  public applyKeyword(doc, keyword) {
-    if (this.findByNode(keyword)) {
+  public applyKeyword(doc, keywordValue) {
+    if (this.findByNode(keywordValue)) {
       let fixedArray = this.removeDublicate(this.kwmToAdd);
-      keyword = '';
+      keywordValue = '';
       for (let i = 0; i < fixedArray.length; i++){
         if (i === 0) {
-          keyword = keyword + fixedArray[i] ;
+          keywordValue = keywordValue + fixedArray[i] ;
         } else {
-          keyword = keyword + '->' + fixedArray[i] ;
+          keywordValue = keywordValue + '->' + fixedArray[i] ;
         }
 
       }
       this.kwmToAdd = [];
     }
 
-    this.addKeywordToDoc(doc, keyword).subscribe(
+    let kw: IKeyword = {value: keywordValue, type: "MANUAL"};
+    this.addKeywordToDoc(doc, kw).subscribe(
       res => {
         this.uploadService.patchKeywords(res).subscribe(() => {
           const index = this.documents.findIndex(document => document.id === doc.id);
@@ -271,8 +274,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param keyword to be removed
   */
   removeKeywordFromDocument(document: IDocument, keyword) {
-    console.log("rm: ", document, ", ", keyword);
-
     const index = document.keywords.indexOf(keyword);
     if (index >= 0) {
       document.keywords.splice(index, 1);

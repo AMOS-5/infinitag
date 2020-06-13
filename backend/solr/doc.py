@@ -37,6 +37,7 @@ class SolrDocKeywordTypes(enum.Enum):
 
     KWM = 1
     ML = 2
+    MANUAL = 3
 
     @staticmethod
     def from_str(s: str) -> "SolrDocKeywordTypes":
@@ -143,6 +144,19 @@ class SolrDoc:
         return {
             "id": self.id,
             "keywords": [kw.as_str() for kw in self.keywords],
+            "title": self.title,
+            "type": self.file_type,
+            "language": self.lang,
+            "size": self.size,
+            "creation_date": self.creation_date,
+            "content": self.content,
+        }
+
+    #TODO better name
+    def as_dict_but_keywords_are_dicts(self) -> dict:
+        return {
+            "id": self.id,
+            "keywords": [kw.as_dict() for kw in self.keywords],
             "title": self.title,
             "type": self.file_type,
             "language": self.lang,

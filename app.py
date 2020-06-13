@@ -87,9 +87,8 @@ def change_keywords():
 
     try:
         solDoc = solr.docs.get(id)
-        # TODO change SolrDocKeyWordType.KWM to the correct model
         solDoc.keywords = [
-            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords
+            SolrDocKeyword(kw["value"], SolrDocKeywordTypes.from_str(kw["type"])) for kw in keywords
         ]
         solr.docs.update(solDoc)
     except Exception as e:
@@ -97,7 +96,7 @@ def change_keywords():
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print(
-        "changed keywords on file " + id + " to " + ",".join(keywords), file=sys.stdout
+        "changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout
     )
     return jsonify("success"), 200
 
@@ -110,8 +109,8 @@ def get_documents():
     """
     try:
         # load docs from solr
-        res = solr.docs.search("*:*")
-        res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
+        docs = solr.docs.search("*:*")
+        res = [SolrDoc.from_hit(hit).as_dict_but_keywords_are_dicts() for hit in docs]
         return jsonify(res), 200
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
@@ -262,8 +261,7 @@ def keywordmodel():
 def apply_tagging_method():
     data = request.json
 
-                                                                             # TODO change to KWM
-    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "keyword":
+    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])

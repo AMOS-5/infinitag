@@ -96,14 +96,13 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "keywords":["a", "b", "c"],
+            "keywords":[{"value": "a", "type": "MANUAL"}, {"value": "b", "type": "MANUAL"}, {"value": "c", "type": "MANUAL"}],
         })
         response=tester.patch('/changekeywords', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         doc = application.solr.docs.get(id)
-        # TODO change this to correct keyword types
-        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in ["a", "b", "c"]])
+        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
 
 
     def test_documents(self):

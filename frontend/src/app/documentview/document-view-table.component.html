@@ -79,9 +79,9 @@
     <th mat-header-cell *matHeaderCellDef> {{'DOCUMENTS.MY_KEYWORDS' | translate}} </th>
     <td mat-cell *matCellDef="let element">
       <mat-chip-list #chipList>
-        <mat-chip [ngStyle]="{'background-color': KEYWORD_TYPES[&apos;MANUALL&apos;]}" *ngFor="let keyword of element.keywords" [selectable]="false"
+        <mat-chip [ngStyle]="{'background-color': KEYWORD_TYPE_COLORS[keyword.type]}" *ngFor="let keyword of element.keywords" [selectable]="false"
                  [removable]="true" (removed)="removeKeywordFromDocument(element, keyword)">
-          {{keyword}}
+          {{keyword.value}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
       </mat-chip-list>
