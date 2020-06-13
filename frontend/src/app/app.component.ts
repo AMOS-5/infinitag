@@ -25,6 +25,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../environments/environment';
+import {TranslateService} from '@ngx-translate/core';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -37,14 +38,31 @@ export class AppComponent implements OnInit {
   public serverStatus = 'DOWN';
 
   public iconPath = 'assets/img/InfiniTag1.png';
+  public availableLanguages = ['en', 'de'];
+  public selectedLanguage = 'en';
 
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    public translate: TranslateService
+  ) {
+    translate.addLangs(this.availableLanguages);
+    translate.setDefaultLang(this.selectedLanguage);
+
+    const browserLang = translate.getBrowserLang();
+    translate.use(browserLang.match(/en|de/) ? browserLang : 'en');
+    if ( this.availableLanguages.indexOf(browserLang) !== -1)  {
+      this.selectedLanguage = browserLang;
+    }
   }
   public ngOnInit(): void {
     this.httpClient.get(this.backendStatus)
       .subscribe((value: { status: string }) => {
         this.serverStatus = value.status;
       });
+  }
+
+  public changeLanguage(event: any) {
+    this.translate.use(event.value);
   }
 }

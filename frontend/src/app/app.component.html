@@ -3,19 +3,29 @@
     <a mat-button [routerLink]="''"><img src="{{iconPath}}" class="logo" alt="InfiniTag" /></a>
     <span class="menu-spacer"></span>
     <div>
-      <a mat-button [routerLink]="''">Home</a>
-      <a mat-button [routerLink]="'/documents'">Add Documents</a>
-      <a mat-button [routerLink]="'/keywords'">Keywords</a>
-      <a mat-button [matMenuTriggerFor]="beforeMenu">Documentation</a>
+      <a mat-button [routerLink]="''">{{'HOME.TITLE' | translate}}</a>
+      <a mat-button [routerLink]="'/documents'">{{'HOME.ADD_DOCUMENTS' | translate}}</a>
+      <a mat-button [routerLink]="'/keywords'">{{'HOME.KEYWORDS' | translate}}</a>
+      <a mat-button [matMenuTriggerFor]="beforeMenu">{{'HOME.DOCUMENTATION' | translate}}</a>
       <mat-menu #beforeMenu="matMenu" xPosition="before">
-        <a mat-menu-item [routerLink]="'/documentation'">API Documentation</a>
-        <a mat-menu-item href="assets/documentation/frontend/index.html" target="_blank">Front End Documentation <mat-icon>open_in_new</mat-icon></a>
-        <a mat-menu-item href="assets/documentation/backend/html/index.html" target="_blank">Back End Documentation <mat-icon>open_in_new</mat-icon></a>
+        <a mat-menu-item [routerLink]="'/documentation'">API {{'HOME.DOCUMENTATION' | translate}}</a>
+        <a mat-menu-item href="assets/documentation/frontend/index.html" target="_blank">Front End {{'HOME.DOCUMENTATION' | translate}} <mat-icon>open_in_new</mat-icon></a>
+        <a mat-menu-item href="assets/documentation/backend/html/index.html" target="_blank">Back End {{'HOME.DOCUMENTATION' | translate}} <mat-icon>open_in_new</mat-icon></a>
       </mat-menu>
     </div>
     <span class="fill-remaining-space"></span>
+    <div class="language-select">
+      <mat-form-field>
+        <mat-label>{{'HOME.LANGUAGE' | translate}}</mat-label>
+        <mat-select (selectionChange)="changeLanguage($event)" [value]="selectedLanguage">
+          <mat-option *ngFor="let language of translate.getLangs()" [value]="language">{{language.toUpperCase()}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+
     <span class="nav-buttons"></span>
-    Server Status: {{serverStatus}}
+    {{'HOME.SERVER_STATUS' | translate}}: {{serverStatus | translate}}
       <!--div><button mat-fab color="primary" aria-label="proPic">J</button>John Doe </div>
       <div>
         <mat-form-field>

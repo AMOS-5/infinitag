@@ -1,0 +1,58 @@
+{
+  "HOME": {
+    "TITLE": "Home",
+    "ADD_DOCUMENTS": "Dokumente hinzufügen",
+    "KEYWORDS": "Keywords",
+    "DOCUMENTATION": "Dokumentation",
+    "SERVER_STATUS": "Server Status",
+    "UP": "Aktiv",
+    "LANGUAGE": "Sprache",
+    "MOTTO": "Wilkommen bei InfiniTag - Dem automatischen Scheißhaufen der ihre Dokumente so taggt, dass Sie sie nie wieder finden."
+  },
+  "DOCUMENTS": {
+    "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
+    "SEARCH_FOR_DOCUMENTS": "Nach Dokumenten Suchen",
+    "FILENAME": "Filename",
+    "MY_KEYWORDS": "Meine Keywords",
+    "APPLY_KEYWORDS": "Keywords anwenden",
+    "FILE_TYPE": "Dateityp",
+    "CREATEDAT": "Erestellt am",
+    "EDITING_IS": "Bearbeiten ist",
+    "DRAG_DROP_DIALOG": "Packen und ziehen sie ihre Dateien hier hin um sie hochzuladen",
+    "BROWSE_FOR_FILES": "Dokumente durchsuchen",
+    "MANUAL_TAGGING": "Manual Tagging",
+    "AUTOMATED_TAGGING": "Automatisiertes Tagging",
+    "SELECT_TAGGING_METHOD": "Select Tagging method",
+    "SELECT_KEYWORD_MODEL": "Select Keyword Model"
+  },
+  "KEYWORDS": {
+    "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
+    "ADD_DIMENSION": "Dimension hinzufügen",
+    "ADD_KEYWORD": "Keyword hinzufügen",
+    "UNCATEGORIZED_DIMENSIONS": "Dimensionen ohne Kategorie",
+    "UNCATEGORIZED_KEYWORDS": "Keywords ohne Kategorie",
+    "KEYWORD_MODELS": "Keyword Modelle",
+    "HIERARCHY": "Hierarchie",
+    "NEW_KEYWORD_MODEL_DIALOG": "Name für das neue Keyword Model",
+    "NEW_KEYWORD_MODEL": "Neues Keyword Model"
+  },
+  "SEARCH": "Suche",
+  "SEARCH_TERM": "Suchbegriff",
+  "EDIT": "Bearbeiten",
+  "TYPE": "Typ",
+  "SIZE": "Größe",
+  "FILE_UPLOAD": "Datei hochladen",
+  "ENABLED": "Aktiviert",
+  "DISABLED": "Deaktiviert",
+  "ADD": "Hinzufügen",
+  "REMOVE": "Entfernen",
+  "CLOSE": "Schließen",
+  "OK": "Ok",
+  "OR": "Oder",
+  "AND": "Und",
+  "ENQUEUED": "In der Warteschlange",
+  "SUCCESS": "Erfolg",
+  "UPLOADING": "wird hochgeladen",
+  "ERROR": "Fehler"
+}
+

@@ -15,10 +15,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {HttpLoaderFactory} from '../app.module';
+import {HttpClient} from '@angular/common/http';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
+  let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -34,6 +38,13 @@ describe('HomeComponent', () => {
         ReactiveFormsModule,
         MatSnackBarModule,
         MatMenuModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
       ],
       declarations: [HomeComponent, DocumentViewTableComponent],
       schemas: [
@@ -41,6 +52,7 @@ describe('HomeComponent', () => {
       ]
     })
       .compileComponents();
+    translate = TestBed.get(TranslateService);
   }));
 
   beforeEach(() => {

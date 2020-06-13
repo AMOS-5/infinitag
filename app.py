@@ -27,7 +27,7 @@ import json
 from datetime import datetime, timedelta
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
 
 
 import logging as log
@@ -40,19 +40,19 @@ app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
 
 
-@app.route('/')
+@app.route("/")
 def hello_world():
-    return 'Hello World!'
+    return "Hello World!"
 
 
-@app.route('/upload', methods=['POST'])
+@app.route("/upload", methods=["POST"])
 def upload_file():
     """
     Handles the file upload post request by saving the file and adding it to the solr db
     :return: json object containing a success/error message
     """
     try:
-        f = request.files['fileKey']
+        f = request.files["fileKey"]
         file_name = f"tmp/{secure_filename(f.filename)}"
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
@@ -68,12 +68,11 @@ def upload_file():
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print(f'Uploaded, saved and indexed file: {file_name}', file=sys.stdout)
+    print(f"Uploaded, saved and indexed file: {file_name}", file=sys.stdout)
     return jsonify(file_name + " was saved and indexed"), 200
 
 
-
-@app.route('/changekeywords', methods=['PATCH'])
+@app.route("/changekeywords", methods=["PATCH"])
 def change_keywords():
     """
     Handles the updating of keywords for a document
@@ -81,23 +80,29 @@ def change_keywords():
     """
     try:
         iDoc = request.json
-        id = iDoc.get('id')
-        keywords = iDoc.get('keywords')
+        id = iDoc.get("id")
+        keywords = iDoc.get("keywords")
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
 
     try:
         solDoc = solr.docs.get(id)
-        solDoc.keywords = keywords
+        # TODO change SolrDocKeyWordType.KWM to the correct model
+        solDoc.keywords = [
+            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords
+        ]
         solr.docs.update(solDoc)
     except Exception as e:
+        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print('changed keywords on file ' + id + ' to ' + ','.join(keywords) , file=sys.stdout)
+    print(
+        "changed keywords on file " + id + " to " + ",".join(keywords), file=sys.stdout
+    )
     return jsonify("success"), 200
 
 
-@app.route('/documents')
+@app.route("/documents")
 def get_documents():
     """
     Queries all documents form solr and sends them to the front end
@@ -112,28 +117,26 @@ def get_documents():
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
-
-@app.route('/health')
+@app.route("/health")
 def get_health():
     return jsonify({"status": "UP"})
 
 
-
-@app.route('/dims', methods=['GET', 'POST'])
+@app.route("/dims", methods=["GET", "POST"])
 def dimensions():
     """
     Handles GET and POST request for uncategorized dimensions
     :return: json object containing the uncategorized dimensions and/or a status message
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         try:
             data = solr.dimensions.get()
             return jsonify(data), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
-    elif request.method == 'POST':
+    elif request.method == "POST":
         try:
-            data = request.json.get('dim')
+            data = request.json.get("dim")
             solr.dimensions.add(data)
             return jsonify(data + " has been added to dimensions"), 200
         except Exception as e:
@@ -141,7 +144,7 @@ def dimensions():
             return jsonify(f"/dims internal error: {e}"), 500
 
 
-@app.route('/dims/<dim_id>', methods=['DELETE'])
+@app.route("/dims/<dim_id>", methods=["DELETE"])
 def remove_dimension(dim_id):
     """
     Handles DELETE request for uncategorized dimensions
@@ -154,21 +157,21 @@ def remove_dimension(dim_id):
         return jsonify(f"{dim_id} internal error: {e}"), 500
 
 
-@app.route('/keys', methods=['GET', 'POST'])
+@app.route("/keys", methods=["GET", "POST"])
 def keywords():
     """
     Handles GET and POST request for uncategorized keywords
     :return: json object containing the uncategorized keywords and/or a status message
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         try:
             data = solr.keywords.get()
             return jsonify(data), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
-    elif request.method == 'POST':
+    elif request.method == "POST":
         try:
-            data = request.json.get('key')
+            data = request.json.get("key")
             solr.keywords.add(data)
             return jsonify(data + " has been added to keywords"), 200
         except Exception as e:
@@ -176,7 +179,7 @@ def keywords():
             return jsonify(f"/dims internal error: {e}"), 500
 
 
-@app.route('/keys/<key_id>', methods=['DELETE'])
+@app.route("/keys/<key_id>", methods=["DELETE"])
 def remove_keyword(key_id):
     """
     Handles DELETE request for uncategorized keywords
@@ -189,22 +192,21 @@ def remove_keyword(key_id):
         return jsonify(f"{key_id} internal error: {e}"), 500
 
 
-
-@app.route('/models', methods=['GET', 'POST'])
+@app.route("/models", methods=["GET", "POST"])
 def keywordmodels():
     """
     Handles GET and POST request for keyword models
     :return: json object containing the keyword models and/or a status message
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         try:
             solrHierarchies = solr.keywordmodel.get()
             list = [hierarchy.as_dict() for hierarchy in solrHierarchies]
-            #print("kwm: " + data , file=sys.stdout)
+            # print("kwm: " + data , file=sys.stdout)
             return json.dumps(list), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
-    elif request.method == 'POST':
+    elif request.method == "POST":
         try:
             data = request.json
             solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
@@ -214,7 +216,8 @@ def keywordmodels():
             log.error(f"/models: {e}")
             return jsonify(f"/models internal error: {e}"), 500
 
-@app.route('/models/<model_id>', methods=['DELETE'])
+
+@app.route("/models/<model_id>", methods=["DELETE"])
 def remove_keyword_model(model_id):
     """
     Handles DELETE request for keyword models
@@ -226,37 +229,68 @@ def remove_keyword_model(model_id):
     except Exception as e:
         return jsonify(f"{model_id} internal error: {e}"), 500
 
-@app.route('/stopServer', methods=['GET'])
+
+@app.route("/stopServer", methods=["GET"])
 def stop_server():
-    shutdown = request.environ.get('werkzeug.server.shutdown')
+    shutdown = request.environ.get("werkzeug.server.shutdown")
     if shutdown is None:
         return jsonify({"success": False, "message": "Server could not be shut down."})
 
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
-@app.route('/keywordmodels', methods=['GET'])
+
+@app.route("/keywordmodels", methods=["GET"])
 def keywordmodel():
     """
     Handles GET and POST request for keyword model
     :return: json object containing the keyword model and/or a status message
     """
-    if request.method == 'GET':
+    if request.method == "GET":
         res = []
         try:
             data = solr.keywordmodel.get()
             for model in data:
-                modelDict = {
-                    "name": model.name,
-                    "hierarchy": model.hierarchy
-                }
+                modelDict = {"name": model.name, "hierarchy": model.hierarchy}
                 res.append(modelDict)
             return jsonify(res), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
 
 
-if __name__ == '__main__':
+@app.route("/apply", methods=["POST"])
+def apply_tagging_method():
+    data = request.json
+
+                                                                             # TODO change to KWM
+    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "keyword":
+        print("Applying keyword model")
+        kwm_data = data["keywordModel"]
+        kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
+
+        # apply kwm on all documents
+        if "docs" not in data:
+            res = solr.docs.search("*:*")
+            docs = [SolrDoc.from_hit(hit) for hit in res]
+        else:
+            doc_ids = data["docs"]
+            docs = solr.docs.get(*doc_ids)
+            # TODO
+            if not hasattr(docs, "len"):
+                docs = [docs]
+
+        for doc in docs:
+            applied = doc.apply_hierarchy(kwm)
+            if applied:
+                solr.docs.update(doc)
+
+    else:
+        print("Applying automated tagging")
+
+    return jsonify("{message: 'success'}"), 200
+
+
+if __name__ == "__main__":
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)

@@ -13,11 +13,15 @@ import { IDocument } from '../models/IDocument.model';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { HttpLoaderFactory } from '../app.module';
+import { HttpClient } from '@angular/common/http';
 
 
 describe('DocumentViewTable', () => {
   let component: DocumentViewTableComponent;
   let fixture: ComponentFixture<DocumentViewTableComponent>;
+  let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,10 +39,18 @@ describe('DocumentViewTable', () => {
         MatSnackBarModule,
         MatCheckboxModule,
         MatButtonToggleModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
       ],
       declarations: [DocumentViewTableComponent]
     })
       .compileComponents();
+    translate = TestBed.get(TranslateService);
   }));
 
   beforeEach(() => {
@@ -98,7 +110,7 @@ describe('DocumentViewTable', () => {
   });
 
   it('should correctly add keywords to doc', () => {
-    let doc = {
+    const doc = {
       size: 1,
       language: 'en',
       creation_date: new Date(),
@@ -111,17 +123,17 @@ describe('DocumentViewTable', () => {
     expect(doc.keywords.length).toEqual(1);
 
     // @ts-ignore
-    component.addKeywordToDoc(doc, "b").subscribe(res => {
+    component.addKeywordToDoc(doc, 'b').subscribe(res => {
       expect(res.keywords.length).toEqual(1);
     },
     err => {
-      expect(err).toEqual("Keyword already added to Test 1");
+      expect(err).toEqual('Keyword already added to Test 1');
     });
 
     // @ts-ignore
-    component.addKeywordToDoc(doc, "a").subscribe(res => {
+    component.addKeywordToDoc(doc, 'a').subscribe(res => {
       expect(res.keywords.length).toEqual(2);
-      expect(res.keywords).toEqual(["a", "b"]);
+      expect(res.keywords).toEqual(['a', 'b']);
     });
 
   });

@@ -16,3 +16,12 @@
     right: 20px;
 }
 
+.language-select {
+  font-size: 12px;
+  width: 100px;
+  margin-right: 16px;
+
+  .mat-form-field {
+    width: 100%;
+  }
+}
