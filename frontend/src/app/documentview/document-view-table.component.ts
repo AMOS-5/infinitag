@@ -117,6 +117,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
+
+    //tell MatTableDataSource how an entry should be searched for given a filter string
+    this.dataSource.filterPredicate =
+    (doc: IDocument, filter: string) =>
+    {
+      return  doc.title.includes(filter) === true ||
+              doc.language.includes(filter) === true ||
+              doc.size.toString().includes(filter) === true ||
+              doc.type.includes(filter) === true ||
+              doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
+    }
+
+
+
   }
 
   /**
