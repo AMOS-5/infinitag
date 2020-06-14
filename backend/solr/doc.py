@@ -34,7 +34,7 @@ class SolrDocKeywordTypes(enum.Enum):
     """
     Enum representing the applied keyword types
     """
-
+    MANUAL = 0
     KWM = 1
     ML = 2
     MANUAL = 3
