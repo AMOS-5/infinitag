@@ -140,7 +140,7 @@ class SolrDoc:
             content=hit["content"][0],
         )
 
-    def as_dict(self) -> dict:
+    def as_dict(self, keywords_as_str: bool = False) -> dict:
         return {
             "id": self.id,
             "keywords": [kw.as_str() for kw in self.keywords],

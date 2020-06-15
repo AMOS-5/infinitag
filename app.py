@@ -110,7 +110,7 @@ def get_documents():
     try:
         # load docs from solr
         docs = solr.docs.search("*:*")
-        res = [SolrDoc.from_hit(hit).as_dict_but_keywords_are_dicts() for hit in docs]
+        res = [SolrDoc.from_hit(hit).as_dict() for hit in docs]
         return jsonify(res), 200
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
