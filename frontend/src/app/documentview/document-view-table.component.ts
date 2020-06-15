@@ -106,7 +106,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywordModels = data;
         for (let i = 0; i < data.length; i++) {
           data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
-            this.findByNodeType(hierarchy, 'KEYWORD');
+            //this.findByNodeType(hierarchy, 'KEYWORD');
           }) : null;
         }
 

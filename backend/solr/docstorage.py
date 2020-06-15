@@ -123,5 +123,14 @@ class SolrDocStorage:
 
         return None
 
+    def wipe_keywords(self):
+        """
+        wipes keywords from all docs; used for debugging
+        """
+        res = self.search("*:*")
+        docs = [SolrDoc.from_hit(hit) for hit in res]
+        for doc in docs:
+            doc.keywords = []
+            self.update(doc)
 
 __all__ = ["SolrDocStorage"]

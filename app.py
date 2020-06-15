@@ -23,6 +23,7 @@ from werkzeug.utils import secure_filename
 from argparse import ArgumentParser
 import sys
 import json
+import time
 
 from datetime import datetime, timedelta
 
@@ -268,6 +269,34 @@ def apply_tagging_method():
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
 
+        keywords = {}
+        #print(kwm.hierarchy, file=sys.stdout)
+        to_check = [{'node': root, 'path': []} for root in kwm.hierarchy]
+
+        start_time = time.time()
+        #extract all keywords with their parents and put them into a dict
+        while len(to_check) != 0:
+            cur = to_check.pop()
+            path = cur['path'][:]
+            #print("current: ", cur['node']['item'])
+            if cur['node']['nodeType'] == 'KEYWORD':
+                keywords[cur['node']['item']] = path[:]
+
+                if 'children' in cur['node']:
+                    path.append(cur['node']['item'])
+                    #print("path: ", path)
+                    #print("===: ", cur['node']['item'])
+                    l = [{'node': child, 'path': path} for child in cur['node']['children']]
+                    to_check.extend(l)
+            else:
+                if 'children' in cur['node']:
+                    #print("path: ", path)
+                    l = [{'node': child, 'path': path} for child in cur['node']['children']]
+                    to_check.extend(l)
+        stop_time = time.time() - start_time
+        #print("keywords: ", keywords)
+        print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
+
         # apply kwm on all documents
         if "docs" not in data:
             res = solr.docs.search("*:*")
@@ -279,10 +308,27 @@ def apply_tagging_method():
             if not hasattr(docs, "len"):
                 docs = [docs]
 
+        min = 10000000
+        max = 0
+        total = 0
         for doc in docs:
-            applied = doc.apply_hierarchy(kwm)
+            start_time = time.time()
+            applied = doc.apply_kwm(keywords)
             if applied:
                 solr.docs.update(doc)
+            stop_time = time.time() - start_time
+            if stop_time < min:
+                min = stop_time
+            if stop_time > max:
+                max = stop_time
+            total += stop_time
+            #print("{:10.7f}".format(stop_time))
+
+        print("min time: ", "{:10.7f}".format(min), "sec")
+        print("max time: ", "{:10.7f}".format(max), "sec")
+        print("total time: ", "{:10.7f}".format(total), "sec")
+        print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
+
 
     else:
         print("Applying automated tagging")
@@ -291,6 +337,8 @@ def apply_tagging_method():
 
 
 if __name__ == "__main__":
+
+    #solr.docs.wipe_keywords()
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
