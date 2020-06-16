@@ -305,15 +305,8 @@ def apply_tagging_method():
     else:
         print("automated tagging")
         docs = data["documents"]
-        #docs = solr.docs.get(content)
-        # TODO
-        if not hasattr(docs, "len"):
-            docs = [docs]
-
-        #print(docs)
 
         for doc in docs:
-
             cont = doc['content']
             cleaned = cleantext(cont)
             dist, tfidf_matrix, terms = tfidf_vector(cleaned)
