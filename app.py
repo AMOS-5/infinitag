@@ -23,12 +23,24 @@ from werkzeug.utils import secure_filename
 from argparse import ArgumentParser
 import sys
 import json
+import joblib
+from pathlib import Path
 
 from datetime import datetime, timedelta
+import numpy as np
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, \
+    SolrDocKeywordTypes
 
+from utils.data_preprocessing import cleantext
+from utils.tfidf_vector import tfidf_vector
+from utils.k_means_cluster import kmeans_clustering
+
+from utils.data_preprocessing import data_load
+from sklearn.feature_extraction.text import TfidfVectorizer
+import os
+from utils.tfidf_vector import dummy_fun
 
 import logging as log
 
@@ -97,7 +109,8 @@ def change_keywords():
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print(
-        "changed keywords on file " + id + " to " + ",".join(keywords), file=sys.stdout
+        "changed keywords on file " + id + " to " + ",".join(keywords),
+        file=sys.stdout
     )
     return jsonify("success"), 200
 
@@ -211,7 +224,8 @@ def keywordmodels():
             data = request.json
             solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
             solr.keywordmodel.add(solrHierarchy)
-            return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
+            return jsonify(
+                solrHierarchy.name + " has been added to keywordmodels"), 200
         except Exception as e:
             log.error(f"/models: {e}")
             return jsonify(f"/models internal error: {e}"), 500
@@ -234,7 +248,8 @@ def remove_keyword_model(model_id):
 def stop_server():
     shutdown = request.environ.get("werkzeug.server.shutdown")
     if shutdown is None:
-        return jsonify({"success": False, "message": "Server could not be shut down."})
+        return jsonify(
+            {"success": False, "message": "Server could not be shut down."})
 
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
@@ -262,8 +277,9 @@ def keywordmodel():
 def apply_tagging_method():
     data = request.json
 
-                                                                             # TODO change to KWM
-    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "keyword":
+    # TODO change to KWM
+    if data["keywordModel"] is not None and data["taggingMethod"][
+        "type"] == "keyword":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
@@ -278,6 +294,8 @@ def apply_tagging_method():
             # TODO
             if not hasattr(docs, "len"):
                 docs = [docs]
+        print(docs)
+
 
         for doc in docs:
             applied = doc.apply_hierarchy(kwm)
@@ -285,13 +303,37 @@ def apply_tagging_method():
                 solr.docs.update(doc)
 
     else:
-        print("Applying automated tagging")
+        print("automated tagging")
+        docs = data["documents"]
+        #docs = solr.docs.get(content)
+        # TODO
+        if not hasattr(docs, "len"):
+            docs = [docs]
+
+        #print(docs)
+
+        for doc in docs:
+
+            cont = doc['content']
+            cleaned = cleantext(cont)
+            dist, tfidf_matrix, terms = tfidf_vector(cleaned)
+            automated_tags = kmeans_clustering(tfidf_matrix, cleaned, terms, doc, 5, 5)
+
+            #It has the list of keywords from kmeans e.g [0002.txt: [tag1,tag2,tag3], 0003.txt:[tag1,tag2,tag3]]
+            keywords = automated_tags
+            #print(keywords)
+
+            solDoc = solr.docs.get(doc['id'])
+            solDoc.keywords = [
+            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords]
+            solr.docs.update(docs)
 
     return jsonify("{message: 'success'}"), 200
 
 
-if __name__ == "__main__":
 
+
+if __name__ == "__main__":
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)

@@ -96,5 +96,5 @@ def data_load(dir, unwanted_keywords,extensions_allowed):
     vocab_frame = pd.DataFrame({'words': flattened})
     print('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
 
-    return flattened, vocab_frame, filenames
+    return flattened, vocab_frame, filenames,overall
 

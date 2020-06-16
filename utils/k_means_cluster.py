@@ -20,40 +20,78 @@ import pandas as pd
 from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 from sklearn.cluster import KMeans
-
+import pprint
+#import pickle
+#from sklearn.externals import joblib
+import joblib
+import matplotlib.pyplot as plt
 
 def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,words_per_cluster ):
-
     km = KMeans(n_clusters=num_clusters)
 
+    # pickle.dump(km, open("kmeans_model.pkl", "wb"))
     km.fit(tfidf_matrix)
-
+    joblib.dump(km, 'kmeans_model.pkl')
     clusters = km.labels_.tolist()
     print(len(clusters))
-    document = { 'title': file_list, 'synopsis': flattened, 'cluster': clusters}
+    document = {'title': file_list, 'synopsis': flattened, 'cluster': clusters}
 
-    frame = pd.DataFrame(document, index = [clusters] , columns = ['title', 'cluster'])
+    frame = pd.DataFrame(document, index=[clusters], columns=['title', 'cluster'])
     frame['cluster'].value_counts()
 
     print("Top terms per cluster:")
     print()
-    #sort cluster centers by proximity to centroid
+    # sort cluster centers by proximity to centroid
     order_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
+
+
+
+    checking = {}
     for clustering in range(num_clusters):
         print("Cluster %d words:" % clustering, end='')
         print('')
-
-        for tags in order_centroids[clustering, : words_per_cluster]:
+        keywords = []
+        for tags in order_centroids[clustering, : words_per_cluster]:  # replace 6 with n words per cluster
             kmeans_tags = terms[tags]
-            print(' %s' % kmeans_tags  )
+            keywords.append(kmeans_tags)
+            print(' %s' % kmeans_tags)
         print('')
         print('')
         print("Cluster %d titles:" % clustering, end='')
-
+        docname = []
         for title in frame.loc[clustering]['title'].values.tolist():
-            print(' %s,' % title, end='')
-        print('')
-        print('')
+            docname.append(title)
 
-        return clustering,title
+            print(' %s,' % title, end='')
+        #checking[clustering]=(keywords, docname)
+        for filename in docname:
+            checking[filename]=keywords
+            print('')
+            print('')
+
+        #print("checking:", [clustering, keywords, docname])
+    #print("tags:", keywords)
+    #print("docname:",docname)
+    print(checking["000306.ppt"])
+    return checking
+
+
+
+"""" cluster_error = []
+    K = range(1,50)
+    for k in K:
+        kmeanModel = KMeans(n_clusters=k)
+        kmeanModel.fit(tfidf_matrix)
+        cluster_error.append( kmeanModel.inertia_ )
+
+    clusters_df = pd.DataFrame( { "num_clusters":K, "cluster_error": cluster_error } )
+    print(clusters_df)
+
+    # Plot the elbow Plot
+    plt.figure(figsize=(12,6))
+    plt.plot( clusters_df.num_clusters, clusters_df.cluster_error, marker = "o" )
+    plt.xlabel('k')
+    plt.ylabel('Clusters_Error')
+    plt.title('The Elbow Method showing the optimal k')
+    plt.show()"""
