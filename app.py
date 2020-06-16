@@ -261,6 +261,13 @@ def keywordmodel():
 
 @app.route("/apply", methods=["POST"])
 def apply_tagging_method():
+    """
+    Endpoint for autotagging of documents.
+    If the keyword model autotagging is choosen, the documents and the hierarchy
+    are parsed and the keywords get applied. If no documents are given the
+    keywords get applied to all documents
+    :return: json object containing a status message
+    """
     data = request.json
 
                                                                              # TODO change to KWM
@@ -277,19 +284,21 @@ def apply_tagging_method():
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 
         # apply kwm on all documents
-        if "docs" not in data:
+        if "documents" not in data or len(data["documents"]) == 0:
             res = solr.docs.search("*:*")
             docs = [SolrDoc.from_hit(hit) for hit in res]
         else:
-            doc_ids = data["docs"]
+            docs_json = data["documents"]
+            doc_ids = [doc['id'] for doc in docs_json]
             docs = solr.docs.get(*doc_ids)
-            # TODO
-            if not hasattr(docs, "len"):
+
+            if not isinstance(docs, list):
                 docs = [docs]
 
         min = 10000000
         max = 0
         total = 0
+        # apply keywords for each document and measure time
         for doc in docs:
             start_time = time.time()
 
@@ -305,10 +314,12 @@ def apply_tagging_method():
             total += stop_time
             #print("{:10.7f}".format(stop_time))
 
+        print("number of documents checked: ", len(docs))
         print("min time: ", "{:10.7f}".format(min), "sec")
         print("max time: ", "{:10.7f}".format(max), "sec")
         print("total time: ", "{:10.7f}".format(total), "sec")
-        print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
+        if len(docs) != 0:
+            print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
 
 
     else:
