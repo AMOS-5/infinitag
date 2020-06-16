@@ -323,7 +323,7 @@ def apply_tagging_method():
     else:
         print("Applying automated tagging")
 
-    return jsonify("{message: 'success'}"), 200
+    return jsonify({"status": 200})
 
 
 if __name__ == "__main__":
