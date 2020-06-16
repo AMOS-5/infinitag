@@ -337,11 +337,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywords.push(data.item);
         this.selectedKeywords.push(data.item);
       }
-      if (data.children) {
-        data.children.forEach(child => {
-          this.findByNodeType(child, 'KEYWORD');
-        });
-      }
+    }
+    if (data.children) {
+      data.children.forEach(child => {
+        this.findByNodeType(child, 'KEYWORD');
+      });
     }
   }
 

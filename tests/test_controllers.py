@@ -212,7 +212,7 @@ class BasicTestCase(unittest.TestCase):
     def test_apply_tagging_method_kwm(self):
         application.solr.docs.clear()
         data=json.dumps(dict(
-            taggingMethod={'name': 'Keyword Model', 'type': 'keyword'},
+            taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
             keywordModel={'name': 'test',
                             'hierarchy': [
                                 {'item': 'test', 'nodeType': 'KEYWORD'},
@@ -233,6 +233,7 @@ class BasicTestCase(unittest.TestCase):
             SolrDocKeyword("text", SolrDocKeywordTypes.KWM),
             SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
         ]
+        print(keywords)
         self.assertEqual(sorted(keywords), sorted(expected))
 
         keywords = application.solr.docs.get(f"{self.base}.pdf").keywords
