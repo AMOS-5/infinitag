@@ -55,6 +55,10 @@ class SolrHierarchy:
         self.hierarchy[k] = v
 
     def get_keywords(self):
+        """
+        Extracts all keywords and their paths from the hierarchy
+        :return: dict containing keywords as keys and paths as values
+        """
         keywords = {}
         to_check = [{'node': root, 'path': []} for root in self.hierarchy]
 
@@ -62,19 +66,15 @@ class SolrHierarchy:
         while len(to_check) != 0:
             cur = to_check.pop()
             path = cur['path'][:]
-            #print("current: ", cur['node']['item'])
             if cur['node']['nodeType'] == 'KEYWORD':
                 keywords[cur['node']['item']] = path[:]
 
                 if 'children' in cur['node']:
                     path.append(cur['node']['item'])
-                    #print("path: ", path)
-                    #print("===: ", cur['node']['item'])
                     l = [{'node': child, 'path': path} for child in cur['node']['children']]
                     to_check.extend(l)
             else:
                 if 'children' in cur['node']:
-                    #print("path: ", path)
                     l = [{'node': child, 'path': path} for child in cur['node']['children']]
                     to_check.extend(l)
 
