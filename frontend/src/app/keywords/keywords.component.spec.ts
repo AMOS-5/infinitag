@@ -12,10 +12,14 @@ import { KeywordsComponent, ItemFlatNode } from './keywords.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatListModule} from '@angular/material/list';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {HttpLoaderFactory} from '../app.module';
+import {HttpClient} from '@angular/common/http';
 
 describe('KeywordsComponent', () => {
   let component: KeywordsComponent;
   let fixture: ComponentFixture<KeywordsComponent>;
+  let translate: TranslateService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -33,9 +37,17 @@ describe('KeywordsComponent', () => {
         MatDialogModule,
         MatTreeModule,
         MatListModule,
+         TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
       ]
     })
     .compileComponents();
+    translate = TestBed.get(TranslateService);
   }));
 
   beforeEach(() => {
@@ -61,12 +73,12 @@ describe('KeywordsComponent', () => {
   });
 
   it('test should add item in keywordmodel', () => {
-    var node = new ItemFlatNode();
-    node.item = "test";
+    let node = new ItemFlatNode();
+    node.item = 'test';
     node.level = 0;
     node.expandable = true;
     component.dragNode = node;
-    component.handleDrop("", node)
-    expect(component.dataSource.data).toBeTruthy(); //todo
+    component.handleDrop('', node);
+    expect(component.dataSource.data).toBeTruthy(); // todo
   });
 });

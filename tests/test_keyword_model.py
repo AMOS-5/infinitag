@@ -1,5 +1,11 @@
-from backend.solr import SolrKeywordModel, SolrKeywords, SolrHierarchy
-
+from backend.solr import (
+    SolrKeywordModel,
+    SolrKeywords,
+    SolrHierarchy,
+    SolrDoc,
+    SolrDocKeyword,
+    SolrDocKeywordTypes,
+)
 import unittest
 import time
 
@@ -120,6 +126,101 @@ class TestKeywordModelHierarchy(unittest.TestCase):
         country_hierarchy = SOLR_KEYWORD_MODEL.get()[0]
         germany = country_hierarchy["germany"]
         self.assertTrue("berlin" in germany["states"])
+
+
+class TestKeywordModelApply(unittest.TestCase):
+    def setUp(self):
+        # fmt: off
+        self.doc = SolrDoc(
+            "path",
+            title="title"
+        )
+
+        self.hierarchy = SolrHierarchy(
+            name="name",
+            hierarchy=[
+                {
+                    "item": "dim1",
+                    "nodeType": "DIMENSION",
+                    "children": [
+                        {
+                            "item": "key1",
+                            "nodeType": "KEYWORD",
+                            "children": [
+                                {
+                                    "item": "dim11",
+                                    "nodeType": "DIMENSION",
+                                    "children": [
+                                        {
+                                            "item": "key11",
+                                            "nodeType": "KEYWORD"
+                                        },
+                                        {
+                                            "item": "key12",
+                                            "nodeType": "KEYWORD"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "item": "key2",
+                            "nodeType": "KEYWORD",
+                            "children": [
+                                {
+                                    "item": "dim21",
+                                    "nodeType": "DIMENSION"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        )
+        # fmt: on
+
+    def test_lowest_dimension_found(self):
+        self.doc.content = "key11 and some other stuff"
+        expected = [
+            SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
+        ]
+
+        self.doc.apply_hierarchy(self.hierarchy)
+        self.assertEqual(sorted(self.doc.keywords), sorted(expected))
+
+    def test_above_lowest_dimension_found(self):
+        self.doc.content = "key1 and some other stuff"
+        expected = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
+
+        self.doc.apply_hierarchy(self.hierarchy)
+        self.assertEqual(self.doc.keywords, expected)
+
+    def test_everything_found(self):
+        self.doc.content = "key1 key11 key12 key2 and some other stuff"
+        expected = [
+            SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key12", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key2", SolrDocKeywordTypes.KWM),
+        ]
+
+        self.doc.apply_hierarchy(self.hierarchy)
+        self.assertEqual(sorted(self.doc.keywords), sorted(expected))
+
+    def test_dimension_ignored(self):
+        self.doc.content = "dim1 and some other stuff"
+        expected = list()
+
+        self.doc.apply_hierarchy(self.hierarchy)
+        self.assertEqual(self.doc.keywords, expected)
+
+    def test_no_duplicate_keywords(self):
+        self.doc.keywords = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
+        self.doc.content = "key1 and some other stuff"
+
+        self.doc.apply_hierarchy(self.hierarchy)
+        self.assertEqual(len(self.doc.keywords), 1)
 
 
 if __name__ == "__main__":

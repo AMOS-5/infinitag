@@ -8,7 +8,7 @@ from flask_jsonpify import jsonify
 # TODO hack to modify the config before the app gets initialized
 # we should use a better fixture where the app gets initialized with our
 # desired configurations
-from backend.solr import config, SolrDoc, SolrHierarchy
+from backend.solr import config, SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
 
 # reinit for test
 config_keyword_model = config.keyword_model_solr
@@ -96,13 +96,13 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "keywords":["a", "b", "c"],
+            "keywords":[{"value": "a", "type": "MANUAL"}, {"value": "b", "type": "MANUAL"}, {"value": "c", "type": "MANUAL"}],
         })
         response=tester.patch('/changekeywords', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         doc = application.solr.docs.get(id)
-        self.assertEqual(doc.keywords, ["a", "b", "c"])
+        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
 
 
     def test_documents(self):
