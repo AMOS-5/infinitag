@@ -153,21 +153,15 @@ class SolrDoc:
             "content": self.content,
         }
 
-    def apply_hierarchy(self, hierarchy: SolrHierarchy) -> bool:
-        """
-        Applies a hierarchy on the current document.
 
-        :param hierarchy:
-        :return: whether the keywords in the document were updated
-        """
-        new_keywords = SolrKeywordFinder.find(self, hierarchy)
-
-        if new_keywords:
-            self.keywords = new_keywords
-
-        return bool(new_keywords)
 
     def apply_kwm(self, keywords: dict) -> bool:
+        """
+        Applies a keyword model given by all its keywords with their parents on this document.
+
+        :param dict of keywords and parents:
+        :return: whether the keywords in the document were updated
+        """
         new_keywords = SolrKeywordFinder.find(self, keywords)
 
         if new_keywords:
@@ -183,7 +177,14 @@ class SolrDoc:
 
 class SolrKeywordFinder:
     @staticmethod
-    def find(doc: SolrDoc, keywords: dict) -> List[str]:
+    def find(doc: SolrDoc, keywords: dict) -> List[SolrDocKeyword]:
+        """
+        Finds all keywords from the dict that appear in the document and
+        returns them together with the already added ones
+        :param doc: document to be searched in
+        :param keywords: keywords with their parents
+        :return: list of all keywords
+        """
         content = SolrKeywordFinder._parse_doc(doc)
         new_keywords = SolrKeywordFinder._find(content, keywords)
 
@@ -213,6 +214,12 @@ class SolrKeywordFinder:
 
     @staticmethod
     def _find(content: Set[str], keywords: dict) -> Set[str]:
+        """
+        Finds all keywords in the set of words and returns them as well as their parents
+        :param content: set of words
+        :param keywords: dict of keywords
+        :return: set of found keywords
+        """
         found_keywords = set()
 
         for kw in list(keywords.keys()):
