@@ -37,7 +37,7 @@ import { ApiService } from '../services/api.service';
 import { UploadService } from '../services/upload.service';
 import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
-
+import {ITaggingRequest} from '../models/ITaggingRequest.model';
 
 /**
  * @class DocumentViewTableComponent
@@ -58,7 +58,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  applyingTaggingMechanism = false;
+  constructor(private api: ApiService,
+              private uploadService: UploadService,
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
@@ -404,10 +408,19 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.selectedTaggingMethod = event.value;
   }
 
-  public onSubmit(taggingData) {
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit(taggingData: ITaggingRequest) {
+    this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
-    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-      console.log(response);
+    this.api.applyTaggingMethod(taggingData).subscribe( () => {
+      this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
+        this.documents = documents;
+        this.setDatasource();
+      });
+      this.applyingTaggingMechanism = false;
     });
   }
 }

@@ -24,7 +24,7 @@
           <mat-option *ngFor="let taggingMethod of taggingMethods" [value]="taggingMethod">{{taggingMethod.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field *ngIf="selectedTaggingMethod.type === 'keyword' && keywordModels.length > 0">
+      <mat-form-field *ngIf="selectedTaggingMethod.type === 'KWM' && keywordModels.length > 0">
         <mat-label>{{'DOCUMENTS.SELECT_KEYWORD_MODEL' | translate}}</mat-label>
         <mat-select formControlName="keywordModel">
           <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.name}}</mat-option>
