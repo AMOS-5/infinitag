@@ -421,6 +421,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.setDatasource();
       });
       this.applyingTaggingMechanism = false;
+      this.selection = new SelectionModel(true, []);
     });
   }
 }
