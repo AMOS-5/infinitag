@@ -16,6 +16,7 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from .doc import SolrDoc
+from .keywordmodel import SolrHierarchy
 
 import pysolr
 
@@ -41,6 +42,11 @@ except:
 
 
 class SolrDocStorage:
+    """
+    Provides functionality to strore / modify and retrive documents
+    from Solr
+    """
+
     def __init__(self, config: dict):
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
@@ -58,7 +64,7 @@ class SolrDocStorage:
         """
         extracted_data = self._extract(*docs)
         docs = [
-            SolrDoc.from_extract(doc, res).as_dict()
+            SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
         ]
         self.con.add(docs)
@@ -90,7 +96,7 @@ class SolrDocStorage:
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
-        self.con.add([doc.as_dict() for doc in docs])
+        self.con.add([doc.as_dict(True) for doc in docs])
 
     # query syntax = Solr
     def search(self, query: str, max_results: int = 300) -> dict:
@@ -117,7 +123,14 @@ class SolrDocStorage:
 
         return None
 
+    def wipe_keywords(self):
+        """
+        wipes keywords from all docs; used for debugging
+        """
+        res = self.search("*:*")
+        docs = [SolrDoc.from_hit(hit) for hit in res]
+        for doc in docs:
+            doc.keywords = []
+            self.update(doc)
 
-__all__ = [
-    'SolrDocStorage'
-]
+__all__ = ["SolrDocStorage"]

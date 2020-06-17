@@ -26,6 +26,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { environment } from './../../environments/environment';
+import {ITaggingMethod} from '../models/ITaggingMethod';
+import {ApiService} from '../services/api.service';
+import {IKeyWordModel} from '../models/IKeyWordModel.model';
+import {FormBuilder} from "@angular/forms";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -39,19 +43,30 @@ export class HomeComponent implements OnInit {
   public documentsUrl = `${this.serverUrl}/documents`;
   public uploadUrl = `${this.documentsUrl}/upload`;
   public downloadUrl = `${this.documentsUrl}/download`;
+  public keywordModels: Array<IKeyWordModel> = [];
 
   public serverStatus = 'DOWN';
 
   public documents: Array<IDocument> = [];
   public filterString = '';
 
-  constructor(private httpClient: HttpClient) { }
+
+
+  constructor(private httpClient: HttpClient,
+              private api: ApiService) {
+
+  }
 
   public ngOnInit(): void {
     this.httpClient.get(this.documentsUrl)
       .subscribe((value: Array<IDocument>) => {
         this.documents = value;
       });
+
+    this.api.getKeywordModels()
+    .subscribe((data: []) => {
+      this.keywordModels = data;
+    });
   }
 
   public handleFileInput(files: FileList) {

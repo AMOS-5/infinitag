@@ -21,8 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
-import { Time } from '@angular/common';
+import { IKeyword } from "./IKeyword.model";
 
 export interface IDocument {
   content: string;
@@ -30,7 +29,7 @@ export interface IDocument {
   id: string;
   language: string;
   size: number;
-  keywords: string[];
+  keywords: IKeyword[];
   title: string;
   type: string;
 }

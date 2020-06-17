@@ -16,6 +16,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { HttpClient } from '@angular/common/http';
+import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
 
 
 describe('DocumentViewTable', () => {
@@ -47,7 +48,8 @@ describe('DocumentViewTable', () => {
           }
         })
       ],
-      declarations: [DocumentViewTableComponent]
+      declarations: [DocumentViewTableComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
       .compileComponents();
     translate = TestBed.get(TranslateService);
@@ -86,7 +88,7 @@ describe('DocumentViewTable', () => {
         creation_date: new Date(),
         title: 'Test 1',
         id: '/path',
-        keywords: ['Key 1', 'Test Document'],
+        keywords: [{value: 'Key 1', type: 'MANUAL'}, {value: 'Test Document', type: 'MANUAL'}],
         type: 'pdf',
         content: ''
       },
@@ -96,7 +98,7 @@ describe('DocumentViewTable', () => {
         creation_date: new Date(),
         title: 'Test 2',
         id: '/path',
-        keywords: ['Key 2', 'Test Document'],
+        keywords: [{value: 'Key 2', type: 'MANUAL'}, {value: 'Test Document', type: 'MANUAL'}],
         type: 'eml',
         content: ''
       }
@@ -116,14 +118,14 @@ describe('DocumentViewTable', () => {
       creation_date: new Date(),
       title: 'Test 1',
       id: '/path',
-      keywords: ['b'],
+      keywords: [{value: 'b', type: 'MANUAL'}],
       type: 'pdf',
       content: ''
     };
     expect(doc.keywords.length).toEqual(1);
 
     // @ts-ignore
-    component.addKeywordToDoc(doc, 'b').subscribe(res => {
+    component.addKeywordToDoc(doc, {value: 'b', type: 'MANUAL'}).subscribe(res => {
       expect(res.keywords.length).toEqual(1);
     },
     err => {
@@ -131,9 +133,9 @@ describe('DocumentViewTable', () => {
     });
 
     // @ts-ignore
-    component.addKeywordToDoc(doc, 'a').subscribe(res => {
+    component.addKeywordToDoc(doc, {value: 'a', type: 'MANUAL'}).subscribe(res => {
       expect(res.keywords.length).toEqual(2);
-      expect(res.keywords).toEqual(['a', 'b']);
+      expect(res.keywords).toEqual([{value: 'a', type: 'MANUAL'}, {value: 'b', type: 'MANUAL'}]);
     });
 
   });

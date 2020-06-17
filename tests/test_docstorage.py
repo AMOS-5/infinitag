@@ -1,4 +1,4 @@
-from backend.solr import SolrDocStorage, SolrDoc
+from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 
 import unittest
 from pathlib import Path
@@ -56,27 +56,34 @@ class DocStorageTestCase(unittest.TestCase):
         self.assertFalse(doc.keywords)
 
     def test_initial_keywords(self):
-        doc = SolrDoc(self.doc_paths[0], "key1", "key2")
+        kw1 = SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)
+        kw2 = SolrDocKeyword("key2", SolrDocKeywordTypes.KWM)
+
+        doc = SolrDoc(self.doc_paths[0], kw1, kw2)
         SOLR_DOCS.add(doc)
 
         doc = SOLR_DOCS.get(doc.path)
 
-        self.assertTrue("key1" in doc.keywords)
-        self.assertTrue("key2" in doc.keywords)
+        self.assertTrue(kw1 in doc.keywords)
+        self.assertTrue(kw2 in doc.keywords)
 
     def test_update_keywords(self):
-        doc = SolrDoc(self.doc_paths[0], "key1", "key2")
+        kw1 = SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)
+        kw2 = SolrDocKeyword("key2", SolrDocKeywordTypes.KWM)
+        kw3 = SolrDocKeyword("key3", SolrDocKeywordTypes.KWM)
+
+        doc = SolrDoc(self.doc_paths[0], kw1, kw2)
         SOLR_DOCS.add(doc)
 
         doc = SOLR_DOCS.get(doc.path)
-        doc.keywords.remove("key1")
-        doc.keywords.append("key3")
+        doc.keywords.remove(kw1)
+        doc.keywords.append(kw3)
         SOLR_DOCS.update(doc)
 
         doc = SOLR_DOCS.get(doc.path)
-        self.assertTrue("key1" not in doc.keywords)
-        self.assertTrue("key2" in doc.keywords)
-        self.assertTrue("key3" in doc.keywords)
+        self.assertTrue(kw1 not in doc.keywords)
+        self.assertTrue(kw2 in doc.keywords)
+        self.assertTrue(kw3 in doc.keywords)
 
 
 SOLR_DOCS = SolrDocStorage(DocStorageTestCase.config)

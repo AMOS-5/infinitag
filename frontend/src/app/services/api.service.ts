@@ -26,7 +26,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from './../../environments/environment';
 import { Observable } from 'rxjs';
-import { IKeyWordModel } from './../models/IKeyWordModel.model'
+import { IKeyWordModel } from './../models/IKeyWordModel.model';
+import {ITaggingRequest} from '../models/ITaggingRequest.model';
 /**
  *
  * @class ApiService
@@ -53,13 +54,18 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordmodels`);
   }
 
+  public getDocuments() {
+    const documentsUrl = `${environment.serverUrl}/documents`;
+    return this.http.get(documentsUrl);
+  }
+
   public addUncategorizedDimension(dim): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/dims`, { dim: dim }, httpOptions);
+    return this.http.post(`${environment.serverUrl}/dims`, { dim }, httpOptions);
   }
 
   public addUncategorizedKeyword(key): Observable<object> {
@@ -68,7 +74,7 @@ export class ApiService {
         'Content-Type': 'application/json',
       })
     };
-    return this.http.post(`${environment.serverUrl}/keys`, { key: key }, httpOptions);
+    return this.http.post(`${environment.serverUrl}/keys`, { key }, httpOptions);
   }
 
   public removeUncategorizedDimension(dim): Observable<object> {
@@ -95,8 +101,8 @@ export class ApiService {
 
   public addKeywordModel(kwm: IKeyWordModel): Observable<object> {
     const dict = {
-      "id" : kwm.id,
-      "hierarchy" : kwm.hierarchy,
+      id : kwm.id,
+      hierarchy : kwm.hierarchy,
     };
     const httpOptions = {
       headers: new HttpHeaders({
@@ -114,5 +120,14 @@ export class ApiService {
       })
     };
     return this.http.delete(`${environment.serverUrl}/models/${kwm.id}`, httpOptions);
+  }
+
+  public applyTaggingMethod(request: ITaggingRequest) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return this.http.post(`${environment.serverUrl}/apply`, JSON.stringify(request), httpOptions);
   }
 }

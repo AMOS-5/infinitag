@@ -15,25 +15,80 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from .keywordmodel import SolrHierarchy
+
 import logging as log
 from datetime import datetime
 import os
 import json
+from typing import Set, List
+import enum
+import re
+import sys
+
 
 # if you activate this you will see why some fields are unknown and maybe can
 # find the name of another metadata field to add to the solr parsers
 # log.basicConfig(level=log.DEBUG)
 
 
+class SolrDocKeywordTypes(enum.Enum):
+    """
+    Enum representing the applied keyword types
+    """
+    KWM = 1
+    ML = 2
+    MANUAL = 3
+
+    @staticmethod
+    def from_str(s: str) -> "SolrDocKeywordTypes":
+        return getattr(SolrDocKeywordTypes, s)
+
+
+class SolrDocKeyword:
+    """
+    Class representing a keyword applied to a document
+    """
+
+    def __init__(self, value: str, type_: SolrDocKeywordTypes):
+        self.value = value
+        self.type = type_
+
+    def as_dict(self) -> dict:
+        return {"value": self.value, "type": self.type.name}
+
+    def as_str(self) -> str:
+        return json.dumps(self.as_dict())
+
+    @staticmethod
+    def from_str(hit: str) -> "SolrDocKeyword":
+        hit = json.loads(hit)
+        value = hit["value"]
+        type_ = SolrDocKeywordTypes.from_str(hit["type"])
+        return SolrDocKeyword(value, type_)
+
+    def __eq__(self, other: "SolrDocKeyword") -> bool:
+        return self.value == other.value
+
+    def __hash__(self) -> int:
+        return hash(f"{self.value}{self.type.name}")
+
+    def __lt__(self, other: "SolrDocKeyword") -> bool:
+        if self.value == other.value:
+            return self.type < other.type
+
+        return self.value < other.value
+
+
 class SolrDoc:
     """
-    SolrDoc
+    Class representing a document in Solr
     """
 
     def __init__(
         self,
         path: str,
-        *keywords: str,
+        *keywords: SolrDocKeyword,
         title: str = None,
         file_type: str = None,
         lang: str = None,
@@ -64,13 +119,20 @@ class SolrDoc:
         return doc
 
     @staticmethod
-    def from_hit(hit: dict):
+    def from_hit(hit: dict) -> "SolrDoc":
         """
         Creates a SolrDoc from a search hit
+        :param hit:
+        :return:
         """
+
+        keywords = []
+        if "keywords" in hit:
+            keywords = [SolrDocKeyword.from_str(kw) for kw in hit["keywords"]]
+
         return SolrDoc(
             hit["id"],
-            *hit["keywords"] if "keywords" in hit else [],
+            *keywords,
             title=hit["title"][0],
             file_type=hit["type"][0],
             lang=hit["language"][0],
@@ -79,10 +141,10 @@ class SolrDoc:
             content=hit["content"][0],
         )
 
-    def as_dict(self) -> dict:
+    def as_dict(self, keywords_as_str: bool = False) -> dict:
         return {
             "id": self.id,
-            "keywords": self.keywords,
+            "keywords": [kw.as_str() if keywords_as_str else kw.as_dict() for kw in self.keywords],
             "title": self.title,
             "type": self.file_type,
             "language": self.lang,
@@ -91,10 +153,104 @@ class SolrDoc:
             "content": self.content,
         }
 
+
+
+    def apply_kwm(self, keywords: dict) -> bool:
+        """
+        Applies a keyword model given by all its keywords with their parents on this document.
+
+        :param dict of keywords and parents:
+        :return: whether the keywords in the document were updated
+        """
+        new_keywords = SolrKeywordFinder.find(self, keywords)
+
+        if new_keywords:
+            self.keywords = new_keywords
+
+        return bool(new_keywords)
+
     @property
     def path(self):
         # alias for id
         return self.id
+
+
+class SolrKeywordFinder:
+    @staticmethod
+    def find(doc: SolrDoc, keywords: dict) -> List[SolrDocKeyword]:
+        """
+        Finds all keywords from the dict that appear in the document and
+        returns them together with the already added ones
+        :param doc: document to be searched in
+        :param keywords: keywords with their parents
+        :return: list of all keywords
+        """
+        content = SolrKeywordFinder._parse_doc(doc)
+        new_keywords = SolrKeywordFinder._find(content, keywords)
+
+        if not new_keywords:
+            return []
+
+        new_keywords = {
+            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in new_keywords
+        }
+        old_keywords = doc.keywords
+        new_keywords.update(old_keywords)
+
+        return list(new_keywords)
+
+    @staticmethod
+    def _parse_doc(doc: SolrDoc) -> Set[str]:
+        """
+        Parses the title and the content of a document into a set
+        :param doc:
+        :return: the content of a document wordwise in a set
+        """
+        parsed = set()
+        delims = " |\n|\t|;|,|:|\.|\?|!|\(|\)|\{|\}|\[|\]|<|>|\\\\|/|=|\"|\'"
+        parsed.update([str.lower() for str in re.split(delims, doc.title)])
+        parsed.update([str.lower() for str in re.split(delims, doc.content)])
+        return parsed
+
+    @staticmethod
+    def _find(content: Set[str], keywords: dict) -> Set[str]:
+        """
+        Finds all keywords in the set of words and returns them as well as their parents
+        :param content: set of words
+        :param keywords: dict of keywords
+        :return: set of found keywords
+        """
+        found_keywords = set()
+
+        for kw in list(keywords.keys()):
+            if kw in content:
+                #print("found ", kw, " parents: ", keywords[kw], file=sys.stdout)
+                found_keywords.add(kw)
+                for parent in keywords[kw]:
+                    found_keywords.add(parent)
+                #print("found kw: ", found_keywords, file=sys.stdout)
+
+        return found_keywords
+
+    @staticmethod
+    def _is_dimension(hierarchy: dict) -> bool:
+        return hierarchy["nodeType"] == "DIMENSION"
+
+    @staticmethod
+    def _is_keyword(hierarchy: dict) -> bool:
+        return hierarchy["nodeType"] == "KEYWORD"
+
+    @staticmethod
+    def _has_children(hierarchy: dict) -> bool:
+        return "children" in hierarchy
+
+    @staticmethod
+    def _get_children(hierarchy: dict) -> list:
+        return hierarchy["children"]
+
+    @staticmethod
+    def _get_keyword(hierarchy: dict) -> str:
+        return hierarchy["item"]
 
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
@@ -238,5 +394,5 @@ class CreationDate:
             return str(datetime.now())
 
 
-__all__ = ["SolrDoc"]
+__all__ = ["SolrDoc", "SolrDocKeyword", "SolrDocKeywordTypes"]
 
