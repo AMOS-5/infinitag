@@ -64,7 +64,7 @@ class SolrDocStorage:
         """
         extracted_data = self._extract(*docs)
         docs = [
-            SolrDoc.from_extract(doc, res).as_dict()
+            SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
         ]
         self.con.add(docs)
@@ -96,7 +96,7 @@ class SolrDocStorage:
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
-        self.con.add([doc.as_dict() for doc in docs])
+        self.con.add([doc.as_dict(True) for doc in docs])
 
     # query syntax = Solr
     def search(self, query: str, max_results: int = 300) -> dict:

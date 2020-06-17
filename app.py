@@ -25,6 +25,9 @@ import sys
 import json
 import joblib
 from pathlib import Path
+import time
+
+
 
 from datetime import datetime, timedelta
 import numpy as np
@@ -99,19 +102,15 @@ def change_keywords():
 
     try:
         solDoc = solr.docs.get(id)
-        # TODO change SolrDocKeyWordType.KWM to the correct model
         solDoc.keywords = [
-            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords
+            SolrDocKeyword(kw["value"], SolrDocKeywordTypes.from_str(kw["type"])) for kw in keywords
         ]
         solr.docs.update(solDoc)
     except Exception as e:
         print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print(
-        "changed keywords on file " + id + " to " + ",".join(keywords),
-        file=sys.stdout
-    )
+    print("changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout)
     return jsonify("success"), 200
 
 
@@ -123,8 +122,8 @@ def get_documents():
     """
     try:
         # load docs from solr
-        res = solr.docs.search("*:*")
-        res = [SolrDoc.from_hit(hit).as_dict() for hit in res]
+        docs = solr.docs.search("*:*")
+        res = [SolrDoc.from_hit(hit).as_dict() for hit in docs]
         return jsonify(res), 200
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
@@ -275,32 +274,68 @@ def keywordmodel():
 
 @app.route("/apply", methods=["POST"])
 def apply_tagging_method():
+    """
+    Endpoint for autotagging of documents.
+    If the keyword model autotagging is choosen, the documents and the hierarchy
+    are parsed and the keywords get applied. If no documents are given the
+    keywords get applied to all documents
+    :return: json object containing a status message
+    """
     data = request.json
 
-    # TODO change to KWM
-    if data["keywordModel"] is not None and data["taggingMethod"][
-        "type"] == "keyword":
+
+    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
 
+        start_time = time.time()
+        keywords = kwm.get_keywords()
+        stop_time = time.time() - start_time
+
+        #print("keywords: ", keywords)
+        print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
+
         # apply kwm on all documents
-        if "docs" not in data:
+        if "documents" not in data or len(data["documents"]) == 0:
             res = solr.docs.search("*:*")
             docs = [SolrDoc.from_hit(hit) for hit in res]
         else:
-            doc_ids = data["docs"]
+            docs_json = data["documents"]
+            doc_ids = [doc['id'] for doc in docs_json]
             docs = solr.docs.get(*doc_ids)
-            # TODO
-            if not hasattr(docs, "len"):
+
+            if not isinstance(docs, list):
                 docs = [docs]
         print(docs)
 
 
+        min = 10000000
+        max = 0
+        total = 0
+        # apply keywords for each document and measure time
         for doc in docs:
-            applied = doc.apply_hierarchy(kwm)
+            start_time = time.time()
+
+            applied = doc.apply_kwm(keywords)
             if applied:
                 solr.docs.update(doc)
+
+            stop_time = time.time() - start_time
+            if stop_time < min:
+                min = stop_time
+            if stop_time > max:
+                max = stop_time
+            total += stop_time
+            #print("{:10.7f}".format(stop_time))
+
+        print("number of documents checked: ", len(docs))
+        print("min time: ", "{:10.7f}".format(min), "sec")
+        print("max time: ", "{:10.7f}".format(max), "sec")
+        print("total time: ", "{:10.7f}".format(total), "sec")
+        if len(docs) != 0:
+            print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
+
 
     else:
         print("automated tagging")
@@ -324,7 +359,7 @@ def apply_tagging_method():
                     solr.docs.update(solDoc)
 
 
-    return jsonify("{message: 'success'}"), 200
+    return jsonify({"status": 200})
 
 
 

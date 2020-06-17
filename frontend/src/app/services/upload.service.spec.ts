@@ -52,7 +52,7 @@ describe('UploadService', async () => {
       id: "test/test_file.pdf",
       language: "eng",
       size: 33,
-      keywords: ["key1", "key2", "key3"],
+      keywords: [{value: 'key1', type: 'MANUAL'}, {value: 'key2', type: 'MANUAL'}, {value: 'key3', type: 'MANUAL'}],
       title: "test_file",
       type: "pdf",
     };

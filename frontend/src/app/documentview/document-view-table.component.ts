@@ -22,7 +22,9 @@
  * SOFTWARE.
  */
 
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
+import { IKeyword } from '../models/IKeyword.model';
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
@@ -37,8 +39,9 @@ import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
 import {ITaggingRequest} from '../models/ITaggingRequest.model';
 
-
 /**
+ * @class DocumentViewTableComponent
+ *
  * Component gets document data from the backend and displays it as a table.
  * The data can be filtered through a search bar and new tags can be added
  * to the documents
@@ -78,14 +81,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
 
+  KEYWORD_TYPE_COLORS = {
+    MANUAL   : '#a6a6a6',
+    KWM       : '#66ff66',
+    ML        : '#3399ff',
+  };
+
   public taggingMethods: Array<ITaggingMethod> = [
     {
       name: 'Keyword Model',
-      type: 'keyword'
+      type: 'KWM'
     },
     {
       name: 'Automated',
-      type: 'automated'
+      type: 'ML'
     }
   ];
 
@@ -112,26 +121,30 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
+
+    // tell MatTableDataSource how an entry should be searched for given a filter string
+    this.dataSource.filterPredicate =
+    (doc: IDocument, filter: string) =>
+    {
+      return  doc.title.includes(filter) === true ||
+              doc.language.includes(filter) === true ||
+              doc.size.toString().includes(filter) === true ||
+              doc.type.includes(filter) === true ||
+              doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
+    };
+
+
+
   }
 
   /**
-   * @description
-   * Sets the data variable of this components MatTableDataSource instance
-   */
+  * @description
+  * Sets the data variable of this components MatTableDataSource instance
+  */
   public setDatasource() {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
-        document.keywords = document.keywords.map( (keyword: string) => {
-          try {
-            const keywordObj = JSON.parse(keyword);
-            if (keywordObj.value !== undefined) {
-              return keywordObj.value;
-            }
-          } catch (e) {
-            return keyword;
-          }
-        });
       });
 
       this.dataSource.data = this.documents;
@@ -143,9 +156,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-   * @description
-   * Updates the documents list as well as the filter term
-   */
+  * @description
+  * Updates the documents list as well as the filter term
+  * @param {SimpleChanges} changes
+  */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
@@ -165,10 +179,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-   * @description
-   * Checks if all currently displayed items are selected
-   * @returns true if the items are selected, false otherwise
-   */
+  * @description
+  * Checks if all currently displayed items are selected
+  * @returns true if the items are selected, false otherwise
+  */
   public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
@@ -180,9 +194,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * @description
-   * Selects all visible rows if they are not all selected; otherwise clear selection.
-   */
+  * @description
+  * Selects all visible rows if they are not all selected; otherwise clear selection.
+  */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -190,14 +204,17 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * @description
-   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
-   * is already added to the document
-   */
-  private addKeywordToDoc = (iDoc, keyword): Observable<IDocument> => {
-    if (iDoc.keywords.includes(keyword) === false) {
+  * @description
+  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+  * is already added to the document
+  * @param {IDocument} document
+  * @param {string} keyword
+  * @returns {Observable} Observable of the document
+  */
+  private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {
+    if (iDoc.keywords.filter(kw => kw.value === keyword.value).length === 0) {
       iDoc.keywords.push(keyword);
-      iDoc.keywords.sort();
+      iDoc.keywords.sort((a, b) => a.value.localeCompare(b.value));
       return of(iDoc);
     } else {
       return throwError('Keyword already added to ' + iDoc.title);
@@ -205,27 +222,30 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * @description
-   * Adds a keyword to a document, then sends a PATCH request to the backend
-   * to update the document. If the request is succesfull the datasource gets
-   * updated.
-   */
-  public applyKeyword(doc, keyword) {
-    if (this.findByNode(keyword)) {
-      const fixedArray = this.removeDuplicate(this.kwmToAdd);
-      keyword = '';
+  * @description
+  * Adds a keyword to a document, then sends a PATCH request to the backend
+  * to update the document. If the request is succesfull the datasource gets
+  * updated.
+  * @param {IDocument} document
+  * @param {string} keyword
+  */
+  public applyKeyword(doc, keywordValue) {
+    if (this.findByNode(keywordValue)) {
+      const fixedArray = this.removeDublicate(this.kwmToAdd);
+      keywordValue = '';
       for (let i = 0; i < fixedArray.length; i++){
         if (i === 0) {
-          keyword = keyword + fixedArray[i] ;
+          keywordValue = keywordValue + fixedArray[i] ;
         } else {
-          keyword = keyword + '->' + fixedArray[i] ;
+          keywordValue = keywordValue + '->' + fixedArray[i] ;
         }
 
       }
       this.kwmToAdd = [];
     }
 
-    this.addKeywordToDoc(doc, keyword).subscribe(
+    const kw: IKeyword = {value: keywordValue, type: 'MANUAL'};
+    this.addKeywordToDoc(doc, kw).subscribe(
       res => {
         this.uploadService.patchKeywords(res).subscribe(() => {
           const index = this.documents.findIndex(document => document.id === doc.id);
@@ -240,7 +260,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  private removeDuplicate(arr) {
+  private  removeDublicate = function(arr){
     const res = [];
     for (let i = 0; i < arr.length; i++) {
            if (arr[ i + 1] !== arr[i] ){
@@ -248,12 +268,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
            }
     }
     return res;
-   }
+   };
 
   /**
-   * @description
-   * Adds a keyword to all selected documents.
-   */
+ * @description
+ * Adds a keyword to all selected documents.
+ * @param {string} keyword
+ */
   public applyBulkKeywords(keyword) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
@@ -264,48 +285,75 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * @description
-   * Gets called when a key is pressed while the search field for the keywords
-   * is in focus. Updates the filter term.
-   */
+  * @description
+  * Gets called when the delete button is pressed on a mat-chip.
+  * Removes the keyword from the document and sends the change to the backend.
+  * @param {IDocument} document the keyword should be removed from
+  * @param keyword to be removed
+  */
+  removeKeywordFromDocument(document: IDocument, keyword) {
+    const index = document.keywords.indexOf(keyword);
+    if (index >= 0) {
+      document.keywords.splice(index, 1);
+    }
+
+    this.uploadService.patchKeywords(document).subscribe(res => {
+
+    });
+  }
+
+  /**
+  * @description
+  * Gets called when a key is pressed while the search field for the keywords
+  * is in focus. Updates the filter term.
+  * @param event
+  */
   public onKey(event) {
     this.selectedKeywords = this.search(event.target.value);
   }
 
   /**
-   * @description
-   * Searches the keywords list for a search term
-   */
+  * @description
+  * Searches the keywords list for a search term
+  * @param {string} search term
+  * @returns {string[]} List of keywords matching search term
+  */
   private search(value: string) {
     const filter = value.toLowerCase();
     return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
   }
 
   /**
-   * @description
-   * Searches the keywordModelList list for a search term
-   */
+  * @description
+  * Searches the keywordModelList list for a search term
+  * @param {Array} data term
+  * @param {string} nodeType term
+  * @returns {void}
+  */
+
   private findByNodeType(data, nodeType) {
     if (data.nodeType === nodeType) {
       if (!(this.keywords).includes(data.item)) {
         this.keywords.push(data.item);
         this.selectedKeywords.push(data.item);
       }
-      if (data.children) {
-        data.children.forEach(child => {
-          this.findByNodeType(child, 'KEYWORD');
-        });
-      }
+    }
+    if (data.children) {
+      data.children.forEach(child => {
+        this.findByNodeType(child, 'KEYWORD');
+      });
     }
   }
 
   /**
-   * @description
-   * Finds a node with specific keyword
-   */
+  * @description
+  * Finds a node with specific keyword
+  * @param {string} text term
+  * @returns {boolean} Found or not
+  */
+
   findByNode(text) {
     let found = false;
-    let isNameAdded = false;
     for (let i = 0; i < this.keywordModels.length; i++) {
 
       if (this.keywordModels[i].hierarchy) {
@@ -313,10 +361,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
           if (hierarchy.children) {
             if (this.findKeywordRecursively(hierarchy.children, text)){
               found = true;
-              if (!isNameAdded) {
-                this.kwmToAdd.splice(0, 0, this.keywordModels[i].name);
-                isNameAdded = true;
-              }
               this.kwmToAdd.push(text);
               return found;
             }
@@ -327,10 +371,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return found;
   }
 
-  /**
-   * @description
-   * Recursively finds children with specific keyword
-   */
+    /**
+  * @description
+  * Recursively finds children with specific keyword
+  * @param {string} text term
+  * @param {Array} children term
+  * @returns {boolean} Found or not
+  */
+
   findKeywordRecursively(children, text) {
     for (let index = 0; index < children.length; index++) {
       const element = children[index];
@@ -362,14 +410,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   public onSubmit(taggingData: ITaggingRequest) {
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
-    this.api.applyTaggingMethod(taggingData).subscribe( () => {
-      this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
-        this.documents = documents;
-        this.setDatasource();
-
-      });
+    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
+      if (response.status === 200) {
+        this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
+          this.documents = documents;
+          this.setDatasource();
+        });
+      }
       this.applyingTaggingMechanism = false;
+      this.selection = new SelectionModel(true, []);
     });
   }
 }
-

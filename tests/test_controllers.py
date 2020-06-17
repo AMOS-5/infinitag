@@ -31,9 +31,9 @@ class BasicTestCase(unittest.TestCase):
     def setUp(self):
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
-        base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+        self.base = f"{os.getcwd()}/tests/test_docstorage_files/test"
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
-        self.doc_paths = [f"{base}.{doc_type}" for doc_type in self.doc_types]
+        self.doc_paths = [f"{self.base}.{doc_type}" for doc_type in self.doc_types]
         self.docs = [SolrDoc(path) for path in self.doc_paths]
 
     def test_home(self):
@@ -96,14 +96,13 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "keywords":["a", "b", "c"],
+            "keywords":[{"value": "a", "type": "MANUAL"}, {"value": "b", "type": "MANUAL"}, {"value": "c", "type": "MANUAL"}],
         })
         response=tester.patch('/changekeywords', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)
 
         doc = application.solr.docs.get(id)
-        # TODO change this to correct keyword types
-        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in ["a", "b", "c"]])
+        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
 
 
     def test_documents(self):
@@ -209,6 +208,48 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(len(models), len(list))
         for i in range(0, len(models)):
             self.assertEqual(models[i].name, list[i].name)
+
+    def test_apply_tagging_method_kwm(self):
+        application.solr.docs.clear()
+        data=json.dumps(dict(
+            taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
+            keywordModel={'name': 'test',
+                            'hierarchy': [
+                                {'item': 'test', 'nodeType': 'KEYWORD'},
+                                {'item': 'text', 'nodeType': 'KEYWORD'},
+                                {'item': 'fau', 'nodeType': 'KEYWORD'},
+                                ]},
+            documents=[{'id': f"{self.base}.txt"}, {'id':f"{self.base}.pdf"}],
+        ))
+
+        application.solr.docs.add(*self.docs)
+
+        tester = app.test_client(self)
+        response = tester.post("/apply", content_type="application/json", data=data)
+        self.assertEqual(response.status_code, 200)
+
+        keywords = application.solr.docs.get(f"{self.base}.txt").keywords
+        expected = [
+            SolrDocKeyword("text", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
+        ]
+        print(keywords)
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.pdf").keywords
+        expected = [
+            SolrDocKeyword("fau", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
+        ]
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.docx").keywords
+        expected = []
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.pptx").keywords
+        expected = []
+        self.assertEqual(sorted(keywords), sorted(expected))
 
 
 if __name__ == "__main__":
