@@ -318,10 +318,10 @@ def apply_tagging_method():
                     print('keywords_tag assigned:', keywords)
                     print('')
 
-                solDoc = solr.docs.get(doc['id'])
-                print(solDoc)
-                solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
-                solr.docs.update(solDoc)
+                    solDoc = solr.docs.get(doc['id'])
+                    #print(solDoc)
+                    solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
+                    solr.docs.update(solDoc)
 
 
     return jsonify("{message: 'success'}"), 200
@@ -331,6 +331,9 @@ def apply_tagging_method():
 
 
 if __name__ == "__main__":
+
+    #solr.docs.wipe_keywords()
+
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
