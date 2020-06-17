@@ -1,6 +1,6 @@
 {
   "HOME": {
-    "TITLE": "Home",
+    "TITLE": "Startseite",
     "ADD_DOCUMENTS": "Dokumente hinzufügen",
     "KEYWORDS": "Keywords",
     "DOCUMENTATION": "Dokumentation",
@@ -12,21 +12,22 @@
   "DOCUMENTS": {
     "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
     "SEARCH_FOR_DOCUMENTS": "Nach Dokumenten Suchen",
-    "FILENAME": "Filename",
+    "FILENAME": "Dateiname",
     "MY_KEYWORDS": "Meine Keywords",
     "APPLY_KEYWORDS": "Keywords anwenden",
+    "SEARCH_KEYWORDS": "Nach Keywords suchen",
     "FILE_TYPE": "Dateityp",
-    "CREATEDAT": "Erestellt am",
+    "CREATEDAT": "Erstellt am",
     "EDITING_IS": "Bearbeiten ist",
-    "DRAG_DROP_DIALOG": "Packen und ziehen sie ihre Dateien hier hin um sie hochzuladen",
+    "DRAG_DROP_DIALOG": "Ziehen Sie ihre Dateien in dieses Feld um sie hochzuladen",
     "BROWSE_FOR_FILES": "Dokumente durchsuchen",
-    "MANUAL_TAGGING": "Manual Tagging",
+    "MANUAL_TAGGING": "Manuelles Tagging",
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
-    "SELECT_TAGGING_METHOD": "Select Tagging method",
-    "SELECT_KEYWORD_MODEL": "Select Keyword Model"
+    "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
+    "SELECT_KEYWORD_MODEL": "Keyword-Model auswählen"
   },
   "KEYWORDS": {
-    "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
+    "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",
     "ADD_DIMENSION": "Dimension hinzufügen",
     "ADD_KEYWORD": "Keyword hinzufügen",
     "UNCATEGORIZED_DIMENSIONS": "Dimensionen ohne Kategorie",
