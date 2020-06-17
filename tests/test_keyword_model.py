@@ -186,14 +186,14 @@ class TestKeywordModelApply(unittest.TestCase):
             SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
         ]
 
-        self.doc.apply_hierarchy(self.hierarchy)
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
     def test_above_lowest_dimension_found(self):
         self.doc.content = "key1 and some other stuff"
         expected = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
 
-        self.doc.apply_hierarchy(self.hierarchy)
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(self.doc.keywords, expected)
 
     def test_everything_found(self):
@@ -205,23 +205,35 @@ class TestKeywordModelApply(unittest.TestCase):
             SolrDocKeyword("key2", SolrDocKeywordTypes.KWM),
         ]
 
-        self.doc.apply_hierarchy(self.hierarchy)
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
     def test_dimension_ignored(self):
         self.doc.content = "dim1 and some other stuff"
         expected = list()
 
-        self.doc.apply_hierarchy(self.hierarchy)
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(self.doc.keywords, expected)
 
     def test_no_duplicate_keywords(self):
         self.doc.keywords = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
         self.doc.content = "key1 and some other stuff"
 
-        self.doc.apply_hierarchy(self.hierarchy)
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(len(self.doc.keywords), 1)
 
+
+    def test_parsing(self):
+        self.doc.content = "key1,key11;key12    key2/and some other stuff"
+        expected = [
+            SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key12", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("key2", SolrDocKeywordTypes.KWM),
+        ]
+
+        self.doc.apply_kwm(self.hierarchy.get_keywords())
+        self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
 if __name__ == "__main__":
     unittest.main()

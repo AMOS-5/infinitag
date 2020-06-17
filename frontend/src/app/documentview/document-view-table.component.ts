@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
@@ -37,7 +37,7 @@ import { ApiService } from '../services/api.service';
 import { UploadService } from '../services/upload.service';
 import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
-
+import {ITaggingRequest} from '../models/ITaggingRequest.model';
 
 /**
  * @class DocumentViewTableComponent
@@ -58,7 +58,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  applyingTaggingMechanism = false;
+  constructor(private api: ApiService,
+              private uploadService: UploadService,
+              private snackBar: MatSnackBar,
+              private formBuilder: FormBuilder) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
@@ -78,9 +82,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   breakpoint: number;
 
   KEYWORD_TYPE_COLORS = {
-    "MANUAL"   : "#a6a6a6",
-    "KWM"       : "#66ff66",
-    "ML"        : "#3399ff",
+    MANUAL   : '#a6a6a6',
+    KWM       : '#66ff66',
+    ML        : '#3399ff',
   };
 
   public taggingMethods: Array<ITaggingMethod> = [
@@ -118,7 +122,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
-    //tell MatTableDataSource how an entry should be searched for given a filter string
+    // tell MatTableDataSource how an entry should be searched for given a filter string
     this.dataSource.filterPredicate =
     (doc: IDocument, filter: string) =>
     {
@@ -127,7 +131,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.size.toString().includes(filter) === true ||
               doc.type.includes(filter) === true ||
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
-    }
+    };
 
 
 
@@ -210,7 +214,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {
     if (iDoc.keywords.filter(kw => kw.value === keyword.value).length === 0) {
       iDoc.keywords.push(keyword);
-      iDoc.keywords.sort((a,b) => a.value.localeCompare(b.value));
+      iDoc.keywords.sort((a, b) => a.value.localeCompare(b.value));
       return of(iDoc);
     } else {
       return throwError('Keyword already added to ' + iDoc.title);
@@ -227,7 +231,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   */
   public applyKeyword(doc, keywordValue) {
     if (this.findByNode(keywordValue)) {
-      let fixedArray = this.removeDublicate(this.kwmToAdd);
+      const fixedArray = this.removeDublicate(this.kwmToAdd);
       keywordValue = '';
       for (let i = 0; i < fixedArray.length; i++){
         if (i === 0) {
@@ -240,7 +244,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.kwmToAdd = [];
     }
 
-    let kw: IKeyword = {value: keywordValue, type: "MANUAL"};
+    const kw: IKeyword = {value: keywordValue, type: 'MANUAL'};
     this.addKeywordToDoc(doc, kw).subscribe(
       res => {
         this.uploadService.patchKeywords(res).subscribe(() => {
@@ -257,14 +261,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   private  removeDublicate = function(arr){
-    let res = [];
+    const res = [];
     for (let i = 0; i < arr.length; i++) {
            if (arr[ i + 1] !== arr[i] ){
             res.push(arr[i]);
            }
-    };
-     return res
-   }
+    }
+    return res;
+   };
 
   /**
  * @description
@@ -333,11 +337,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywords.push(data.item);
         this.selectedKeywords.push(data.item);
       }
-      if (data.children) {
-        data.children.forEach(child => {
-          this.findByNodeType(child, 'KEYWORD');
-        });
-      }
+    }
+    if (data.children) {
+      data.children.forEach(child => {
+        this.findByNodeType(child, 'KEYWORD');
+      });
     }
   }
 
@@ -399,11 +403,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.selectedTaggingMethod = event.value;
   }
 
-  public onSubmit(taggingData) {
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit(taggingData: ITaggingRequest) {
+    this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-      console.log(response);
+      if (response.status === 200) {
+        this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
+          this.documents = documents;
+          this.setDatasource();
+        });
+      }
+      this.applyingTaggingMechanism = false;
+      this.selection = new SelectionModel(true, []);
     });
   }
 }
-

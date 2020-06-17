@@ -62,6 +62,7 @@ import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -115,7 +116,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
                 deps: [HttpClient]
             }
         }),
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        MatProgressSpinnerModule
     ],
   providers: [],
   bootstrap: [AppComponent],
