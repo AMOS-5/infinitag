@@ -73,7 +73,8 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,word
         #print("checking:", [clustering, keywords, docname])
     #print("tags:", keywords)
     #print("docname:",docname)
-    print(checking["000306.ppt"])
+    #print(checking["000306.ppt"])
+    print(checking)
     return checking
 
 

@@ -37,7 +37,7 @@ from utils.data_preprocessing import cleantext
 from utils.tfidf_vector import tfidf_vector
 from utils.k_means_cluster import kmeans_clustering
 
-from utils.data_preprocessing import data_load
+from utils.data_preprocessing import data_load, dataload_for_frontend
 from sklearn.feature_extraction.text import TfidfVectorizer
 import os
 from utils.tfidf_vector import dummy_fun
@@ -305,23 +305,27 @@ def apply_tagging_method():
     else:
         print("automated tagging")
         docs = data["documents"]
+        unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home', 'left', 'right', 'history', 'daily', 'instruction','interaction', 'fooddrug', 'time', 'override','unit','potentially', 'march', 'added'}
+        flattened, vocab_frame, file_list, overall = dataload_for_frontend(docs,unwanted_keywords)
+        dist, tfidf_matrix, terms = tfidf_vector(flattened)
+        automated_tags = kmeans_clustering(tfidf_matrix, flattened, terms,file_list, 5, 5)
 
         for doc in docs:
-            cont = doc['content']
-            cleaned = cleantext(cont)
-            dist, tfidf_matrix, terms = tfidf_vector(cleaned)
-            automated_tags = kmeans_clustering(tfidf_matrix, cleaned, terms, doc, 5, 5)
+            for file_names, keywords in automated_tags.items():
+                if file_names == doc['id']:
+                    print('doc[id]:', doc['id'])
+                    print('file_names', file_names)
+                    print('keywords_tag assigned:', keywords)
+                    print('')
 
-            #It has the list of keywords from kmeans e.g [0002.txt: [tag1,tag2,tag3], 0003.txt:[tag1,tag2,tag3]]
-            keywords = automated_tags
-            #print(keywords)
+                solDoc = solr.docs.get(doc['id'])
+                print(solDoc)
+                solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
+                solr.docs.update(solDoc)
 
-            solDoc = solr.docs.get(doc['id'])
-            solDoc.keywords = [
-            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in keywords]
-            solr.docs.update(docs)
 
     return jsonify("{message: 'success'}"), 200
+
 
 
 

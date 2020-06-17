@@ -98,3 +98,38 @@ def data_load(dir, unwanted_keywords,extensions_allowed):
 
     return flattened, vocab_frame, filenames,overall
 
+
+def dataload_for_frontend(docs, unwanted_keywords): #extensions_allowed)
+    # extensions_allowed = ['.txt', '.pdf', '.eml', '.docx', '.html', '.xml',
+                          #'.ods', '.doc', '.ppt', '.xls', '.text']
+
+    filenames = []
+    count = 0
+    overall = []
+    for doc in docs:
+        count += 1
+        paths = doc['id']
+        print('')
+        print('Loop:', count)
+        print('paths:', paths)
+        filenames.append(paths)
+        extension = doc['type']
+        print('extension:', extension)
+
+        texts = doc['content']
+        #for text in texts:
+        #    # print(str(text))
+        doc_clean = [cleantext(texts).split()]
+        #print('doc_clean', doc_clean)
+        for i in doc_clean:
+            new_items = [item for item in i if not item.isdigit()]
+            new_list = [test for test in new_items if (len(test) > 3)]
+            new_lists = [items for items in new_list if
+                         items not in unwanted_keywords]
+            overall.append([new_lists])
+
+    flattened = [val for sublist in overall for val in sublist]
+    #print(flattened)
+    vocab_frame = pd.DataFrame({'words': flattened})
+    print('there are ' + str(vocab_frame.shape[0]) + ' items in vocab_frame')
+    return flattened, vocab_frame, filenames, overall
