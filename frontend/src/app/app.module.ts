@@ -49,6 +49,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -108,6 +109,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatTreeModule,
         MatExpansionModule,
         MatDialogModule,
+        MatAutocompleteModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

@@ -5,15 +5,32 @@
 <mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'" *ngIf="edit.checked">
   <mat-grid-tile [colspan]="8">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
-    <button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
-    <mat-menu #menu="matMenu">
-      <mat-form-field (click)="$event.stopPropagation()">
-        <mat-label>Search Keywords...</mat-label>
-        <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
-          autocomplete="off">
-      </mat-form-field>
-      <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button>
-    </mat-menu>
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList aria-label="Keyword selection">
+        <mat-chip
+          *ngFor="let keyword of selectedBulkKeywords"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(keyword)">
+          {{keyword}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Search Keywords..."
+          #bulkKWInput
+          [formControl]="bulkKwCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let keyword of filteredBulkKeywords | async" [value]="keyword">
+          {{keyword}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button [disabled]=!edit.checked mat-raised-button color="primary" (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="4" [rowspan]="1">
     <mat-grid-tile-header>{{'DOCUMENTS.AUTOMATED_TAGGING' | translate}}</mat-grid-tile-header>
