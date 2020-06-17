@@ -133,4 +133,5 @@ class SolrDocStorage:
             doc.keywords = []
             self.update(doc)
 
+
 __all__ = ["SolrDocStorage"]

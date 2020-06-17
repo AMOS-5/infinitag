@@ -23,13 +23,27 @@ from werkzeug.utils import secure_filename
 from argparse import ArgumentParser
 import sys
 import json
+import joblib
+from pathlib import Path
 import time
 
+
+
 from datetime import datetime, timedelta
+import numpy as np
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, \
+    SolrDocKeywordTypes
 
+from utils.data_preprocessing import cleantext
+from utils.tfidf_vector import tfidf_vector
+from utils.k_means_cluster import kmeans_clustering
+
+from utils.data_preprocessing import data_load, dataload_for_frontend
+from sklearn.feature_extraction.text import TfidfVectorizer
+import os
+from utils.tfidf_vector import dummy_fun
 
 import logging as log
 
@@ -96,9 +110,7 @@ def change_keywords():
         print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print(
-        "changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout
-    )
+    print("changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout)
     return jsonify("success"), 200
 
 
@@ -211,7 +223,8 @@ def keywordmodels():
             data = request.json
             solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
             solr.keywordmodel.add(solrHierarchy)
-            return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
+            return jsonify(
+                solrHierarchy.name + " has been added to keywordmodels"), 200
         except Exception as e:
             log.error(f"/models: {e}")
             return jsonify(f"/models internal error: {e}"), 500
@@ -234,7 +247,8 @@ def remove_keyword_model(model_id):
 def stop_server():
     shutdown = request.environ.get("werkzeug.server.shutdown")
     if shutdown is None:
-        return jsonify({"success": False, "message": "Server could not be shut down."})
+        return jsonify(
+            {"success": False, "message": "Server could not be shut down."})
 
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
@@ -269,6 +283,7 @@ def apply_tagging_method():
     """
     data = request.json
 
+
     if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
@@ -292,6 +307,8 @@ def apply_tagging_method():
 
             if not isinstance(docs, list):
                 docs = [docs]
+        print(docs)
+
 
         min = 10000000
         max = 0
@@ -321,9 +338,31 @@ def apply_tagging_method():
 
 
     else:
-        print("Applying automated tagging")
+        print("automated tagging")
+        docs = data["documents"]
+        unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home', 'left', 'right', 'history', 'daily', 'instruction','interaction', 'fooddrug', 'time', 'override','unit','potentially', 'march', 'added'}
+        flattened, vocab_frame, file_list, overall = dataload_for_frontend(docs,unwanted_keywords)
+        dist, tfidf_matrix, terms = tfidf_vector(flattened)
+        automated_tags = kmeans_clustering(tfidf_matrix, flattened, terms,file_list, 5, 5)
+
+        for doc in docs:
+            for file_names, keywords in automated_tags.items():
+                if file_names == doc['id']:
+                    print('doc[id]:', doc['id'])
+                    print('file_names', file_names)
+                    print('keywords_tag assigned:', keywords)
+                    print('')
+
+                    solDoc = solr.docs.get(doc['id'])
+                    #print(solDoc)
+                    solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
+                    solr.docs.update(solDoc)
+
 
     return jsonify({"status": 200})
+
+
+
 
 
 if __name__ == "__main__":
