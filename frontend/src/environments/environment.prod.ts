@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  serverUrl: 'http://ec2-3-84-34-102.compute-1.amazonaws.com:5000'
+  serverUrl: 'http://ec2-3-86-180-141.compute-1.amazonaws.com:5000'
 };

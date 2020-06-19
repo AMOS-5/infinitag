@@ -614,13 +614,17 @@ export class KeywordsComponent implements OnInit {
   }
 
   /**
-   * handles droping an item over the mat-grid-tile if the tree is empty
+   * handles dropping an item over the mat-grid-tile if the tree is empty
    * @param event
    */
   dropOverEmptyTree(event) {
     if(this.selectedKwmIdx !== -1) {
       if(this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
-        this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+        if(this.newItem.nodeType === NodeType.DIMENSION) {
+          this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+        } else {
+          this.snackBar.open(`Root node must be a dimension`, '', { duration: 3000 });
+        }
       }
     }
   }
@@ -668,18 +672,40 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles dropping an item over the another node.
+   * Before moving the node, the correctness of the resulting tree is ensured.
+   * @param event
+   * @param node that the dragNode is dropped over
+   */
   handleDrop(event, node) {
     if (node !== this.dragNode) {
-      let newItem: ItemNode;
+      let newItem: ItemNode = null;
+      console.log("dragNode", this.flatNodeMap.get(this.dragNode), "node", this.flatNodeMap.get(node), "newItem", this.newItem)
+      let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
       if (this.dragNodeExpandOverArea === 'above') {
-        newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        if(nodeToDrop.nodeType === node.nodeType) {
+          newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        } else {
+          this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+        }
       } else if (this.dragNodeExpandOverArea === 'below') {
-        newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        if(nodeToDrop.nodeType === node.nodeType) {
+          newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        } else {
+          this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+        }
       } else {
-        newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        if(nodeToDrop.nodeType !== node.nodeType) {
+          newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        } else {
+          this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
+        }
       }
-      this.database.deleteItem(this.flatNodeMap.get(this.dragNode));
-      this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
+      if(newItem !== null) {
+        this.database.deleteItem(this.flatNodeMap.get(this.dragNode));
+        this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
+      }
     }
     this.dragNode = null;
     this.dragNodeExpandOverNode = null;
