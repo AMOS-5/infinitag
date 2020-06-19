@@ -60,7 +60,10 @@ class BasicTestCase(unittest.TestCase):
 
         tester = app.test_client(self)
         # send test file
-        data = dict(fileKey=(io.BytesIO(b"abc"), "test_upload.test"))
+        data = {
+            'fileKey': (io.BytesIO(b"abc"), "test_upload.test"),
+            'fid': 'fid'
+        }
         response = tester.post(
             "/upload",
             content_type="multipart/form-data",
