@@ -23,27 +23,18 @@ from werkzeug.utils import secure_filename
 from argparse import ArgumentParser
 import sys
 import json
-import joblib
-from pathlib import Path
 import time
-
-
-
-from datetime import datetime, timedelta
-import numpy as np
+from uuid import uuid4
+import os
 
 from backend.service import SolrService, SolrMiddleware
 from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, \
     SolrDocKeywordTypes
 
-from utils.data_preprocessing import cleantext
 from utils.tfidf_vector import tfidf_vector
 from utils.k_means_cluster import kmeans_clustering
 
-from utils.data_preprocessing import data_load, dataload_for_frontend
-from sklearn.feature_extraction.text import TfidfVectorizer
-import os
-from utils.tfidf_vector import dummy_fun
+from utils.data_preprocessing import dataload_for_frontend
 
 import logging as log
 
@@ -60,7 +51,7 @@ def hello_world():
     return "Hello World!"
 
 
-@app.route("/upload", methods=["POST"])
+@app.route("/upload", methods=["POST", "PATCH", "PUT"])
 def upload_file():
     """
     Handles the file upload post request by saving the file and adding it to the solr db
@@ -68,7 +59,24 @@ def upload_file():
     """
     try:
         f = request.files["fileKey"]
-        file_name = f"tmp/{secure_filename(f.filename)}"
+        f_id = request.form['fid']
+        file_name = secure_filename(f.filename)
+
+        if request.method == "PUT":
+            name, ext = os.path.splitext(file_name)
+            file_name = f"{name}_{uuid4()}{ext}"
+
+        file_name = f"tmp/{file_name}"
+        doc = SolrDoc(file_name)
+        if request.method == "POST":
+            search_result = solr.docs.get(doc.id)
+            if search_result is not None:
+                return jsonify({
+                    "message": "Document exists",
+                    "id": doc.id,
+                    "fid": f_id
+                }), 207
+
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
 
@@ -78,7 +86,6 @@ def upload_file():
         return jsonify(f"Internal Server Error while saving file: {e}"), 500
 
     try:
-        doc = SolrDoc(file_name)
         solr.docs.add(doc)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
@@ -283,7 +290,6 @@ def apply_tagging_method():
     """
     data = request.json
 
-
     if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
@@ -327,18 +333,8 @@ def apply_tagging_method():
             if stop_time > max:
                 max = stop_time
             total += stop_time
-            #print("{:10.7f}".format(stop_time))
-
-        print("number of documents checked: ", len(docs))
-        print("min time: ", "{:10.7f}".format(min), "sec")
-        print("max time: ", "{:10.7f}".format(max), "sec")
-        print("total time: ", "{:10.7f}".format(total), "sec")
-        if len(docs) != 0:
-            print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
-
 
     else:
-        print("automated tagging")
         docs = data["documents"]
         unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home', 'left', 'right', 'history', 'daily', 'instruction','interaction', 'fooddrug', 'time', 'override','unit','potentially', 'march', 'added'}
         flattened, vocab_frame, file_list, overall = dataload_for_frontend(docs,unwanted_keywords)
@@ -354,15 +350,10 @@ def apply_tagging_method():
                     print('')
 
                     solDoc = solr.docs.get(doc['id'])
-                    #print(solDoc)
                     solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
                     solr.docs.update(solDoc)
 
-
     return jsonify({"status": 200})
-
-
-
 
 
 if __name__ == "__main__":

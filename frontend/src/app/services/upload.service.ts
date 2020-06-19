@@ -23,41 +23,58 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { environment } from './../../environments/environment';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-import { IDocument } from './../models/IDocument.model'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable } from 'rxjs';
+import { IDocument } from '../models/IDocument.model';
+import {IFile} from "../models/IFile.model";
 
 
 /**
  *
- * @class UploadService
- *
- * Service handling uploading and updateing documents
+ * Service handling uploading and updating documents
  *
  */
 @Injectable({
   providedIn: 'root'
 })
 export class UploadService {
-
-
   constructor(private httpClient: HttpClient) { }
 
-
-  public postFile(file: File): Observable<object> {
-      //console.log("postFile" + file.name)
+  public postFile(file: IFile): Observable<object> {
       const formData: FormData = new FormData();
-      formData.append('fileKey', file, file.name);
-      //formData.append('test', 'abc');
+      const fileData: File = file.file;
+      formData.append('fid', file.fid);
+      formData.append('fileKey', fileData, fileData.name);
       return this.httpClient
         .post(`${environment.serverUrl}/upload`, formData, {
           reportProgress: true,
           observe: 'events'
         });
+  }
 
+  public patchFile(file: IFile) {
+    const formData: FormData = new FormData();
+    const fileData: File = file.file;
+    formData.append('fid', file.fid);
+    formData.append('fileKey', fileData, fileData.name);
+    return this.httpClient
+      .patch(`${environment.serverUrl}/upload`, formData, {
+        reportProgress: true,
+        observe: 'events'
+      });
+  }
+
+  public putFile(file: IFile) {
+    const formData: FormData = new FormData();
+    const fileData: File = file.file;
+    formData.append('fileKey', fileData, fileData.name);
+    formData.append('fid', file.fid);
+    return this.httpClient
+      .put(`${environment.serverUrl}/upload`, formData, {
+        reportProgress: true,
+        observe: 'events'
+      });
   }
 
   public patchKeywords(iDoc: IDocument): Observable<object> {

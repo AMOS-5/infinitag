@@ -56,13 +56,14 @@ import { HomeComponent } from './home/home.component';
 import { SearchComponent } from './search/search.component';
 import { SettingsComponent } from './settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { FileUploadComponent } from './file-upload/file-upload.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
-import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -81,7 +82,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DocumentationComponent,
     KeywordsComponent,
     KWMNameDialog,
-    DragdropDirective
+    DragdropDirective,
+    FileExistsDialogComponent
   ],
     imports: [
         BrowserModule,

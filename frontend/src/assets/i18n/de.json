@@ -24,7 +24,12 @@
     "MANUAL_TAGGING": "Manuelles Tagging",
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
     "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
-    "SELECT_KEYWORD_MODEL": "Keyword-Model auswählen"
+    "SELECT_KEYWORD_MODEL": "Keyword-Model auswählen",
+    "FILE_EXISTS": "Folgende Datei existiert",
+    "FILE_EXISTS_QUESTION": "Was möchten Sie tun?",
+    "FILE_EXISTS_OVERWRITE": "Überschreiben",
+    "FILE_EXISTS_ADD": "Kopie hinzufügen",
+    "FILE_EXISTS_CANCEL": "Abbrechen"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",
@@ -54,6 +59,9 @@
   "ENQUEUED": "In der Warteschlange",
   "SUCCESS": "Erfolg",
   "UPLOADING": "wird hochgeladen",
-  "ERROR": "Fehler"
+  "ERROR": "Fehler",
+  "CANCELLED": "Abgebrochen",
+  "REQUEST_SEND": "Anfrage geschickt",
+  "RESPONSE_RECEIVED": "Rückmeldung bekommen"
 }
 
