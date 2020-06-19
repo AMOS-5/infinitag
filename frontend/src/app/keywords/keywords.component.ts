@@ -95,7 +95,7 @@ export class ChecklistDatabase {
       }
 
       // Notify the change.
-      this.dataChange.next(TREE_DATA[0])
+      //this.dataChange.next(TREE_DATA[0])
     });
   }
 
@@ -525,7 +525,7 @@ export class KeywordsComponent implements OnInit {
         this.snackBar.open(`${name} already exists`, '', { duration: 3000 });
       } else {
         //add new kwm
-        let newKwm: IKeyWordModel = {id: name, hierarchy: []};
+        let newKwm: IKeyWordModel = {id: name, hierarchy: [], keywords: []};
         this.api.addKeywordModel(newKwm).subscribe(res => {
           const newIdx = this.keywordModels.length;
           this.keywordModels[newIdx] = newKwm;
@@ -574,6 +574,8 @@ export class KeywordsComponent implements OnInit {
           this.api.addUncategorizedKeyword(node.item)
             .subscribe(res => {});
         }
+        const index = this.keywordModels[this.selectedKwmIdx].keywords.indexOf(node.item, 0);
+        this.keywordModels[this.selectedKwmIdx].keywords.splice(index, 1);
       } else {
         console.error("undefined type")
       }
@@ -682,27 +684,36 @@ export class KeywordsComponent implements OnInit {
     if (node !== this.dragNode) {
       let newItem: ItemNode = null;
       console.log("dragNode", this.flatNodeMap.get(this.dragNode), "node", this.flatNodeMap.get(node), "newItem", this.newItem)
-      let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
-      if (this.dragNodeExpandOverArea === 'above') {
-        if(nodeToDrop.nodeType === node.nodeType) {
-          newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-        } else {
-          this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
-        }
-      } else if (this.dragNodeExpandOverArea === 'below') {
-        if(nodeToDrop.nodeType === node.nodeType) {
-          newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-        } else {
-          this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
-        }
+      if(this.newItem !== null
+         && this.newItem.nodeType === NodeType.KEYWORD
+         && this.keywordModels[this.selectedKwmIdx].keywords.includes(this.newItem.item)) {
+        this.snackBar.open(`${this.newItem.item} is already in this keyword model`, '', { duration: 3000 });
       } else {
-        if(nodeToDrop.nodeType !== node.nodeType) {
-          newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
+        if (this.dragNodeExpandOverArea === 'above') {
+          if(nodeToDrop.nodeType === node.nodeType) {
+            newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+          } else {
+            this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+          }
+        } else if (this.dragNodeExpandOverArea === 'below') {
+          if(nodeToDrop.nodeType === node.nodeType) {
+            newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+          } else {
+            this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+          }
         } else {
-          this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
+          if(nodeToDrop.nodeType !== node.nodeType) {
+            newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+          } else {
+            this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
+          }
         }
       }
       if(newItem !== null) {
+        if(newItem.nodeType === NodeType.KEYWORD) {
+          this.keywordModels[this.selectedKwmIdx].keywords.push(newItem.item);
+        }
         this.database.deleteItem(this.flatNodeMap.get(this.dragNode));
         this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
       }

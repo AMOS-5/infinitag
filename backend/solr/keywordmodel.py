@@ -41,12 +41,13 @@ class SolrKeyword:
 
 
 class SolrHierarchy:
-    def __init__(self, name: str, hierarchy: dict):
+    def __init__(self, name: str, hierarchy: dict, keywords):
         self.name = name
         self.hierarchy = hierarchy
+        self.keywords = keywords
 
     def as_dict(self) -> dict:
-        return {"id": self.name, "hierarchy": json.dumps(self.hierarchy)}
+        return {"id": self.name, "hierarchy": json.dumps(self.hierarchy), "keywords": self.keywords}
 
     def __getitem__(self, k: str):
         return self.hierarchy[k]
@@ -85,7 +86,10 @@ class SolrHierarchy:
         name = hit["id"]
         unicode_hierarchy = SolrHierarchy._unicode(hit["hierarchy"][0])
         hierarchy = json.loads(unicode_hierarchy)
-        return SolrHierarchy(name, hierarchy)
+        keywords = []
+        if "keywords" in hit:
+            keywords = hit["keywords"]
+        return SolrHierarchy(name, hierarchy, keywords)
 
     @staticmethod
     def _unicode(hierarchy: str) -> str:

@@ -221,7 +221,7 @@ def keywordmodels():
     elif request.method == "POST":
         try:
             data = request.json
-            solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
+            solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"), data.get("keywords"))
             solr.keywordmodel.add(solrHierarchy)
             return jsonify(
                 solrHierarchy.name + " has been added to keywordmodels"), 200
@@ -254,22 +254,6 @@ def stop_server():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 
-@app.route("/keywordmodels", methods=["GET"])
-def keywordmodel():
-    """
-    Handles GET and POST request for keyword model
-    :return: json object containing the keyword model and/or a status message
-    """
-    if request.method == "GET":
-        res = []
-        try:
-            data = solr.keywordmodel.get()
-            for model in data:
-                modelDict = {"name": model.name, "hierarchy": model.hierarchy}
-                res.append(modelDict)
-            return jsonify(res), 200
-        except Exception as e:
-            return jsonify(f"internal error: {e}"), 500
 
 
 @app.route("/apply", methods=["POST"])
@@ -287,8 +271,7 @@ def apply_tagging_method():
     if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
-        kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
-
+        kwm = SolrHierarchy(kwm_data["id"], json.loads(kwm_data["hierarchy"]), kwm_data["keywords"])
         start_time = time.time()
         keywords = kwm.get_keywords()
         stop_time = time.time() - start_time
@@ -307,7 +290,7 @@ def apply_tagging_method():
 
             if not isinstance(docs, list):
                 docs = [docs]
-        print(docs)
+        #print(docs)
 
 
         min = 10000000
@@ -368,7 +351,7 @@ def apply_tagging_method():
 if __name__ == "__main__":
 
     #solr.docs.wipe_keywords()
-
+    #solr.keywordmodel.clear()
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)

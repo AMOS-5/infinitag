@@ -110,14 +110,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
       });
-    this.api.getKWMModels()
+    this.api.getKeywordModels()
       .subscribe((data: any) => {
         this.keywordModels = data;
+        /*console.log(data[0].hierarchy)
         for (let i = 0; i < data.length; i++) {
           data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
             this.findByNodeType(hierarchy, 'KEYWORD');
           }) : null;
-        }
+        }*/
 
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;

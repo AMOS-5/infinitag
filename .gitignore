@@ -41,3 +41,5 @@ tmp/
 
 *.rst
 !index.rst
+
+kmeans_model.pkl

@@ -50,10 +50,6 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keys`);
   }
 
-  public getKWMModels() {
-    return this.http.get(`${environment.serverUrl}/keywordmodels`);
-  }
-
   public getDocuments() {
     const documentsUrl = `${environment.serverUrl}/documents`;
     return this.http.get(documentsUrl);
@@ -103,6 +99,7 @@ export class ApiService {
     const dict = {
       id : kwm.id,
       hierarchy : kwm.hierarchy,
+      keywords : kwm.keywords,
     };
     const httpOptions = {
       headers: new HttpHeaders({
