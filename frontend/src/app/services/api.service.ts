@@ -50,6 +50,10 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keys`);
   }
 
+  public getKeywordListEntries() {
+    return this.http.get(`${environment.serverUrl}/keywordlist`);
+  }
+
   public getDocuments() {
     const documentsUrl = `${environment.serverUrl}/documents`;
     return this.http.get(documentsUrl);

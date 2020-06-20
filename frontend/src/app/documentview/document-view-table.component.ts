@@ -39,6 +39,13 @@ import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
 import {ITaggingRequest} from '../models/ITaggingRequest.model';
 
+
+export interface IKeyWordListEntry {
+  id: string;
+  kwm: string;
+  parents: string[];
+}
+
 /**
  * @class DocumentViewTableComponent
  *
@@ -53,9 +60,10 @@ import {ITaggingRequest} from '../models/ITaggingRequest.model';
 })
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
+  //Keywords displayed in the menu
+  keywords: IKeyWordListEntry[] = [];
+  selectedKeywords: IKeyWordListEntry[] = [];
 
-  keywords: string[] = [];
-  selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
   applyingTaggingMechanism = false;
@@ -105,21 +113,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.setDatasource();
-    this.api.getUncategorizedKeywords()
+    this.api.getKeywordListEntries()
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
+        console.log(this.keywords)
       });
+
     this.api.getKeywordModels()
       .subscribe((data: any) => {
         this.keywordModels = data;
-        /*console.log(data[0].hierarchy)
-        for (let i = 0; i < data.length; i++) {
-          data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
-            this.findByNodeType(hierarchy, 'KEYWORD');
-          }) : null;
-        }*/
-
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
@@ -133,9 +136,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.type.includes(filter) === true ||
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
     };
-
-
-
   }
 
   /**
@@ -218,65 +218,50 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       iDoc.keywords.sort((a, b) => a.value.localeCompare(b.value));
       return of(iDoc);
     } else {
-      return throwError('Keyword already added to ' + iDoc.title);
+      return throwError('Keyword ' + keyword.value + ' already added to ' + iDoc.title);
     }
   }
 
   /**
   * @description
-  * Adds a keyword to a document, then sends a PATCH request to the backend
-  * to update the document. If the request is succesfull the datasource gets
+  * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
+  * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
   * updated.
   * @param {IDocument} document
-  * @param {string} keyword
+  * @param {IKeyWordListEntry} keyword
   */
-  public applyKeyword(doc, keywordValue) {
-    if (this.findByNode(keywordValue)) {
-      const fixedArray = this.removeDublicate(this.kwmToAdd);
-      keywordValue = '';
-      for (let i = 0; i < fixedArray.length; i++){
-        if (i === 0) {
-          keywordValue = keywordValue + fixedArray[i] ;
-        } else {
-          keywordValue = keywordValue + '->' + fixedArray[i] ;
-        }
+  public applyKeyword(doc: IDocument, keyword: IKeyWordListEntry) {
+    let to_add = [keyword.id]
+    to_add = to_add.concat(keyword.parents)
 
-      }
-      this.kwmToAdd = [];
+    for(let i = 0; i < to_add.length; i++) {
+      const kw: IKeyword = {value: to_add[i], type: 'MANUAL'};
+      this.addKeywordToDoc(doc, kw).subscribe(
+        res => {
+          doc = res;
+        },
+        err => this.snackBar.open(err, ``, { duration: 3000 })
+      );
     }
 
-    const kw: IKeyword = {value: keywordValue, type: 'MANUAL'};
-    this.addKeywordToDoc(doc, kw).subscribe(
-      res => {
-        this.uploadService.patchKeywords(res).subscribe(() => {
-          const index = this.documents.findIndex(document => document.id === doc.id);
-          const data = this.dataSource.data;
-          data.splice(index, 1);
-          this.dataSource.data = data;
-          data.splice(index, 0, doc);
-          this.dataSource.data = data;
-        });
-      },
-      err => this.snackBar.open(err, ``, { duration: 3000 })
-    );
+    this.uploadService.patchKeywords(doc).subscribe(() => {
+      const index = this.documents.findIndex(document => document.id === doc.id);
+      const data = this.dataSource.data;
+      data.splice(index, 1);
+      this.dataSource.data = data;
+      data.splice(index, 0, doc);
+      this.dataSource.data = data;
+    });
+
+
   }
-
-  private  removeDublicate = function(arr){
-    const res = [];
-    for (let i = 0; i < arr.length; i++) {
-           if (arr[ i + 1] !== arr[i] ){
-            res.push(arr[i]);
-           }
-    }
-    return res;
-   };
 
   /**
  * @description
- * Adds a keyword to all selected documents.
- * @param {string} keyword
+ * Adds a keyword and its parents to all selected documents.
+ * @param {IKeyWordListEntry} keyword
  */
-  public applyBulkKeywords(keyword) {
+  public applyBulkKeywords(keyword: IKeyWordListEntry) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
@@ -317,87 +302,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @description
   * Searches the keywords list for a search term
   * @param {string} search term
-  * @returns {string[]} List of keywords matching search term
+  * @returns {IKeyWordListEntry[]} List of keywords whose id starts with search term
   */
   private search(value: string) {
     const filter = value.toLowerCase();
-    return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
-  }
-
-  /**
-  * @description
-  * Searches the keywordModelList list for a search term
-  * @param {Array} data term
-  * @param {string} nodeType term
-  * @returns {void}
-  */
-
-  private findByNodeType(data, nodeType) {
-    if (data.nodeType === nodeType) {
-      if (!(this.keywords).includes(data.item)) {
-        this.keywords.push(data.item);
-        this.selectedKeywords.push(data.item);
-      }
-    }
-    if (data.children) {
-      data.children.forEach(child => {
-        this.findByNodeType(child, 'KEYWORD');
-      });
-    }
-  }
-
-  /**
-  * @description
-  * Finds a node with specific keyword
-  * @param {string} text term
-  * @returns {boolean} Found or not
-  */
-
-  findByNode(text) {
-    let found = false;
-    for (let i = 0; i < this.keywordModels.length; i++) {
-
-      if (this.keywordModels[i].hierarchy) {
-        this.keywordModels[i].hierarchy.forEach(hierarchy => {
-          if (hierarchy.children) {
-            if (this.findKeywordRecursively(hierarchy.children, text)){
-              found = true;
-              this.kwmToAdd.push(text);
-              return found;
-            }
-          }
-        });
-      }
-    }
-    return found;
-  }
-
-    /**
-  * @description
-  * Recursively finds children with specific keyword
-  * @param {string} text term
-  * @param {Array} children term
-  * @returns {boolean} Found or not
-  */
-
-  findKeywordRecursively(children, text) {
-    for (let index = 0; index < children.length; index++) {
-      const element = children[index];
-      if (element.item === text) {
-        return element;
-      } else {
-        if (element.children) {
-          const found = this.findKeywordRecursively(element.children, text);
-          if (found) {
-            if (element.nodeType === 'KEYWORD'){
-              this.kwmToAdd.push(element.item);
-            }
-            this.kwmToAdd = this.kwmToAdd.reverse();
-            return found;
-          }
-        }
-      }
-    }
+    return this.keywords.filter(kw => kw.id.toLowerCase().startsWith(filter));
   }
 
   public changeTaggingMethod(event: any) {

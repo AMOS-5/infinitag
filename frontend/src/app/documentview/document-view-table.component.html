@@ -1,24 +1,17 @@
 <mat-button-toggle #edit>Edit</mat-button-toggle>
-<button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
-<mat-menu #menu="matMenu">
-  <mat-form-field (click)="$event.stopPropagation()">
-    <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
-    <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
-      autocomplete="off">
-  </mat-form-field>
-  <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button>
-</mat-menu>
 <mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'" *ngIf="edit.checked">
   <mat-grid-tile [colspan]="8">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
     <button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
     <mat-menu #menu="matMenu">
       <mat-form-field (click)="$event.stopPropagation()">
-        <mat-label>Search Keywords...</mat-label>
+        <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
         <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
           autocomplete="off">
       </mat-form-field>
-      <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button>
+      <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">
+        {{keyword.kwm}} {{keyword.id}}
+      </button>
     </mat-menu>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="4" [rowspan]="1">
@@ -107,11 +100,13 @@
       </button>
       <mat-menu #menu="matMenu">
         <mat-form-field (click)="$event.stopPropagation()">
-          <mat-label>Search Keywords and keyword models...</mat-label>
+          <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
           <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
             autocomplete="off">
         </mat-form-field>
-        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">{{keyword}}</button>
+        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">
+          {{keyword.kwm}} {{keyword.id}}
+        </button>
       </mat-menu>
     </td>
   </ng-container>

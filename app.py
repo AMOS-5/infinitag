@@ -204,6 +204,24 @@ def remove_keyword(key_id):
         return jsonify(f"{key_id} internal error: {e}"), 500
 
 
+
+@app.route("/keywordlist", methods=["GET"])
+def get_keywordlist():
+    try:
+        uncatKeywords = solr.keywords.get()
+        data = [{"id": kw, "kwm": None, "parents": []} for kw in uncatKeywords]
+
+        solrHierarchies = solr.keywordmodel.get()
+        for hierarchy in solrHierarchies:
+            keywords = hierarchy.get_keywords()
+            for kw in keywords.keys():
+                data.append({"id": kw, "kwm": hierarchy.name, "parents": keywords[kw]})
+
+        #print(data)
+        return jsonify(data), 200
+    except Exception as e:
+        return jsonify(f"internal error: {e}"), 500
+
 @app.route("/models", methods=["GET", "POST"])
 def keywordmodels():
     """
@@ -310,7 +328,7 @@ def apply_tagging_method():
             if stop_time > max:
                 max = stop_time
             total += stop_time
-            #print("{:10.7f}".format(stop_time))
+            print("{:10.7f}".format(stop_time))
 
         print("number of documents checked: ", len(docs))
         print("min time: ", "{:10.7f}".format(min), "sec")
