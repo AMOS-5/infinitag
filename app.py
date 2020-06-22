@@ -66,7 +66,6 @@ def upload_file():
             name, ext = os.path.splitext(file_name)
             file_name = f"{name}_{uuid4()}{ext}"
 
-        file_name = f"tmp/{file_name}"
         doc = SolrDoc(file_name)
         if request.method == "POST":
             search_result = solr.docs.get(doc.id)
