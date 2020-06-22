@@ -87,6 +87,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   pageSize = 10;
   currentPage = 0;
   totalSize = 0;
+  end: number;
+  start: number;
 
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
@@ -152,13 +154,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       });
 
       this.allData = this.documents;
-
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-      });
       this.dataSource.paginator = this.paginator;
       this.totalSize = this.allData.length;
       this.iterator();
+      setTimeout(() => {
+        this.dataSource.sort = this.sort;
+      });
     }
   }
 
@@ -451,9 +452,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   */
 
   private iterator() {
-    const end = (this.currentPage + 1) * this.pageSize;
-    const start = this.currentPage * this.pageSize;
-    const part = this.allData.slice(start, end);
-    this.dataSource = part;
+    this.end = (this.currentPage + 1) * this.pageSize;
+    this.start = this.currentPage * this.pageSize;
+    const part = this.allData.slice(this.start, this.end);
+    this.dataSource.data = part;
   }
 }
