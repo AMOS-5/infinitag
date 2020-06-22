@@ -60,9 +60,10 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         # send test file
         data = {
-            'fileKey': (io.BytesIO(b"abc"), "test_upload.test"),
+            'fileKey': (io.BytesIO(b"some random words"), "test_upload.test"),
             'fid': 'fid'
         }
+
         response = tester.post(
             "/upload",
             content_type="multipart/form-data",
@@ -76,7 +77,7 @@ class BasicTestCase(unittest.TestCase):
         f = open("./test_upload.test", "r")
         content = f.read()
         f.close()
-        self.assertEqual(content, "abc")
+        self.assertEqual(content, "some random words")
 
         # file got uploaded to solr?
         solr_doc_id = "test_upload.test"
@@ -211,14 +212,14 @@ class BasicTestCase(unittest.TestCase):
             self.assertEqual(models[i].name, list[i].name)
 
     def test_apply_tagging_method_kwm(self):
-        application.solr.docs.clear()
+        # application.solr.docs.clear()
         data=json.dumps(dict(
             taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
             keywordModel={  'id': 'test',
                             'hierarchy': json.dumps([
                                 {'item': 'test', 'nodeType': 'KEYWORD'},
                                 {'item': 'text', 'nodeType': 'KEYWORD'},
-                                {'item': 'fau', 'nodeType': 'KEYWORD'},
+                                {'item': 'faufm', 'nodeType': 'KEYWORD'},
                                 ]),
                             'keywords': ['test', 'text', 'fau'],
                          },
@@ -231,18 +232,18 @@ class BasicTestCase(unittest.TestCase):
         response = tester.post("/apply", content_type="application/json", data=data)
         self.assertEqual(response.status_code, 200)
 
+        doc = application.solr.docs.get(f"{self.base}.txt")
+
         keywords = application.solr.docs.get(f"{self.base}.txt").keywords
         expected = [
             SolrDocKeyword("text", SolrDocKeywordTypes.KWM),
             SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
         ]
-        print(keywords)
         self.assertEqual(sorted(keywords), sorted(expected))
 
         keywords = application.solr.docs.get(f"{self.base}.pdf").keywords
         expected = [
-            SolrDocKeyword("fau", SolrDocKeywordTypes.KWM),
-            SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("faufm", SolrDocKeywordTypes.KWM),
         ]
         self.assertEqual(sorted(keywords), sorted(expected))
 

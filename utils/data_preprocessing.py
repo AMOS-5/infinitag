@@ -18,10 +18,12 @@
 from __future__ import print_function
 import os
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
 import pandas as pd
 from nltk.stem.snowball import SnowballStemmer
+import threading as th
 
 stemmer = SnowballStemmer("english")
 stop = set(stopwords.words("english"))
@@ -29,7 +31,7 @@ exclude = set(string.punctuation)
 # TODO create this somewhere else
 exclude.add('"')
 exclude.add("“")
-
+exclude.add("„")
 
 lemma = WordNetLemmatizer()
 
@@ -59,6 +61,7 @@ ALLOWED_EXTENSIONS = [
     ".html",
     ".txt",
     ".text",
+    ".test"
 ]
 
 UNWANTED_KEYWORDS = {
@@ -126,7 +129,15 @@ def load_data_from_frontend(docs: dict):
     return vocabulary, vocab_frame, filenames, overall
 
 
+nltk_load_lock = th.Lock()
+
 def get_clean_content(file: str):
+    # https://stackoverflow.com/questions/27433370/what-would-cause-wordnetcorpusreader-to-have-no-attribute-lazycorpusloader
+    # not the best fix but it works
+    nltk_load_lock.acquire()
+    wordnet.ensure_loaded()
+    nltk_load_lock.release()
+
     meta, content = extract(file)
 
     if content is not None:
@@ -181,8 +192,8 @@ def extract(path: str) -> Tuple[dict, str]:
         return None, None
 
     data = parser.from_file(path, requestOptions={"timeout": 10000})
-    meta, content = data["metadata"], data["content"]
 
+    meta, content = data["metadata"], data["content"]
     meta["stream_size"] = os.path.getsize(path)
 
     return meta, content
