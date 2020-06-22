@@ -51,16 +51,18 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(health, "UP")
 
     def test_upload_file(self):
-        if os.path.exists("./tmp/") == False:
-            os.mkdir("./tmp")
+        application.solr.docs.clear()
         # delete file if it already exists
-        if os.path.exists("./tmp/test_upload.test"):
-            os.remove("./tmp/test_upload.test")
-        self.assertFalse(os.path.exists("./tmp/test_upload.test"))
+        if os.path.exists("./test_upload.test"):
+            os.remove("./test_upload.test")
+        self.assertFalse(os.path.exists("./test_upload.test"))
 
         tester = app.test_client(self)
         # send test file
-        data = dict(fileKey=(io.BytesIO(b"abc"), "test_upload.test"))
+        data = {
+            'fileKey': (io.BytesIO(b"abc"), "test_upload.test"),
+            'fid': 'fid'
+        }
         response = tester.post(
             "/upload",
             content_type="multipart/form-data",
@@ -70,19 +72,19 @@ class BasicTestCase(unittest.TestCase):
         # check status code
         self.assertEqual(response.status_code, 200)
         # check file
-        self.assertTrue(os.path.exists("./tmp/test_upload.test"))
-        f = open("./tmp/test_upload.test", "r")
+        self.assertTrue(os.path.exists("./test_upload.test"))
+        f = open("./test_upload.test", "r")
         content = f.read()
         f.close()
         self.assertEqual(content, "abc")
 
         # file got uploaded to solr?
-        solr_doc_id = os.path.abspath("tmp/test_upload.test")
+        solr_doc_id = "test_upload.test"
         self.assertTrue(solr_doc_id in application.solr.docs)
 
         # cleanup
-        if os.path.exists("./tmp/test_upload.test"):
-            os.remove("./tmp/test_upload.test")
+        if os.path.exists("./test_upload.test"):
+            os.remove("./test_upload.test")
         application.solr.docs.clear()
 
     def test_change_keywords(self):
@@ -104,7 +106,6 @@ class BasicTestCase(unittest.TestCase):
         doc = application.solr.docs.get(id)
         self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
 
-
     def test_documents(self):
         application.solr.docs.clear()
         application.solr.docs.add(*self.docs)
@@ -115,7 +116,6 @@ class BasicTestCase(unittest.TestCase):
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
         self.assertEqual(len(data_response), len(self.docs))
-
 
     def test_dimensions(self):
         application.solr.dimensions.clear()

@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{'DOCUMENTS.FILE_EXISTS' | translate}}</h1>
+<div mat-dialog-content>
+  <b>{{data.id}}</b>
+  <p>{{'DOCUMENTS.FILE_EXISTS_QUESTION' | translate}}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="onDialogButtonClick('overwrite')">{{'DOCUMENTS.FILE_EXISTS_OVERWRITE' | translate}}</button>
+  <button mat-button color="primary" (click)="onDialogButtonClick('add')">{{'DOCUMENTS.FILE_EXISTS_ADD' | translate}}</button>
+  <button mat-button color="secondary" (click)="onDialogButtonClick('cancel')">{{'DOCUMENTS.FILE_EXISTS_CANCEL' | translate}}</button>
+</div>
