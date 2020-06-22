@@ -140,7 +140,7 @@ class TestKeywordModelHierarchy(unittest.TestCase):
 
 class TestKeywordModelApply(unittest.TestCase):
     def setUp(self):
-        #SOLR_DOCS.clear()
+        SOLR_DOCS.clear()
 
         # fmt: off
         self.doc = SolrDoc(
@@ -197,8 +197,7 @@ class TestKeywordModelApply(unittest.TestCase):
         # fmt: on
 
     def tearDown(self):
-        #SOLR_DOCS.clear()
-        pass
+        SOLR_DOCS.clear()
 
     def test_lowest_dimension_found(self):
         self.doc.content = "key11 and some other stuff"
