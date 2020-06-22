@@ -108,6 +108,14 @@ class SolrDoc:
         self.creation_date = creation_date
         self.content = content
 
+        # current fix for windows / linux agnostic stuff. The doc can always be deleted with is's
+        # id, and the full path is only used for extraction
+        try:
+            self.full_path = os.path.abspath(path)
+        # in case the path does not exist, this is okay since all docs normally are on the ec2
+        except Exception as e:
+            pass
+
     @staticmethod
     def from_extract(doc: "SolrDoc", res: dict) -> "SolrDoc":
         """

@@ -77,7 +77,7 @@ class SolrDocStorage:
         """
         extracted = []
         for doc in docs:
-            metadata, content = get_clean_content(doc.path)
+            metadata, content = get_clean_content(doc.full_path)
             extracted.append({"metadata": metadata, "contents": content})
 
         return extracted
