@@ -15,14 +15,15 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-from .doc import SolrDoc
+from .doc import SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 from .keywordmodel import SolrHierarchy
+from utils.data_preprocessing import get_clean_content
 
 import pysolr
 
 import os
 import logging as log
-from typing import List, Union
+from typing import List, Union, Tuple
 from pathlib import Path
 from urlpath import URL
 import copy
@@ -67,18 +68,19 @@ class SolrDocStorage:
             SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
         ]
+
         self.con.add(docs)
 
     def _extract(self, *docs: SolrDoc) -> List[dict]:
         """
         Extracts the content / metadata of files
         """
-        return [self.__extract(doc) for doc in docs]
+        extracted = []
+        for doc in docs:
+            metadata, content = get_clean_content(doc.path)
+            extracted.append({"metadata": metadata, "contents": content})
 
-    def __extract(self, doc: SolrDoc) -> dict:
-        with open(doc.id, "rb") as f:
-            res = self.con.extract(f)
-            return res
+        return extracted
 
     def get(self, *docs: str) -> Union[SolrDoc, List[SolrDoc]]:
         docs = [self._get(doc) for doc in docs]
@@ -132,6 +134,59 @@ class SolrDocStorage:
         for doc in docs:
             doc.keywords = []
             self.update(doc)
+
+    def apply_kwm(self, keywords: dict, *doc_ids: List[str]) -> None:
+        """
+        Applies a keyword model on every document in Solr.
+        The idea is to search the content in Solr for the keyword if it is found
+        the keyword and its parents are applied.
+
+        :param keywords: dict of keyword and corresponding parents
+        :return:
+        """
+        id_query = self._build_id_query(doc_ids)
+
+        changed_docs = {}
+        for keyword, parents in keywords.items():
+            query = self._build_kwm_query(id_query, keyword)
+
+            res = self.search(query)
+            res = [SolrDoc.from_hit(hit) for hit in res]
+
+            for doc in res:
+                # check whether the doc was already updated
+                if doc.id in changed_docs:
+                    doc = changed_docs[doc.id]
+
+                # update keywords
+                doc.keywords.add(SolrDocKeyword(keyword, SolrDocKeywordTypes.KWM))
+                doc.keywords.update(
+                    SolrDocKeyword(parent, SolrDocKeywordTypes.KWM)
+                    for parent in parents
+                )
+
+                # store for bulk update
+                changed_docs[doc.id] = doc
+
+        changed_docs = changed_docs.values()
+        self.update(*changed_docs)
+
+    def _build_kwm_query(self, id_query: str, keyword: str) -> str:
+        keyword_query = f"content:{keyword}"
+        return f"{id_query} AND {keyword_query}" if id_query else keyword_query
+
+    def _build_id_query(self, doc_ids: Tuple[str]) -> str:
+        # create a id specific querry if the kwm should be applied only on specific docs
+        id_query = ""
+        if doc_ids:
+            # ID -> id:"ID"
+            doc_ids = [f'id:"{doc_id}"' for doc_id in doc_ids]
+            # id:"ID1", id:"ID2" -> id:"ID1" OR id:"ID2"
+            id_query = " OR ".join(doc_ids)
+            # id:"ID1" OR id:"ID2" -> (id:"ID1" OR id:"ID2")
+            id_query = f"({id_query})"
+
+        return id_query
 
 
 __all__ = ["SolrDocStorage"]
