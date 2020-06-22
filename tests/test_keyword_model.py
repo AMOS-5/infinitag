@@ -2,12 +2,14 @@ from backend.solr import (
     SolrKeywordModel,
     SolrKeywords,
     SolrHierarchy,
+    SolrDocStorage,
     SolrDoc,
     SolrDocKeyword,
     SolrDocKeywordTypes,
 )
 import unittest
 import time
+import os
 
 test_config_keywords = {
     "corename": "test_keywords",
@@ -21,10 +23,17 @@ test_config_keyword_model = {
     "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
     "always_commit": True,
 }
+test_config_docs = {
+    "corename": "test_documents",
+    # "url": "http://localhost:8983/solr/",
+    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
+    "always_commit": True,
+}
+
 
 SOLR_KEYWORDS = SolrKeywords(test_config_keywords)
 SOLR_KEYWORD_MODEL = SolrKeywordModel(test_config_keyword_model)
-
+SOLR_DOCS = SolrDocStorage(test_config_docs)
 
 class TestKeywords(unittest.TestCase):
     def setUp(self):
@@ -131,10 +140,16 @@ class TestKeywordModelHierarchy(unittest.TestCase):
 
 class TestKeywordModelApply(unittest.TestCase):
     def setUp(self):
+        #SOLR_DOCS.clear()
+
         # fmt: off
         self.doc = SolrDoc(
-            "path",
-            title="title"
+            f"{os.getcwd()}/path.txt",
+            title="title",
+            file_type="txt",
+            lang="en",
+            size=3,
+            creation_date="2019-06-14T12:05:00Z",
         )
 
         self.hierarchy = SolrHierarchy(
@@ -181,25 +196,39 @@ class TestKeywordModelApply(unittest.TestCase):
         )
         # fmt: on
 
+    def tearDown(self):
+        #SOLR_DOCS.clear()
+        pass
+
     def test_lowest_dimension_found(self):
         self.doc.content = "key11 and some other stuff"
+        SOLR_DOCS.update(self.doc)
+
         expected = [
             SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
             SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
         ]
 
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
+        SOLR_DOCS.apply_kwm(self.hierarchy.get_keywords())
+
+        self.doc = SOLR_DOCS.get(self.doc.id)
         self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
     def test_above_lowest_dimension_found(self):
         self.doc.content = "key1 and some other stuff"
+        SOLR_DOCS.update(self.doc)
+
         expected = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
 
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
-        self.assertEqual(self.doc.keywords, expected)
+        SOLR_DOCS.apply_kwm(self.hierarchy.get_keywords())
+
+        self.doc = SOLR_DOCS.get(self.doc.id)
+        self.assertEqual(list(self.doc.keywords), expected)
 
     def test_everything_found(self):
         self.doc.content = "key1 key11 key12 key2 and some other stuff"
+        SOLR_DOCS.update(self.doc)
+
         expected = [
             SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
             SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
@@ -207,35 +236,32 @@ class TestKeywordModelApply(unittest.TestCase):
             SolrDocKeyword("key2", SolrDocKeywordTypes.KWM),
         ]
 
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
+        SOLR_DOCS.apply_kwm(self.hierarchy.get_keywords())
+
+        self.doc = SOLR_DOCS.get(self.doc.id)
         self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
     def test_dimension_ignored(self):
         self.doc.content = "dim1 and some other stuff"
+        SOLR_DOCS.update(self.doc)
+
         expected = set()
 
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
+        SOLR_DOCS.apply_kwm(self.hierarchy.get_keywords())
+
+        self.doc = SOLR_DOCS.get(self.doc.id)
         self.assertEqual(self.doc.keywords, expected)
 
     def test_no_duplicate_keywords(self):
         self.doc.keywords = [SolrDocKeyword("key1", SolrDocKeywordTypes.KWM)]
         self.doc.content = "key1 and some other stuff"
+        SOLR_DOCS.update(self.doc)
 
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
+        SOLR_DOCS.apply_kwm(self.hierarchy.get_keywords())
+
+        self.doc = SOLR_DOCS.get(self.doc.id)
         self.assertEqual(len(self.doc.keywords), 1)
 
-
-    def test_parsing(self):
-        self.doc.content = "key1,key11;key12    key2/and some other stuff"
-        expected = [
-            SolrDocKeyword("key1", SolrDocKeywordTypes.KWM),
-            SolrDocKeyword("key11", SolrDocKeywordTypes.KWM),
-            SolrDocKeyword("key12", SolrDocKeywordTypes.KWM),
-            SolrDocKeyword("key2", SolrDocKeywordTypes.KWM),
-        ]
-
-        self.doc.apply_kwm(self.hierarchy.get_keywords())
-        self.assertEqual(sorted(self.doc.keywords), sorted(expected))
 
 if __name__ == "__main__":
     unittest.main()
