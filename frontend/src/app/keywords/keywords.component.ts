@@ -335,6 +335,7 @@ export class KeywordsComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<ItemNode, ItemFlatNode>;
 
+  save = true;
 
   /* Drag and drop */
   dragNode: any;
@@ -549,7 +550,26 @@ export class KeywordsComponent implements OnInit {
       TREE_DATA.splice(removeIdx, 1);
       this.selectedKwmIdx = -1;
       this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
+
+      this.database.dataChange.next([])
     });
+
+
+
+    //keywordModel.hierarchy = [{ item: "root", nodeType: NodeType.DIMENSION, children: []} as ItemNode];
+    //this.dragNode = undefined;
+    /*this.save = false;
+    const root = this.nestedNodeMap.get(this.keywordModels[this.selectedKwmIdx].hierarchy[0])
+    for(let i = 0; i < 1000; i++) {
+      if(i === 1000) this.save = true;
+
+      this.handleDragStart(null, i.toString(), true, NodeType.KEYWORD);
+
+      this.dragNodeExpandOverArea = "center";
+      this.handleDrop(null, root)
+      this.handleDragEnd(null);
+    }*/
+
   }
 
   /**
@@ -689,21 +709,22 @@ export class KeywordsComponent implements OnInit {
          && this.keywordModels[this.selectedKwmIdx].keywords.includes(this.newItem.item)) {
         this.snackBar.open(`${this.newItem.item} is already in this keyword model`, '', { duration: 3000 });
       } else {
+        //dragNode is used if the item is moved within the tree, this.newItem otherwise
         let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
         if (this.dragNodeExpandOverArea === 'above') {
-          if(nodeToDrop.nodeType === node.nodeType) {
+          if(nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
             newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
           } else {
             this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
           }
         } else if (this.dragNodeExpandOverArea === 'below') {
-          if(nodeToDrop.nodeType === node.nodeType) {
+          if(nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
             newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
           } else {
             this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
           }
         } else {
-          if(nodeToDrop.nodeType !== node.nodeType) {
+          if(nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
             newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
           } else {
             this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
@@ -711,13 +732,14 @@ export class KeywordsComponent implements OnInit {
         }
       }
       if(newItem !== null) {
-        if(newItem.nodeType === NodeType.KEYWORD) {
+        if(newItem.nodeType === NodeType.KEYWORD) { //add to keywords list
           this.keywordModels[this.selectedKwmIdx].keywords.push(newItem.item);
         }
-        this.database.deleteItem(this.flatNodeMap.get(this.dragNode));
+        this.database.deleteItem(this.flatNodeMap.get(this.dragNode)); //remove old node
         this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
       }
     }
+    //cleanup
     this.dragNode = null;
     this.dragNodeExpandOverNode = null;
     this.dragNodeExpandOverTime = 0;
