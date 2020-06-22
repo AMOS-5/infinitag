@@ -63,6 +63,7 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -109,6 +110,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatTreeModule,
         MatExpansionModule,
         MatDialogModule,
+        MatPaginatorModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,

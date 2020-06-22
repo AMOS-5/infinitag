@@ -38,7 +38,7 @@ import { UploadService } from '../services/upload.service';
 import {ITaggingMethod} from '../models/ITaggingMethod';
 import {FormBuilder} from '@angular/forms';
 import {ITaggingRequest} from '../models/ITaggingRequest.model';
-
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 /**
  * @class DocumentViewTableComponent
  *
@@ -74,12 +74,19 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
   @Input() filter: string | undefined;
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
+  allData: any;
+  pageEvent: PageEvent;
+  pageSize = 10;
+  currentPage = 0;
+  totalSize = 0;
 
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
@@ -132,11 +139,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.type.includes(filter) === true ||
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
     };
-
-
-
   }
-
+    
   /**
   * @description
   * Sets the data variable of this components MatTableDataSource instance
@@ -147,10 +151,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         document.creation_date = new Date(document.creation_date);
       });
 
-      this.dataSource.data = this.documents;
+      this.allData = this.documents;
+
       setTimeout(() => {
         this.dataSource.sort = this.sort;
       });
+      this.dataSource.paginator = this.paginator;
+      this.totalSize = this.allData.length;
+      this.iterator();
     }
   }
 
@@ -371,7 +379,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return found;
   }
 
-    /**
+  /**
   * @description
   * Recursively finds children with specific keyword
   * @param {string} text term
@@ -408,6 +416,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
+    console.log(taggingData)
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
@@ -420,5 +429,31 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.applyingTaggingMechanism = false;
       this.selection = new SelectionModel(true, []);
     });
+  }
+
+   /**
+  * @description
+  * Gets page event from frontand and runs the iterator.
+  * @returns {object} PageEvent e
+  */
+
+  public handlePage(e: PageEvent){
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+    return e;
+  }
+  
+  /**
+  * @description
+  * Updates the datasource with current documents.
+  * @returns {void}
+  */
+
+  private iterator() {
+    const end = (this.currentPage + 1) * this.pageSize;
+    const start = this.currentPage * this.pageSize;
+    const part = this.allData.slice(start, end);
+    this.dataSource = part;
   }
 }
