@@ -12,13 +12,13 @@ import time
 test_config_keywords = {
     "corename": "test_keywords",
     # "url": "http://localhost:8983/solr/",
-    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
+    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
     "always_commit": True,
 }
 test_config_keyword_model = {
     "corename": "test_keyword_model",
     # "url": "http://localhost:8983/solr/",
-    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
+    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
     "always_commit": True,
 }
 
@@ -212,7 +212,7 @@ class TestKeywordModelApply(unittest.TestCase):
 
     def test_dimension_ignored(self):
         self.doc.content = "dim1 and some other stuff"
-        expected = list()
+        expected = set()
 
         self.doc.apply_kwm(self.hierarchy.get_keywords())
         self.assertEqual(self.doc.keywords, expected)

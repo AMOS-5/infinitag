@@ -18,25 +18,28 @@
 keyword_model_solr = {
     "corename": "keyword_model",
     "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
+    #"url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
 keywords_solr = {
     "corename": "keywords",
     "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
+    #"url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
 dimensions_solr = {
     "corename": "dimensions",
     "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
+    #"url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
 doc_storage_solr = {
     "corename": "documents",
     "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr",
-    # "url": "http://localhost:8983/solr",
+    #"url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 

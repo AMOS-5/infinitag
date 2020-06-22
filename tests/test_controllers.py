@@ -93,7 +93,7 @@ class BasicTestCase(unittest.TestCase):
         id = self.docs[0].id
 
         doc = application.solr.docs.get(id)
-        self.assertEqual(doc.keywords, [])
+        self.assertEqual(doc.keywords, set())
 
         tester = app.test_client(self)
         data=json.dumps({
@@ -104,7 +104,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
         doc = application.solr.docs.get(id)
-        self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
+        self.assertEqual(doc.keywords, {SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]})
 
     def test_documents(self):
         application.solr.docs.clear()

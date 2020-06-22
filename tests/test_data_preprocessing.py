@@ -1,5 +1,5 @@
 import unittest
-from utils.data_preprocessing import cleantext
+from utils.data_preprocessing import clean_text
 from nltk.corpus import stopwords
 import string
 import os
@@ -23,7 +23,7 @@ class DataPreProcessingTestCase(unittest.TestCase):
         fil.close()
 
         #Store result
-        result = [cleantext(filename).split()]
+        result = [clean_text(filename).split()]
 
 
         #Unit test for stopwords and punctuation
