@@ -52,10 +52,13 @@ class BasicTestCase(unittest.TestCase):
 
     def test_upload_file(self):
         application.solr.docs.clear()
+
+        doc_path = "tmp/test_upload.test"
+
         # delete file if it already exists
-        if os.path.exists("./test_upload.test"):
-            os.remove("./test_upload.test")
-        self.assertFalse(os.path.exists("./test_upload.test"))
+        if os.path.exists(doc_path):
+            os.remove(doc_path)
+        self.assertFalse(os.path.exists(doc_path))
 
         tester = app.test_client(self)
         # send test file
@@ -73,19 +76,19 @@ class BasicTestCase(unittest.TestCase):
         # check status code
         self.assertEqual(response.status_code, 200)
         # check file
-        self.assertTrue(os.path.exists("./test_upload.test"))
-        f = open("./test_upload.test", "r")
+        self.assertTrue(os.path.exists(doc_path))
+        f = open(doc_path, "r")
         content = f.read()
         f.close()
         self.assertEqual(content, "some random words")
 
         # file got uploaded to solr?
-        solr_doc_id = "test_upload.test"
+        solr_doc_id = "tmp/test_upload.test"
         self.assertTrue(solr_doc_id in application.solr.docs)
 
         # cleanup
-        if os.path.exists("./test_upload.test"):
-            os.remove("./test_upload.test")
+        if os.path.exists(doc_path):
+            os.remove(doc_path)
         application.solr.docs.clear()
 
     def test_change_keywords(self):
@@ -99,7 +102,11 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         data=json.dumps({
             "id":id,
-            "keywords":[{"value": "a", "type": "MANUAL"}, {"value": "b", "type": "MANUAL"}, {"value": "c", "type": "MANUAL"}],
+            "keywords": [
+                {"value": "a", "type": "MANUAL"},
+                {"value": "b", "type": "MANUAL"},
+                {"value": "c", "type": "MANUAL"}
+            ],
         })
         response=tester.patch('/changekeywords', data=data, content_type='application/json')
         self.assertEqual(response.status_code, 200)

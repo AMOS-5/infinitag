@@ -26,6 +26,8 @@ import json
 import time
 from uuid import uuid4
 import os
+from pathlib import Path
+import logging as log
 
 from backend.service import SolrService, SolrMiddleware
 from backend.solr import (
@@ -36,10 +38,6 @@ from backend.solr import (
 )
 
 from utils.data_preprocessing import create_automated_keywords, lemmatize_keywords
-
-import os
-
-import logging as log
 
 log.basicConfig(level=log.ERROR)
 
@@ -64,9 +62,10 @@ def upload_file():
         f = request.files["fileKey"]
         f_id = request.form['fid']
         file_name = secure_filename(f.filename)
+        file_name = str("tmp" / Path(file_name))
 
         if request.method == "PUT":
-            name, ext = os.path.splitext(file_name)
+            name, ext = os.path.splitext(str(file_name))
             file_name = f"{name}_{uuid4()}{ext}"
 
         doc = SolrDoc(file_name)
