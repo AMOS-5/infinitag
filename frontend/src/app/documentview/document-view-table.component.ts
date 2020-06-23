@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
@@ -35,12 +35,15 @@ import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
+
 import { ITaggingMethod } from '../models/ITaggingMethod';
+import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { startWith, map } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+
 
 /**
  * @class DocumentViewTableComponent
@@ -65,6 +68,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   visible = true;
   selectable = true;
   removable = true;
+  applyingTaggingMechanism = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   bulkKwCtrl = new FormControl();
   filteredBulkKeywords: Observable<string[]>;
@@ -72,8 +76,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-
+  
   constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  
+
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
@@ -97,9 +103,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   breakpoint: number;
 
   KEYWORD_TYPE_COLORS = {
-    "MANUAL": "#a6a6a6",
-    "KWM": "#66ff66",
-    "ML": "#3399ff",
+    MANUAL   : '#a6a6a6',
+    KWM       : '#66ff66',
+    ML        : '#3399ff',
   };
 
   public taggingMethods: Array<ITaggingMethod> = [
@@ -137,7 +143,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
-    //tell MatTableDataSource how an entry should be searched for given a filter string
+    // tell MatTableDataSource how an entry should be searched for given a filter string
     this.dataSource.filterPredicate =
       (doc: IDocument, filter: string) => {
         return doc.title.includes(filter) === true ||
@@ -145,7 +151,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
           doc.size.toString().includes(filter) === true ||
           doc.type.includes(filter) === true ||
           doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
-      }
+      };
   }
 
   /**
@@ -242,7 +248,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   */
   public applyKeyword(doc, keywordValue) {
     if (this.findByNode(keywordValue)) {
-      let fixedArray = this.removeDublicate(this.kwmToAdd);
+      const fixedArray = this.removeDublicate(this.kwmToAdd);
       keywordValue = '';
       for (let i = 0; i < fixedArray.length; i++) {
         if (i === 0) {
@@ -255,7 +261,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.kwmToAdd = [];
     }
 
-    let kw: IKeyword = { value: keywordValue, type: "MANUAL" };
+    const kw: IKeyword = {value: keywordValue, type: 'MANUAL'};
     this.addKeywordToDoc(doc, kw).subscribe(
       res => {
         this.uploadService.patchKeywords(res).subscribe(() => {
@@ -356,11 +362,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.keywords.push(data.item);
         this.selectedKeywords.push(data.item);
       }
-      if (data.children) {
-        data.children.forEach(child => {
-          this.findByNodeType(child, 'KEYWORD');
-        });
-      }
+    }
+    if (data.children) {
+      data.children.forEach(child => {
+        this.findByNodeType(child, 'KEYWORD');
+      });
     }
   }
 
@@ -422,10 +428,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.selectedTaggingMethod = event.value;
   }
 
-  public onSubmit(taggingData) {
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit(taggingData: ITaggingRequest) {
+    this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
-    this.api.applyTaggingMethod(taggingData).subscribe((response: any) => {
-      console.log(response);
+    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
+      if (response.status === 200) {
+        this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
+          this.documents = documents;
+          this.setDatasource();
+        });
+      }
+      this.applyingTaggingMechanism = false;
+      this.selection = new SelectionModel(true, []);
     });
   }
 
@@ -464,4 +482,3 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return this.selectedKeywords.filter(keywords => keywords.toLowerCase().indexOf(filterValue) === 0);
   }
 }
-

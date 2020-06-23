@@ -6,6 +6,7 @@ import {HttpClient, HttpClientModule} from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
 import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
 import {HttpLoaderFactory} from '../app.module';
+import {MatDialogModule} from "@angular/material/dialog";
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -17,6 +18,7 @@ describe('SettingsComponent', () => {
       imports: [
         HttpClientModule,
         MatListModule,
+        MatDialogModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

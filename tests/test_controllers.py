@@ -31,9 +31,9 @@ class BasicTestCase(unittest.TestCase):
     def setUp(self):
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
-        base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+        self.base = f"{os.getcwd()}/tests/test_docstorage_files/test"
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
-        self.doc_paths = [f"{base}.{doc_type}" for doc_type in self.doc_types]
+        self.doc_paths = [f"{self.base}.{doc_type}" for doc_type in self.doc_types]
         self.docs = [SolrDoc(path) for path in self.doc_paths]
 
     def test_home(self):
@@ -51,16 +51,18 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(health, "UP")
 
     def test_upload_file(self):
-        if os.path.exists("./tmp/") == False:
-            os.mkdir("./tmp")
+        application.solr.docs.clear()
         # delete file if it already exists
-        if os.path.exists("./tmp/test_upload.test"):
-            os.remove("./tmp/test_upload.test")
-        self.assertFalse(os.path.exists("./tmp/test_upload.test"))
+        if os.path.exists("./test_upload.test"):
+            os.remove("./test_upload.test")
+        self.assertFalse(os.path.exists("./test_upload.test"))
 
         tester = app.test_client(self)
         # send test file
-        data = dict(fileKey=(io.BytesIO(b"abc"), "test_upload.test"))
+        data = {
+            'fileKey': (io.BytesIO(b"abc"), "test_upload.test"),
+            'fid': 'fid'
+        }
         response = tester.post(
             "/upload",
             content_type="multipart/form-data",
@@ -70,19 +72,19 @@ class BasicTestCase(unittest.TestCase):
         # check status code
         self.assertEqual(response.status_code, 200)
         # check file
-        self.assertTrue(os.path.exists("./tmp/test_upload.test"))
-        f = open("./tmp/test_upload.test", "r")
+        self.assertTrue(os.path.exists("./test_upload.test"))
+        f = open("./test_upload.test", "r")
         content = f.read()
         f.close()
         self.assertEqual(content, "abc")
 
         # file got uploaded to solr?
-        solr_doc_id = os.path.abspath("tmp/test_upload.test")
+        solr_doc_id = "test_upload.test"
         self.assertTrue(solr_doc_id in application.solr.docs)
 
         # cleanup
-        if os.path.exists("./tmp/test_upload.test"):
-            os.remove("./tmp/test_upload.test")
+        if os.path.exists("./test_upload.test"):
+            os.remove("./test_upload.test")
         application.solr.docs.clear()
 
     def test_change_keywords(self):
@@ -104,7 +106,6 @@ class BasicTestCase(unittest.TestCase):
         doc = application.solr.docs.get(id)
         self.assertEqual(doc.keywords, [SolrDocKeyword(kw, SolrDocKeywordTypes.MANUAL) for kw in ["a", "b", "c"]])
 
-
     def test_documents(self):
         application.solr.docs.clear()
         application.solr.docs.add(*self.docs)
@@ -115,7 +116,6 @@ class BasicTestCase(unittest.TestCase):
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
         self.assertEqual(len(data_response), len(self.docs))
-
 
     def test_dimensions(self):
         application.solr.dimensions.clear()
@@ -208,6 +208,48 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(len(models), len(list))
         for i in range(0, len(models)):
             self.assertEqual(models[i].name, list[i].name)
+
+    def test_apply_tagging_method_kwm(self):
+        application.solr.docs.clear()
+        data=json.dumps(dict(
+            taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
+            keywordModel={'name': 'test',
+                            'hierarchy': [
+                                {'item': 'test', 'nodeType': 'KEYWORD'},
+                                {'item': 'text', 'nodeType': 'KEYWORD'},
+                                {'item': 'fau', 'nodeType': 'KEYWORD'},
+                                ]},
+            documents=[{'id': f"{self.base}.txt"}, {'id':f"{self.base}.pdf"}],
+        ))
+
+        application.solr.docs.add(*self.docs)
+
+        tester = app.test_client(self)
+        response = tester.post("/apply", content_type="application/json", data=data)
+        self.assertEqual(response.status_code, 200)
+
+        keywords = application.solr.docs.get(f"{self.base}.txt").keywords
+        expected = [
+            SolrDocKeyword("text", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
+        ]
+        print(keywords)
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.pdf").keywords
+        expected = [
+            SolrDocKeyword("fau", SolrDocKeywordTypes.KWM),
+            SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
+        ]
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.docx").keywords
+        expected = []
+        self.assertEqual(sorted(keywords), sorted(expected))
+
+        keywords = application.solr.docs.get(f"{self.base}.pptx").keywords
+        expected = []
+        self.assertEqual(sorted(keywords), sorted(expected))
 
 
 if __name__ == "__main__":

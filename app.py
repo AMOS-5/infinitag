@@ -23,12 +23,18 @@ from werkzeug.utils import secure_filename
 from argparse import ArgumentParser
 import sys
 import json
-
-from datetime import datetime, timedelta
+import time
+from uuid import uuid4
+import os
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, \
+    SolrDocKeywordTypes
 
+from utils.tfidf_vector import tfidf_vector
+from utils.k_means_cluster import kmeans_clustering
+
+from utils.data_preprocessing import dataload_for_frontend
 
 import logging as log
 
@@ -45,7 +51,7 @@ def hello_world():
     return "Hello World!"
 
 
-@app.route("/upload", methods=["POST"])
+@app.route("/upload", methods=["POST", "PATCH", "PUT"])
 def upload_file():
     """
     Handles the file upload post request by saving the file and adding it to the solr db
@@ -53,7 +59,23 @@ def upload_file():
     """
     try:
         f = request.files["fileKey"]
-        file_name = f"tmp/{secure_filename(f.filename)}"
+        f_id = request.form['fid']
+        file_name = secure_filename(f.filename)
+
+        if request.method == "PUT":
+            name, ext = os.path.splitext(file_name)
+            file_name = f"{name}_{uuid4()}{ext}"
+
+        doc = SolrDoc(file_name)
+        if request.method == "POST":
+            search_result = solr.docs.get(doc.id)
+            if search_result is not None:
+                return jsonify({
+                    "message": "Document exists",
+                    "id": doc.id,
+                    "fid": f_id
+                }), 207
+
     except Exception as e:
         return jsonify(f"Bad Request: {e}"), 400
 
@@ -63,7 +85,6 @@ def upload_file():
         return jsonify(f"Internal Server Error while saving file: {e}"), 500
 
     try:
-        doc = SolrDoc(file_name)
         solr.docs.add(doc)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
@@ -95,9 +116,7 @@ def change_keywords():
         print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
-    print(
-        "changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout
-    )
+    print("changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout)
     return jsonify("success"), 200
 
 
@@ -210,7 +229,8 @@ def keywordmodels():
             data = request.json
             solrHierarchy = SolrHierarchy(data.get("id"), data.get("hierarchy"))
             solr.keywordmodel.add(solrHierarchy)
-            return jsonify(solrHierarchy.name + " has been added to keywordmodels"), 200
+            return jsonify(
+                solrHierarchy.name + " has been added to keywordmodels"), 200
         except Exception as e:
             log.error(f"/models: {e}")
             return jsonify(f"/models internal error: {e}"), 500
@@ -233,7 +253,8 @@ def remove_keyword_model(model_id):
 def stop_server():
     shutdown = request.environ.get("werkzeug.server.shutdown")
     if shutdown is None:
-        return jsonify({"success": False, "message": "Server could not be shut down."})
+        return jsonify(
+            {"success": False, "message": "Server could not be shut down."})
 
     shutdown()
     return jsonify({"success": True, "message": "Server is shutting down..."})
@@ -259,6 +280,13 @@ def keywordmodel():
 
 @app.route("/apply", methods=["POST"])
 def apply_tagging_method():
+    """
+    Endpoint for autotagging of documents.
+    If the keyword model autotagging is choosen, the documents and the hierarchy
+    are parsed and the keywords get applied. If no documents are given the
+    keywords get applied to all documents
+    :return: json object containing a status message
+    """
     data = request.json
 
     if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
@@ -266,29 +294,70 @@ def apply_tagging_method():
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["name"], kwm_data["hierarchy"])
 
+        start_time = time.time()
+        keywords = kwm.get_keywords()
+        stop_time = time.time() - start_time
+
+        #print("keywords: ", keywords)
+        print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
+
         # apply kwm on all documents
-        if "docs" not in data:
+        if "documents" not in data or len(data["documents"]) == 0:
             res = solr.docs.search("*:*")
             docs = [SolrDoc.from_hit(hit) for hit in res]
         else:
-            doc_ids = data["docs"]
+            docs_json = data["documents"]
+            doc_ids = [doc['id'] for doc in docs_json]
             docs = solr.docs.get(*doc_ids)
-            # TODO
-            if not hasattr(docs, "len"):
-                docs = [docs]
 
+            if not isinstance(docs, list):
+                docs = [docs]
+        print(docs)
+
+
+        min = 10000000
+        max = 0
+        total = 0
+        # apply keywords for each document and measure time
         for doc in docs:
-            applied = doc.apply_hierarchy(kwm)
+            start_time = time.time()
+
+            applied = doc.apply_kwm(keywords)
             if applied:
                 solr.docs.update(doc)
 
-    else:
-        print("Applying automated tagging")
+            stop_time = time.time() - start_time
+            if stop_time < min:
+                min = stop_time
+            if stop_time > max:
+                max = stop_time
+            total += stop_time
 
-    return jsonify("{message: 'success'}"), 200
+    else:
+        docs = data["documents"]
+        unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home', 'left', 'right', 'history', 'daily', 'instruction','interaction', 'fooddrug', 'time', 'override','unit','potentially', 'march', 'added'}
+        flattened, vocab_frame, file_list, overall = dataload_for_frontend(docs,unwanted_keywords)
+        dist, tfidf_matrix, terms = tfidf_vector(flattened)
+        automated_tags = kmeans_clustering(tfidf_matrix, flattened, terms,file_list, 5, 5)
+
+        for doc in docs:
+            for file_names, keywords in automated_tags.items():
+                if file_names == doc['id']:
+                    print('doc[id]:', doc['id'])
+                    print('file_names', file_names)
+                    print('keywords_tag assigned:', keywords)
+                    print('')
+
+                    solDoc = solr.docs.get(doc['id'])
+                    solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
+                    solr.docs.update(solDoc)
+
+    return jsonify({"status": 200})
 
 
 if __name__ == "__main__":
+
+    #solr.docs.wipe_keywords()
 
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)

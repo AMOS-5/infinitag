@@ -1,7 +1,13 @@
 <mat-button-toggle #edit>Edit</mat-button-toggle>
-<!--<p>{{'DOCUMENTS.EDITING_IS' | translate}} {{(edit.checked ? 'ENABLED' : 'DISABLED') | translate}}</p>-->
-
-
+<button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
+<mat-menu #menu="matMenu">
+  <mat-form-field (click)="$event.stopPropagation()">
+    <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
+    <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
+      autocomplete="off">
+  </mat-form-field>
+  <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">{{keyword}}</button>
+</mat-menu>
 <mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'" *ngIf="edit.checked">
   <mat-grid-tile [colspan]="8">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
@@ -41,13 +47,24 @@
           <mat-option *ngFor="let taggingMethod of taggingMethods" [value]="taggingMethod">{{taggingMethod.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <mat-form-field *ngIf="selectedTaggingMethod.type === 'keyword' && keywordModels.length > 0">
+      <mat-form-field *ngIf="selectedTaggingMethod.type === 'KWM' && keywordModels.length > 0">
         <mat-label>{{'DOCUMENTS.SELECT_KEYWORD_MODEL' | translate}}</mat-label>
         <mat-select formControlName="keywordModel">
           <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.name}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">{{'DOCUMENTS.APPLY_TAGGING' | translate}}</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="applyingTaggingMechanism">
+        <span *ngIf="!applyingTaggingMechanism">
+          {{'DOCUMENTS.APPLY_TAGGING' | translate}}
+        </span>
+        <mat-progress-spinner *ngIf="applyingTaggingMechanism"
+        class="apply-spinner"
+        [color]="'primary'"
+        [mode]="'indeterminate'"
+        [diameter]="30">
+        </mat-progress-spinner>
+      </button>
+
     </form>
   </mat-grid-tile>
 </mat-grid-list>

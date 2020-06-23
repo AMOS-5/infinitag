@@ -54,6 +54,32 @@ class SolrHierarchy:
     def __setitem__(self, k, v):
         self.hierarchy[k] = v
 
+    def get_keywords(self):
+        """
+        Extracts all keywords and their paths from the hierarchy
+        :return: dict containing keywords as keys and paths as values
+        """
+        keywords = {}
+        to_check = [{'node': root, 'path': []} for root in self.hierarchy]
+
+        #extract all keywords with their parents and put them into a dict
+        while len(to_check) != 0:
+            cur = to_check.pop()
+            path = cur['path'][:]
+            if cur['node']['nodeType'] == 'KEYWORD':
+                keywords[cur['node']['item']] = path[:]
+
+                if 'children' in cur['node']:
+                    path.append(cur['node']['item'])
+                    l = [{'node': child, 'path': path} for child in cur['node']['children']]
+                    to_check.extend(l)
+            else:
+                if 'children' in cur['node']:
+                    l = [{'node': child, 'path': path} for child in cur['node']['children']]
+                    to_check.extend(l)
+
+        return keywords
+
     @staticmethod
     def from_hit(hit: dict) -> "SolrHierarchy":
         name = hit["id"]

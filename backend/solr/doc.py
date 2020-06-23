@@ -23,6 +23,8 @@ import os
 import json
 from typing import Set, List
 import enum
+import re
+import sys
 
 
 # if you activate this you will see why some fields are unknown and maybe can
@@ -34,7 +36,6 @@ class SolrDocKeywordTypes(enum.Enum):
     """
     Enum representing the applied keyword types
     """
-
     KWM = 1
     ML = 2
     MANUAL = 3
@@ -95,7 +96,7 @@ class SolrDoc:
         creation_date: str = None,
         content: str = None,
     ):
-        self.id = os.path.abspath(path)
+        self.id = path
         self.keywords = list(keywords)
         self.title = title
         self.file_type = file_type
@@ -152,14 +153,16 @@ class SolrDoc:
             "content": self.content,
         }
 
-    def apply_hierarchy(self, hierarchy: SolrHierarchy) -> bool:
-        """
-        Applies a hierarchy on the current document.
 
-        :param hierarchy:
+
+    def apply_kwm(self, keywords: dict) -> bool:
+        """
+        Applies a keyword model given by all its keywords with their parents on this document.
+
+        :param dict of keywords and parents:
         :return: whether the keywords in the document were updated
         """
-        new_keywords = SolrKeywordFinder.find(self, hierarchy)
+        new_keywords = SolrKeywordFinder.find(self, keywords)
 
         if new_keywords:
             self.keywords = new_keywords
@@ -174,9 +177,16 @@ class SolrDoc:
 
 class SolrKeywordFinder:
     @staticmethod
-    def find(doc: SolrDoc, hierarchy: SolrHierarchy) -> List[str]:
+    def find(doc: SolrDoc, keywords: dict) -> List[SolrDocKeyword]:
+        """
+        Finds all keywords from the dict that appear in the document and
+        returns them together with the already added ones
+        :param doc: document to be searched in
+        :param keywords: keywords with their parents
+        :return: list of all keywords
+        """
         content = SolrKeywordFinder._parse_doc(doc)
-        new_keywords = SolrKeywordFinder._find(content, hierarchy)
+        new_keywords = SolrKeywordFinder._find(content, keywords)
 
         if not new_keywords:
             return []
@@ -197,48 +207,30 @@ class SolrKeywordFinder:
         :return: the content of a document wordwise in a set
         """
         parsed = set()
-        parsed.update(doc.title.split(" "))
-        parsed.update(doc.content.split(" "))
+        delims = " |\n|\t|;|,|:|\.|\?|!|\(|\)|\{|\}|\[|\]|<|>|\\\\|/|=|\"|\'"
+        parsed.update([str.lower() for str in re.split(delims, doc.title)])
+        parsed.update([str.lower() for str in re.split(delims, doc.content)])
         return parsed
 
     @staticmethod
-    def _find(content: Set[str], hierarchy: dict) -> Set[str]:
-        keywords = set()
+    def _find(content: Set[str], keywords: dict) -> Set[str]:
+        """
+        Finds all keywords in the set of words and returns them as well as their parents
+        :param content: set of words
+        :param keywords: dict of keywords
+        :return: set of found keywords
+        """
+        found_keywords = set()
 
-        # item can another hierarchy or a leaf
-        for item in hierarchy:
+        for kw in list(keywords.keys()):
+            if kw in content:
+                #print("found ", kw, " parents: ", keywords[kw], file=sys.stdout)
+                found_keywords.add(kw)
+                for parent in keywords[kw]:
+                    found_keywords.add(parent)
+                #print("found kw: ", found_keywords, file=sys.stdout)
 
-            # DIMENSION with children
-            if SolrKeywordFinder._is_dimension(item):
-                if SolrKeywordFinder._has_children(item):
-                    children = SolrKeywordFinder._get_children(item)
-                    children_keywords = SolrKeywordFinder._find(content, children)
-                    keywords.update(children_keywords)
-                # else: ignore dimensions without children, since dimensions itself are not
-                # included in the keyword count
-
-            # KEYWORD with children
-            elif SolrKeywordFinder._is_keyword(
-                item
-            ) and SolrKeywordFinder._has_children(item):
-                # keyword of this level will be included automatically if there are child
-                # keywords present
-                keyword = SolrKeywordFinder._get_keyword(item)
-                children = SolrKeywordFinder._get_children(item)
-                children_keywords = SolrKeywordFinder._find(content, children)
-                if children_keywords:
-                    keywords.update(children_keywords)
-                    keywords.add(keyword)
-                elif keyword in content:
-                    keywords.add(keyword)
-
-            # KEYWORD only (leaf)
-            elif SolrKeywordFinder._is_keyword(item):
-                keyword = SolrKeywordFinder._get_keyword(item)
-                if keyword in content:
-                    keywords.add(keyword)
-
-        return keywords
+        return found_keywords
 
     @staticmethod
     def _is_dimension(hierarchy: dict) -> bool:
@@ -296,8 +288,13 @@ class Title:
             return res["title"][0]
         elif exists_and_not_empty(res, "dc:title"):
             return res["dc:title"][0]
+        elif exists_and_not_empty(res, "stream_name"):
+            stream_name = res["stream_name"][0]
+            return os.path.basename(stream_name)
 
         log.debug(f"Title is unknown: {json.dumps(res, indent=2)}")
+
+
         return "unknown"
 
 
