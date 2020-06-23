@@ -26,4 +26,5 @@
 export interface IKeyWordModel {
   id: string;
   hierarchy;
+  keywords: string[];
 }

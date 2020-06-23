@@ -2,6 +2,18 @@
 <mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'" *ngIf="edit.checked">
   <mat-grid-tile [colspan]="8">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
+    <!--<button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
+    <mat-menu #menu="matMenu">
+      <mat-form-field (click)="$event.stopPropagation()">
+        <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
+        <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
+          autocomplete="off">
+      </mat-form-field>
+      <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyBulkKeywords(keyword)">
+        {{keyword.kwm}} {{keyword.id}}
+      </button>
+    </mat-menu>
+    -->
     <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Keyword selection">
         <mat-chip
@@ -9,7 +21,7 @@
           [selectable]="selectable"
           [removable]="removable"
           (removed)="remove(keyword)">
-          {{keyword}}
+          {{keyword.kwm}} {{keyword.id}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
         <input
@@ -23,7 +35,7 @@
       </mat-chip-list>
       <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
         <mat-option *ngFor="let keyword of filteredBulkKeywords | async" [value]="keyword">
-          {{keyword}}
+          {{keyword.kwm}} {{keyword.id}}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
@@ -41,7 +53,7 @@
       <mat-form-field *ngIf="selectedTaggingMethod.type === 'KWM' && keywordModels.length > 0">
         <mat-label>{{'DOCUMENTS.SELECT_KEYWORD_MODEL' | translate}}</mat-label>
         <mat-select formControlName="keywordModel">
-          <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.name}}</mat-option>
+          <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.id}}</mat-option>
         </mat-select>
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit" [disabled]="applyingTaggingMechanism">
@@ -114,11 +126,13 @@
       </button>
       <mat-menu #menu="matMenu">
         <mat-form-field (click)="$event.stopPropagation()">
-          <mat-label>Search Keywords and keyword models...</mat-label>
+          <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
           <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
             autocomplete="off">
         </mat-form-field>
-        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">{{keyword}}</button>
+        <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">
+          {{keyword.kwm}} {{keyword.id}}
+        </button>
       </mat-menu>
     </td>
   </ng-container>

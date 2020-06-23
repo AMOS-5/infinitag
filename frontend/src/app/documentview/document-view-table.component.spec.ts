@@ -129,7 +129,7 @@ describe('DocumentViewTable', () => {
       expect(res.keywords.length).toEqual(1);
     },
     err => {
-      expect(err).toEqual('Keyword already added to Test 1');
+      expect(err).toEqual('Keyword b already added to Test 1');
     });
 
     // @ts-ignore

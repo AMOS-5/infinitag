@@ -179,6 +179,7 @@ class BasicTestCase(unittest.TestCase):
         data=json.dumps(dict(
             id="test",
             hierarchy=[],
+            keywords=[]
         ))
         response = tester.post("/models", content_type="application/json", data=data, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
@@ -189,14 +190,14 @@ class BasicTestCase(unittest.TestCase):
 
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
-        self.assertEqual(data_response, [{"id": "test", "hierarchy": "[]"}])
+        self.assertEqual(data_response, [{"id": "test", "hierarchy": "[]", "keywords": []}])
 
     def test_remove_keywordmodel(self):
         application.solr.keywordmodel.clear()
         tester = app.test_client(self)
         list = [None]*3
         for i in range(0, 3):
-            list[i] = SolrHierarchy(str(i), [])
+            list[i] = SolrHierarchy(str(i), [], [])
             application.solr.keywordmodel.add(list[i])
 
         response = tester.delete("/models/1")
@@ -213,12 +214,14 @@ class BasicTestCase(unittest.TestCase):
         application.solr.docs.clear()
         data=json.dumps(dict(
             taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
-            keywordModel={'name': 'test',
-                            'hierarchy': [
+            keywordModel={  'id': 'test',
+                            'hierarchy': json.dumps([
                                 {'item': 'test', 'nodeType': 'KEYWORD'},
                                 {'item': 'text', 'nodeType': 'KEYWORD'},
                                 {'item': 'fau', 'nodeType': 'KEYWORD'},
-                                ]},
+                                ]),
+                            'keywords': ['test', 'text', 'fau'],
+                         },
             documents=[{'id': f"{self.base}.txt"}, {'id':f"{self.base}.pdf"}],
         ))
 

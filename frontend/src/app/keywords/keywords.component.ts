@@ -93,9 +93,6 @@ export class ChecklistDatabase {
       for (var i = 0 ; i < data.length; i++){
         TREE_DATA[i] = JSON.parse(data[i].hierarchy);
       }
-
-      // Notify the change.
-      this.dataChange.next(TREE_DATA[0])
     });
   }
 
@@ -335,7 +332,6 @@ export class KeywordsComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<ItemNode, ItemFlatNode>;
 
-
   /* Drag and drop */
   dragNode: any;
   dragNodeExpandOverWaitTimeMs = 300;
@@ -525,7 +521,7 @@ export class KeywordsComponent implements OnInit {
         this.snackBar.open(`${name} already exists`, '', { duration: 3000 });
       } else {
         //add new kwm
-        let newKwm: IKeyWordModel = {id: name, hierarchy: []};
+        let newKwm: IKeyWordModel = {id: name, hierarchy: [], keywords: []};
         this.api.addKeywordModel(newKwm).subscribe(res => {
           const newIdx = this.keywordModels.length;
           this.keywordModels[newIdx] = newKwm;
@@ -549,6 +545,8 @@ export class KeywordsComponent implements OnInit {
       TREE_DATA.splice(removeIdx, 1);
       this.selectedKwmIdx = -1;
       this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
+
+      this.database.dataChange.next([])
     });
   }
 
@@ -574,6 +572,8 @@ export class KeywordsComponent implements OnInit {
           this.api.addUncategorizedKeyword(node.item)
             .subscribe(res => {});
         }
+        const index = this.keywordModels[this.selectedKwmIdx].keywords.indexOf(node.item, 0);
+        this.keywordModels[this.selectedKwmIdx].keywords.splice(index, 1);
       } else {
         console.error("undefined type")
       }
@@ -614,13 +614,17 @@ export class KeywordsComponent implements OnInit {
   }
 
   /**
-   * handles droping an item over the mat-grid-tile if the tree is empty
+   * handles dropping an item over the mat-grid-tile if the tree is empty
    * @param event
    */
   dropOverEmptyTree(event) {
     if(this.selectedKwmIdx !== -1) {
       if(this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
-        this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+        if(this.newItem.nodeType === NodeType.DIMENSION) {
+          this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
+        } else {
+          this.snackBar.open(`Root node must be a dimension`, '', { duration: 3000 });
+        }
       }
     }
   }
@@ -668,19 +672,56 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles dropping an item over the another node.
+   * Before moving the node, the correctness of the resulting tree is ensured.
+   * @param event
+   * @param node that the dragNode is dropped over
+   */
   handleDrop(event, node) {
     if (node !== this.dragNode) {
-      let newItem: ItemNode;
-      if (this.dragNodeExpandOverArea === 'above') {
-        newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-      } else if (this.dragNodeExpandOverArea === 'below') {
-        newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+      let newItem: ItemNode = null;
+      console.log("dragNode", this.flatNodeMap.get(this.dragNode), "node", this.flatNodeMap.get(node), "newItem", this.newItem)
+      if(this.newItem !== null
+         && this.newItem.nodeType === NodeType.KEYWORD
+         && this.keywordModels[this.selectedKwmIdx].keywords.includes(this.newItem.item)) {
+        this.snackBar.open(`${this.newItem.item} is already in this keyword model`, '', { duration: 3000 });
       } else {
-        newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+        //dragNode is used if the item is moved within the tree, this.newItem otherwise
+        let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
+        switch(this.dragNodeExpandOverArea) {
+          case 'above':
+            if(nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
+              newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+            }
+            break;
+          case 'below':
+            if(nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
+              newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+            }
+            break;
+          case 'center':
+            if(nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
+              newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
+            }
+            break;
+        }
       }
-      this.database.deleteItem(this.flatNodeMap.get(this.dragNode));
-      this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
+      if(newItem !== null) {
+        if(newItem.nodeType === NodeType.KEYWORD) { //add to keywords list
+          this.keywordModels[this.selectedKwmIdx].keywords.push(newItem.item);
+        }
+        this.database.deleteItem(this.flatNodeMap.get(this.dragNode)); //remove old node
+        this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
+      }
     }
+    //cleanup
     this.dragNode = null;
     this.dragNodeExpandOverNode = null;
     this.dragNodeExpandOverTime = 0;

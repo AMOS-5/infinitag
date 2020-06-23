@@ -41,9 +41,7 @@ export class HomeComponent implements OnInit {
   public serverUrl = environment.serverUrl;
   public backendStatus = `${this.serverUrl}/health`;
   public documentsUrl = `${this.serverUrl}/documents`;
-  public uploadUrl = `${this.documentsUrl}/upload`;
-  public downloadUrl = `${this.documentsUrl}/download`;
-  public keywordModels: Array<IKeyWordModel> = [];
+
 
   public serverStatus = 'DOWN';
 
@@ -52,8 +50,7 @@ export class HomeComponent implements OnInit {
 
 
 
-  constructor(private httpClient: HttpClient,
-              private api: ApiService) {
+  constructor(private httpClient: HttpClient) {
 
   }
 
@@ -63,28 +60,6 @@ export class HomeComponent implements OnInit {
         this.documents = value;
       });
 
-    this.api.getKeywordModels()
-    .subscribe((data: []) => {
-      this.keywordModels = data;
-    });
   }
 
-  public handleFileInput(files: FileList) {
-    const file: File = files[0];
-    const formData: FormData = new FormData();
-    formData.append('file', file, file.name);
-    this.httpClient.post(this.uploadUrl, formData)
-      .subscribe((response: IDocument) => {
-        this.documents.push(response);
-      });
-  }
-
-  public download(document: IDocument) {
-    const url = `${this.downloadUrl}/${document.title}`;
-
-    this.httpClient.get(url)
-      .subscribe((response: any) => {
-        console.log(response);
-      });
-  }
 }

@@ -2,11 +2,14 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SettingsComponent } from './settings.component';
 import { FileUploadComponent } from '../file-upload/file-upload.component';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
-import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
-import {HttpLoaderFactory} from '../app.module';
-import {MatDialogModule} from "@angular/material/dialog";
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { HttpLoaderFactory } from '../app.module';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from "@angular/material/dialog";
+
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -18,6 +21,8 @@ describe('SettingsComponent', () => {
       imports: [
         HttpClientModule,
         MatListModule,
+        MatGridListModule,
+        MatIconModule,
         MatDialogModule,
         TranslateModule.forRoot({
           loader: {

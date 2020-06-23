@@ -32,7 +32,7 @@ Push the frontend to ec2
     export INFINITAG_PEM=~/.ssh/infinitag-org.pem
     export INFINITAG_FRONTEND_SRC=<INFINITAG_ROOT_YOUR_MACHINE>/frontend/dist/frontend/
     export INFINITAG_FRONTEND_DST=/home/ubuntu/infinitag/frontend/dist/frontend/
-    export INFINITAG_EC2=ubuntu@ec2-3-84-34-102.compute-1.amazonaws.com
+    export INFINITAG_EC2=ubuntu@ec2-3-86-180-141.compute-1.amazonaws.com
 
     rsync $INFINITAG_FRONTEND_SRC -e "ssh -i $INFINITAG_PEM" $INFINITAG_EC2:$INFINITAG_FRONTEND_DST -r --delete
 

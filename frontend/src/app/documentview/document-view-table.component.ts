@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
@@ -35,10 +35,13 @@ import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
+import { FormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import { ITaggingMethod } from '../models/ITaggingMethod';
 import { ITaggingRequest } from '../models/ITaggingRequest.model';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
+
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { startWith, map } from 'rxjs/operators';
@@ -59,9 +62,10 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 })
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
+  //Keywords displayed in the menu
+  keywords: IKeywordListEntry[] = [];
+  selectedKeywords: IKeywordListEntry[] = [];
 
-  keywords: string[] = [];
-  selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
 
@@ -71,8 +75,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   applyingTaggingMechanism = false;
   separatorKeysCodes: number[] = [ENTER, COMMA];
   bulkKwCtrl = new FormControl();
-  filteredBulkKeywords: Observable<string[]>;
-  selectedBulkKeywords: string[] = [];
+  filteredBulkKeywords: Observable<IKeywordListEntry[]>;
+  selectedBulkKeywords: IKeywordListEntry[] = [];
 
   @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -88,7 +92,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
     this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
       startWith(null),
-      map((selectedBulkKeyword: string | null) => selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()));
+      map((selectedBulkKeyword: IKeywordListEntry | null) => selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()));
   }
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
@@ -134,20 +138,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public ngOnInit() {
     this.setDatasource();
-    this.api.getUncategorizedKeywords()
+    this.api.getKeywordListEntries()
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
       });
-    this.api.getKWMModels()
+
+    this.api.getKeywordModels()
       .subscribe((data: any) => {
         this.keywordModels = data;
-        for (let i = 0; i < data.length; i++) {
-          data[i].hierarchy ? data[i].hierarchy.forEach(hierarchy => {
-            this.findByNodeType(hierarchy, 'KEYWORD');
-          }) : null;
-        }
-
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
@@ -246,71 +245,55 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       iDoc.keywords.sort((a, b) => a.value.localeCompare(b.value));
       return of(iDoc);
     } else {
-      return throwError('Keyword already added to ' + iDoc.title);
+      return throwError('Keyword ' + keyword.value + ' already added to ' + iDoc.title);
     }
   }
 
   /**
   * @description
-  * Adds a keyword to a document, then sends a PATCH request to the backend
-  * to update the document. If the request is succesfull the datasource gets
+  * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
+  * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
   * updated.
   * @param {IDocument} document
-  * @param {string} keyword
+  * @param {IKeywordListEntry} keyword
   */
-  public applyKeyword(doc, keywordValue) {
-    if (this.findByNode(keywordValue)) {
-      const fixedArray = this.removeDublicate(this.kwmToAdd);
-      keywordValue = '';
-      for (let i = 0; i < fixedArray.length; i++) {
-        if (i === 0) {
-          keywordValue = keywordValue + fixedArray[i];
-        } else {
-          keywordValue = keywordValue + '->' + fixedArray[i];
-        }
+  public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
+    let to_add = [keyword.id]
+    to_add = to_add.concat(keyword.parents)
 
-      }
-      this.kwmToAdd = [];
+    for(let i = 0; i < to_add.length; i++) {
+      const kw: IKeyword = {value: to_add[i], type: 'MANUAL'};
+      this.addKeywordToDoc(doc, kw).subscribe(
+        res => {
+          doc = res;
+        },
+        err => this.snackBar.open(err, ``, { duration: 3000 })
+      );
     }
 
-    const kw: IKeyword = {value: keywordValue, type: 'MANUAL'};
-    this.addKeywordToDoc(doc, kw).subscribe(
-      res => {
-        this.uploadService.patchKeywords(res).subscribe(() => {
-          const index = this.documents.findIndex(document => document.id === doc.id);
-          const data = this.dataSource.data;
-          data.splice(index, 1);
-          this.dataSource.data = data;
-          data.splice(index, 0, doc);
-          this.dataSource.data = data;
-        });
-      },
-      err => this.snackBar.open(err, ``, { duration: 3000 })
-    );
+    this.uploadService.patchKeywords(doc).subscribe(() => {
+      const index = this.documents.findIndex(document => document.id === doc.id);
+      const data = this.dataSource.data;
+      data.splice(index, 1);
+      this.dataSource.data = data;
+      data.splice(index, 0, doc);
+      this.dataSource.data = data;
+    });
+
+
   }
-
-  private removeDublicate = function(arr) {
-    const res = [];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i + 1] !== arr[i]) {
-        res.push(arr[i]);
-      }
-    }
-    return res;
-  };
 
   /**
  * @description
- * Adds keywords to all selected documents.
- * @param {string} keyword
+ * Adds a keyword and its parents to all selected documents.
  */
   public applyBulkKeywords() {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selectedBulkKeywords.forEach(keyword => {
-      if (!(this.selectedKeywords).includes(keyword)) {
-        this.api.addUncategorizedKeyword(keyword).subscribe(() => {
+      if (!this.selectedKeywords.includes(keyword)) {
+        this.api.addUncategorizedKeyword(keyword.id).subscribe(() => {
 
         });
       }
@@ -353,86 +336,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @description
   * Searches the keywords list for a search term
   * @param {string} search term
-  * @returns {string[]} List of keywords matching search term
+  * @returns {IKeywordListEntry[]} List of keywords whose id starts with search term
   */
   private search(value: string) {
     const filter = value.toLowerCase();
-    return this.keywords.filter(option => option.toLowerCase().startsWith(filter));
-  }
-
-  /**
-  * @description
-  * Searches the keywordModelList list for a search term
-  * @param {Array} data term
-  * @param {string} nodeType term
-  * @returns {void}
-  */
-
-  private findByNodeType(data, nodeType) {
-    if (data.nodeType === nodeType) {
-      if (!(this.keywords).includes(data.item)) {
-        this.keywords.push(data.item);
-        this.selectedKeywords.push(data.item);
-      }
-    }
-    if (data.children) {
-      data.children.forEach(child => {
-        this.findByNodeType(child, 'KEYWORD');
-      });
-    }
-  }
-
-  /**
-  * @description
-  * Finds a node with specific keyword
-  * @param {string} text term
-  * @returns {boolean} Found or not
-  */
-
-  findByNode(text) {
-    let found = false;
-    for (let i = 0; i < this.keywordModels.length; i++) {
-
-      if (this.keywordModels[i].hierarchy) {
-        this.keywordModels[i].hierarchy.forEach(hierarchy => {
-          if (hierarchy.children) {
-            if (this.findKeywordRecursively(hierarchy.children, text)) {
-              found = true;
-              this.kwmToAdd.push(text);
-              return found;
-            }
-          }
-        });
-      }
-    }
-    return found;
-  }
-
-  /**
-  * @description
-  * Recursively finds children with specific keyword
-  * @param {string} text term
-  * @param {Array} children term
-  * @returns {boolean} Found or not
-  */
-  findKeywordRecursively(children, text) {
-    for (let index = 0; index < children.length; index++) {
-      const element = children[index];
-      if (element.item === text) {
-        return element;
-      } else {
-        if (element.children) {
-          const found = this.findKeywordRecursively(element.children, text);
-          if (found) {
-            if (element.nodeType === 'KEYWORD') {
-              this.kwmToAdd.push(element.item);
-            }
-            this.kwmToAdd = this.kwmToAdd.reverse();
-            return found;
-          }
-        }
-      }
-    }
+    return this.keywords.filter(kw => kw.id.toLowerCase().startsWith(filter));
   }
 
   public changeTaggingMethod(event: any) {
@@ -465,7 +373,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     const value = event.value;
 
     if ((value || '').trim()) {
-      this.selectedBulkKeywords.push(value.trim());
+      let kw: IKeywordListEntry = {id: value, kwm: null, parents: []}
+      this.selectedBulkKeywords.push(kw);
     }
 
     // Reset the input value
@@ -475,7 +384,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.bulkKwCtrl.setValue(null);
   }
 
-  remove(keyword: string): void {
+  remove(keyword: IKeywordListEntry): void {
     const index = this.selectedBulkKeywords.indexOf(keyword);
 
     if (index >= 0) {
@@ -484,15 +393,19 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedBulkKeywords.push(event.option.viewValue);
+    this.selectedBulkKeywords.push(event.option.value);
     this.KWInput.nativeElement.value = '';
     this.bulkKwCtrl.setValue(null);
   }
 
-  private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.selectedKeywords.filter(keywords => keywords.toLowerCase().indexOf(filterValue) === 0);
-
+  private _filter(value): IKeywordListEntry[] {
+    let filterValue;
+    if(typeof(value) === "string") {
+      filterValue = value.toLowerCase();
+    } else {
+      filterValue = value.id.toLowerCase();
+    }
+    return this.selectedKeywords.filter(keyword => keyword.id.toLowerCase().indexOf(filterValue) === 0);
   }
 
    /**
