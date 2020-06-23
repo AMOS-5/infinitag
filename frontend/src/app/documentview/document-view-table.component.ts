@@ -104,10 +104,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageEvent: PageEvent;
   pageSize = 10;
   currentPage = 0;
-  totalSize = 0;
+  totalSize;
   end: number;
   start: number;
 
