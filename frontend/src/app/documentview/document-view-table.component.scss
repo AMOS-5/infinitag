@@ -20,3 +20,9 @@ button:focus {
   height: 40px;
   display: inline-block;
 }
+
+mat-paginator.mat-paginator.paginator--centered {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+} 
