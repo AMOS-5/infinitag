@@ -83,10 +83,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageEvent: PageEvent;
   pageSize = 10;
   currentPage = 0;
-  totalSize = 0;
+  totalSize;
   end: number;
   start: number;
 
@@ -142,7 +141,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
     };
   }
-    
+
   /**
   * @description
   * Sets the data variable of this components MatTableDataSource instance
@@ -444,7 +443,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.iterator();
     return e;
   }
-  
+
   /**
   * @description
   * Updates the datasource with current documents.
