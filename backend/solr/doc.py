@@ -96,7 +96,7 @@ class SolrDoc:
         creation_date: str = None,
         content: str = None,
     ):
-        self.id = os.path.abspath(path)
+        self.id = path
         self.keywords = list(keywords)
         self.title = title
         self.file_type = file_type
@@ -288,8 +288,13 @@ class Title:
             return res["title"][0]
         elif exists_and_not_empty(res, "dc:title"):
             return res["dc:title"][0]
+        elif exists_and_not_empty(res, "stream_name"):
+            stream_name = res["stream_name"][0]
+            return os.path.basename(stream_name)
 
         log.debug(f"Title is unknown: {json.dumps(res, indent=2)}")
+
+
         return "unknown"
 
 

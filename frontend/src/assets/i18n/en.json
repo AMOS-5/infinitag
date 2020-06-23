@@ -24,7 +24,12 @@
     "AUTOMATED_TAGGING": "Automated Tagging",
     "SELECT_TAGGING_METHOD": "Select Tagging method",
     "SELECT_KEYWORD_MODEL": "Select Keyword Model",
-    "APPLY_TAGGING": "Apply Tagging"
+    "APPLY_TAGGING": "Apply Tagging",
+    "FILE_EXISTS": "The following file already exists",
+    "FILE_EXISTS_QUESTION": "What would you like to do?",
+    "FILE_EXISTS_OVERWRITE": "Overwrite",
+    "FILE_EXISTS_ADD": "Add Copy",
+    "FILE_EXISTS_CANCEL": "Cancel"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",
@@ -55,5 +60,8 @@
   "ENQUEUED": "Enqueued",
   "SUCCESS": "Success",
   "UPLOADING": "Uploading",
-  "ERROR": "Error"
+  "ERROR": "Error",
+  "CANCELLED": "Cancelled",
+  "REQUEST_SEND": "Request Sent",
+  "RESPONSE_RECEIVED": "Response Received"
 }
