@@ -285,7 +285,6 @@ def apply_tagging_method():
     """
     data = request.json
 
-
     if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
         print("Applying keyword model")
         kwm_data = data["keywordModel"]

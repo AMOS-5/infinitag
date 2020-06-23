@@ -2,10 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FileUploadComponent } from './file-upload.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatListModule } from '@angular/material/list';
-import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
-import {HttpLoaderFactory} from '../app.module';
-import {HttpClient} from '@angular/common/http';
-import {MatGridListModule} from '@angular/material/grid-list';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { HttpLoaderFactory } from '../app.module';
+import { HttpClient } from '@angular/common/http';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
@@ -22,6 +23,7 @@ describe('FileUploadComponent', () => {
         HttpClientTestingModule,
         MatListModule,
         MatGridListModule,
+        MatIconModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

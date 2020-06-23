@@ -96,6 +96,7 @@ class TestKeywordModelHierarchy(unittest.TestCase):
                     ]
                 },
             },
+            keywords=["germany", "uk", "bavaria", "badenwürtemberg", "scotland", "wales"]
         )
         # fmt: on
 
@@ -175,7 +176,8 @@ class TestKeywordModelApply(unittest.TestCase):
                         }
                     ]
                 }
-            ]
+            ],
+            keywords=["key1", "key11", "key12", "key2"]
         )
         # fmt: on
 
