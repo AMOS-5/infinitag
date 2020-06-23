@@ -15,4 +15,5 @@ matrix:
               - pip install -r requirements.txt
           script:
               - python -c "import nltk; nltk.download('all')"
+              - python -m spacy download de_core_news_sm
               - python -m unittest discover -s tests

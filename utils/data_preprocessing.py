@@ -16,41 +16,105 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from __future__ import print_function
-import os
-from nltk.corpus import stopwords
-from nltk.corpus import wordnet
-from nltk.stem.wordnet import WordNetLemmatizer
-import string
-import pandas as pd
-from nltk.stem.snowball import SnowballStemmer
-import threading as th
-
-stemmer = SnowballStemmer("english")
-stop = set(stopwords.words("english"))
-exclude = set(string.punctuation)
-# TODO create this somewhere else
-exclude.add('"')
-exclude.add("“")
-exclude.add("„")
-
-lemma = WordNetLemmatizer()
-
-# TODO tika should be configure correctly to ignore images and other unnecessary data
-from tika import parser, detector, language
-import io
-from pptx import Presentation
 
 from utils.tfidf_vector import tfidf_vector
 from utils.k_means_cluster import kmeans_clustering
 
+from nltk.corpus import stopwords, wordnet
+from nltk.stem.wordnet import WordNetLemmatizer
+import langdetect
+import spacy
+
+
+import os
+import io
+import string
+import pandas as pd
+import threading as th
+
+# TODO tika should be configure correctly to ignore images and other unnecessary data
+from tika import parser, detector, language
+from pptx import Presentation
+
 from typing import Set, List, Tuple
 
-# TODO fix missing extensions
-ALLOWED_EXTENSIONS = [
+
+class Punctuation(set):
+    def __init__(self):
+        self.update(string.punctuation)
+        self.add('"')
+        self.add("“")
+        self.add("„")
+        self.add("”")
+
+
+punctuation = Punctuation()
+
+
+class EnglishLemmatizer:
+    def __init__(self):
+        self.lemmatizer = WordNetLemmatizer()
+
+    def lemmatize(self, word: str) -> str:
+        return self.lemmatizer.lemmatize(word)
+
+
+class GermanLemmatizer:
+    def __init__(self):
+        self.lemmatizer = spacy.load("de_core_news_sm")
+
+    def lemmatize(self, word: str) -> str:
+        token = self.lemmatizer.tokenizer(word)
+        lemma = next(token.__iter__()).lemma_
+        return lemma
+
+class LemmatizerFactory:
+    lemmatizers = {
+        "en": EnglishLemmatizer,
+        "de": GermanLemmatizer,
+    }
+
+    @staticmethod
+    def get(lang: str) -> "ConcreteLemmatizer":
+        if lang not in LemmatizerFactory.lemmatizers:
+            print(f"No Lemmatizer can be found for language: '{lang}'")
+            print("Default english lemmatizer will be used.")
+            return EnglishLemmatizer()
+
+        return LemmatizerFactory.lemmatizers[lang]()
+
+
+class EnglishStopwords(set):
+    def __init__(self):
+        self.update(stopwords.words("english"))
+
+
+class GermanStopwords(set):
+    def __init__(self):
+        self.update(stopwords.words("german"))
+
+
+class StopwordFactory:
+    stopwords = {
+        "en": EnglishStopwords,
+        "de": GermanStopwords,
+    }
+
+    @staticmethod
+    def get(lang: str) -> "ConcreteStopwords":
+        if lang not in StopwordFactory.stopwords:
+            print(f"No Stopwords for language: '{lang}'")
+            print("Default english stopwords will be used.")
+            return StopwordFactory.stopwords["en"]()
+
+        return StopwordFactory.stopwords[lang]()
+
+
+ALLOWED_EXTENSIONS = {
     ".doc",
     ".docx",
     ".xls",
-    ".xlsx"
+    ".xlsx",
     ".ppt",
     ".pptx",
     ".ods",
@@ -61,8 +125,8 @@ ALLOWED_EXTENSIONS = [
     ".html",
     ".txt",
     ".text",
-    ".test"
-]
+    ".test",  # for testing purposes appears in test_* sometimes
+}
 
 UNWANTED_KEYWORDS = {
     "patient",
@@ -86,9 +150,32 @@ UNWANTED_KEYWORDS = {
     "added",
 }
 
+def lemmatize_keywords(keywords: dict) -> dict:
+    text = " ".join(kw for kw in keywords.keys())
+    text = " ".join(kw for parents in keywords.values() for kw in parents)
+
+    try:
+        lang = langdetect.detect(text)
+    except:
+        return keywords
+
+    lemmatizer = LemmatizerFactory.get(lang)
+
+    lemmatized_keywords = {}
+    for kw, parents in keywords.items():
+        kw = lemmatizer.lemmatize(kw).lower()
+        parents = [lemmatizer.lemmatize(kw).lower() for kw in parents]
+        lemmatized_keywords[kw] = parents
+
+    return lemmatized_keywords
+
 
 def create_automated_keywords(docs: dict) -> dict:
-    if not docs:
+    # TODO pass parameters to select the #words used for a cluster and the n_clusters
+    if len(docs) < 5:
+        print(
+            f"The number of documents for the cluster algorithm has to be >= 5. Is: {len(docs)}"
+        )
         return {}
 
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
@@ -131,6 +218,7 @@ def load_data_from_frontend(docs: dict):
 
 nltk_load_lock = th.Lock()
 
+
 def get_clean_content(file: str):
     # https://stackoverflow.com/questions/27433370/what-would-cause-wordnetcorpusreader-to-have-no-attribute-lazycorpusloader
     # not the best fix but it works
@@ -141,29 +229,35 @@ def get_clean_content(file: str):
     meta, content = extract(file)
 
     if content is not None:
-        content = clean(content)
+        lang = meta["language"]
+        content = clean(content, lang)
 
     return meta, content
 
 
-def clean(content: str) -> str:
-    content = clean_text(content)
-    content = clean_digits(content.split())
+def clean(content: str, lang: str) -> List[str]:
+    content = clean_text(content, lang)
+    content = clean_digits(content)
     content = clean_short_words(content)
     content = clean_unwanted_words(content)
 
     return content
 
 
-def clean_text(content: str):
-    stop_word_free = " ".join(
-        word for word in content.lower().split() if word not in stop
-    )
-    punct_free = "".join(ch for ch in stop_word_free if ch not in exclude)
-    cleaned_text = " ".join(lemma.lemmatize(word) for word in punct_free.split())
+def clean_text(content: str, lang: str) -> List[str]:
+    content = "".join(ch for ch in content if ch not in punctuation)
 
-    return cleaned_text
+    content = content.split()
 
+    stopwords = StopwordFactory.get(lang)
+    content = [word for word in content if word not in stopwords]
+
+    lemmatizer = LemmatizerFactory.get(lang)
+    content = [lemmatizer.lemmatize(word) for word in content]
+
+    content = [word.lower() for word in content]
+
+    return content
 
 def clean_digits(content: List[str]) -> List[str]:
     return [word for word in content if not word.isdigit()]
@@ -187,6 +281,7 @@ def get_all_files(dir: str) -> List[str]:
 
 def extract(path: str) -> Tuple[dict, str]:
     file_extension = os.path.splitext(path)[-1]
+    # TODO not really sure whether this should tika recognizes most formats
     if file_extension not in ALLOWED_EXTENSIONS:
         print(f"File extension not allowed for: {path}")
         return None, None
@@ -196,18 +291,11 @@ def extract(path: str) -> Tuple[dict, str]:
     meta, content = data["metadata"], data["content"]
     meta["stream_size"] = os.path.getsize(path)
 
+    if content is not None:
+        try:
+            meta["language"] = langdetect.detect(content)
+        except:
+            pass
+
     return meta, content
-
-
-# TODO remove sometime probably not needed anymore, was needed to parse big pptx
-def _extract_big_ppt(path: str) -> str:
-    prs = Presentation(path)
-
-    content = []
-    for slide in prs.slides:
-        for shape in slide.shapes:
-            if hasattr(shape, "text"):
-                content.append(shape.text)
-
-    return content
 
