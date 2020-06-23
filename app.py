@@ -207,6 +207,12 @@ def remove_keyword(key_id):
 
 @app.route("/keywordlist", methods=["GET"])
 def get_keywordlist():
+    """
+    Handles GET request for the list of all keywords
+    Sends a list of all keywords, including both uncategorized ones and
+    keywords in hierarchies.
+    :return: json object containing all keywords with their respective kwm and parents
+    """
     try:
         uncatKeywords = solr.keywords.get()
         data = [{"id": kw, "kwm": None, "parents": []} for kw in uncatKeywords]
@@ -217,7 +223,6 @@ def get_keywordlist():
             for kw in keywords.keys():
                 data.append({"id": kw, "kwm": hierarchy.name, "parents": keywords[kw]})
 
-        #print(data)
         return jsonify(data), 200
     except Exception as e:
         return jsonify(f"internal error: {e}"), 500

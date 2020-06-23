@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
@@ -35,16 +35,13 @@ import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
-import {ITaggingMethod} from '../models/ITaggingMethod';
-import {FormBuilder} from '@angular/forms';
-import {ITaggingRequest} from '../models/ITaggingRequest.model';
+import { FormBuilder } from '@angular/forms';
+
+import { ITaggingMethod } from '../models/ITaggingMethod';
+import { ITaggingRequest } from '../models/ITaggingRequest.model';
+import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
 
 
-export interface IKeyWordListEntry {
-  id: string;
-  kwm: string;
-  parents: string[];
-}
 
 /**
  * @class DocumentViewTableComponent
@@ -61,8 +58,8 @@ export interface IKeyWordListEntry {
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
   //Keywords displayed in the menu
-  keywords: IKeyWordListEntry[] = [];
-  selectedKeywords: IKeyWordListEntry[] = [];
+  keywords: IKeywordListEntry[] = [];
+  selectedKeywords: IKeywordListEntry[] = [];
 
   keywordModels: any = [];
   kwmToAdd = [];
@@ -117,7 +114,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
-        console.log(this.keywords)
       });
 
     this.api.getKeywordModels()
@@ -228,9 +224,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
   * updated.
   * @param {IDocument} document
-  * @param {IKeyWordListEntry} keyword
+  * @param {IKeywordListEntry} keyword
   */
-  public applyKeyword(doc: IDocument, keyword: IKeyWordListEntry) {
+  public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
     let to_add = [keyword.id]
     to_add = to_add.concat(keyword.parents)
 
@@ -259,9 +255,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   /**
  * @description
  * Adds a keyword and its parents to all selected documents.
- * @param {IKeyWordListEntry} keyword
+ * @param {IKeywordListEntry} keyword
  */
-  public applyBulkKeywords(keyword: IKeyWordListEntry) {
+  public applyBulkKeywords(keyword: IKeywordListEntry) {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
@@ -302,7 +298,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @description
   * Searches the keywords list for a search term
   * @param {string} search term
-  * @returns {IKeyWordListEntry[]} List of keywords whose id starts with search term
+  * @returns {IKeywordListEntry[]} List of keywords whose id starts with search term
   */
   private search(value: string) {
     const filter = value.toLowerCase();

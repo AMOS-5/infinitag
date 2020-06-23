@@ -93,9 +93,6 @@ export class ChecklistDatabase {
       for (var i = 0 ; i < data.length; i++){
         TREE_DATA[i] = JSON.parse(data[i].hierarchy);
       }
-
-      // Notify the change.
-      //this.dataChange.next(TREE_DATA[0])
     });
   }
 
@@ -335,8 +332,6 @@ export class KeywordsComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<ItemNode, ItemFlatNode>;
 
-  save = true;
-
   /* Drag and drop */
   dragNode: any;
   dragNodeExpandOverWaitTimeMs = 300;
@@ -553,23 +548,6 @@ export class KeywordsComponent implements OnInit {
 
       this.database.dataChange.next([])
     });
-
-
-
-    //keywordModel.hierarchy = [{ item: "root", nodeType: NodeType.DIMENSION, children: []} as ItemNode];
-    //this.dragNode = undefined;
-    /*this.save = false;
-    const root = this.nestedNodeMap.get(this.keywordModels[this.selectedKwmIdx].hierarchy[0])
-    for(let i = 0; i < 1000; i++) {
-      if(i === 1000) this.save = true;
-
-      this.handleDragStart(null, i.toString(), true, NodeType.KEYWORD);
-
-      this.dragNodeExpandOverArea = "center";
-      this.handleDrop(null, root)
-      this.handleDragEnd(null);
-    }*/
-
   }
 
   /**
@@ -711,24 +689,28 @@ export class KeywordsComponent implements OnInit {
       } else {
         //dragNode is used if the item is moved within the tree, this.newItem otherwise
         let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
-        if (this.dragNodeExpandOverArea === 'above') {
-          if(nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
-            newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-          } else {
-            this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
-          }
-        } else if (this.dragNodeExpandOverArea === 'below') {
-          if(nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
-            newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-          } else {
-            this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
-          }
-        } else {
-          if(nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
-            newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
-          } else {
-            this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
-          }
+        switch(this.dragNodeExpandOverArea) {
+          case 'above':
+            if(nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
+              newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+            }
+            break;
+          case 'below':
+            if(nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
+              newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
+            }
+            break;
+          case 'center':
+            if(nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
+              newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
+            } else {
+              this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
+            }
+            break;
         }
       }
       if(newItem !== null) {
