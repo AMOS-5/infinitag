@@ -77,13 +77,24 @@ class DocStorageTestCase(unittest.TestCase):
 
         doc = SOLR_DOCS.get(doc.path)
         doc.keywords.remove(kw1)
-        doc.keywords.append(kw3)
+        doc.keywords.add(kw3)
         SOLR_DOCS.update(doc)
 
         doc = SOLR_DOCS.get(doc.path)
         self.assertTrue(kw1 not in doc.keywords)
         self.assertTrue(kw2 in doc.keywords)
         self.assertTrue(kw3 in doc.keywords)
+
+    def test_correct_language_extraction(self):
+        expected_lang = "en"
+
+        # doc where tika can't parse the language
+        doc = self.docs[3]
+        SOLR_DOCS.add(doc)
+
+        doc = SOLR_DOCS.get(doc.path)
+
+        self.assertEqual(doc.lang, expected_lang)
 
 
 SOLR_DOCS = SolrDocStorage(DocStorageTestCase.config)

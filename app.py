@@ -26,17 +26,18 @@ import json
 import time
 from uuid import uuid4
 import os
+from pathlib import Path
+import logging as log
 
 from backend.service import SolrService, SolrMiddleware
-from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, \
+from backend.solr import (
+    SolrDoc,
+    SolrHierarchy,
+    SolrDocKeyword,
     SolrDocKeywordTypes
+)
 
-from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering
-
-from utils.data_preprocessing import dataload_for_frontend
-
-import logging as log
+from utils.data_preprocessing import create_automated_keywords
 
 log.basicConfig(level=log.ERROR)
 
@@ -44,6 +45,9 @@ app = Flask(__name__)
 solr = SolrService()
 app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
+
+if not os.path.exists("tmp"):
+    os.mkdir("tmp")
 
 
 @app.route("/")
@@ -61,9 +65,10 @@ def upload_file():
         f = request.files["fileKey"]
         f_id = request.form['fid']
         file_name = secure_filename(f.filename)
+        file_name = str("tmp" / Path(file_name))
 
         if request.method == "PUT":
-            name, ext = os.path.splitext(file_name)
+            name, ext = os.path.splitext(str(file_name))
             file_name = f"{name}_{uuid4()}{ext}"
 
         doc = SolrDoc(file_name)
@@ -87,6 +92,7 @@ def upload_file():
     try:
         solr.docs.add(doc)
     except Exception as e:
+        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print(f"Uploaded, saved and indexed file: {file_name}", file=sys.stdout)
@@ -243,7 +249,6 @@ def keywordmodels():
         try:
             solrHierarchies = solr.keywordmodel.get()
             list = [hierarchy.as_dict() for hierarchy in solrHierarchies]
-            # print("kwm: " + data , file=sys.stdout)
             return json.dumps(list), 200
         except Exception as e:
             return jsonify(f"internal error: {e}"), 500
@@ -303,78 +308,42 @@ def apply_tagging_method():
         start_time = time.time()
         keywords = kwm.get_keywords()
         stop_time = time.time() - start_time
-
-        #print("keywords: ", keywords)
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 
-        # apply kwm on all documents
-        if "documents" not in data or len(data["documents"]) == 0:
-            res = solr.docs.search("*:*")
-            docs = [SolrDoc.from_hit(hit) for hit in res]
-        else:
-            docs_json = data["documents"]
-            doc_ids = [doc['id'] for doc in docs_json]
-            docs = solr.docs.get(*doc_ids)
+        start_time = time.time()
 
-            if not isinstance(docs, list):
-                docs = [docs]
-        #print(docs)
+        docs_json = data["documents"]
 
+        doc_ids = []
+        if "documents" in data and len(data["documents"]) != 0:
+            doc_ids = [doc["id"] for doc in docs_json]
 
-        min = 10000000
-        max = 0
-        total = 0
-        # apply keywords for each document and measure time
-        for doc in docs:
-            start_time = time.time()
+        solr.docs.apply_kwm(keywords, *doc_ids)
 
-            applied = doc.apply_kwm(keywords)
-            if applied:
-                solr.docs.update(doc)
-
-            stop_time = time.time() - start_time
-            if stop_time < min:
-                min = stop_time
-            if stop_time > max:
-                max = stop_time
-            total += stop_time
-            print("{:10.7f}".format(stop_time))
-
-        print("number of documents checked: ", len(docs))
-        print("min time: ", "{:10.7f}".format(min), "sec")
-        print("max time: ", "{:10.7f}".format(max), "sec")
-        print("total time: ", "{:10.7f}".format(total), "sec")
-        if len(docs) != 0:
-            print("avg time: ", "{:10.7f}".format(total / len(docs)), "sec")
-
+        stop_time = time.time() - start_time
+        print("Applying keywords took:", "{:10.7f}".format(stop_time))
 
     else:
         docs = data["documents"]
-        unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home', 'left', 'right', 'history', 'daily', 'instruction','interaction', 'fooddrug', 'time', 'override','unit','potentially', 'march', 'added'}
-        flattened, vocab_frame, file_list, overall = dataload_for_frontend(docs,unwanted_keywords)
-        dist, tfidf_matrix, terms = tfidf_vector(flattened)
-        automated_tags = kmeans_clustering(tfidf_matrix, flattened, terms,file_list, 5, 5)
+        auto_keywords = create_automated_keywords(docs)
+
+        doc_ids = auto_keywords.keys()
+        docs = solr.docs.get(*doc_ids)
 
         for doc in docs:
-            for file_names, keywords in automated_tags.items():
-                if file_names == doc['id']:
-                    print('doc[id]:', doc['id'])
-                    print('file_names', file_names)
-                    print('keywords_tag assigned:', keywords)
-                    print('')
+            new_keywords = auto_keywords[doc.id]
+            doc.keywords.update(
+                SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
+                for kw in new_keywords
+            )
 
-                    solDoc = solr.docs.get(doc['id'])
-                    solDoc.keywords = [SolrDocKeyword(kw, SolrDocKeywordTypes.ML) for kw in keywords]
-                    solr.docs.update(solDoc)
+        solr.docs.update(*docs)
 
     return jsonify({"status": 200})
 
 
 if __name__ == "__main__":
 
-    #solr.docs.wipe_keywords()
-    #solr.keywordmodel.clear()
-    #solr.docs.clear()
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)

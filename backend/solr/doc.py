@@ -17,6 +17,7 @@
 
 from .keywordmodel import SolrHierarchy
 
+
 import logging as log
 from datetime import datetime
 import os
@@ -25,6 +26,7 @@ from typing import Set, List
 import enum
 import re
 import sys
+import langdetect
 
 
 # if you activate this you will see why some fields are unknown and maybe can
@@ -36,6 +38,7 @@ class SolrDocKeywordTypes(enum.Enum):
     """
     Enum representing the applied keyword types
     """
+
     KWM = 1
     ML = 2
     MANUAL = 3
@@ -97,13 +100,21 @@ class SolrDoc:
         content: str = None,
     ):
         self.id = path
-        self.keywords = list(keywords)
+        self.keywords = set(keywords)
         self.title = title
         self.file_type = file_type
         self.lang = lang
         self.size = size
         self.creation_date = creation_date
         self.content = content
+
+        # current fix for windows / linux agnostic stuff. The doc can always be deleted with is's
+        # id, and the full path is only used for extraction
+        try:
+            self.full_path = os.path.abspath(path)
+        # in case the path does not exist, this is okay since all docs normally are on the ec2
+        except Exception as e:
+            pass
 
     @staticmethod
     def from_extract(doc: "SolrDoc", res: dict) -> "SolrDoc":
@@ -128,7 +139,7 @@ class SolrDoc:
 
         keywords = []
         if "keywords" in hit:
-            keywords = [SolrDocKeyword.from_str(kw) for kw in hit["keywords"]]
+            keywords = {SolrDocKeyword.from_str(kw) for kw in hit["keywords"]}
 
         return SolrDoc(
             hit["id"],
@@ -144,7 +155,9 @@ class SolrDoc:
     def as_dict(self, keywords_as_str: bool = False) -> dict:
         return {
             "id": self.id,
-            "keywords": [kw.as_str() if keywords_as_str else kw.as_dict() for kw in self.keywords],
+            "keywords": [
+                kw.as_str() if keywords_as_str else kw.as_dict() for kw in self.keywords
+            ],
             "title": self.title,
             "type": self.file_type,
             "language": self.lang,
@@ -153,115 +166,21 @@ class SolrDoc:
             "content": self.content,
         }
 
-
-
-    def apply_kwm(self, keywords: dict) -> bool:
-        """
-        Applies a keyword model given by all its keywords with their parents on this document.
-
-        :param dict of keywords and parents:
-        :return: whether the keywords in the document were updated
-        """
-        new_keywords = SolrKeywordFinder.find(self, keywords)
-
-        if new_keywords:
-            self.keywords = new_keywords
-
-        return bool(new_keywords)
-
     @property
     def path(self):
         # alias for id
         return self.id
 
 
-class SolrKeywordFinder:
-    @staticmethod
-    def find(doc: SolrDoc, keywords: dict) -> List[SolrDocKeyword]:
-        """
-        Finds all keywords from the dict that appear in the document and
-        returns them together with the already added ones
-        :param doc: document to be searched in
-        :param keywords: keywords with their parents
-        :return: list of all keywords
-        """
-        content = SolrKeywordFinder._parse_doc(doc)
-        new_keywords = SolrKeywordFinder._find(content, keywords)
-
-        if not new_keywords:
-            return []
-
-        new_keywords = {
-            SolrDocKeyword(kw, SolrDocKeywordTypes.KWM) for kw in new_keywords
-        }
-        old_keywords = doc.keywords
-        new_keywords.update(old_keywords)
-
-        return list(new_keywords)
-
-    @staticmethod
-    def _parse_doc(doc: SolrDoc) -> Set[str]:
-        """
-        Parses the title and the content of a document into a set
-        :param doc:
-        :return: the content of a document wordwise in a set
-        """
-        parsed = set()
-        delims = " |\n|\t|;|,|:|\.|\?|!|\(|\)|\{|\}|\[|\]|<|>|\\\\|/|=|\"|\'"
-        parsed.update([str.lower() for str in re.split(delims, doc.title)])
-        parsed.update([str.lower() for str in re.split(delims, doc.content)])
-        return parsed
-
-    @staticmethod
-    def _find(content: Set[str], keywords: dict) -> Set[str]:
-        """
-        Finds all keywords in the set of words and returns them as well as their parents
-        :param content: set of words
-        :param keywords: dict of keywords
-        :return: set of found keywords
-        """
-        found_keywords = set()
-
-        for kw in list(keywords.keys()):
-            if kw in content:
-                #print("found ", kw, " parents: ", keywords[kw], file=sys.stdout)
-                found_keywords.add(kw)
-                for parent in keywords[kw]:
-                    found_keywords.add(parent)
-                #print("found kw: ", found_keywords, file=sys.stdout)
-
-        return found_keywords
-
-    @staticmethod
-    def _is_dimension(hierarchy: dict) -> bool:
-        return hierarchy["nodeType"] == "DIMENSION"
-
-    @staticmethod
-    def _is_keyword(hierarchy: dict) -> bool:
-        return hierarchy["nodeType"] == "KEYWORD"
-
-    @staticmethod
-    def _has_children(hierarchy: dict) -> bool:
-        return "children" in hierarchy
-
-    @staticmethod
-    def _get_children(hierarchy: dict) -> list:
-        return hierarchy["children"]
-
-    @staticmethod
-    def _get_keyword(hierarchy: dict) -> str:
-        return hierarchy["item"]
-
-
 def exists_and_not_empty(res: dict, field: str) -> bool:
-    return field in res and res[field][0]
+    return field in res and res[field]
 
 
 class FileContent:
     @staticmethod
     def from_result(res: dict) -> str:
         if exists_and_not_empty(res, "contents"):
-            return res["contents"]
+            return " ".join(word for word in res["contents"])
 
         log.debug("FileContent is unknown")
         return "unknown"
@@ -272,9 +191,9 @@ class Path:
     def from_result(res: dict) -> str:
         res = res["metadata"]
         if exists_and_not_empty(res, "stream_name"):
-            return res["stream_name"][0]
+            return res["stream_name"]
         elif exists_and_not_empty(res, "recourcename"):
-            return res["resourcename"][0]
+            return res["resourcename"]
 
         raise ValueError("Path could not be extracted => no id.")
 
@@ -284,13 +203,21 @@ class Title:
     def from_result(res: dict) -> str:
         res = res["metadata"]
 
-        if exists_and_not_empty(res, "title") and res["title"][0]:
-            return res["title"][0]
-        elif exists_and_not_empty(res, "dc:title"):
-            return res["dc:title"][0]
-        elif exists_and_not_empty(res, "stream_name"):
-            stream_name = res["stream_name"][0]
-            return os.path.basename(stream_name)
+        if exists_and_not_empty(res, "resourceName"):
+            fname = res["resourceName"]
+
+            # it can happen that multiple file types are found during extraction
+            # then this will be a list, the first entry will probably be the
+            # most dominant e.g. pptx dominant the rest will be png etc.
+            if isinstance(fname, list):
+                fname = fname[0]
+
+            # sometimes the title gets uploaded as bytes, make b'TITLE' => TITLE
+            matched_bytes = re.match("b'(.+)'", fname)
+            if matched_bytes is not None:
+                fname = matched_bytes[1]
+
+            return fname
 
         log.debug(f"Title is unknown: {json.dumps(res, indent=2)}")
 
@@ -304,11 +231,11 @@ class Author:
         res = res["metadata"]
 
         if exists_and_not_empty(res, "Author"):
-            return res["Author"][0]
+            return res["Author"]
         elif exists_and_not_empty(res, "meta:author"):
-            return res["meta:author"][0]
+            return res["meta:author"]
         elif exists_and_not_empty(res, "creator"):
-            return res["creator"][0]
+            return res["creator"]
         else:
             log.debug("Author is unknown.")
             return "unknown"
@@ -330,11 +257,17 @@ class FileType:
         res = res["metadata"]
 
         if exists_and_not_empty(res, "stream_content_type"):
-            t = res["stream_content_type"][0]
+            t = res["stream_content_type"]
         elif exists_and_not_empty(res, "Content-Type"):
-            t = res["Content-Type"][0]
+            t = res["Content-Type"]
         else:
             t = "unknown"
+
+        # TODO how to treat multiple detected file types, probably
+        # everything here should be ignored and only the extension
+        # of the file should be used
+        if isinstance(t, list):
+            t = t[0]
 
         if t not in FileType.type_mapping:
             log.debug(f"Found missing type: {t}")
@@ -352,25 +285,36 @@ class FileSize:
         res = res["metadata"]
 
         if exists_and_not_empty(res, "stream_size"):
-            return res["stream_size"][0]
+            return res["stream_size"]
 
         log.debug("FileSize is unknown.")
-        return "unknown"
+        return 0
 
 
 class Language:
-    mapping = {"de-DE": "de", "en-US": "en"}
+    mapping = {
+        "de-de": "de",
+        "de": "de",
+        "en-us": "en",
+        "en": "en",
+        "ja-jp": "ja",
+        "ar-iq": "ar",
+    }
 
     @staticmethod
     def from_result(res: dict) -> str:
+        content = res["contents"]
         res = res["metadata"]
 
         if exists_and_not_empty(res, "language"):
-            lang = res["language"][0]
+            lang = res["language"]
         elif exists_and_not_empty(res, "dc:language"):
-            lang = res["dc:language"][0]
-        else:
-            lang = "unknown"
+            lang = res["dc:language"]
+        else:  # language could not be extracted by tika
+            scontent = " ".join(word for word in content)
+            lang = langdetect.detect(scontent)
+
+        lang = lang.lower()
 
         if lang not in Language.mapping:
             log.debug(f"LANGUAGE UNKNOWN / NOT FOUND: {json.dumps(res, indent=3)}")
@@ -387,13 +331,13 @@ class CreationDate:
         if exists_and_not_empty(
             res, "meta:creation-date"
         ):  # this should persist through saving
-            return res["meta:creation-date"][0]
+            return res["meta:creation-date"]
         elif exists_and_not_empty(res, "date"):
-            return res["date"][0]
+            return res["date"]
         elif exists_and_not_empty(res, "Creation-Date"):
-            return res["Creation-Date"][0]
+            return res["Creation-Date"]
         elif exists_and_not_empty(res, "dcterms:created"):
-            return res["dcterms:created"][0]
+            return res["dcterms:created"]
         else:
             log.debug("CreationDate is unknown.")
             return str(datetime.now())

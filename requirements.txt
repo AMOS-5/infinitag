@@ -21,4 +21,5 @@ numpy
 snowballstemmer
 tika
 python-pptx
-
+langdetect
+spacy

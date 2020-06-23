@@ -1,6 +1,9 @@
 import unittest
-from utils.data_preprocessing import cleantext
+
+from utils.data_preprocessing import clean_text
+from utils.data_preprocessing import LemmatizerFactory
 from nltk.corpus import stopwords
+
 import string
 import os
 
@@ -23,7 +26,7 @@ class DataPreProcessingTestCase(unittest.TestCase):
         fil.close()
 
         #Store result
-        result = [cleantext(filename).split()]
+        result = [clean_text(filename, "en")]
 
 
         #Unit test for stopwords and punctuation
@@ -50,7 +53,16 @@ class DataPreProcessingTestCase(unittest.TestCase):
 
         flattened = [val for sublist in overall for val in sublist]
 
-        return
+    def test_german_lemmatization(self):
+        lemmatizer = LemmatizerFactory.get("de")
+
+        text = "Häuser Mäuse Fahrräder Autos Programme Spielzeuge Blumen Beispiele"
+        expected = "Haus Maus Fahrrad Auto Programm Spielzeug Blume Beispiel"
+        lemmatized = " ".join(lemmatizer.lemmatize(word) for word in text.split())
+        # print(lemmatized)
+
+        self.assertEqual(lemmatized, expected)
+
 
 if __name__ == '__main__':
         unittest.main()
