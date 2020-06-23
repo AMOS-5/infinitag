@@ -26,7 +26,7 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -35,10 +35,16 @@ import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
-import {ITaggingMethod} from '../models/ITaggingMethod';
-import {FormBuilder} from '@angular/forms';
-import {ITaggingRequest} from '../models/ITaggingRequest.model';
+
+import { ITaggingMethod } from '../models/ITaggingMethod';
+import { ITaggingRequest } from '../models/ITaggingRequest.model';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { startWith, map } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+
 /**
  * @class DocumentViewTableComponent
  *
@@ -58,16 +64,31 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selectedKeywords: string[] = [];
   keywordModels: any = [];
   kwmToAdd = [];
+
+  visible = true;
+  selectable = true;
+  removable = true;
   applyingTaggingMechanism = false;
-  constructor(private api: ApiService,
-              private uploadService: UploadService,
-              private snackBar: MatSnackBar,
-              private formBuilder: FormBuilder) {
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  bulkKwCtrl = new FormControl();
+  filteredBulkKeywords: Observable<string[]>;
+  selectedBulkKeywords: string[] = [];
+
+  @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
+  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+
+
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
-      documents: []
+      documents: [],
+      bulkKeywords: []
     });
+    this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
+      startWith(null),
+      map((selectedBulkKeyword: string | null) => selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()));
   }
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
@@ -142,7 +163,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
     };
   }
-    
+
   /**
   * @description
   * Sets the data variable of this components MatTableDataSource instance
@@ -242,11 +263,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     if (this.findByNode(keywordValue)) {
       const fixedArray = this.removeDublicate(this.kwmToAdd);
       keywordValue = '';
-      for (let i = 0; i < fixedArray.length; i++){
+      for (let i = 0; i < fixedArray.length; i++) {
         if (i === 0) {
-          keywordValue = keywordValue + fixedArray[i] ;
+          keywordValue = keywordValue + fixedArray[i];
         } else {
-          keywordValue = keywordValue + '->' + fixedArray[i] ;
+          keywordValue = keywordValue + '->' + fixedArray[i];
         }
 
       }
@@ -269,28 +290,36 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  private  removeDublicate = function(arr){
+  private removeDublicate = function(arr) {
     const res = [];
     for (let i = 0; i < arr.length; i++) {
-           if (arr[ i + 1] !== arr[i] ){
-            res.push(arr[i]);
-           }
+      if (arr[i + 1] !== arr[i]) {
+        res.push(arr[i]);
+      }
     }
     return res;
-   };
+  };
 
   /**
  * @description
- * Adds a keyword to all selected documents.
+ * Adds keywords to all selected documents.
  * @param {string} keyword
  */
-  public applyBulkKeywords(keyword) {
+  public applyBulkKeywords() {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
-    this.selection.selected.forEach(doc => {
-      this.applyKeyword(doc, keyword);
+    this.selectedBulkKeywords.forEach(keyword => {
+      if (!(this.selectedKeywords).includes(keyword)) {
+        this.api.addUncategorizedKeyword(keyword).subscribe(() => {
+
+        });
+      }
+      this.selection.selected.forEach(doc => {
+        this.applyKeyword(doc, keyword);
+      });
     });
+    this.selectedBulkKeywords = [];
   }
 
   /**
@@ -368,7 +397,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       if (this.keywordModels[i].hierarchy) {
         this.keywordModels[i].hierarchy.forEach(hierarchy => {
           if (hierarchy.children) {
-            if (this.findKeywordRecursively(hierarchy.children, text)){
+            if (this.findKeywordRecursively(hierarchy.children, text)) {
               found = true;
               this.kwmToAdd.push(text);
               return found;
@@ -387,7 +416,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {Array} children term
   * @returns {boolean} Found or not
   */
-
   findKeywordRecursively(children, text) {
     for (let index = 0; index < children.length; index++) {
       const element = children[index];
@@ -397,7 +425,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         if (element.children) {
           const found = this.findKeywordRecursively(element.children, text);
           if (found) {
-            if (element.nodeType === 'KEYWORD'){
+            if (element.nodeType === 'KEYWORD') {
               this.kwmToAdd.push(element.item);
             }
             this.kwmToAdd = this.kwmToAdd.reverse();
@@ -417,7 +445,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
-    console.log(taggingData)
+    console.log(taggingData);
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
@@ -432,19 +460,54 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
-   /**
-  * @description
-  * Gets page event from frontand and runs the iterator.
-  * @returns {object} PageEvent e
-  */
 
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      this.selectedBulkKeywords.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.bulkKwCtrl.setValue(null);
+  }
+
+  remove(keyword: string): void {
+    const index = this.selectedBulkKeywords.indexOf(keyword);
+
+    if (index >= 0) {
+      this.selectedBulkKeywords.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedBulkKeywords.push(event.option.viewValue);
+    this.KWInput.nativeElement.value = '';
+    this.bulkKwCtrl.setValue(null);
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.selectedKeywords.filter(keywords => keywords.toLowerCase().indexOf(filterValue) === 0);
+
+  }
+
+   /**
+    * @description
+    * Gets page event from frontand and runs the iterator.
+    * @returns {object} PageEvent e
+    */
   public handlePage(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.iterator();
     return e;
   }
-  
+
   /**
   * @description
   * Updates the datasource with current documents.

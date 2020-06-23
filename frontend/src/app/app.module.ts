@@ -50,6 +50,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
@@ -112,6 +113,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatTreeModule,
         MatExpansionModule,
         MatDialogModule,
+        MatAutocompleteModule,
         MatPaginatorModule,
         TranslateModule.forRoot({
             loader: {
