@@ -76,9 +76,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
-  
+
   constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
-  
+
 
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
@@ -163,7 +163,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
               doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
     };
   }
-    
+
   /**
   * @description
   * Sets the data variable of this components MatTableDataSource instance
@@ -290,15 +290,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     );
   }
 
-  private removeDublicate = function (arr) {
-    let res = [];
+  private removeDublicate = function(arr) {
+    const res = [];
     for (let i = 0; i < arr.length; i++) {
       if (arr[i + 1] !== arr[i]) {
         res.push(arr[i]);
       }
-    };
-    return res
-  }
+    }
+    return res;
+  };
 
   /**
  * @description
@@ -310,16 +310,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selectedBulkKeywords.forEach(keyword => {
-      if(!(this.selectedKeywords).includes(keyword)) {
+      if (!(this.selectedKeywords).includes(keyword)) {
         this.api.addUncategorizedKeyword(keyword).subscribe(() => {
 
-        })
+        });
       }
       this.selection.selected.forEach(doc => {
-        this.applyKeyword(doc, keyword)
+        this.applyKeyword(doc, keyword);
       });
-    })
-    this.selectedBulkKeywords = []
+    });
+    this.selectedBulkKeywords = [];
   }
 
   /**
@@ -445,7 +445,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
-    console.log(taggingData)
+    console.log(taggingData);
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
@@ -494,19 +494,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     const filterValue = value.toLowerCase();
     return this.selectedKeywords.filter(keywords => keywords.toLowerCase().indexOf(filterValue) === 0);
 
-   /**
-  * @description
-  * Gets page event from frontand and runs the iterator.
-  * @returns {object} PageEvent e
-  */
+  }
 
+   /**
+    * @description
+    * Gets page event from frontand and runs the iterator.
+    * @returns {object} PageEvent e
+    */
   public handlePage(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.iterator();
     return e;
   }
-  
+
   /**
   * @description
   * Updates the datasource with current documents.
