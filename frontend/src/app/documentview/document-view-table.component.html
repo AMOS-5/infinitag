@@ -51,7 +51,6 @@
     </form>
   </mat-grid-tile>
 </mat-grid-list>
-
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
@@ -119,3 +118,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<mat-paginator class="paginator--centered" #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
+    [pageIndex]="currentPage" (page)="pageEvent = handlePage($event)">
+</mat-paginator>

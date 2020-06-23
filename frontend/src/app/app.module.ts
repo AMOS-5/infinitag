@@ -37,6 +37,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
@@ -49,6 +50,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -61,7 +63,6 @@ import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component'
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
 
@@ -111,6 +112,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatTreeModule,
         MatExpansionModule,
         MatDialogModule,
+        MatPaginatorModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
