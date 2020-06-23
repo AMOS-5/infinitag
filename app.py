@@ -46,6 +46,9 @@ solr = SolrService()
 app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
 
+if not os.path.exists("tmp"):
+    os.mkdir("tmp")
+
 
 @app.route("/")
 def hello_world():
