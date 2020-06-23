@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+!tests
 
 ### STS ###
 .apt_generated
@@ -41,3 +42,4 @@ tmp/
 
 *.rst
 !index.rst
+*.pdf
