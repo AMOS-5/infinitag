@@ -26,7 +26,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -36,12 +36,17 @@ import { ApiService } from '../services/api.service';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 
 import { ITaggingMethod } from '../models/ITaggingMethod';
 import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
 
-
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { startWith, map } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 /**
  * @class DocumentViewTableComponent
@@ -63,28 +68,51 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   keywordModels: any = [];
   kwmToAdd = [];
+
+  visible = true;
+  selectable = true;
+  removable = true;
   applyingTaggingMechanism = false;
-  constructor(private api: ApiService,
-              private uploadService: UploadService,
-              private snackBar: MatSnackBar,
-              private formBuilder: FormBuilder) {
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  bulkKwCtrl = new FormControl();
+  filteredBulkKeywords: Observable<IKeywordListEntry[]>;
+  selectedBulkKeywords: IKeywordListEntry[] = [];
+
+  @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+
+  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+
+
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
-      documents: []
+      documents: [],
+      bulkKeywords: []
     });
+    this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
+      startWith(null),
+      map((selectedBulkKeyword: IKeywordListEntry | null) => selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()));
   }
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
   @Input() filter: string | undefined;
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
+  allData: any;
+  pageSize = 10;
+  currentPage = 0;
+  totalSize;
+  end: number;
+  start: number;
 
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
@@ -144,7 +172,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         document.creation_date = new Date(document.creation_date);
       });
 
-      this.dataSource.data = this.documents;
+      this.allData = this.documents;
+      this.dataSource.paginator = this.paginator;
+      this.totalSize = this.allData.length;
+      this.iterator();
       setTimeout(() => {
         this.dataSource.sort = this.sort;
       });
@@ -255,15 +286,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   /**
  * @description
  * Adds a keyword and its parents to all selected documents.
- * @param {IKeywordListEntry} keyword
  */
-  public applyBulkKeywords(keyword: IKeywordListEntry) {
+  public applyBulkKeywords() {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
-    this.selection.selected.forEach(doc => {
-      this.applyKeyword(doc, keyword);
+    this.selectedBulkKeywords.forEach(keyword => {
+      if (!this.selectedKeywords.includes(keyword)) {
+        this.api.addUncategorizedKeyword(keyword.id).subscribe(() => {
+
+        });
+      }
+      this.selection.selected.forEach(doc => {
+        this.applyKeyword(doc, keyword);
+      });
     });
+    this.selectedBulkKeywords = [];
   }
 
   /**
@@ -314,6 +352,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
+    console.log(taggingData);
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
@@ -326,5 +365,71 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.applyingTaggingMechanism = false;
       this.selection = new SelectionModel(true, []);
     });
+  }
+
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      let kw: IKeywordListEntry = {id: value, kwm: null, parents: []}
+      this.selectedBulkKeywords.push(kw);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.bulkKwCtrl.setValue(null);
+  }
+
+  remove(keyword: IKeywordListEntry): void {
+    const index = this.selectedBulkKeywords.indexOf(keyword);
+
+    if (index >= 0) {
+      this.selectedBulkKeywords.splice(index, 1);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedBulkKeywords.push(event.option.value);
+    this.KWInput.nativeElement.value = '';
+    this.bulkKwCtrl.setValue(null);
+  }
+
+  private _filter(value): IKeywordListEntry[] {
+    let filterValue;
+    if(typeof(value) === "string") {
+      filterValue = value.toLowerCase();
+    } else {
+      filterValue = value.id.toLowerCase();
+    }
+    return this.selectedKeywords.filter(keyword => keyword.id.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+   /**
+    * @description
+    * Gets page event from frontand and runs the iterator.
+    * @returns {object} PageEvent e
+    */
+  public handlePage(e: PageEvent){
+    this.currentPage = e.pageIndex;
+    this.pageSize = e.pageSize;
+    this.iterator();
+    return e;
+  }
+
+  /**
+  * @description
+  * Updates the datasource with current documents.
+  * @returns {void}
+  */
+
+  private iterator() {
+    this.end = (this.currentPage + 1) * this.pageSize;
+    this.start = this.currentPage * this.pageSize;
+    const part = this.allData.slice(this.start, this.end);
+    this.dataSource.data = part;
   }
 }

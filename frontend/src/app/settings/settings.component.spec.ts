@@ -8,6 +8,8 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { HttpLoaderFactory } from '../app.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from "@angular/material/dialog";
+
 
 describe('SettingsComponent', () => {
   let component: SettingsComponent;
@@ -21,6 +23,7 @@ describe('SettingsComponent', () => {
         MatListModule,
         MatGridListModule,
         MatIconModule,
+        MatDialogModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

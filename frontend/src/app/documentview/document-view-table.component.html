@@ -2,7 +2,7 @@
 <mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'" *ngIf="edit.checked">
   <mat-grid-tile [colspan]="8">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
-    <button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
+    <!--<button [disabled]=!edit.checked mat-button [matMenuTriggerFor]="menu">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
     <mat-menu #menu="matMenu">
       <mat-form-field (click)="$event.stopPropagation()">
         <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
@@ -13,6 +13,33 @@
         {{keyword.kwm}} {{keyword.id}}
       </button>
     </mat-menu>
+    -->
+    <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList aria-label="Keyword selection">
+        <mat-chip
+          *ngFor="let keyword of selectedBulkKeywords"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(keyword)">
+          {{keyword.kwm}} {{keyword.id}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Search Keywords..."
+          #bulkKWInput
+          [formControl]="bulkKwCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let keyword of filteredBulkKeywords | async" [value]="keyword">
+          {{keyword.kwm}} {{keyword.id}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <button [disabled]=!edit.checked mat-raised-button color="primary" (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="4" [rowspan]="1">
     <mat-grid-tile-header>{{'DOCUMENTS.AUTOMATED_TAGGING' | translate}}</mat-grid-tile-header>
@@ -44,7 +71,6 @@
     </form>
   </mat-grid-tile>
 </mat-grid-list>
-
 <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
@@ -114,3 +140,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+<mat-paginator *ngIf="totalSize > 0" class="paginator--centered" #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
+    [pageIndex]="currentPage" (page)="handlePage($event)">
+</mat-paginator>

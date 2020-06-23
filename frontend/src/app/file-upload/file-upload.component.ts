@@ -21,19 +21,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Component, OnInit } from '@angular/core';
+import {Component } from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { TranslateService } from '@ngx-translate/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogData, FileExistsDialogComponent } from '../../dialogs/file-exists.component';
+import { IFile } from '../models/IFile.model';
+import { Utils } from '../services/Utils.service';
 
-interface IFile {
-  file: File;
-  status: string;
-  progress: number;
-  icon: string;
-}
+
+
 @Component({
   selector: 'app-file-upload',
   templateUrl: './file-upload.component.html',
@@ -45,12 +45,50 @@ interface IFile {
  *
  * Component handles the file input and displaying the progress
  */
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   files: Array<IFile> = [];
 
-  constructor(private uploadService: UploadService, private translate: TranslateService) { }
+  constructor(
+    private uploadService: UploadService,
+    private translate: TranslateService,
+    public dialog: MatDialog,
+    public utils: Utils) {
+  }
 
-  public ngOnInit(): void {}
+  openDialog(dialogData: DialogData): void {
+    const dialogRef = this.dialog.open(FileExistsDialogComponent, {
+      width: '500px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: { response: string, id: string, fid: string }) => {
+      console.log(this.files);
+
+      const file: IFile | undefined = this.files.find((f: IFile) => f.fid === result.fid);
+      console.log(file);
+      console.log(result);
+      this.resendFile(result, file);
+    });
+  }
+
+  public resendFile(requestType: { response: string }, file: IFile) {
+    if (file !== undefined) {
+      if (requestType.response === 'overwrite') {
+        this.uploadService.patchFile(file)
+          .subscribe((event: HttpEvent<any>) => {
+            this.handleFileSend(event, file);
+          });
+      } else if (requestType.response === 'add') {
+        this.uploadService.putFile(file)
+          .subscribe((event: HttpEvent<any>) => {
+            this.handleFileSend(event, file);
+          });
+      } else {
+        file.status = 'CANCELLED';
+        file.icon = 'cloud_done';
+      }
+    }
+  }
 
   /**
    * @description
@@ -60,8 +98,9 @@ export class FileUploadComponent implements OnInit {
   public onSelectFile(files: FileList) {
     this.files = [];
     for (let idx = 0; idx < files.length; idx++) {
-      const file: IFile = { file: files[idx], status: 'ENQUEUED', progress: 0, icon: 'schedule' };
+      const file: IFile = {file: files[idx], status: 'ENQUEUED', progress: 0, icon: 'schedule', fid: this.utils.uuid4()};
       this.files.push(file);
+      console.log(file);
       this.sendFileToService(file);
     }
   }
@@ -72,35 +111,49 @@ export class FileUploadComponent implements OnInit {
    * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
-    this.uploadService.postFile(file.file)
-    .pipe(
-      // catch errors
-      catchError(error => {
-        file.status = 'ERROR';
-        file.icon = 'close';
-        return throwError(error);
-      })
-    ).subscribe((event: HttpEvent<any>) => {
-      switch (event.type) {
-        case HttpEventType.Sent:
-          file.status = 'request send';
-          break;
-        case HttpEventType.ResponseHeader:
-          file.status = 'response received';
-          break;
-        case HttpEventType.UploadProgress:
-          // update progress
-          file.progress = Math.round(event.loaded / event.total * 100);
-          file.status = 'UPLOADING';
-          file.icon = 'cloud_upload';
-          break;
-        case HttpEventType.Response:
-          file.status = 'SUCCESS';
-          console.log('Document send', event.body);
-          file.icon = 'cloud_done';
-          break;
-      }
+    this.uploadService.postFile(file)
+      .pipe(
+        // catch errors
+        catchError(error => {
+          file.status = 'ERROR';
+          file.icon = 'close';
+          return throwError(error);
+        })
+      ).subscribe((event: HttpEvent<any>) => {
+      this.handleFileSend(event, file);
     });
+
+  }
+
+  private handleFileSend(event: HttpEvent<any>, file: IFile) {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        file.status = 'REQUEST_SEND';
+        break;
+      case HttpEventType.ResponseHeader:
+        file.status = 'RESPONSE_RECEIVED';
+        break;
+      case HttpEventType.UploadProgress:
+        // update progress
+        file.progress = Math.round(event.loaded / event.total * 100);
+        file.status = 'UPLOADING';
+        file.icon = 'cloud_upload';
+        break;
+      case HttpEventType.Response:
+        if (event.status === 207) {
+          const id = event.body.id;
+          const fid = event.body.fid;
+          const dialogData: DialogData = {
+            id,
+            fid
+          };
+          this.openDialog(dialogData);
+        } else {
+          file.status = 'SUCCESS';
+          file.icon = 'cloud_done';
+        }
+        break;
+    }
   }
 
 }
