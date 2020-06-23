@@ -151,8 +151,8 @@ UNWANTED_KEYWORDS = {
 }
 
 def lemmatize_keywords(keywords: dict) -> dict:
-    text = " ".join(kw for kw in keywords.keys())
-    text = " ".join(kw for parents in keywords.values() for kw in parents)
+    keywords = [kw for kw in keywords.keys()]
+    text = " ".join(kw for kw in keywords)
 
     try:
         lang = langdetect.detect(text)
@@ -161,12 +161,7 @@ def lemmatize_keywords(keywords: dict) -> dict:
 
     lemmatizer = LemmatizerFactory.get(lang)
 
-    lemmatized_keywords = {}
-    for kw, parents in keywords.items():
-        kw = lemmatizer.lemmatize(kw).lower()
-        parents = [lemmatizer.lemmatize(kw).lower() for kw in parents]
-        lemmatized_keywords[kw] = parents
-
+    lemmatized_keywords = [lemmatizer.lemmatize(kw).lower() for kw in keywords]
     return lemmatized_keywords
 
 

@@ -37,7 +37,7 @@ from backend.solr import (
     SolrDocKeywordTypes
 )
 
-from utils.data_preprocessing import create_automated_keywords, lemmatize_keywords
+from utils.data_preprocessing import create_automated_keywords
 
 log.basicConfig(level=log.ERROR)
 
@@ -307,7 +307,6 @@ def apply_tagging_method():
         kwm = SolrHierarchy(kwm_data["id"], json.loads(kwm_data["hierarchy"]), kwm_data["keywords"])
         start_time = time.time()
         keywords = kwm.get_keywords()
-        keywords = lemmatize_keywords(keywords)
         stop_time = time.time() - start_time
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 

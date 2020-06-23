@@ -17,7 +17,8 @@
 
 from .doc import SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 from .keywordmodel import SolrHierarchy
-from utils.data_preprocessing import get_clean_content
+
+from utils.data_preprocessing import get_clean_content, lemmatize_keywords
 
 import pysolr
 
@@ -135,20 +136,25 @@ class SolrDocStorage:
             doc.keywords = []
             self.update(doc)
 
-    def apply_kwm(self, keywords: dict, *doc_ids: List[str]) -> None:
+    def apply_kwm(self, keywords: dict, *doc_ids: str) -> None:
         """
         Applies a keyword model on every document in Solr.
-        The idea is to search the content in Solr for the keyword if it is found
-        the keyword and its parents are applied.
+        The idea is to search the content in Solr for the lemmatized_keyword if it is found
+        the (normal)keyword and its parents are applied.
 
-        :param keywords: dict of keyword and corresponding parents
+        :param keywords: dict of keywords and corresponding parents
+        :param doc_ids:
         :return:
         """
+        lemmatized_keywords = lemmatize_keywords(keywords)
+
         id_query = self._build_id_query(doc_ids)
 
         changed_docs = {}
-        for keyword, parents in keywords.items():
-            query = self._build_kwm_query(id_query, keyword)
+        for lemmatized_keyword, (keyword, parents) in zip(
+            lemmatized_keywords, keywords.items()
+        ):
+            query = self._build_kwm_query(id_query, lemmatized_keyword)
 
             res = self.search(query)
             res = [SolrDoc.from_hit(hit) for hit in res]
