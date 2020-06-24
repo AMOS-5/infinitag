@@ -83,7 +83,7 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(content, "some random words")
 
         # file got uploaded to solr?
-        solr_doc_id = "tmp/test_upload.test"
+        solr_doc_id = "test_upload.test"
         self.assertTrue(solr_doc_id in application.solr.docs)
 
         # cleanup
@@ -228,9 +228,9 @@ class BasicTestCase(unittest.TestCase):
                                 {'item': 'text', 'nodeType': 'KEYWORD'},
                                 {'item': 'faufm', 'nodeType': 'KEYWORD'},
                                 ]),
-                            'keywords': ['test', 'text', 'fau'],
+                            'keywords': ['test', 'text', 'faufm'],
                          },
-            documents=[{'id': f"{self.base}.txt"}, {'id':f"{self.base}.pdf"}],
+            documents=[{'id': "test.txt"}, {'id':"test.pdf"}],
         ))
 
         application.solr.docs.add(*self.docs)
@@ -239,26 +239,25 @@ class BasicTestCase(unittest.TestCase):
         response = tester.post("/apply", content_type="application/json", data=data)
         self.assertEqual(response.status_code, 200)
 
-        doc = application.solr.docs.get(f"{self.base}.txt")
-
-        keywords = application.solr.docs.get(f"{self.base}.txt").keywords
+        doc = application.solr.docs.get("test.txt")
+        keywords = application.solr.docs.get("test.txt").keywords
         expected = [
             SolrDocKeyword("text", SolrDocKeywordTypes.KWM),
             SolrDocKeyword("test", SolrDocKeywordTypes.KWM),
         ]
         self.assertEqual(sorted(keywords), sorted(expected))
 
-        keywords = application.solr.docs.get(f"{self.base}.pdf").keywords
+        keywords = application.solr.docs.get("test.pdf").keywords
         expected = [
             SolrDocKeyword("faufm", SolrDocKeywordTypes.KWM),
         ]
         self.assertEqual(sorted(keywords), sorted(expected))
 
-        keywords = application.solr.docs.get(f"{self.base}.docx").keywords
+        keywords = application.solr.docs.get("test.docx").keywords
         expected = []
         self.assertEqual(sorted(keywords), sorted(expected))
 
-        keywords = application.solr.docs.get(f"{self.base}.pptx").keywords
+        keywords = application.solr.docs.get("test.pptx").keywords
         expected = []
         self.assertEqual(sorted(keywords), sorted(expected))
 
