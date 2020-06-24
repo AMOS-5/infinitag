@@ -148,6 +148,9 @@ UNWANTED_KEYWORDS = {
     "potentially",
     "march",
     "added",
+    "intro",
+    "open",
+    "exit"
 }
 
 def lemmatize_keywords(keywords: dict) -> dict:
@@ -201,9 +204,15 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
 
 def load_data_from_frontend(docs: dict):
     filenames = [doc["id"] for doc in docs]
-    overall = [doc["content"].split() for doc in docs]
+    texts = [doc["content"] for doc in docs]
+    langs = [doc["language"] for doc in docs]
+    lang = 0
+    for i in langs:
+        lang = i
 
+    overall = [clean(text, lang) for text in texts]
     vocabulary = []
+
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
@@ -235,6 +244,7 @@ def clean(content: str, lang: str) -> List[str]:
     content = clean_digits(content)
     content = clean_short_words(content)
     content = clean_unwanted_words(content)
+    content = clean_alphanumericals(content)
 
     return content
 
@@ -259,11 +269,14 @@ def clean_digits(content: List[str]) -> List[str]:
 
 
 def clean_short_words(content: List[str]) -> List[str]:
-    return [word for word in content if len(word) > 3]
+    return [word for word in content if len(word) > 3 and len(word)<15]
 
 
 def clean_unwanted_words(content: List[str]) -> List[str]:
     return [word for word in content if word not in UNWANTED_KEYWORDS]
+
+def clean_alphanumericals(content: List[str]) -> List[str]:
+    return [word for word in content if word.isalpha()]
 
 
 def get_all_files(dir: str) -> List[str]:

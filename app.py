@@ -339,6 +339,7 @@ def apply_tagging_method():
 
         solr.docs.update(*docs)
 
+
     return jsonify({"status": 200})
 
 

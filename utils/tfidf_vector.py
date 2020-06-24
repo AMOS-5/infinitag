@@ -31,11 +31,11 @@ def tfidf_vector(flattened):
                              #use_idf=True,tokenizer=dummy_fun, preprocessor=dummy_fun,ngram_range=(1,3))
 
     tfidf_vectorizer = TfidfVectorizer(max_features=200000, stop_words='english',
-                             use_idf=True,tokenizer=dummy_fun, preprocessor=dummy_fun,ngram_range=(1,3))
+                             use_idf=True,tokenizer=dummy_fun, preprocessor=dummy_fun,ngram_range=(1,1))
 
-    
-    
-    
+
+
+
     tfidf_matrix = tfidf_vectorizer.fit_transform(flattened) #fit the vectorizer to synopses
 
     print(tfidf_matrix.shape)
