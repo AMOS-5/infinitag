@@ -99,7 +99,7 @@ class SolrDoc:
         creation_date: str = None,
         content: str = None,
     ):
-        self.id = path
+        _, self.id = os.path.split(path)
         self.keywords = set(keywords)
         self.title = title
         self.file_type = file_type
