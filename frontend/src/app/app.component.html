@@ -4,8 +4,8 @@
     <span class="menu-spacer"></span>
     <div>
       <a mat-button [routerLink]="''">{{'HOME.TITLE' | translate}}</a>
-      <a mat-button [routerLink]="'/documents'">{{'HOME.ADD_DOCUMENTS' | translate}}</a>
-      <a mat-button [routerLink]="'/keywords'">{{'HOME.KEYWORDS' | translate}}</a>
+      <a mat-button [routerLink]="'/documents'">{{'HOME.DOCUMENT_OVERVIEW' | translate}}</a>
+      <a mat-button [routerLink]="'/keywords'">{{'KEYWORDS.KEYWORD_MODELS' | translate}}</a>
       <a mat-button [matMenuTriggerFor]="beforeMenu">{{'HOME.DOCUMENTATION' | translate}}</a>
       <mat-menu #beforeMenu="matMenu" xPosition="before">
         <a mat-menu-item [routerLink]="'/documentation'">API {{'HOME.DOCUMENTATION' | translate}}</a>

@@ -22,44 +22,27 @@
  * SOFTWARE.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { IDocument } from '../models/IDocument.model';
-import { environment } from './../../environments/environment';
-import {ITaggingMethod} from '../models/ITaggingMethod';
-import {ApiService} from '../services/api.service';
-import {IKeyWordModel} from '../models/IKeyWordModel.model';
-import {FormBuilder} from "@angular/forms";
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {IFile} from '../app/models/IFile.model';
+
+export interface UploadDialogData {
+  files: Array<IFile>;
+}
+
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-file-upload-dialog',
+  templateUrl: 'file-upload.dialog.html',
 })
+export class FileUploadDialogComponent {
 
-export class HomeComponent implements OnInit {
-  public title = 'infinitag';
-  public serverUrl = environment.serverUrl;
-  public backendStatus = `${this.serverUrl}/health`;
-  public documentsUrl = `${this.serverUrl}/documents`;
+  constructor(
+    public dialogRef: MatDialogRef<FileUploadDialogComponent>,
+    public translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: UploadDialogData) {}
 
-
-  public serverStatus = 'DOWN';
-
-  public documents: Array<IDocument> = [];
-  public filterString = '';
-
-
-
-  constructor(private httpClient: HttpClient) {
-
+  onDialogButtonClick(response: string): void {
+    console.log(response);
   }
-
-  public ngOnInit(): void {
-    this.httpClient.get(this.documentsUrl)
-      .subscribe((value: Array<IDocument>) => {
-        this.documents = value;
-      });
-
-  }
-
 }

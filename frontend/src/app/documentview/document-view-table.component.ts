@@ -40,13 +40,14 @@ import { FormControl } from '@angular/forms';
 
 import { ITaggingMethod } from '../models/ITaggingMethod';
 import { ITaggingRequest } from '../models/ITaggingRequest.model';
-import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
+import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { startWith, map } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {MatTabChangeEvent} from '@angular/material/tabs';
 
 /**
  * @class DocumentViewTableComponent
@@ -62,7 +63,6 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 })
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
-  //Keywords displayed in the menu
   keywords: IKeywordListEntry[] = [];
   selectedKeywords: IKeywordListEntry[] = [];
 
@@ -77,6 +77,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   bulkKwCtrl = new FormControl();
   filteredBulkKeywords: Observable<IKeywordListEntry[]>;
   selectedBulkKeywords: IKeywordListEntry[] = [];
+  editing = false;
 
   @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -137,29 +138,34 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   public ngOnInit() {
-    this.setDatasource();
-    this.api.getKeywordListEntries()
-      .subscribe((data: []) => {
-        this.keywords = data;
-        this.selectedKeywords = this.keywords;
+    this.api.getDocuments()
+      .subscribe((documents: Array<IDocument>) => {
+        this.documents = documents;
+        this.setDatasource();
+        this.api.getKeywordListEntries()
+          .subscribe((data: []) => {
+            this.keywords = data;
+            this.selectedKeywords = this.keywords;
+          });
+
+        this.api.getKeywordModels()
+          .subscribe((data: any) => {
+            this.keywordModels = data;
+          });
+        this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
+
+        // tell MatTableDataSource how an entry should be searched for given a filter string
+        this.dataSource.filterPredicate =
+        (doc: IDocument, filter: string) =>
+        {
+          return  doc.title.includes(filter) === true ||
+                  doc.language.includes(filter) === true ||
+                  doc.size.toString().includes(filter) === true ||
+                  doc.type.includes(filter) === true ||
+                  doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
+        };
       });
 
-    this.api.getKeywordModels()
-      .subscribe((data: any) => {
-        this.keywordModels = data;
-      });
-    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
-
-    // tell MatTableDataSource how an entry should be searched for given a filter string
-    this.dataSource.filterPredicate =
-    (doc: IDocument, filter: string) =>
-    {
-      return  doc.title.includes(filter) === true ||
-              doc.language.includes(filter) === true ||
-              doc.size.toString().includes(filter) === true ||
-              doc.type.includes(filter) === true ||
-              doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
-    };
   }
 
   /**
@@ -258,10 +264,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   * @param {IKeywordListEntry} keyword
   */
   public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
-    let to_add = [keyword.id]
-    to_add = to_add.concat(keyword.parents)
+    let to_add = [keyword.id];
+    to_add = to_add.concat(keyword.parents);
 
-    for(let i = 0; i < to_add.length; i++) {
+    for (let i = 0; i < to_add.length; i++) {
       const kw: IKeyword = {value: to_add[i], type: 'MANUAL'};
       this.addKeywordToDoc(doc, kw).subscribe(
         res => {
@@ -373,7 +379,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     const value = event.value;
 
     if ((value || '').trim()) {
-      let kw: IKeywordListEntry = {id: value, kwm: null, parents: []}
+      const kw: IKeywordListEntry = {id: value, kwm: null, parents: []};
       this.selectedBulkKeywords.push(kw);
     }
 
@@ -400,7 +406,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   private _filter(value): IKeywordListEntry[] {
     let filterValue;
-    if(typeof(value) === "string") {
+    if (typeof(value) === 'string') {
       filterValue = value.toLowerCase();
     } else {
       filterValue = value.id.toLowerCase();
@@ -431,5 +437,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.start = this.currentPage * this.pageSize;
     const part = this.allData.slice(this.start, this.end);
     this.dataSource.data = part;
+  }
+
+  public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    if (tabChangeEvent.index === 1) {
+      this.editing = true;
+    } else {
+      this.editing = false;
+    }
   }
 }

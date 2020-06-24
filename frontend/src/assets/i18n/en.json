@@ -2,6 +2,7 @@
   "HOME": {
     "TITLE": "Home",
     "ADD_DOCUMENTS": "Add Documents",
+    "DOCUMENT_OVERVIEW": "Document Overview",
     "KEYWORDS": "Keywords",
     "DOCUMENTATION": "Documentation",
     "SERVER_STATUS": "Server Status",
@@ -20,6 +21,7 @@
     "EDITING_IS": "Editing Is",
     "DRAG_DROP_DIALOG": "Drag and drop your files here to upload them",
     "BROWSE_FOR_FILES": "Browse For Files",
+    "TAGGING": "Tagging",
     "MANUAL_TAGGING": "Manual Tagging",
     "AUTOMATED_TAGGING": "Automated Tagging",
     "SELECT_TAGGING_METHOD": "Select Tagging method",

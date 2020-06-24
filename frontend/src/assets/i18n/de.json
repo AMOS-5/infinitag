@@ -2,6 +2,7 @@
   "HOME": {
     "TITLE": "Startseite",
     "ADD_DOCUMENTS": "Dokumente hinzufügen",
+    "DOCUMENT_OVERVIEW": "Document Overview",
     "KEYWORDS": "Keywords",
     "DOCUMENTATION": "Dokumentation",
     "SERVER_STATUS": "Server Status",
@@ -21,6 +22,7 @@
     "EDITING_IS": "Bearbeiten ist",
     "DRAG_DROP_DIALOG": "Ziehen Sie ihre Dateien in dieses Feld um sie hochzuladen",
     "BROWSE_FOR_FILES": "Dokumente durchsuchen",
+    "TAGGING": "Tagging",
     "MANUAL_TAGGING": "Manuelles Tagging",
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
     "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
