@@ -1,0 +1,51 @@
+table {
+    width: 100%;
+}
+button:focus {
+    outline: none;
+}
+
+
+.tile-content {
+  margin-top: 16px;
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
+}
+
+.apply-spinner {
+  width: 40px ;
+  height: 40px;
+  display: inline-block;
+}
+
+mat-paginator.mat-paginator.paginator--centered {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-tab {
+  margin-top: 16px;
+}
+
+table {
+  margin-top: 16px;
+}
+
+.mat-grid-tile .mat-grid-tile-header, .mat-grid-tile .mat-grid-tile-footer {
+  background-color: white;
+  color: #1b1e21;
+  padding: 0;
+  font-size: 18px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.example-chip-list, button {
+  width: 100%;
+}

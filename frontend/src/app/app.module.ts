@@ -65,6 +65,7 @@ import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FileUploadDialogComponent} from '../dialogs/file-upload.dialog.component';
+import { TaggingComponent } from './tagging/tagging.component';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -82,7 +83,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     KWMNameDialog,
     DragdropDirective,
     FileExistsDialogComponent,
-    FileUploadDialogComponent
+    FileUploadDialogComponent,
+    TaggingComponent
   ],
     imports: [
         BrowserModule,
