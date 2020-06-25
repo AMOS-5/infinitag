@@ -17,6 +17,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { HttpLoaderFactory } from '../app.module';
 import { HttpClient } from '@angular/common/http';
 import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import {MatAutocompleteModule} from "@angular/material/autocomplete";
 
 
 describe('DocumentViewTable', () => {
@@ -40,6 +41,7 @@ describe('DocumentViewTable', () => {
         MatSnackBarModule,
         MatCheckboxModule,
         MatButtonToggleModule,
+        MatAutocompleteModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

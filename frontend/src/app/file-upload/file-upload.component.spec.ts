@@ -11,6 +11,7 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { UploadService } from "../services/upload.service";
 import { of } from "rxjs";
 import { IFile } from "../models/IFile.model";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 describe('FileUploadComponent', () => {
@@ -29,6 +30,7 @@ describe('FileUploadComponent', () => {
         HttpClientTestingModule,
         MatListModule,
         MatGridListModule,
+        BrowserAnimationsModule,
         MatIconModule,
         MatDialogModule,
         TranslateModule.forRoot({
