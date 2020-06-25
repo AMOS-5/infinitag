@@ -66,6 +66,7 @@ import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FileUploadDialogComponent} from '../dialogs/file-upload.dialog.component';
 import { TaggingComponent } from './tagging/tagging.component';
+import {TaggingDialogComponent} from "../dialogs/tagging.dialog.component";
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -84,7 +85,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DragdropDirective,
     FileExistsDialogComponent,
     FileUploadDialogComponent,
-    TaggingComponent
+    TaggingComponent,
+    TaggingDialogComponent
   ],
     imports: [
         BrowserModule,

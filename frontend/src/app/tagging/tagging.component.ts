@@ -24,6 +24,10 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IKeyword} from '../models/IKeyword.model';
 import {UploadService} from '../services/upload.service';
+import {FileUploadDialogComponent, UploadDialogData} from '../../dialogs/file-upload.dialog.component';
+import {TaggingDialogComponent, TaggingDialogData} from '../../dialogs/tagging.dialog.component';
+import {MatDialog} from '@angular/material/dialog';
+import {Utils} from '../services/Utils.service';
 
 
 @Component({
@@ -31,7 +35,7 @@ import {UploadService} from '../services/upload.service';
   templateUrl: './tagging.component.html',
   styleUrls: ['./tagging.component.scss']
 })
-export class TaggingComponent implements OnInit, OnChanges {
+export class TaggingComponent implements OnInit {
   keywords: IKeywordListEntry[] = [];
   selectedKeywords: IKeywordListEntry[] = [];
   applyingTaggingMechanism = false;
@@ -70,8 +74,10 @@ export class TaggingComponent implements OnInit, OnChanges {
   public selectedTaggingMethod = this.taggingMethods[0];
   constructor(private api: ApiService,
               private formBuilder: FormBuilder,
+              public dialog: MatDialog,
               private snackBar: MatSnackBar,
-              private uploadService: UploadService) {
+              private uploadService: UploadService,
+              private utils: Utils) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
@@ -98,6 +104,23 @@ export class TaggingComponent implements OnInit, OnChanges {
           });
   }
 
+  public openTaggingDialog(dialogData: TaggingDialogData): void {
+    const dialogRef = this.dialog.open(TaggingDialogComponent, {
+      width: '1200px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((response: string) => {
+      if  (response === 'cancel') {
+        this.api.cancelJob(dialogData.jobId)
+          .subscribe( (res: any) => {
+            this.snackBar.open('Job cancelled', ``, { duration: 3000 });
+          });
+      }
+      dialogRef.close();
+    });
+  }
+
   /**
    * @description
    * Adds a keyword and its parents to all selected documents.
@@ -121,12 +144,10 @@ export class TaggingComponent implements OnInit, OnChanges {
 
   public changeTaggingMethod(event: any) {
     this.selectedTaggingMethod = event.value;
-    console.log(this.selectedTaggingMethod)
   }
 
   public changeKWM(event: any) {
     this.selectedKeywordModel = event.value;
-    console.log(this.selectedKeywordModel);
   }
 
   /**
@@ -134,17 +155,31 @@ export class TaggingComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit() {
+    const jobId = this.utils.uuid4();
+    const taggingDialogData: TaggingDialogData = {
+      status: 'Documents are being tagged...',
+      progress: 0,
+      jobId,
+      timeRemaining: -1
+    };
+    this.openTaggingDialog(taggingDialogData);
     this.applyingTaggingMechanism = true;
     const taggingData: ITaggingRequest = {
       taggingMethod: this.selectedTaggingMethod,
       documents: this.selectedDocuments,
-      keywordModel: this.selectedKeywordModel
+      keywordModel: this.selectedKeywordModel,
+      jobId
     };
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
       if (response.status === 200) {
         this.taggingApplied.emit(true);
       }
       this.applyingTaggingMechanism = false;
+    });
+
+    this.monitorJobProgress(taggingDialogData)
+      .then( () => {
+        this.snackBar.open(`Finished tagging with Job ID: ${taggingDialogData.jobId}`, '', { duration: 3000 });
     });
   }
 
@@ -203,6 +238,24 @@ export class TaggingComponent implements OnInit, OnChanges {
     });
   }
 
+  public async monitorJobProgress(taggingDialogData: TaggingDialogData) {
+    const jobId = taggingDialogData.jobId;
+
+    while (taggingDialogData.status.toLowerCase() !== 'finished') {
+      this.api.getTaggingJobStatus(jobId)
+        .subscribe((response: any) => {
+          taggingDialogData.progress = response.progress;
+          taggingDialogData.status = response.message;
+          taggingDialogData.timeRemaining = response.timeRemaining;
+        });
+      await this.delay(2000);
+    }
+  }
+
+  private delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
    /**
     * @description
     * Adds a new keyword to an IDocument object. Thorws an error if the keyword
@@ -227,10 +280,6 @@ export class TaggingComponent implements OnInit, OnChanges {
       filterValue = value.id.toLowerCase();
     }
     return this.selectedKeywords.filter(keyword => keyword.id.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  public ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
 }

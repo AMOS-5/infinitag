@@ -14,7 +14,7 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+from backend.service.tagging import TaggingService
 from backend.solr import SolrKeywordModel, SolrKeywords, SolrDocStorage, config
 
 
@@ -25,6 +25,7 @@ class SolrService:
 
     def __init__(self):
         self.initialize_solr()
+
 
     def initialize_solr(self):
         self.SOLR_KEYWORD_MODEL = SolrKeywordModel(config.keyword_model_solr)

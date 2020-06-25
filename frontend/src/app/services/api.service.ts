@@ -131,4 +131,12 @@ export class ApiService {
     };
     return this.http.post(`${environment.serverUrl}/apply`, JSON.stringify(request), httpOptions);
   }
+
+  public getTaggingJobStatus(jobId: string) {
+    return this.http.get(`${environment.serverUrl}/job/${jobId}`);
+  }
+
+  public cancelJob(jobId: string) {
+    return this.http.delete(`${environment.serverUrl}/job/${jobId}`);
+  }
 }
