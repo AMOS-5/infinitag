@@ -1,10 +1,17 @@
 import time
 from threading import Thread
 
-from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, \
+from backend.solr import (
+    SolrDocStorage,
+    SolrDoc,
+    SolrDocKeyword,
     SolrDocKeywordTypes
-from utils.data_preprocessing import lemmatize_keywords, \
+)
+
+from utils.data_preprocessing import (
+    lemmatize_keywords,
     create_automated_keywords
+)
 
 
 class TaggingJob:
@@ -39,8 +46,9 @@ class KWMJob(Thread, TaggingJob):
         """
         self.status = 'TAGGING_JOB.LEMMA_START'
         lemmatized_keywords = lemmatize_keywords(self.keywords)
+        lemmatize_progress = 20
         self.status = 'TAGGING_JOB.LEMMA_END'
-        self.progress = 20
+        self.progress = lemmatize_progress
 
         self.status = 'TAGGING_JOB.DOC_FIND'
         id_query = self.solr_docs.build_id_query(self.doc_ids)
@@ -50,14 +58,15 @@ class KWMJob(Thread, TaggingJob):
         start_time = time.time()
         time_index = 0
         iteration_time = None
-        idx = 0
-        for lemmatized_keyword, (keyword, parents) in zip(
+        progress_step = 0
+
+        for idx, (lemmatized_keyword, (keyword, parents)) in enumerate(zip(
             lemmatized_keywords, self.keywords.items()
-        ):
+        )):
             if self.cancelled:
                 break
             if idx == 0:
-                progress_step = 80 / len(lemmatized_keywords)
+                progress_step = (100 - lemmatize_progress) / len(lemmatized_keywords)
             query = self.solr_docs.build_kwm_query(id_query, lemmatized_keyword)
 
             res = self.solr_docs.search(query)
@@ -80,6 +89,7 @@ class KWMJob(Thread, TaggingJob):
 
                 # store for bulk update
                 changed_docs[doc.id] = doc
+
             if time_index == 0:
                 end_time = time.time()
                 iteration_time = end_time - start_time
@@ -92,7 +102,8 @@ class KWMJob(Thread, TaggingJob):
             self.progress += progress_step
         changed_docs = changed_docs.values()
         self.status = 'TAGGING_JOB.DOC_UPDATE'
-        self.solr_docs.update(*changed_docs)
+        if not self.cancelled:
+            self.solr_docs.update(*changed_docs)
         self.status = 'FINISHED'
 
     def stop(self):
@@ -121,8 +132,9 @@ class AutomatedTaggingJob(Thread, TaggingJob):
         start_time = time.time()
         time_index = 0
         iteration_time = None
-        idx = 0
-        for doc in docs:
+        progress_step = 0
+
+        for idx, doc in enumerate(docs):
             if self.cancelled:
                 break
             if idx == 0:
@@ -154,9 +166,6 @@ class AutomatedTaggingJob(Thread, TaggingJob):
 
 class TaggingService:
     jobs = {}
-
-    def __init__(self):
-        pass
 
     def add_job(self, job: TaggingJob):
         self.jobs[job.job_id] = job

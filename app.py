@@ -30,8 +30,11 @@ from pathlib import Path
 import logging as log
 
 from backend.service import SolrService, SolrMiddleware
-from backend.service.tagging import TaggingService, TaggingJob, KWMJob, \
+from backend.service.tagging import (
+    TaggingService,
+    KWMJob,
     AutomatedTaggingJob
+)
 from backend.solr import (
     SolrDoc,
     SolrHierarchy,
@@ -335,18 +338,6 @@ def apply_tagging_method():
         tagging_service.add_job(job)
         job.start()
         # auto_keywords = create_automated_keywords(docs)
-        #
-        # doc_ids = auto_keywords.keys()
-        # docs = solr.docs.get(*doc_ids)
-        #
-        # for doc in docs:
-        #     new_keywords = auto_keywords[doc.id]
-        #     doc.keywords.update(
-        #         SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
-        #         for kw in new_keywords
-        #     )
-        #
-        # solr.docs.update(*docs)
 
     return jsonify({"status": 200})
 
