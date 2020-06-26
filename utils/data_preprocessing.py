@@ -242,7 +242,7 @@ def get_clean_content(file: str):
 def clean(content: str, lang: str) -> List[str]:
     content = clean_text(content, lang)
     content = clean_digits(content)
-    content = clean_short_words(content)
+    content = clean_short_long_words(content)
     content = clean_unwanted_words(content)
     content = clean_alphanumericals(content)
 
@@ -268,7 +268,7 @@ def clean_digits(content: List[str]) -> List[str]:
     return [word for word in content if not word.isdigit()]
 
 
-def clean_short_words(content: List[str]) -> List[str]:
+def clean_short_long_words(content: List[str]) -> List[str]:
     return [word for word in content if len(word) > 3 and len(word)<15]
 
 
