@@ -326,19 +326,30 @@ def apply_tagging_method():
     else:
         docs = data["documents"]
         options = data["options"]
+
+
         auto_keywords = create_automated_keywords(docs, options["numClusters"], options["numKeywords"])
 
         doc_ids = auto_keywords.keys()
         docs = solr.docs.get(*doc_ids)
 
-        for doc in docs:
-            new_keywords = auto_keywords[doc.id]
-            doc.keywords.update(
+        if len(doc_ids)==1:
+            new_keywords = auto_keywords[docs.id]
+            docs.keywords.update(
                 SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
                 for kw in new_keywords
             )
+            solr.docs.update(docs)
+        else:
+            for doc in docs:
+                print('doc', doc)
+                new_keywords = auto_keywords[doc.id]
+                doc.keywords.update(
+                    SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
+                    for kw in new_keywords
+                )
 
-        solr.docs.update(*docs)
+            solr.docs.update(*docs)
 
 
     return jsonify({"status": 200})

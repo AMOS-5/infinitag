@@ -20,11 +20,8 @@ import pandas as pd
 from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 from sklearn.cluster import KMeans
-import pprint
-#import pickle
-#from sklearn.externals import joblib
 import joblib
-import matplotlib.pyplot as plt
+
 
 def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,words_per_cluster ):
     km = KMeans(n_clusters=num_clusters)
@@ -43,11 +40,7 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,word
     print()
     # sort cluster centers by proximity to centroid
     order_centroids = km.cluster_centers_.argsort()[:, ::-1]
-
-
-
-
-    checking = {}
+    keywords_dict = {}
     for clustering in range(num_clusters):
         print("Cluster %d words:" % clustering, end='')
         print('')
@@ -66,19 +59,14 @@ def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,word
             print(' %s,' % title, end='')
         #checking[clustering]=(keywords, docname)
         for filename in docname:
-            checking[filename]=keywords
+            keywords_dict[filename]=keywords
             print('')
             print('')
 
-        #print("checking:", [clustering, keywords, docname])
-    #print("tags:", keywords)
-    #print("docname:",docname)
-    #print(checking["000306.ppt"])
-    print(checking)
-    return checking
+    return keywords_dict
 
 
-
+## Elbow method to determine the ideal amount of cluster
 """" cluster_error = []
     K = range(1,50)
     for k in K:
