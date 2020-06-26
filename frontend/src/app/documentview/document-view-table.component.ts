@@ -33,6 +33,12 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
+import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { startWith, map } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
@@ -42,11 +48,7 @@ import { ITaggingMethod } from '../models/ITaggingMethod';
 import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
 
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { startWith, map } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import { DialogData, AutomatedTaggingParametersDialog } from '../../dialogs/automated-tagging-parameters.component'
 
 /**
  * @class DocumentViewTableComponent
@@ -81,7 +83,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
+  constructor(
+    private api: ApiService,
+    private uploadService: UploadService,
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
+  ) {
 
 
     this.taggingForm = this.formBuilder.group({
@@ -347,12 +355,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.selectedTaggingMethod = event.value;
   }
 
-  /**
-   * Upon submitting the tagging mechanism, the method will be applied and the documents
-   * will be fetched again to update the table
-   */
-  public onSubmit(taggingData: ITaggingRequest) {
-    console.log(taggingData);
+  private  applyTaggingMethod(taggingData: ITaggingRequest) {
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
@@ -365,6 +368,37 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.applyingTaggingMechanism = false;
       this.selection = new SelectionModel(true, []);
     });
+  }
+
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit(taggingData: ITaggingRequest) {
+    if(taggingData.taggingMethod.name === "Automated") {
+      const dialogRef = this.dialog.open(AutomatedTaggingParametersDialog, {
+        width: '300px',
+        data: {numClusters: 5, numKeywords: 5}
+      });
+
+      dialogRef.afterClosed().subscribe((result: DialogData) => {
+        if(result === undefined) return; // cancel was pressed
+
+        result.numClusters = Number(result.numClusters)
+        result.numKeywords = Number(result.numKeywords)
+
+        if(result.numClusters === 0 || result.numKeywords === 0) { //happens if an empty string is inserted
+          this.snackBar.open('invalid parameters', ``, { duration: 3000 });
+          return;
+        }
+
+        taggingData.options = result;
+
+        this.applyTaggingMethod(taggingData);
+      });
+    } else {
+      this.applyTaggingMethod(taggingData);
+    }
   }
 
 

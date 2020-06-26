@@ -10,6 +10,7 @@ import { concatMap } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatInputModule } from '@angular/material/input';
@@ -38,6 +39,7 @@ describe('HomeComponent', () => {
         ReactiveFormsModule,
         MatSnackBarModule,
         MatMenuModule,
+        MatDialogModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,
