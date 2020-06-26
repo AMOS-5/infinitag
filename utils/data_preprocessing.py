@@ -168,7 +168,7 @@ def lemmatize_keywords(keywords: dict) -> dict:
     return lemmatized_keywords
 
 
-def create_automated_keywords(docs: dict) -> dict:
+def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int) -> dict:
     # TODO pass parameters to select the #words used for a cluster and the n_clusters
     if len(docs) < 5:
         print(
@@ -178,7 +178,7 @@ def create_automated_keywords(docs: dict) -> dict:
 
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
     dist, tfidf_matrix, terms = tfidf_vector(flattened)
-    keywords = kmeans_clustering(tfidf_matrix, flattened, terms, file_list, 5, 5)
+    keywords = kmeans_clustering(tfidf_matrix, flattened, terms, file_list, num_clusters, num_keywords)
 
     return keywords
 

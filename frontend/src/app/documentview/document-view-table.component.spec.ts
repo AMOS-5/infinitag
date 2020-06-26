@@ -16,7 +16,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { HttpLoaderFactory } from '../app.module';
 import { HttpClient } from '@angular/common/http';
-import {CUSTOM_ELEMENTS_SCHEMA} from "@angular/core";
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 describe('DocumentViewTable', () => {
@@ -40,6 +41,7 @@ describe('DocumentViewTable', () => {
         MatSnackBarModule,
         MatCheckboxModule,
         MatButtonToggleModule,
+        MatDialogModule,
         TranslateModule.forRoot({
           loader: {
             provide: TranslateLoader,

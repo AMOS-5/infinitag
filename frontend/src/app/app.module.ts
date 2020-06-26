@@ -66,6 +66,9 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
+import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-parameters.component';
+import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
+
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -85,7 +88,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     KeywordsComponent,
     KWMNameDialog,
     DragdropDirective,
-    FileExistsDialogComponent
+    FileExistsDialogComponent,
+    AutomatedTaggingParametersDialog,
+    NaturalNumbersOnlyDirective,
   ],
     imports: [
         BrowserModule,
