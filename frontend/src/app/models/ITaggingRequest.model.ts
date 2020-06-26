@@ -6,4 +6,5 @@ export interface ITaggingRequest {
   taggingMethod: ITaggingMethod;
   keywordModel: IKeyWordModel | undefined;
   documents: Array<IDocument>;
+  options: { [key: string] : any; };
 }

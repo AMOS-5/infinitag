@@ -4,7 +4,7 @@
     <mat-form-field>
         <input matInput cdkFocusInitial [(ngModel)]="name">
     </mat-form-field>
-    </div>
+</div>
 <div mat-dialog-actions>
     <button mat-button (click)="onClose()">{{'CLOSE' | translate}}</button>
     <button #okButton mat-button [mat-dialog-close]="name">{{'OK' | translate}}</button>
