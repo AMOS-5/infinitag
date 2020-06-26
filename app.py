@@ -126,17 +126,22 @@ def change_keywords():
     return jsonify("success"), 200
 
 
-@app.route("/documents")
-def get_documents():
+@app.route("/documents", methods=["GET"])
+def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", sort_order: str = "asc"):
     """
-    Queries all documents form solr and sends them to the front end
+    Queries a given page from Solr and sends them to the front end
+
+    :param page: The page number
+    :param num_per_page: Number of entries per page
+    :param sort_field: The field used for sorting (all fields in SolrDoc)
+    :param sort_order: asc / desc
     :return: json object containing the documents or an error message
     """
+
     try:
-        # load docs from solr
-        docs = solr.docs.search("*:*")
-        res = [SolrDoc.from_hit(hit).as_dict() for hit in docs]
-        return jsonify(res), 200
+        docs = solr.docs.page(page, num_per_page, sort_field, sort_order)
+        docs = [doc.as_dict() for doc in docs]
+        return jsonify(docs), 200
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
@@ -238,6 +243,7 @@ def get_keywordlist():
         return jsonify(data), 200
     except Exception as e:
         return jsonify(f"internal error: {e}"), 500
+
 
 @app.route("/models", methods=["GET", "POST"])
 def keywordmodels():

@@ -59,7 +59,6 @@ class DataPreProcessingTestCase(unittest.TestCase):
         text = "Häuser Mäuse Fahrräder Autos Programme Spielzeuge Blumen Beispiele"
         expected = "Haus Maus Fahrrad Auto Programm Spielzeug Blume Beispiel"
         lemmatized = " ".join(lemmatizer.lemmatize(word) for word in text.split())
-        # print(lemmatized)
 
         self.assertEqual(lemmatized, expected)
 
