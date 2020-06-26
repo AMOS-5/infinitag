@@ -49,6 +49,10 @@ class SolrDocStorage:
     from Solr
     """
 
+    AVAILABLE_FIELDS = set(vars(SolrDoc("path")))
+    # TODO fullpath check can be remove when the windows path fix is removed from SolrDoc
+    AVAILABLE_FIELDS.remove("full_path")
+
     def __init__(self, config: dict):
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
@@ -101,9 +105,35 @@ class SolrDocStorage:
     def update(self, *docs: SolrDoc):
         self.con.add([doc.as_dict(True) for doc in docs])
 
+    def page(
+        self,
+        page: int,
+        num_per_page: int,
+        sort_field: str,
+        sort_order: str,
+    ) -> List[SolrDoc]:
+        """
+        Returns a paginated, sorted search query.
+
+        :param page: The page number
+        :param num_per_page: Number of entries per page
+        :param sort_field: The field used for sorting (all fields in SolrDoc)
+        :param sort_order: asc / desc
+        :return:
+        """
+        if sort_field not in SolrDocStorage.AVAILABLE_FIELDS:
+            raise ValueError(f"Sort field '{sort_field}' does not exist")
+
+        offset = page * num_per_page
+        res = self.con.search(
+            "*:*", rows=num_per_page, start=offset, sort=f"{sort_field} {sort_order}"
+        )
+
+        return [SolrDoc.from_hit(hit) for hit in res]
+
     # query syntax = Solr
-    def search(self, query: str, max_results: int = 300) -> dict:
-        return self.con.search(query, rows=max_results)
+    def search(self, query: str, rows: int = 300, **kwargs) -> dict:
+        return self.con.search(query, rows=rows, **kwargs)
 
     def delete(self, *docs: str) -> None:
         # the id of a doc corresponds to the path where it is stored (or where it was

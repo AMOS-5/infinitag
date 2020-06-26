@@ -25,6 +25,36 @@ class DocStorageTestCase(unittest.TestCase):
     def tearDown(self):
         SOLR_DOCS.clear()
 
+    def test_pagination_sort_asc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.docx", "test.pdf"]
+        docs = SOLR_DOCS.page(0, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pptx", "test.txt"]
+        docs = SOLR_DOCS.page(1, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_pagination_sort_desc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.txt", "test.pptx"]
+        docs = SOLR_DOCS.page(0, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pdf", "test.docx"]
+        docs = SOLR_DOCS.page(1, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_pagination_sort_field_does_not_exist(self):
+        with self.assertRaises(ValueError):
+            SOLR_DOCS.page(0, 1, "not_existing_field", "asc")
+
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)
 

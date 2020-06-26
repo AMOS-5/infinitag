@@ -107,7 +107,7 @@ class SolrDoc:
         self.size = size
         self.creation_date = creation_date
         self.content = content
-
+        self.full_path = None
         # current fix for windows / linux agnostic stuff. The doc can always be deleted with is's
         # id, and the full path is only used for extraction
         try:
