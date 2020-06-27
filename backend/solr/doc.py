@@ -130,7 +130,7 @@ class SolrDoc:
         doc.creation_date = CreationDate.from_result(res)
         doc.content = FileContent.from_result(res)
 
-        doc.keywords = MetadataKeywords.from_result(res)
+        doc.keywords.update(MetadataKeywords.from_result(res))
         return doc
 
     @staticmethod
