@@ -52,6 +52,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -120,6 +121,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatDialogModule,
         MatAutocompleteModule,
         MatPaginatorModule,
+        MatTooltipModule,
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
