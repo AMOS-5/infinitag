@@ -157,10 +157,10 @@ class SolrDocStorage:
             sort=f"{sort_field} {sort_order}",
         )
 
-        total_num_pages = res.hits // num_per_page
-        total_num_pages += 1 if res.hits % num_per_page else 0
+        total_pages = res.hits // num_per_page
+        total_pages += 1 if res.hits % num_per_page else 0
 
-        return total_num_pages, [SolrDoc.from_hit(hit) for hit in res]
+        return total_pages, [SolrDoc.from_hit(hit) for hit in res]
 
     # query syntax = Solr
     def search(self, query: str, rows: int = 300, **kwargs) -> dict:
