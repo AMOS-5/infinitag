@@ -22,49 +22,48 @@
  * SOFTWARE.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from '../environments/environment';
+import { Component, OnInit } from '@angular/core';
+import { IDocument } from '../models/IDocument.model';
+import { environment } from './../../environments/environment';
+import { ApiService } from '../services/api.service';
 import {TranslateService} from '@ngx-translate/core';
-import {ApiService} from './services/api.service';
-import {IDocument} from './models/IDocument.model';
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: 'app-document-overview',
+  templateUrl: './document-overview.component.html',
+  styleUrls: ['./document-overview.component.scss']
 })
-export class AppComponent implements OnInit {
+
+export class DocumentOverviewComponent implements OnInit {
   public title = 'infinitag';
   public serverUrl = environment.serverUrl;
   public backendStatus = `${this.serverUrl}/health`;
+  public documentsUrl = `${this.serverUrl}/documents`;
+
+
   public serverStatus = 'DOWN';
 
-  public iconPath = 'assets/img/InfiniTag1.png';
-  public availableLanguages = ['en', 'de'];
-  public selectedLanguage = 'en';
+  public documents: Array<IDocument> = [];
+  public page;
+  public num_per_page;
+  public sort_field;
+  public sort_order;
+  public total_pages;
+  public filterString = '';
 
 
-  constructor(
-    private httpClient: HttpClient,
-    public translate: TranslateService,
-  ) {
-    translate.addLangs(this.availableLanguages);
-    translate.setDefaultLang(this.selectedLanguage);
 
-    const browserLang = translate.getBrowserLang();
-    translate.use(browserLang.match(/en|de/) ? browserLang : 'en');
-    if ( this.availableLanguages.indexOf(browserLang) !== -1)  {
-      this.selectedLanguage = browserLang;
-    }
-  }
+  constructor(private api: ApiService, private translate: TranslateService) {}
+
   public ngOnInit(): void {
-    this.httpClient.get(this.backendStatus)
-      .subscribe((value: { status: string }) => {
-        this.serverStatus = value.status;
+    this.api.getDocuments()
+      .subscribe((value: any) => {
+        console.log(value);
+        this.documents = value.docs;
+        this.page = value.page;
+        this.num_per_page = value.num_per_page;
+        this.sort_field = value.sort_field;
+        this.sort_order = value.sort_order;
+        this.total_pages = value.total_pages;
       });
-  }
-
-  public changeLanguage(event: any) {
-    this.translate.use(event.value);
   }
 }

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
@@ -48,6 +48,7 @@ import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-
  */
 export class FileUploadComponent {
   files: Array<IFile> = [];
+  @Output() uploadFinished = new EventEmitter<any>();
 
   constructor(
     private uploadService: UploadService,
@@ -73,6 +74,11 @@ export class FileUploadComponent {
       width: '1200px',
       data: dialogData
     });
+
+    dialogRef.afterClosed()
+      .subscribe( () => {
+        this.uploadFinished.emit();
+      });
   }
 
   public resendFile(requestType: { response: string }, file: IFile) {

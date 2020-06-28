@@ -27,12 +27,12 @@ import { Routes, RouterModule } from '@angular/router';
 import { KeywordsComponent } from './keywords/keywords.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { DocumentViewTableComponent } from './documentview/document-view-table.component';
+import { DocumentOverviewComponent } from './document-overview/document-overview.component';
 
 
 const routes: Routes = [
   { path: '', component: DashboardComponent },
-  { path: 'documents', component: DocumentViewTableComponent },
+  { path: 'documents', component: DocumentOverviewComponent },
   { path: 'keywords', component: KeywordsComponent },
   { path: 'documentation', component: DocumentationComponent },
   { path: '**', component: DashboardComponent }

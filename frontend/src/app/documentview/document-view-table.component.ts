@@ -22,12 +22,21 @@
  * SOFTWARE.
  */
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  EventEmitter,
+  Output
+} from '@angular/core';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -38,12 +47,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
-import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
-import { DialogData, AutomatedTaggingParametersDialog } from '../../dialogs/automated-tagging-parameters.component';
 
 /**
  *
@@ -80,12 +87,17 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
+  @Input() sortField: string | undefined;
+  @Input() sortOrder: string | undefined;
+  @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
+
+  @Output() syncRequested = new EventEmitter();
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageSize = 10;
+  pageSize = 5;
   currentPage = 0;
   totalSize;
   end: number;
@@ -99,29 +111,24 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   public ngOnInit() {
-    this.api.getDocuments()
-      .subscribe((documents: Array<IDocument>) => {
-        this.documents = documents;
-        this.setDatasource();
-        this.api.getKeywordListEntries()
-          .subscribe((data: []) => {
-            this.keywords = data;
-            this.selectedKeywords = this.keywords;
-          });
-        this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
-
-        // tell MatTableDataSource how an entry should be searched for given a filter string
-        this.dataSource.filterPredicate =
-        (doc: IDocument, filter: string) =>
-        {
-          return  doc.title.includes(filter) === true ||
-                  doc.language.includes(filter) === true ||
-                  doc.size.toString().includes(filter) === true ||
-                  doc.type.includes(filter) === true ||
-                  doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
-        };
+    this.setDatasource();
+    this.api.getKeywordListEntries()
+      .subscribe((data: []) => {
+        this.keywords = data;
+        this.selectedKeywords = this.keywords;
       });
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
+    // tell MatTableDataSource how an entry should be searched for given a filter string
+    this.dataSource.filterPredicate =
+    (doc: IDocument, filter: string) =>
+    {
+      return  doc.title.includes(filter) === true ||
+              doc.language.includes(filter) === true ||
+              doc.size.toString().includes(filter) === true ||
+              doc.type.includes(filter) === true ||
+              doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
+    };
   }
 
   /**
@@ -130,17 +137,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    */
   public setDatasource() {
     if (this.documents !== undefined) {
+      console.log(this.documents);
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
       });
-
       this.allData = this.documents;
+      this.dataSource.data = this.documents;
       this.dataSource.paginator = this.paginator;
-      this.totalSize = this.allData.length;
-      this.iterator();
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-      });
+      this.totalSize = this.documents.length;
     }
   }
 
@@ -278,10 +282,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     * @description
     * Gets page event from frontand and runs the iterator.
     */
-  public handlePage(e: PageEvent){
+  public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      console.log(this.documents);
+      this.dataSource.data = this.documents;
+      // this.setDatasource();
+    });
     return e;
   }
 
@@ -296,6 +305,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.dataSource.data = part;
   }
 
+
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     this.editing = tabChangeEvent.index === 1;
   }
@@ -303,5 +313,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   public sync() {
     this.ngOnInit();
     this.selection = new SelectionModel(true, []);
+    this.syncRequested.emit();
+  }
+
+  sortData(sort: Sort) {
+    if (sort.direction !== ''){
+      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        this.dataSource.data = this.documents;
+      });
+    }
   }
 }
+
