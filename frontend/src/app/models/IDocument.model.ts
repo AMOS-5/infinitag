@@ -33,3 +33,11 @@ export interface IDocument {
   title: string;
   type: string;
 }
+
+export interface IResponse {
+  docs: object;
+  num_per_page: number;
+  page: number;
+  sort_field: string;
+  sort_order: number;
+}

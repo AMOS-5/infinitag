@@ -46,20 +46,26 @@ export class HomeComponent implements OnInit {
   public serverStatus = 'DOWN';
 
   public documents: Array<IDocument> = [];
+  public page;
+  public num_per_page;
+  public sort_field;
+  public sort_order;
+  public total_pages;
   public filterString = '';
 
 
 
-  constructor(private httpClient: HttpClient) {
-
-  }
+  constructor(private api: ApiService) {}
 
   public ngOnInit(): void {
-    this.httpClient.get(this.documentsUrl)
-      .subscribe((value: Array<IDocument>) => {
-        this.documents = value;
+    this.api.getDocuments()
+      .subscribe((value: any) => {
+        this.documents = value.docs;
+        this.page = value.page;
+        this.num_per_page = value.num_per_page;
+        this.sort_field = value.sort_field;
+        this.sort_order = value.sort_order;
+        this.total_pages = value.total_pages;
       });
-
   }
-
 }

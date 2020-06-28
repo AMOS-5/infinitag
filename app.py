@@ -137,11 +137,29 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
     :param sort_order: asc / desc
     :return: json object containing the documents or an error message
     """
+    
 
     try:
+        if 'page' in request.args:
+            page = int(request.args.get('page'))
+        if 'num_per_page' in request.args:
+            num_per_page = int(request.args.get('num_per_page'))
+        if 'sort_field' in request.args:
+            sort_field = request.args.get('sort_field')
+        if 'sort_order' in request.args:
+            sort_order = request.args.get('sort_order')
+
         docs = solr.docs.page(page, num_per_page, sort_field, sort_order)
         docs = [doc.as_dict() for doc in docs]
-        return jsonify(docs), 200
+        res = jsonify(
+            page=page,
+            num_per_page=num_per_page,
+            sort_field=sort_field,
+            sort_order=sort_order,
+            total_pages=100,
+            docs = docs)
+
+        return res, 200
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
