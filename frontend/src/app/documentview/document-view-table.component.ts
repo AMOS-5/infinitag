@@ -27,7 +27,7 @@ import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
 import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -103,12 +103,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
+  @Input() sortField: string | undefined;
+  @Input() sortOrder: string | undefined;
+  @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageSize = 10;
+  pageSize = 5;
   currentPage = 0;
   totalSize;
   end: number;
@@ -171,14 +174,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
       });
-
+      console.log()
       this.allData = this.documents;
+      this.dataSource.data = this.documents;
       this.dataSource.paginator = this.paginator;
-      this.totalSize = this.allData.length;
-      this.iterator();
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-      });
+      this.totalSize = this.documents.length;
     }
   }
 
@@ -352,13 +352,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * will be fetched again to update the table
    */
   public onSubmit(taggingData: ITaggingRequest) {
-    console.log(taggingData);
+
     this.applyingTaggingMechanism = true;
     taggingData.documents = this.selection.selected;
     this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
       if (response.status === 200) {
-        this.api.getDocuments().subscribe((documents: Array<IDocument>) => {
-          this.documents = documents;
+        this.api.getDocuments().subscribe((documents: any) => {
+          this.documents = documents.docs;
           this.setDatasource();
         });
       }
@@ -413,10 +413,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     * Gets page event from frontand and runs the iterator.
     * @returns {object} PageEvent e
     */
-  public handlePage(e: PageEvent){
+  public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder).subscribe((documents:any) => {
+      this.documents = documents.docs;
+      console.log(this.documents)
+      this.dataSource.data = this.documents;
+      //this.setDatasource();
+    })
     return e;
   }
 
@@ -432,4 +437,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     const part = this.allData.slice(this.start, this.end);
     this.dataSource.data = part;
   }
+
+  sortData(sort: Sort) {
+    if(sort.direction !== ''){
+      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction).subscribe((documents:any) => {
+        this.documents = documents.docs;
+        this.dataSource.data = this.documents;
+      })
+    }
+  }
 }
+

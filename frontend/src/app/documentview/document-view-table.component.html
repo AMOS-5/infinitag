@@ -71,7 +71,7 @@
     </form>
   </mat-grid-tile>
 </mat-grid-list>
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="sortData($event)" matSortActive="carbs" matSortDirection="asc">
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef>
@@ -87,27 +87,27 @@
   </ng-container>
 
   <ng-container matColumnDef="title">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.FILENAME' | translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="id"> {{'DOCUMENTS.FILENAME' | translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.title}} </td>
   </ng-container>
 
   <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.FILE_TYPE' | translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> {{'DOCUMENTS.FILE_TYPE' | translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.type}} </td>
   </ng-container>
 
   <ng-container matColumnDef="language">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'HOME.LANGUAGE' | translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="language"> {{'HOME.LANGUAGE' | translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.language}} </td>
   </ng-container>
 
   <ng-container matColumnDef="size">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'SIZE' | translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="size"> {{'SIZE' | translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.size}} </td>
   </ng-container>
 
   <ng-container matColumnDef="creation_date">
-    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.CREATEDAT' | translate}} </th>
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="creation_date"> {{'DOCUMENTS.CREATEDAT' | translate}} </th>
     <td mat-cell *matCellDef="let element"> {{element.creation_date | date:'dd.MM.yy HH:mm'}} </td>
   </ng-container>
 
@@ -140,6 +140,6 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-<mat-paginator *ngIf="totalSize > 0" class="paginator--centered" #paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
-    [pageIndex]="currentPage" (page)="handlePage($event)">
+<mat-paginator *ngIf="totalSize > 0" class="paginator--centered" #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="100"
+    [pageIndex]="0" (page)="paginate($event)">
 </mat-paginator>
