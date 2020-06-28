@@ -50,9 +50,7 @@ class SolrDocStorage:
     from Solr
     """
 
-    AVAILABLE_FIELDS = set(vars(SolrDoc("path")))
-    # TODO fullpath check can be remove when the windows path fix is removed from SolrDoc
-    AVAILABLE_FIELDS.remove("full_path")
+    AVAILABLE_FIELDS = set(SolrDoc("path").as_dict().keys())
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
