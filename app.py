@@ -134,7 +134,7 @@ def change_keywords():
 
 
 @app.route("/documents", methods=["GET"])
-def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", sort_order: str = "asc"):
+def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", sort_order: str = "asc", search_term=""):
     """
     Queries a given page from Solr and sends them to the front end
 
@@ -144,7 +144,7 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
     :param sort_order: asc / desc
     :return: json object containing the documents or an error message
     """
-    
+
 
     try:
         if 'page' in request.args:
@@ -168,6 +168,7 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
 
         return res, 200
     except Exception as e:
+        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 

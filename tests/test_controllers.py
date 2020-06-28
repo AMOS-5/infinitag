@@ -125,7 +125,7 @@ class BasicTestCase(unittest.TestCase):
 
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
-        self.assertEqual(len(data_response), len(self.docs))
+        self.assertEqual(len(data_response["docs"]), len(self.docs))
 
     def test_dimensions(self):
         application.solr.dimensions.clear()
