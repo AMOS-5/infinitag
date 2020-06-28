@@ -17,7 +17,7 @@
 
 from flask_cors import CORS
 from flask_jsonpify import jsonify
-from flask import Flask, request
+from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
@@ -28,6 +28,7 @@ from uuid import uuid4
 import os
 from pathlib import Path
 import logging as log
+import zipfile
 
 from backend.service import SolrService, SolrMiddleware
 from backend.solr import (
@@ -97,6 +98,23 @@ def upload_file():
 
     print(f"Uploaded, saved and indexed file: {file_name}", file=sys.stdout)
     return jsonify(file_name + " was saved and indexed"), 200
+
+
+@app.route("/download", methods=["POST"])
+def download_files():
+    try:
+        docs = request.json
+        print(f"Downloading {len(docs)} files")
+        if len(docs) == 1:
+            return send_from_directory("tmp", filename=docs[0]["id"], as_attachment=True)
+        else:
+            zipf = zipfile.ZipFile('tmp/test.zip', 'w', zipfile.ZIP_DEFLATED)
+            for doc in docs:
+                zipf.write(os.path.join("tmp", doc["id"]), os.path.join("documents", doc["id"]))
+            zipf.close()
+            return send_from_directory("tmp", 'test.zip', as_attachment=True)
+    except Exception as e:
+        return jsonify(f"Error: {e}"), 400
 
 
 @app.route("/changekeywords", methods=["PATCH"])

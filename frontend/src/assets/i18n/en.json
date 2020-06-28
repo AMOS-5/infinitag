@@ -33,7 +33,8 @@
     "ML_PARAMETERS": "ML Parameters",
     "ML_PARAMETERS_DIALOG": "Insert the parameters for the ML algorithm",
     "ML_PARAMETERS_NUMCLUSTERS" : "Number of clusters",
-    "ML_PARAMETERS_NUMKEYWORDS" : "Number of keywords per cluster"
+    "ML_PARAMETERS_NUMKEYWORDS" : "Number of keywords per cluster",
+    "DOWNLOAD_BUTTON" : "Download"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",

@@ -239,6 +239,33 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
 
+  public download(iDoc: IDocument) {
+    this.uploadService.getFiles([iDoc]).subscribe(res => {
+      console.log(res)
+      console.log(res.body)
+
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res.body);;
+      link.click();
+    });
+  }
+
+  public downloadBulk() {
+    if (this.selection.selected.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
+    }
+
+    this.uploadService.getFiles(this.selection.selected).subscribe(res => {
+      console.log(res)
+      console.log(res.body)
+
+      var link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res.body);;
+      link.click();
+    });
+  }
+
   /**
   * @description
   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
@@ -298,6 +325,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   public applyBulkKeywords() {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
     }
     this.selectedBulkKeywords.forEach(keyword => {
       if (!this.selectedKeywords.includes(keyword)) {
