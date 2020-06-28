@@ -147,7 +147,7 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
         if 'sort_order' in request.args:
             sort_order = request.args.get('sort_order')
 
-        total_num_pages, docs = solr.docs.page(
+        total_pages, docs = solr.docs.page(
             page,
             num_per_page,
             sort_field,
@@ -160,7 +160,7 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
             num_per_page=num_per_page,
             sort_field=sort_field,
             sort_order=sort_order,
-            total_pages=total_num_pages,
+            total_pages=total_pages,
             docs=docs
         )
 
