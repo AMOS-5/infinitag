@@ -29,12 +29,12 @@ class DocStorageTestCase(unittest.TestCase):
         SOLR_DOCS.add(*self.docs)
 
         expected_page1 = ["test.docx", "test.pdf"]
-        docs = SOLR_DOCS.page(0, 2, "id", "asc")
+        _, docs = SOLR_DOCS.page(0, 2, "id", "asc")
         doc_ids = [doc.id for doc in docs]
         self.assertEqual(doc_ids, expected_page1)
 
         expected_page2 = ["test.pptx", "test.txt"]
-        docs = SOLR_DOCS.page(1, 2, "id", "asc")
+        _, docs = SOLR_DOCS.page(1, 2, "id", "asc")
         doc_ids = [doc.id for doc in docs]
         self.assertEqual(doc_ids, expected_page2)
 
@@ -42,14 +42,29 @@ class DocStorageTestCase(unittest.TestCase):
         SOLR_DOCS.add(*self.docs)
 
         expected_page1 = ["test.txt", "test.pptx"]
-        docs = SOLR_DOCS.page(0, 2, "id", "desc")
+        _, docs = SOLR_DOCS.page(0, 2, "id", "desc")
         doc_ids = [doc.id for doc in docs]
         self.assertEqual(doc_ids, expected_page1)
 
         expected_page2 = ["test.pdf", "test.docx"]
-        docs = SOLR_DOCS.page(1, 2, "id", "desc")
+        _, docs = SOLR_DOCS.page(1, 2, "id", "desc")
         doc_ids = [doc.id for doc in docs]
         self.assertEqual(doc_ids, expected_page2)
+
+    def test_total_num_pages(self):
+        SOLR_DOCS.add(*self.docs)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 1)
+        self.assertEqual(total_num_pages, 4)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 2)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 3)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 4)
+        self.assertEqual(total_num_pages, 1)
 
     def test_pagination_sort_field_does_not_exist(self):
         with self.assertRaises(ValueError):

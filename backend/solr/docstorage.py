@@ -29,6 +29,7 @@ from pathlib import Path
 from urlpath import URL
 import copy
 import json
+import datetime
 
 
 # TODO setup a logging class discuss with everyone before
@@ -107,10 +108,11 @@ class SolrDocStorage:
 
     def page(
         self,
-        page: int,
-        num_per_page: int,
-        sort_field: str,
-        sort_order: str,
+        page: int = 0,
+        num_per_page: int = 5,
+        sort_field: str = "id",
+        sort_order: str = "asc",
+        search_term: str = "",
     ) -> List[SolrDoc]:
         """
         Returns a paginated, sorted search query.
@@ -119,17 +121,46 @@ class SolrDocStorage:
         :param num_per_page: Number of entries per page
         :param sort_field: The field used for sorting (all fields in SolrDoc)
         :param sort_order: asc / desc
-        :return:
+        :param search_term: Search term which has to appear in any SolrDoc field
+        :return: total number of pages, search hits
         """
         if sort_field not in SolrDocStorage.AVAILABLE_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
+        search_query = "*:*"
+        if search_term:
+            fields_to_search = ["id", "title", "type", "language", "content"]
+
+            try:
+                int(search_term)
+                fields_to_search.append("size")
+            except:
+                pass
+
+            # TODO datetime has to be fixed. Currently excluding it since we don't
+            # know whether a search term from the frontend is a date or not
+            try:
+                datetime.datetime.strptime(search_term, "%YYYY-%MM-%DDT%HH:%MM:%SSZ")
+                fields_to_search.append("creation_date")
+            except Exception as e:
+                print(e)
+
+            search_query = " OR ".join(
+                f"{field}:{search_term}" for field in fields_to_search
+            )
+
         offset = page * num_per_page
         res = self.con.search(
-            "*:*", rows=num_per_page, start=offset, sort=f"{sort_field} {sort_order}"
+            search_query,
+            rows=num_per_page,
+            start=offset,
+            sort=f"{sort_field} {sort_order}",
         )
 
-        return [SolrDoc.from_hit(hit) for hit in res]
+        total_num_pages = res.hits // num_per_page
+        total_num_pages += 1 if res.hits % num_per_page else 0
+
+        return total_num_pages, [SolrDoc.from_hit(hit) for hit in res]
 
     # query syntax = Solr
     def search(self, query: str, rows: int = 300, **kwargs) -> dict:
