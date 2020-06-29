@@ -144,12 +144,12 @@ class SolrDoc:
         return SolrDoc(
             hit["id"],
             *keywords,
-            title=hit["title"][0],
-            file_type=hit["type"][0],
-            lang=hit["language"][0],
-            size=hit["size"][0],
-            creation_date=hit["creation_date"][0],
-            content=hit["content"][0],
+            title=hit["title"],
+            file_type=hit["type"],
+            lang=hit["language"],
+            size=hit["size"],
+            creation_date=hit["creation_date"],
+            content=hit["content"],
         )
 
     def as_dict(self, keywords_as_str: bool = False) -> dict:
