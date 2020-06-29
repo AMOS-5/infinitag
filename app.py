@@ -334,10 +334,16 @@ def apply_tagging_method():
 
     else:
         docs = data["documents"]
-        job = AutomatedTaggingJob(job_id=job_id, docs=docs, solr_docs=solr.docs)
+        options = data["options"]
+        num_clusters = options["numClusters"]
+        num_keywords = options["numKeywords"]
+        job = AutomatedTaggingJob(job_id=job_id,
+                                  docs=docs,
+                                  num_clusters=num_clusters,
+                                  num_keywords=num_keywords,
+                                  solr_docs=solr.docs)
         tagging_service.add_job(job)
         job.start()
-        # auto_keywords = create_automated_keywords(docs)
 
     return jsonify({"status": 200})
 

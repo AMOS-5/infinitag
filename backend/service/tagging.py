@@ -111,10 +111,12 @@ class KWMJob(Thread, TaggingJob):
 
 
 class AutomatedTaggingJob(Thread, TaggingJob):
-    def __init__(self, job_id: str, docs, solr_docs: SolrDocStorage):
+    def __init__(self, job_id: str, docs, num_clusters, num_keywords, solr_docs: SolrDocStorage):
         super().__init__()
         self.job_id = job_id
         self.docs = docs
+        self.num_clusters = num_clusters
+        self.num_keywords = num_keywords
         self.solr_docs = solr_docs
         self.status = 'STARTED'
         self.progress = 0
@@ -123,7 +125,7 @@ class AutomatedTaggingJob(Thread, TaggingJob):
 
     def run(self):
         self.status = 'TAGGING_JOB.CREATE_KW'
-        auto_keywords = create_automated_keywords(self.docs, self)
+        auto_keywords = create_automated_keywords(self.docs, self.num_clusters, self.num_keywords, self)
         self.status = 'TAGGING_JOB.KW_FOUND'
 
         doc_ids = auto_keywords.keys()

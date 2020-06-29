@@ -63,10 +63,13 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
-import {MatTabsModule} from '@angular/material/tabs';
-import {FileUploadDialogComponent} from '../dialogs/file-upload.dialog.component';
+import { MatTabsModule} from '@angular/material/tabs';
+import { FileUploadDialogComponent } from '../dialogs/file-upload.dialog.component';
 import { TaggingComponent } from './tagging/tagging.component';
-import {TaggingDialogComponent} from "../dialogs/tagging.dialog.component";
+import { TaggingDialogComponent } from '../dialogs/tagging.dialog.component';
+import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-parameters.component';
+import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
+
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -86,7 +89,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FileExistsDialogComponent,
     FileUploadDialogComponent,
     TaggingComponent,
-    TaggingDialogComponent
+    TaggingDialogComponent,
+    AutomatedTaggingParametersDialog,
+    NaturalNumbersOnlyDirective,
   ],
     imports: [
         BrowserModule,

@@ -33,21 +33,17 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
-import { FormControl } from '@angular/forms';
-
-import { ITaggingMethod } from '../models/ITaggingMethod';
 import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { startWith, map } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
-import {MatTabChangeEvent} from '@angular/material/tabs';
+import { MatTabChangeEvent} from '@angular/material/tabs';
+
+import { DialogData, AutomatedTaggingParametersDialog } from '../../dialogs/automated-tagging-parameters.component';
 
 /**
  *
@@ -68,11 +64,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   editing = false;
 
-  constructor(private api: ApiService,
-              private uploadService: UploadService,
-              private snackBar: MatSnackBar) {
-
-  }
+  constructor(
+    private api: ApiService,
+    private uploadService: UploadService,
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
+  ) {}
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
@@ -299,14 +297,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
-    if (tabChangeEvent.index === 1) {
-      this.editing = true;
-    } else {
-      this.editing = false;
-    }
+    this.editing = tabChangeEvent.index === 1;
   }
 
   public sync() {
+    console.log('Syncing documents...');
     this.ngOnInit();
     this.selection = new SelectionModel(true, []);
   }

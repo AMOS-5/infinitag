@@ -28,6 +28,7 @@ import {FileUploadDialogComponent, UploadDialogData} from '../../dialogs/file-up
 import {TaggingDialogComponent, TaggingDialogData} from '../../dialogs/tagging.dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Utils} from '../services/Utils.service';
+import {AutomatedTaggingParametersDialog, DialogData} from "../../dialogs/automated-tagging-parameters.component";
 
 
 @Component({
@@ -156,6 +157,53 @@ export class TaggingComponent implements OnInit {
    */
   public onSubmit() {
     const jobId = this.utils.uuid4();
+    const taggingData: ITaggingRequest = {
+      taggingMethod: this.selectedTaggingMethod,
+      documents: this.selectedDocuments,
+      keywordModel: this.selectedKeywordModel,
+      options: {},
+      jobId
+    };
+    if (this.selectedTaggingMethod.name === 'Automated') {
+      const dialogRef = this.dialog.open(AutomatedTaggingParametersDialog, {
+        width: '300px',
+        data: {numClusters: 5, numKeywords: 5}
+      });
+
+      dialogRef.afterClosed().subscribe((result: DialogData) => {
+        if (result === undefined) { return; } // cancel was pressed
+
+        result.numClusters = Number(result.numClusters);
+        result.numKeywords = Number(result.numKeywords);
+
+        if (result.numClusters === 0 || result.numKeywords === 0) { // happens if an empty string is inserted
+          this.snackBar.open('invalid parameters', ``, { duration: 3000 });
+          return;
+        }
+
+        taggingData.options = result;
+
+        this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
+          if (response.status === 200) {
+            this.taggingApplied.emit(true);
+          }
+          this.applyingTaggingMechanism = false;
+        });
+        this.openMonitoring(jobId);
+      });
+    } else {
+      this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
+        if (response.status === 200) {
+          this.taggingApplied.emit(true);
+        }
+        this.applyingTaggingMechanism = false;
+      });
+      this.openMonitoring(jobId);
+    }
+
+  }
+
+  public openMonitoring(jobId: string) {
     const taggingDialogData: TaggingDialogData = {
       status: 'Documents are being tagged...',
       progress: 0,
@@ -164,18 +212,6 @@ export class TaggingComponent implements OnInit {
     };
     this.openTaggingDialog(taggingDialogData);
     this.applyingTaggingMechanism = true;
-    const taggingData: ITaggingRequest = {
-      taggingMethod: this.selectedTaggingMethod,
-      documents: this.selectedDocuments,
-      keywordModel: this.selectedKeywordModel,
-      jobId
-    };
-    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-      if (response.status === 200) {
-        this.taggingApplied.emit(true);
-      }
-      this.applyingTaggingMechanism = false;
-    });
 
     this.monitorJobProgress(taggingDialogData)
       .then( () => {
@@ -217,7 +253,7 @@ export class TaggingComponent implements OnInit {
   /**
    * @description
    * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
-   * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
+   * to update the document. If angular compile switch to browser the request is succesfull the datasource gets
    * updated.
    */
   public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
