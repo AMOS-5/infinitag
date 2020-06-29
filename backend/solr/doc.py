@@ -171,6 +171,8 @@ class SolrDoc:
         # alias for id
         return self.id
 
+    def update_date(self) -> None:
+        self.creation_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
     return field in res and res[field]
