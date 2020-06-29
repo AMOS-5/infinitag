@@ -326,21 +326,7 @@ class Language:
 class CreationDate:
     @staticmethod
     def from_result(res: dict) -> str:
-        res = res["metadata"]
-
-        if exists_and_not_empty(
-            res, "meta:creation-date"
-        ):  # this should persist through saving
-            return res["meta:creation-date"]
-        elif exists_and_not_empty(res, "date"):
-            return res["date"]
-        elif exists_and_not_empty(res, "Creation-Date"):
-            return res["Creation-Date"]
-        elif exists_and_not_empty(res, "dcterms:created"):
-            return res["dcterms:created"]
-        else:
-            log.debug("CreationDate is unknown.")
-            return str(datetime.now())
+        return datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 __all__ = ["SolrDoc", "SolrDocKeyword", "SolrDocKeywordTypes"]
