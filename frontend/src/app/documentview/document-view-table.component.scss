@@ -27,6 +27,14 @@ mat-paginator.mat-paginator.paginator--centered {
   justify-content: center;
 }
 
+.download-button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #0000EE;
+  text-decoration: underline;
+  cursor: pointer;
+}
 .mat-tab {
   margin-top: 16px;
 }

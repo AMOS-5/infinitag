@@ -357,6 +357,5 @@ class MetadataKeywords:
         return res
 
 
-
 __all__ = ["SolrDoc", "SolrDocKeyword", "SolrDocKeywordTypes"]
 
