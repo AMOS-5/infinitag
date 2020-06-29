@@ -81,7 +81,7 @@ class DocStorageTestCase(unittest.TestCase):
     def test_pagination_year_search(self):
         SOLR_DOCS.add(*self.docs)
 
-        current_year = datetime.date.year
+        current_year = datetime.datetime.now().strftime("%Y")
         _, docs = SOLR_DOCS.page(search_term=current_year)
 
         self.assertEqual(len(docs), 4)
