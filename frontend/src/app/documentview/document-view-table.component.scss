@@ -25,4 +25,13 @@ mat-paginator.mat-paginator.paginator--centered {
   margin-top: 30px;
   display: flex;
   justify-content: center;
-} 
+}
+
+.download-button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #0000EE;
+  text-decoration: underline;
+  cursor: pointer;
+}

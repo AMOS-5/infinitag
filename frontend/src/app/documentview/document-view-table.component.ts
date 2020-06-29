@@ -241,11 +241,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public download(iDoc: IDocument) {
     this.uploadService.getFiles([iDoc]).subscribe(res => {
-      console.log(res)
-      console.log(res.body)
-
       var link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);;
+      link.setAttribute('download', iDoc.id);
       link.click();
     });
   }
@@ -257,11 +255,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     this.uploadService.getFiles(this.selection.selected).subscribe(res => {
-      console.log(res)
-      console.log(res.body)
-
       var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(res.body);;
+      link.href = window.URL.createObjectURL(res.body);
+      link.setAttribute('download', "documents.zip");
       link.click();
     });
   }

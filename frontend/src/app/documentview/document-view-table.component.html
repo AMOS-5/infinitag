@@ -82,9 +82,9 @@
   <ng-container matColumnDef="title">
     <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.FILENAME' | translate}} </th>
     <td mat-cell *matCellDef="let element">
-      <a href="" role="button" (click)="download(element)">
+      <button class="download-button" (click)="download(element)">
         {{element.title}}
-      </a>
+      </button>
     </td>
   </ng-container>
 
