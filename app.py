@@ -134,7 +134,7 @@ def change_keywords():
 
 
 @app.route("/documents", methods=["GET"])
-def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", sort_order: str = "asc", search_term=""):
+def get_documents():
     """
     Queries a given page from Solr and sends them to the front end
 
@@ -142,11 +142,38 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
     :param num_per_page: Number of entries per page
     :param sort_field: The field used for sorting (all fields in SolrDoc)
     :param sort_order: asc / desc
+    :param search_term: string which should be searched for in Solr
     :return: json object containing the documents or an error message
     """
+    try:
+        page = int(request.args.get("page", 0))
+        num_per_page = int(request.args.get("num_per_page", 10))
+        sort_field = request.args.get("sort_field", "id")
+        sort_order = request.args.get("sort_order", "asc")
+        search_term = request.args.get("search_term", "")
 
+        total_pages, docs = solr.docs.page(
+            page,
+            num_per_page,
+            sort_field,
+            sort_order,
+            search_term
+        )
 
-    return jsonify({})
+        docs = [doc.as_dict() for doc in docs]
+        res = jsonify(
+            page=page,
+            num_per_page=num_per_page,
+            sort_field=sort_field,
+            sort_order=sort_order,
+            search_term=search_term,
+            total_pages=total_pages,
+            docs=docs
+        )
+
+        return res, 200
+    except Exception as e:
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
 @app.route("/health")
