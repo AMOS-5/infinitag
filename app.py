@@ -102,6 +102,11 @@ def upload_file():
 
 @app.route("/download", methods=["POST"])
 def download_files():
+    """
+    Handles the file download post request by sending the requested files.
+    If multiple files are requested, they are combined to a zip file.
+    :return: the requested file or a zip file
+    """
     try:
         docs = request.json
         print(f"Downloading {len(docs)} files")

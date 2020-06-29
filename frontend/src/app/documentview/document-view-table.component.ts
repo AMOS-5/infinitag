@@ -239,6 +239,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
   }
 
+  /**
+  * @description
+  * Download a single document from the server and opens a save file dialog
+  * @param {IDocument} document to download
+  */
   public download(iDoc: IDocument) {
     this.uploadService.getFiles([iDoc]).subscribe(res => {
       var link = document.createElement('a');
@@ -248,6 +253,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+  * @description
+  * Downloads all selected documents from the server as a zip file
+  * and opens a save file dialog.
+  */
   public downloadBulk() {
     if (this.selection.selected.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
