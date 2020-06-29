@@ -3,7 +3,7 @@ from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, SolrDocKeyword
 import unittest
 from pathlib import Path
 import os
-
+import datetime
 
 class DocStorageTestCase(unittest.TestCase):
     config = {
@@ -77,6 +77,14 @@ class DocStorageTestCase(unittest.TestCase):
             _, _ = SOLR_DOCS.page(search_term="asdf")
         except Exception as e:
             self.fail(f"Raised unexpected exception: {e}")
+
+    def test_pagination_year_search(self):
+        SOLR_DOCS.add(*self.docs)
+
+        current_year = datetime.date.year
+        _, docs = SOLR_DOCS.page(search_term=current_year)
+
+        self.assertEqual(len(docs), 4)
 
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)

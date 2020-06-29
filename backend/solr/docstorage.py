@@ -135,7 +135,7 @@ class SolrDocStorage:
         search_query = "*:*"
         if search_term:
             search_query = " OR ".join(
-                f"{field}:{search_term}"
+                f"{field}:*{search_term}*"
                 for field in SolrDocStorage.AVAILABLE_SEARCH_FIELDS
             )
 
@@ -248,3 +248,4 @@ class SolrDocStorage:
 
 
 __all__ = ["SolrDocStorage"]
+583603
