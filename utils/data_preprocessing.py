@@ -17,7 +17,7 @@
 
 from __future__ import print_function
 
-from utils.tfidf_vector import tfidf_vector
+from utils.tfidf_vector import tfidf_vector, tfidf_vector_keywords
 from utils.k_means_cluster import kmeans_clustering
 
 from nltk.corpus import stopwords, wordnet
@@ -61,10 +61,10 @@ class EnglishLemmatizer:
 
 class GermanLemmatizer:
     def __init__(self):
-        self.lemmatizer = spacy.load("de_core_news_sm")
+        self.lemmatizers = spacy.load("de_core_news_sm")
 
     def lemmatize(self, word: str) -> str:
-        token = self.lemmatizer.tokenizer(word)
+        token = self.lemmatizers.tokenizer(word)
         lemma = next(token.__iter__()).lemma_
         return lemma
 
@@ -148,6 +148,10 @@ UNWANTED_KEYWORDS = {
     "potentially",
     "march",
     "added",
+    "intro",
+    "open",
+    "exit",
+    "intro"
 }
 
 def lemmatize_keywords(keywords: dict) -> dict:
@@ -166,22 +170,20 @@ def lemmatize_keywords(keywords: dict) -> dict:
 
 
 def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, job=None) -> dict:
-    # TODO pass parameters to select the #words used for a cluster and the n_clusters
-    if len(docs) < 5:
-        print(
-            f"The number of documents for the cluster algorithm has to be >= 5. Is: {len(docs)}"
-        )
-        return {}
-
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
-    dist, tfidf_matrix, terms = tfidf_vector(flattened)
-    keywords = kmeans_clustering(tfidf_matrix,
-                                 flattened,
-                                 terms,
-                                 file_list,
-                                 num_clusters,
-                                 num_keywords,
-                                 job)
+
+    if len(docs) < 5:
+        keywords = tfidf_vector_keywords(file_list, flattened, num_keywords)
+    else:
+        dist, tfidf_matrix, terms = tfidf_vector(flattened)
+
+        keywords = kmeans_clustering(tfidf_matrix,
+                                     flattened,
+                                     terms,
+                                     file_list,
+                                     num_clusters,
+                                     num_keywords,
+                                     job)
 
     return keywords
 
@@ -207,9 +209,15 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
 
 def load_data_from_frontend(docs: dict):
     filenames = [doc["id"] for doc in docs]
-    overall = [doc["content"].split() for doc in docs]
+    texts = [doc["content"] for doc in docs]
+    langs = [doc["language"] for doc in docs]
+    lang = 0
+    for i in langs:
+        lang = i
 
+    overall = [clean(text, lang) for text in texts]
     vocabulary = []
+
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
@@ -239,8 +247,9 @@ def get_clean_content(file: str):
 def clean(content: str, lang: str) -> List[str]:
     content = clean_text(content, lang)
     content = clean_digits(content)
-    content = clean_short_words(content)
+    content = clean_short_long_words(content)
     content = clean_unwanted_words(content)
+    content = clean_alphanumericals(content)
 
     return content
 
@@ -264,12 +273,15 @@ def clean_digits(content: List[str]) -> List[str]:
     return [word for word in content if not word.isdigit()]
 
 
-def clean_short_words(content: List[str]) -> List[str]:
-    return [word for word in content if len(word) > 3]
+def clean_short_long_words(content: List[str]) -> List[str]:
+    return [word for word in content if len(word) > 3 and len(word)<15]
 
 
 def clean_unwanted_words(content: List[str]) -> List[str]:
     return [word for word in content if word not in UNWANTED_KEYWORDS]
+
+def clean_alphanumericals(content: List[str]) -> List[str]:
+    return [word for word in content if word.isalpha()]
 
 
 def get_all_files(dir: str) -> List[str]:
