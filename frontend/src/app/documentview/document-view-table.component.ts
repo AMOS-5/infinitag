@@ -267,7 +267,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.uploadService.getFiles(this.selection.selected).subscribe(res => {
       var link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
-      link.setAttribute('download', "documents.zip");
+      if(this.selection.selected.length === 1) {
+        link.setAttribute('download', this.selection.selected[0].id);
+      } else {
+        link.setAttribute('download', "documents.zip");
+      }
       link.click();
     });
   }
