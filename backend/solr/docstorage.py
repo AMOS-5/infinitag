@@ -111,6 +111,7 @@ class SolrDocStorage:
     def update(self, *docs: SolrDoc):
         for doc in docs:
             doc.update_date()
+
         self.con.add([doc.as_dict(True) for doc in docs])
 
     def page(

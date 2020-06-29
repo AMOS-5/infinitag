@@ -158,7 +158,7 @@ class DocStorageTestCase(unittest.TestCase):
 
         self.assertEqual(len(docs), 4)
 
-    def test_doc_created_at_changes_on_each_update(self):
+    def test_doc_creation_date_changes_on_each_update(self):
         doc = self.docs[0]
 
         SOLR_DOCS.add(doc)
