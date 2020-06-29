@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>{{'TAGGING' | translate}} (Job ID: {{data.jobId}})</h1>
+<div mat-dialog-content>
+  {{data.status | translate}}
+  <mat-progress-bar mode="determinate" value="{{data.progress}}"></mat-progress-bar>
+  <span class="time-remaining" *ngIf="data.timeRemaining && data.timeRemaining !== -1 && data.status.toLowerCase() !== 'finished'">
+    Time Remaining: {{data.timeRemaining.toFixed(1) + 2}}s
+  </span>
+
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button color="primary" (click)="dialogRef.close()">{{'CLOSE' | translate}}</button>
+  <button mat-button color="warn" [disabled]="data.status.toLowerCase() === 'finished'" (click)="onDialogButtonClick('cancel')">{{'CANCEL' | translate }}</button>
+</div>

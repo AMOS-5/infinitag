@@ -2,6 +2,7 @@
   "HOME": {
     "TITLE": "Home",
     "ADD_DOCUMENTS": "Add Documents",
+    "DOCUMENT_OVERVIEW": "Document Overview",
     "KEYWORDS": "Keywords",
     "DOCUMENTATION": "Documentation",
     "SERVER_STATUS": "Server Status",
@@ -20,6 +21,7 @@
     "EDITING_IS": "Editing Is",
     "DRAG_DROP_DIALOG": "Drag and drop your files here to upload them",
     "BROWSE_FOR_FILES": "Browse For Files",
+    "TAGGING": "Tagging",
     "MANUAL_TAGGING": "Manual Tagging",
     "AUTOMATED_TAGGING": "Automated Tagging",
     "SELECT_TAGGING_METHOD": "Select Tagging method",
@@ -51,6 +53,21 @@
     "NEW_KEYWORD_MODEL_DIALOG": "Enter a name for the new keyword model",
     "NEW_KEYWORD_MODEL": "New Keyword Model"
   },
+  "TAGGING_JOB": {
+    "LEMMA_START": "Starting lemmatization",
+    "LEMMA_END": "Lemmatization finished",
+    "DOC_FIND": "Finding documents in the database",
+    "DOC_FOUND": "Documents found. Starting application of KWM.",
+    "APPLY_KWM": "Applying KWM",
+    "DOC_UPDATE": "Updating Documents in Database",
+    "CREATE_KW": "Creating Keywords.",
+    "APPLYING": "Applying.",
+    "KW_FOUND": "Keywords Found.",
+    "START_SORT": "Starting to sort through clusters",
+    "APPLYING_CLUSTERS": "Applying Clusters.",
+    "NO_JOB": "Job not found or hasn't been started yet",
+    "CANCELED_JOB": "Job Cancelled"
+  },
   "SEARCH": "Search",
   "SEARCH_TERM": "Search Term",
   "EDIT": "Edit",
@@ -69,7 +86,11 @@
   "SUCCESS": "Success",
   "UPLOADING": "Uploading",
   "ERROR": "Error",
+  "CANCEL": "Cancel",
   "CANCELLED": "Cancelled",
   "REQUEST_SEND": "Request Sent",
-  "RESPONSE_RECEIVED": "Response Received"
+  "RESPONSE_RECEIVED": "Response Received",
+  "TAGGING": "Tagging",
+  "STARTED": "Started.",
+  "FINISHED": "Finished."
 }

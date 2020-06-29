@@ -137,7 +137,7 @@ class SolrDocStorage:
             doc.keywords = []
             self.update(doc)
 
-    def apply_kwm(self, keywords: dict, *doc_ids: str) -> None:
+    def apply_kwm(self, keywords: dict, *doc_ids: str,) -> None:
         """
         Applies a keyword model on every document in Solr.
         The idea is to search the content in Solr for the lemmatized_keyword if it is found
@@ -145,17 +145,18 @@ class SolrDocStorage:
 
         :param keywords: dict of keywords and corresponding parents
         :param doc_ids:
+        :param job_id
         :return:
         """
         lemmatized_keywords = lemmatize_keywords(keywords)
 
-        id_query = self._build_id_query(doc_ids)
+        id_query = self.build_id_query(doc_ids)
 
         changed_docs = {}
         for lemmatized_keyword, (keyword, parents) in zip(
             lemmatized_keywords, keywords.items()
         ):
-            query = self._build_kwm_query(id_query, lemmatized_keyword)
+            query = self.build_kwm_query(id_query, lemmatized_keyword)
 
             res = self.search(query)
             res = [SolrDoc.from_hit(hit) for hit in res]
@@ -178,11 +179,11 @@ class SolrDocStorage:
         changed_docs = changed_docs.values()
         self.update(*changed_docs)
 
-    def _build_kwm_query(self, id_query: str, keyword: str) -> str:
+    def build_kwm_query(self, id_query: str, keyword: str) -> str:
         keyword_query = f"content:{keyword}"
         return f"{id_query} AND {keyword_query}" if id_query else keyword_query
 
-    def _build_id_query(self, doc_ids: Tuple[str]) -> str:
+    def build_id_query(self, doc_ids: Tuple[str]) -> str:
         # create a id specific querry if the kwm should be applied only on specific docs
         id_query = ""
         if doc_ids:

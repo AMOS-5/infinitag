@@ -56,9 +56,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
-import { HomeComponent } from './home/home.component';
-import { SearchComponent } from './search/search.component';
-import { SettingsComponent } from './settings/settings.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DocumentationComponent } from './documentation/documentation.component';
 import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component';
@@ -67,6 +64,10 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import { FileExistsDialogComponent } from '../dialogs/file-exists.component';
+import { MatTabsModule} from '@angular/material/tabs';
+import { FileUploadDialogComponent } from '../dialogs/file-upload.dialog.component';
+import { TaggingComponent } from './tagging/tagging.component';
+import { TaggingDialogComponent } from '../dialogs/tagging.dialog.component';
 import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-parameters.component';
 import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
 
@@ -79,10 +80,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 @NgModule({
   declarations: [
     AppComponent,
-    SearchComponent,
-    SettingsComponent,
     DocumentViewTableComponent,
-    HomeComponent,
     FileUploadComponent,
     DashboardComponent,
     DocumentationComponent,
@@ -90,6 +88,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     KWMNameDialog,
     DragdropDirective,
     FileExistsDialogComponent,
+    FileUploadDialogComponent,
+    TaggingComponent,
+    TaggingDialogComponent,
     AutomatedTaggingParametersDialog,
     NaturalNumbersOnlyDirective,
   ],
@@ -130,7 +131,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
             }
         }),
         ReactiveFormsModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatTabsModule
     ],
   providers: [],
   bootstrap: [AppComponent],

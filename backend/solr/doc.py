@@ -148,12 +148,12 @@ class SolrDoc:
         return SolrDoc(
             hit["id"],
             *keywords,
-            title=hit["title"][0],
-            file_type=hit["type"][0],
-            lang=hit["language"][0],
-            size=hit["size"][0],
-            creation_date=hit["creation_date"][0],
-            content=hit["content"][0],
+            title=hit["title"],
+            file_type=hit["type"],
+            lang=hit["language"],
+            size=hit["size"],
+            creation_date=hit["creation_date"],
+            content=hit["content"],
         )
 
     def as_dict(self, keywords_as_str: bool = False) -> dict:
@@ -330,21 +330,7 @@ class Language:
 class CreationDate:
     @staticmethod
     def from_result(res: dict) -> str:
-        res = res["metadata"]
-
-        if exists_and_not_empty(
-            res, "meta:creation-date"
-        ):  # this should persist through saving
-            return res["meta:creation-date"]
-        elif exists_and_not_empty(res, "date"):
-            return res["date"]
-        elif exists_and_not_empty(res, "Creation-Date"):
-            return res["Creation-Date"]
-        elif exists_and_not_empty(res, "dcterms:created"):
-            return res["dcterms:created"]
-        else:
-            log.debug("CreationDate is unknown.")
-            return str(datetime.now())
+        return datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 class MetadataKeywords:
     @staticmethod
