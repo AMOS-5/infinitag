@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 import os
 import datetime
-
+import time
 
 class DocStorageTestCase(unittest.TestCase):
     config = {
@@ -163,6 +163,8 @@ class DocStorageTestCase(unittest.TestCase):
 
         SOLR_DOCS.add(doc)
         doc_before = SOLR_DOCS.get(doc.id)
+
+        time.sleep(5)
 
         SOLR_DOCS.update(doc)
         doc_after = SOLR_DOCS.get(doc.id)
