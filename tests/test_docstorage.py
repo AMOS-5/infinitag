@@ -70,11 +70,13 @@ class DocStorageTestCase(unittest.TestCase):
         with self.assertRaises(ValueError):
             SOLR_DOCS.page(0, 1, "not_existing_field", "asc")
 
-    def test_pagination_search_for_date(self):
-        pass
+    def test_pagination_search_term(self):
+        SOLR_DOCS.add(*self.docs)
 
-    def test_pagination_search_for_size(self):
-        pass
+        try:
+            _, _ = SOLR_DOCS.page(search_term="asdf")
+        except Exception as e:
+            self.fail(f"Raised unexpected exception: {e}")
 
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)
