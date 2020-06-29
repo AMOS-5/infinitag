@@ -301,7 +301,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
-    console.log('Syncing documents...');
     this.ngOnInit();
     this.selection = new SelectionModel(true, []);
   }

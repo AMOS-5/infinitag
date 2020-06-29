@@ -3,10 +3,8 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import {ITaggingMethod} from '../models/ITaggingMethod';
@@ -15,7 +13,6 @@ import {FormBuilder, FormControl} from '@angular/forms';
 import {IKeywordListEntry} from '../models/IKeywordListEntry.model';
 import {ITaggingRequest} from '../models/ITaggingRequest.model';
 import {IDocument} from '../models/IDocument.model';
-import {SelectionModel} from '@angular/cdk/collections';
 import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable, of, throwError} from 'rxjs';
@@ -24,11 +21,10 @@ import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {IKeyword} from '../models/IKeyword.model';
 import {UploadService} from '../services/upload.service';
-import {FileUploadDialogComponent, UploadDialogData} from '../../dialogs/file-upload.dialog.component';
 import {TaggingDialogComponent, TaggingDialogData} from '../../dialogs/tagging.dialog.component';
 import {MatDialog} from '@angular/material/dialog';
 import {Utils} from '../services/Utils.service';
-import {AutomatedTaggingParametersDialog, DialogData} from "../../dialogs/automated-tagging-parameters.component";
+import {AutomatedTaggingParametersDialog, DialogData} from '../../dialogs/automated-tagging-parameters.component';
 
 
 @Component({
@@ -119,6 +115,7 @@ export class TaggingComponent implements OnInit {
           });
       }
       dialogRef.close();
+      this.taggingApplied.emit();
     });
   }
 
@@ -183,19 +180,14 @@ export class TaggingComponent implements OnInit {
 
         taggingData.options = result;
 
-        this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-          if (response.status === 200) {
-            this.taggingApplied.emit(true);
-          }
+        this.api.applyTaggingMethod(taggingData).subscribe(
+          () => {
           this.applyingTaggingMechanism = false;
         });
         this.openMonitoring(jobId);
       });
     } else {
-      this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-        if (response.status === 200) {
-          this.taggingApplied.emit(true);
-        }
+      this.api.applyTaggingMethod(taggingData).subscribe( () => {
         this.applyingTaggingMechanism = false;
       });
       this.openMonitoring(jobId);
@@ -216,6 +208,7 @@ export class TaggingComponent implements OnInit {
     this.monitorJobProgress(taggingDialogData)
       .then( () => {
         this.snackBar.open(`Finished tagging with Job ID: ${taggingDialogData.jobId}`, '', { duration: 3000 });
+        this.taggingApplied.emit(true);
     });
   }
 
