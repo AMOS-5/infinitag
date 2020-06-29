@@ -27,6 +27,7 @@ import enum
 import re
 import sys
 import langdetect
+import re
 
 
 # if you activate this you will see why some fields are unknown and maybe can
@@ -42,6 +43,7 @@ class SolrDocKeywordTypes(enum.Enum):
     KWM = 1
     ML = 2
     MANUAL = 3
+    META = 4
 
     @staticmethod
     def from_str(s: str) -> "SolrDocKeywordTypes":
@@ -127,6 +129,8 @@ class SolrDoc:
         doc.size = FileSize.from_result(res)
         doc.creation_date = CreationDate.from_result(res)
         doc.content = FileContent.from_result(res)
+
+        doc.keywords.update(MetadataKeywords.from_result(res))
         return doc
 
     @staticmethod
@@ -327,6 +331,31 @@ class CreationDate:
     @staticmethod
     def from_result(res: dict) -> str:
         return datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+
+class MetadataKeywords:
+    @staticmethod
+    def from_result(res: dict) -> str:
+        res = res["metadata"]
+        kw_str = ""
+        if exists_and_not_empty(res, "Keywords"):
+            kw_str = res["Keywords"]
+        elif exists_and_not_empty(res, "meta:keyword"):
+            kw_str = res["meta:keyword"]
+        elif exists_and_not_empty(res, "dc:subject"):
+            kw_str = res["dc:subject"]
+        elif exists_and_not_empty(res, "subject"):
+            kw_str = res["subject"]
+        elif exists_and_not_empty(res, "pdf:docinfo:keywords"):
+            kw_str = res["pdf:docinfo:keywords"]
+        else:
+            log.debug("No metadata keywords found")
+
+        res = []
+        for kw in re.split(';|,| ',kw_str):
+            if(kw != ""):
+                res.append(SolrDocKeyword(kw, SolrDocKeywordTypes.META) )
+        return res
+
 
 
 __all__ = ["SolrDoc", "SolrDocKeyword", "SolrDocKeywordTypes"]

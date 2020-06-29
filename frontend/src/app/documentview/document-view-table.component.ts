@@ -22,7 +22,6 @@
  * SOFTWARE.
  */
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
@@ -93,8 +92,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
-    KWM       : '#66ff66',
-    ML        : '#3399ff',
+    KWM      : '#66ff66',
+    ML       : '#3399ff',
+    META     : '#e8453c'
+  };
+
+  KEYWORD_TYPE_TOOLTIPS = {
+    MANUAL   : "DOCUMENTS.TOOLTIP_MANUAL",
+    KWM      : "DOCUMENTS.TOOLTIP_KWM",
+    ML       : "DOCUMENTS.TOOLTIP_ML",
+    META     : "DOCUMENTS.TOOLTIP_META"
   };
 
 
