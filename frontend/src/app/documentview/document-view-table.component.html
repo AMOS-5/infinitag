@@ -13,6 +13,11 @@
     <mat-tab label="{{'DOCUMENTS.TAGGING' | translate}}" class="mat-tab">
       <app-tagging [editing]="editing" [selectedDocuments]="selection.selected" (keywordsApplied)="sync()" (taggingApplied)="sync()"></app-tagging>
     </mat-tab>
+    <mat-tab label="{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}" class="mat-tab">
+      <button [disabled]=!editing mat-raised-button color="primary"
+            (click)="downloadBulk()">{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}
+      </button>
+    </mat-tab>
   </mat-tab-group>
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
     <!-- Checkbox Column -->

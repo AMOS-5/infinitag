@@ -98,10 +98,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   };
 
   KEYWORD_TYPE_TOOLTIPS = {
-    MANUAL   : "DOCUMENTS.TOOLTIP_MANUAL",
-    KWM      : "DOCUMENTS.TOOLTIP_KWM",
-    ML       : "DOCUMENTS.TOOLTIP_ML",
-    META     : "DOCUMENTS.TOOLTIP_META"
+    MANUAL   : 'DOCUMENTS.TOOLTIP_MANUAL',
+    KWM      : 'DOCUMENTS.TOOLTIP_KWM',
+    ML       : 'DOCUMENTS.TOOLTIP_ML',
+    META     : 'DOCUMENTS.TOOLTIP_META'
   };
 
 
@@ -200,14 +200,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Download a single document from the server and opens a save file dialog
-  * @param {IDocument} document to download
-  */
+   * @description
+   * Download a single document from the server and opens a save file dialog
+   * @param {IDocument} document to download
+   */
   public download(iDoc: IDocument) {
     this.uploadService.getFiles([iDoc]).subscribe(res => {
-      var link = document.createElement('a');
-      link.href = window.URL.createObjectURL(res.body);;
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res.body);
       link.setAttribute('download', iDoc.id);
       link.click();
     });
@@ -225,18 +225,18 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     this.uploadService.getFiles(this.selection.selected).subscribe(res => {
-      var link = document.createElement('a');
+      let link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
-      if(this.selection.selected.length === 1) {
+      if (this.selection.selected.length === 1) {
         link.setAttribute('download', this.selection.selected[0].id);
       } else {
-        link.setAttribute('download', "documents.zip");
+        link.setAttribute('download', 'documents.zip');
       }
       link.click();
     });
   }
 
-
+  /**
    * @description
    * Adds a new keyword to an IDocument object. Thorws an error if the keyword
    * is already added to the document
@@ -281,28 +281,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
 
 
-  }
-
-  /**
- * @description
- * Adds a keyword and its parents to all selected documents.
- */
-  public applyBulkKeywords() {
-    if (this.selection.selected.length === 0) {
-      this.snackBar.open('no rows selected', ``, { duration: 3000 });
-      return;
-    }
-    this.selectedBulkKeywords.forEach(keyword => {
-      if (!this.selectedKeywords.includes(keyword)) {
-        this.api.addUncategorizedKeyword(keyword.id).subscribe(() => {
-
-        });
-      }
-      this.selection.selected.forEach(doc => {
-        this.applyKeyword(doc, keyword);
-      });
-    });
-    this.selectedBulkKeywords = [];
   }
 
   /**
@@ -363,7 +341,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
-    this.editing = tabChangeEvent.index === 1;
+    this.editing = tabChangeEvent.index > 0;
   }
 
   public sync() {
