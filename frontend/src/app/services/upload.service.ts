@@ -77,6 +77,13 @@ export class UploadService {
       });
   }
 
+  public getFiles(iDocs: IDocument[]): Observable<any> {
+    return this.httpClient.post(`${environment.serverUrl}/download`, iDocs, {
+      observe: 'response',
+      responseType: "blob"
+    });
+  }
+
   public patchKeywords(iDoc: IDocument): Observable<object> {
     const httpOptions = {
       headers: new HttpHeaders({

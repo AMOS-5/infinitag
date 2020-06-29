@@ -25,4 +25,35 @@ mat-paginator.mat-paginator.paginator--centered {
   margin-top: 30px;
   display: flex;
   justify-content: center;
-} 
+}
+
+.download-button {
+  background: none!important;
+  border: none;
+  padding: 0!important;
+  color: #0000EE;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.mat-tab {
+  margin-top: 16px;
+}
+
+table {
+  margin-top: 16px;
+}
+
+.mat-grid-tile .mat-grid-tile-header, .mat-grid-tile .mat-grid-tile-footer {
+  background-color: white;
+  color: #1b1e21;
+  padding: 0;
+  font-size: 18px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.example-chip-list {
+  width: 100%;
+}

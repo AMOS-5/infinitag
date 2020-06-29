@@ -16,52 +16,77 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from __future__  import  print_function
+
+import time
+
 import pandas as pd
 from nltk.stem.snowball import SnowballStemmer
+
 stemmer = SnowballStemmer("english")
 from sklearn.cluster import KMeans
 import joblib
 
 
-def kmeans_clustering(tfidf_matrix,flattened,terms, file_list, num_clusters,words_per_cluster ):
+def kmeans_clustering(tfidf_matrix,
+                      flattened,
+                      terms,
+                      file_list,
+                      num_clusters,
+                      words_per_cluster,
+                      job=None):
+
     km = KMeans(n_clusters=num_clusters)
 
-    # pickle.dump(km, open("kmeans_model.pkl", "wb"))
     km.fit(tfidf_matrix)
     joblib.dump(km, 'kmeans_model.pkl')
     clusters = km.labels_.tolist()
-    print(len(clusters))
     document = {'title': file_list, 'synopsis': flattened, 'cluster': clusters}
 
     frame = pd.DataFrame(document, index=[clusters], columns=['title', 'cluster'])
     frame['cluster'].value_counts()
 
-    print("Top terms per cluster:")
-    print()
     # sort cluster centers by proximity to centroid
     order_centroids = km.cluster_centers_.argsort()[:, ::-1]
+
     keywords_dict = {}
+
+    if job is not None:
+        job.status = 'TAGGING_JOB.START_SORT'
+    progress_step = 0
+    start_time = time.time()
+    time_index = 0
+    iteration_time = None
+    idx = 0
+    if job is not None:
+        job.status = 'TAGGING_JOB.APPLYING_CLUSTERS'
+
     for clustering in range(num_clusters):
-        print("Cluster %d words:" % clustering, end='')
-        print('')
+        if idx == 0:
+            progress_step = 50 / num_clusters
+
         keywords = []
         for tags in order_centroids[clustering, : words_per_cluster]:  # replace 6 with n words per cluster
             kmeans_tags = terms[tags]
             keywords.append(kmeans_tags)
-            print(' %s' % kmeans_tags)
-        print('')
-        print('')
-        print("Cluster %d titles:" % clustering, end='')
         docname = []
         for title in frame.loc[clustering]['title'].values.tolist():
             docname.append(title)
 
-            print(' %s,' % title, end='')
-        #checking[clustering]=(keywords, docname)
         for filename in docname:
-            keywords_dict[filename]=keywords
-            print('')
-            print('')
+            keywords_dict[filename] = keywords
+
+        if time_index == 0:
+            end_time = time.time()
+            iteration_time = end_time - start_time
+            time_index = 1
+
+        remaining_iterations = num_clusters - idx
+        idx += 1
+        if iteration_time != - 1:
+            if job is not None:
+                job.time_remaining = iteration_time * remaining_iterations
+        if job is not None:
+            job.progress += progress_step
 
     return keywords_dict
 

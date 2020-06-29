@@ -7,10 +7,11 @@ import { HttpLoaderFactory } from '../app.module';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from "@angular/material/dialog";
-import { UploadService } from "../services/upload.service";
-import { of } from "rxjs";
-import { IFile } from "../models/IFile.model";
+import { MatDialogModule } from '@angular/material/dialog';
+import { UploadService } from '../services/upload.service';
+import { of } from 'rxjs';
+import { IFile } from '../models/IFile.model';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 describe('FileUploadComponent', () => {
@@ -29,6 +30,7 @@ describe('FileUploadComponent', () => {
         HttpClientTestingModule,
         MatListModule,
         MatGridListModule,
+        BrowserAnimationsModule,
         MatIconModule,
         MatDialogModule,
         TranslateModule.forRoot({

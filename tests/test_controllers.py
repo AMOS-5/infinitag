@@ -2,8 +2,11 @@ import json
 import unittest
 import io
 import os
+from time import sleep
+
 from werkzeug.datastructures import FileStorage
 from flask_jsonpify import jsonify
+import zipfile
 
 # TODO hack to modify the config before the app gets initialized
 # we should use a better fixture where the app gets initialized with our
@@ -90,6 +93,55 @@ class BasicTestCase(unittest.TestCase):
         if os.path.exists(doc_path):
             os.remove(doc_path)
         application.solr.docs.clear()
+
+    def test_download_file(self):
+        application.solr.docs.clear()
+        file = open("tmp/test1.txt", "w")
+        file.write("abc")
+        file.close()
+
+        tester = app.test_client(self)
+        response = tester.post(
+            "/download",
+            data=json.dumps([{"id": "test1.txt"}]),
+            content_type='application/json',
+        )
+        # check status code
+        self.assertEqual(response.status_code, 200)
+
+        #check file
+        file = open("tmp/test1.txt", "rb")
+        file.seek(0)
+        self.assertEqual(response.data, file.read())
+        file.close()
+
+    def test_download_multiple_files(self):
+        application.solr.docs.clear()
+        file = open("tmp/test1.txt", "w")
+        file.write("abc")
+        file.close()
+
+        file = open("tmp/test2.txt", "w")
+        file.write("def")
+        file.close()
+
+        tester = app.test_client(self)
+        response = tester.post(
+            "/download",
+            data=json.dumps([{"id": "test1.txt"}, {"id": "test2.txt"}]),
+            content_type='application/json',
+        )
+        # check status code
+        self.assertEqual(response.status_code, 200)
+
+        #check files
+        zip = zipfile.ZipFile(io.BytesIO(response.data))
+        test1_file = zip.open('documents/test1.txt')
+        self.assertEqual(test1_file.read(), b"abc")
+        test2_file = zip.open('documents/test2.txt')
+        self.assertEqual(test2_file.read(), b"def")
+
+
 
     def test_change_keywords(self):
         application.solr.docs.clear()
@@ -220,7 +272,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_apply_tagging_method_kwm(self):
         # application.solr.docs.clear()
-        data=json.dumps(dict(
+        data = json.dumps(dict(
             taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
             keywordModel={  'id': 'test',
                             'hierarchy': json.dumps([
@@ -231,6 +283,7 @@ class BasicTestCase(unittest.TestCase):
                             'keywords': ['test', 'text', 'faufm'],
                          },
             documents=[{'id': "test.txt"}, {'id':"test.pdf"}],
+            jobId='JOB-ID'
         ))
 
         application.solr.docs.add(*self.docs)
@@ -238,6 +291,9 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.post("/apply", content_type="application/json", data=data)
         self.assertEqual(response.status_code, 200)
+
+        # Wait for thread to finish.
+        sleep(10)
 
         doc = application.solr.docs.get("test.txt")
         keywords = application.solr.docs.get("test.txt").keywords

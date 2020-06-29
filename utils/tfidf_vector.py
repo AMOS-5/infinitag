@@ -20,46 +20,56 @@ from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
+
 stemmer = SnowballStemmer("english")
 
+
 def dummy_fun(doc):
-    #Due to some error in a function 'tfid vectorizer'
+    # Due to some error in a function 'tfid vectorizer'
     return doc
+
 
 def get_top_tf_idf_words(feature_names, response, top_n=2):
     # Sort the top n terms in the tfidf vectorizer
-    sorted_nzs = np.argsort(response.data)[:-(top_n+1):-1]
+    sorted_nzs = np.argsort(response.data)[:-(top_n + 1):-1]
     return feature_names[response.indices[sorted_nzs]]
 
+
 def tfidf_vector(flattened):
-
-    tfidf_vectorizer = TfidfVectorizer(max_features=200000, stop_words='english',
-                             use_idf=True,tokenizer=dummy_fun, preprocessor=dummy_fun,ngram_range=(1,1))
-
+    tfidf_vectorizer = TfidfVectorizer(max_features=200000,
+                                       stop_words='english',
+                                       use_idf=True, tokenizer=dummy_fun,
+                                       preprocessor=dummy_fun,
+                                       ngram_range=(1, 3))
     tfidf_matrix = tfidf_vectorizer.fit_transform(flattened)
-    print(tfidf_matrix.shape)
+
     terms = tfidf_vectorizer.get_feature_names()
     dist = 1 - cosine_similarity(tfidf_matrix)
     return dist, tfidf_matrix, terms
 
+
 def tfidf_vector_keywords(file_list, flattened, num_keywords):
-    #this function is used to obtain keywords if num of files is less than 5 where kmeans cannot be used.
+    # this function is used to obtain keywords if num of files is less than 5 where kmeans cannot be used.
     keywords = []
     for flat in flattened:
-        tfidf_vectorizer = TfidfVectorizer(max_features=200000, stop_words='english',
-                                 use_idf=True,tokenizer=dummy_fun, preprocessor=dummy_fun,ngram_range=(1,1))
+        tfidf_vectorizer = TfidfVectorizer(max_features=200000,
+                                           stop_words='english',
+                                           use_idf=True, tokenizer=dummy_fun,
+                                           preprocessor=dummy_fun,
+                                           ngram_range=(1, 1))
 
         tfidf_matrix = tfidf_vectorizer.fit_transform([flat])
-        print(tfidf_matrix.shape)
+
         terms = tfidf_vectorizer.get_feature_names()
-        keywords_tfidf = [get_top_tf_idf_words(np.array(terms),tfidf_matrix, num_keywords) for top_n_terms in tfidf_matrix]
+        keywords_tfidf = [
+            get_top_tf_idf_words(np.array(terms), tfidf_matrix, num_keywords)
+            for top_n_terms in tfidf_matrix]
         keywords_tfidf = keywords_tfidf.pop()
         keywords.append(keywords_tfidf)
     keywords = np.array(keywords).tolist()
     keywords_dict = {}
-    count= 0
+    count = 0
     for file in file_list:
-        keywords_dict[file]=keywords[count]
+        keywords_dict[file] = keywords[count]
         count += 1
-    print('keywords_dict : ', keywords_dict)
     return keywords_dict

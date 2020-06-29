@@ -17,7 +17,7 @@
 
 from flask_cors import CORS
 from flask_jsonpify import jsonify
-from flask import Flask, request
+from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
 
 from argparse import ArgumentParser
@@ -28,8 +28,14 @@ from uuid import uuid4
 import os
 from pathlib import Path
 import logging as log
+import zipfile
 
 from backend.service import SolrService, SolrMiddleware
+from backend.service.tagging import (
+    TaggingService,
+    KWMJob,
+    AutomatedTaggingJob
+)
 from backend.solr import (
     SolrDoc,
     SolrHierarchy,
@@ -42,7 +48,9 @@ from utils.data_preprocessing import create_automated_keywords
 log.basicConfig(level=log.ERROR)
 
 app = Flask(__name__)
+tagging_service = TaggingService()
 solr = SolrService()
+
 app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
 
@@ -97,6 +105,28 @@ def upload_file():
 
     print(f"Uploaded, saved and indexed file: {file_name}", file=sys.stdout)
     return jsonify(file_name + " was saved and indexed"), 200
+
+
+@app.route("/download", methods=["POST"])
+def download_files():
+    """
+    Handles the file download post request by sending the requested files.
+    If multiple files are requested, they are combined to a zip file.
+    :return: the requested file or a zip file
+    """
+    try:
+        docs = request.json
+        print(f"Downloading {len(docs)} files")
+        if len(docs) == 1:
+            return send_from_directory("tmp", filename=docs[0]["id"], as_attachment=True)
+        else:
+            zipf = zipfile.ZipFile('tmp/test.zip', 'w', zipfile.ZIP_DEFLATED)
+            for doc in docs:
+                zipf.write(os.path.join("tmp", doc["id"]), os.path.join("documents", doc["id"]))
+            zipf.close()
+            return send_from_directory("tmp", 'test.zip', as_attachment=True)
+    except Exception as e:
+        return jsonify(f"Error: {e}"), 400
 
 
 @app.route("/changekeywords", methods=["PATCH"])
@@ -288,8 +318,6 @@ def stop_server():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 
-
-
 @app.route("/apply", methods=["POST"])
 def apply_tagging_method():
     """
@@ -300,8 +328,9 @@ def apply_tagging_method():
     :return: json object containing a status message
     """
     data = request.json
+    job_id = data["jobId"]
 
-    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
+    if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["id"], json.loads(kwm_data["hierarchy"]), kwm_data["keywords"])
@@ -318,7 +347,10 @@ def apply_tagging_method():
         if "documents" in data and len(data["documents"]) != 0:
             doc_ids = [doc["id"] for doc in docs_json]
 
-        solr.docs.apply_kwm(keywords, *doc_ids)
+        job = KWMJob(keywords, job_id, solr.docs, *doc_ids)
+        tagging_service.add_job(job)
+        job.start()
+        # solr.docs.apply_kwm(keywords, *doc_ids, job_id)
 
         stop_time = time.time() - start_time
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
@@ -326,33 +358,30 @@ def apply_tagging_method():
     else:
         docs = data["documents"]
         options = data["options"]
-
-
-        auto_keywords = create_automated_keywords(docs, options["numClusters"], options["numKeywords"])
-
-        doc_ids = auto_keywords.keys()
-        docs = solr.docs.get(*doc_ids)
-
-        if len(doc_ids)==1:
-            new_keywords = auto_keywords[docs.id]
-            docs.keywords.update(
-                SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
-                for kw in new_keywords
-            )
-            solr.docs.update(docs)
-        else:
-            for doc in docs:
-                print('doc', doc)
-                new_keywords = auto_keywords[doc.id]
-                doc.keywords.update(
-                    SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
-                    for kw in new_keywords
-                )
-
-            solr.docs.update(*docs)
-
+        num_clusters = options["numClusters"]
+        num_keywords = options["numKeywords"]
+        job = AutomatedTaggingJob(job_id=job_id,
+                                  docs=docs,
+                                  num_clusters=num_clusters,
+                                  num_keywords=num_keywords,
+                                  solr_docs=solr.docs)
+        tagging_service.add_job(job)
+        job.start()
 
     return jsonify({"status": 200})
+
+
+@app.route("/job/<job_id>", methods=["GET", "DELETE"])
+def get_job_status(job_id):
+    job = tagging_service.get_job(job_id)
+    if request.method == "GET":
+        if job is None:
+            return jsonify({"status": 209, "message": "TAGGING_JOB.NO_JOB"}), 209
+        else:
+            return jsonify({"status": 200, "message": job.status, "progress": job.progress, "timeRemaining": job.time_remaining}), 200
+    elif request.method == "DELETE" and job is not None:
+        tagging_service.cancel_job(job_id)
+        return jsonify({"status": 200, "message": "TAGGING_JOB.CANCELED_JOB", "id": job_id}), 200
 
 
 if __name__ == "__main__":

@@ -2,6 +2,7 @@
   "HOME": {
     "TITLE": "Startseite",
     "ADD_DOCUMENTS": "Dokumente hinzufügen",
+    "DOCUMENT_OVERVIEW": "Document Overview",
     "KEYWORDS": "Keywords",
     "DOCUMENTATION": "Dokumentation",
     "SERVER_STATUS": "Server Status",
@@ -21,6 +22,7 @@
     "EDITING_IS": "Bearbeiten ist",
     "DRAG_DROP_DIALOG": "Ziehen Sie ihre Dateien in dieses Feld um sie hochzuladen",
     "BROWSE_FOR_FILES": "Dokumente durchsuchen",
+    "TAGGING": "Tagging",
     "MANUAL_TAGGING": "Manuelles Tagging",
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
     "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
@@ -33,7 +35,12 @@
     "ML_PARAMETERS": "ML Parameter",
     "ML_PARAMETERS_DIALOG": "Geben sie die Parameter für den ML Algorithmus an",
     "ML_PARAMETERS_NUMCLUSTERS" : "Anzahl der Cluster",
-    "ML_PARAMETERS_NUMKEYWORDS" : "Anzahl der Keywords pro Cluster"
+    "ML_PARAMETERS_NUMKEYWORDS" : "Anzahl der Keywords pro Cluster",
+    "DOWNLOAD_BUTTON" : "Herunterladen",
+    "TOOLTIP_MANUAL"  : "Manuel hinzugefügtes Keyword",
+    "TOOLTIP_KWM"     : "Kwm basierendes Keyword",
+    "TOOLTIP_ML"      : "ML basierendes Keyword",
+    "TOOLTIP_META"    : "Metadaten Keyword"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",
@@ -45,6 +52,21 @@
     "HIERARCHY": "Hierarchie",
     "NEW_KEYWORD_MODEL_DIALOG": "Name für das neue Keyword Model",
     "NEW_KEYWORD_MODEL": "Neues Keyword Model"
+  },
+  "TAGGING_JOB": {
+    "LEMMA_START": "Starting lemmatization",
+    "LEMMA_END": "Lemmatization finished",
+    "DOC_FIND": "Finding documents in the database",
+    "DOC_FOUND": "Documents found. Starting application of KWM.",
+    "APPLY_KWM": "Applying KWM",
+    "DOC_UPDATE": "Updating Documents in Database",
+    "CREATE_KW": "Creating Keywords.",
+    "APPLYING": "Applying.",
+    "KW_FOUND": "Keywords Found.",
+    "START_SORT": "Starting to sort through clusters",
+    "APPLYING_CLUSTERS": "Applying Clusters.",
+    "NO_JOB": "Job not found or hasn't been started yet",
+    "CANCELED_JOB": "Job Cancelled"
   },
   "SEARCH": "Suche",
   "SEARCH_TERM": "Suchbegriff",
@@ -64,8 +86,12 @@
   "SUCCESS": "Erfolg",
   "UPLOADING": "wird hochgeladen",
   "ERROR": "Fehler",
+  "CANCEL": "Abbrechen",
   "CANCELLED": "Abgebrochen",
   "REQUEST_SEND": "Anfrage geschickt",
-  "RESPONSE_RECEIVED": "Rückmeldung bekommen"
+  "RESPONSE_RECEIVED": "Rückmeldung bekommen",
+  "TAGGING": "Tagging",
+  "STARTED": "Gestartet.",
+  "FINISHED": "Fertig."
 }
 
