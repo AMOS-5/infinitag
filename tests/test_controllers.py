@@ -2,6 +2,8 @@ import json
 import unittest
 import io
 import os
+from time import sleep
+
 from werkzeug.datastructures import FileStorage
 from flask_jsonpify import jsonify
 import zipfile
@@ -270,7 +272,7 @@ class BasicTestCase(unittest.TestCase):
 
     def test_apply_tagging_method_kwm(self):
         # application.solr.docs.clear()
-        data=json.dumps(dict(
+        data = json.dumps(dict(
             taggingMethod={'name': 'Keyword Model', 'type': 'KWM'},
             keywordModel={  'id': 'test',
                             'hierarchy': json.dumps([
@@ -281,6 +283,7 @@ class BasicTestCase(unittest.TestCase):
                             'keywords': ['test', 'text', 'faufm'],
                          },
             documents=[{'id': "test.txt"}, {'id':"test.pdf"}],
+            jobId='JOB-ID'
         ))
 
         application.solr.docs.add(*self.docs)
@@ -288,6 +291,9 @@ class BasicTestCase(unittest.TestCase):
         tester = app.test_client(self)
         response = tester.post("/apply", content_type="application/json", data=data)
         self.assertEqual(response.status_code, 200)
+
+        # Wait for thread to finish.
+        sleep(10)
 
         doc = application.solr.docs.get("test.txt")
         keywords = application.solr.docs.get("test.txt").keywords

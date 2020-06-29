@@ -27,14 +27,6 @@ mat-paginator.mat-paginator.paginator--centered {
   justify-content: center;
 }
 
-.download-button {
-  background: none!important;
-  border: none;
-  padding: 0!important;
-  color: #0000EE;
-  text-decoration: underline;
-  cursor: pointer;
-}
 .mat-tab {
   margin-top: 16px;
 }
@@ -54,6 +46,6 @@ table {
   width: 100%;
 }
 
-.example-chip-list {
+.example-chip-list, button {
   width: 100%;
 }

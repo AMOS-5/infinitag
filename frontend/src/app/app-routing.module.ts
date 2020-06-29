@@ -24,22 +24,18 @@
 
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { SearchComponent } from './search/search.component';
-import { SettingsComponent } from './settings/settings.component';
 import { KeywordsComponent } from './keywords/keywords.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import {DocumentationComponent} from './documentation/documentation.component';
+import { DocumentationComponent } from './documentation/documentation.component';
+import { DocumentViewTableComponent } from './documentview/document-view-table.component';
 
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'search', component: SearchComponent },
-  { path: 'documents', component: SettingsComponent },
+  { path: '', component: DashboardComponent },
+  { path: 'documents', component: DocumentViewTableComponent },
   { path: 'keywords', component: KeywordsComponent },
-  { path: 'dashboard', component: DashboardComponent },
   { path: 'documentation', component: DocumentationComponent },
-  { path: '**', component: HomeComponent }
+  { path: '**', component: DashboardComponent }
 ];
 
 @NgModule({
