@@ -311,9 +311,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
-      this.pageSize = documents.pageSize;
-      this.currentPage = documents.currentPage;
-      this.totalPages = documents.total_pages*documents.num_per_page;
+      this.pageSize = documents.num_per_page;
+      this.currentPage = documents.page;
+      this.totalPages = documents.total_pages * documents.num_per_page;
     });
   }
 }
