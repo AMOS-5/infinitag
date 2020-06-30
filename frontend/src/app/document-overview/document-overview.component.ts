@@ -23,20 +23,17 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { environment } from './../../environments/environment';
-import {ITaggingMethod} from '../models/ITaggingMethod';
-import {ApiService} from '../services/api.service';
-import {IKeyWordModel} from '../models/IKeyWordModel.model';
-import {FormBuilder} from "@angular/forms";
+import { ApiService } from '../services/api.service';
+import {TranslateService} from '@ngx-translate/core';
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: 'app-document-overview',
+  templateUrl: './document-overview.component.html',
+  styleUrls: ['./document-overview.component.scss']
 })
 
-export class HomeComponent implements OnInit {
+export class DocumentOverviewComponent implements OnInit {
   public title = 'infinitag';
   public serverUrl = environment.serverUrl;
   public backendStatus = `${this.serverUrl}/health`;
@@ -55,11 +52,19 @@ export class HomeComponent implements OnInit {
 
 
 
+<<<<<<< HEAD:frontend/src/app/home/home.component.ts
   constructor(private api: ApiService) {}
+=======
+  constructor(private api: ApiService, private translate: TranslateService) {}
+>>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7:frontend/src/app/document-overview/document-overview.component.ts
 
   public ngOnInit(): void {
     this.api.getDocuments()
       .subscribe((value: any) => {
+<<<<<<< HEAD:frontend/src/app/home/home.component.ts
+=======
+        console.log(value);
+>>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7:frontend/src/app/document-overview/document-overview.component.ts
         this.documents = value.docs;
         this.page = value.page;
         this.num_per_page = value.num_per_page;

@@ -22,34 +22,37 @@
  * SOFTWARE.
  */
 
-import { HttpClient, HttpResponse } from '@angular/common/http';
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  EventEmitter,
+  Output
+} from '@angular/core';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { of, throwError, Observable, Subscription, interval } from 'rxjs';
 import { ApiService } from '../services/api.service';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
-import { FormControl } from '@angular/forms';
+import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
-import { ITaggingMethod } from '../models/ITaggingMethod';
-import { ITaggingRequest } from '../models/ITaggingRequest.model';
-import { IKeywordListEntry } from '../models/IKeywordListEntry.model'
+import { MatTabChangeEvent} from '@angular/material/tabs';
 
-import { MatAutocompleteSelectedEvent, MatAutocomplete } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { startWith, map } from 'rxjs/operators';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {MatPaginator, PageEvent} from '@angular/material/paginator';
 
 /**
- * @class DocumentViewTableComponent
  *
  * Component gets document data from the backend and displays it as a table.
  * The data can be filtered through a search bar and new tags can be added
@@ -62,38 +65,19 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 })
 
 export class DocumentViewTableComponent implements OnInit, OnChanges {
-  //Keywords displayed in the menu
   keywords: IKeywordListEntry[] = [];
   selectedKeywords: IKeywordListEntry[] = [];
-
-  keywordModels: any = [];
-  kwmToAdd = [];
-
   visible = true;
-  selectable = true;
-  removable = true;
-  applyingTaggingMechanism = false;
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-  bulkKwCtrl = new FormControl();
-  filteredBulkKeywords: Observable<IKeywordListEntry[]>;
-  selectedBulkKeywords: IKeywordListEntry[] = [];
 
-  @ViewChild('bulkKWInput') KWInput: ElementRef<HTMLInputElement>;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  editing = false;
 
-  constructor(private api: ApiService, private uploadService: UploadService, private snackBar: MatSnackBar, private formBuilder: FormBuilder) {
-
-
-    this.taggingForm = this.formBuilder.group({
-      taggingMethod: this.selectedTaggingMethod,
-      keywordModel: undefined,
-      documents: [],
-      bulkKeywords: []
-    });
-    this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
-      startWith(null),
-      map((selectedBulkKeyword: IKeywordListEntry | null) => selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()));
-  }
+  constructor(
+    private api: ApiService,
+    private uploadService: UploadService,
+    private snackBar: MatSnackBar,
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog
+  ) {}
   // defines order of columns
   displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
 
@@ -107,6 +91,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   @Input() sortOrder: string | undefined;
   @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
+
+  @Output() syncRequested = new EventEmitter();
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
@@ -123,21 +109,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     ML        : '#3399ff',
   };
 
-  public taggingMethods: Array<ITaggingMethod> = [
-    {
-      name: 'Keyword Model',
-      type: 'KWM'
-    },
-    {
-      name: 'Automated',
-      type: 'ML'
-    }
-  ];
-
-  public taggingForm;
-
-  public selectedTaggingMethod = this.taggingMethods[0];
-
 
   public ngOnInit() {
     this.setDatasource();
@@ -145,11 +116,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       .subscribe((data: []) => {
         this.keywords = data;
         this.selectedKeywords = this.keywords;
-      });
-
-    this.api.getKeywordModels()
-      .subscribe((data: any) => {
-        this.keywordModels = data;
       });
     this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
@@ -166,15 +132,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Sets the data variable of this components MatTableDataSource instance
-  */
+   * @description
+   * Sets the data variable of this components MatTableDataSource instance
+   */
   public setDatasource() {
     if (this.documents !== undefined) {
+      console.log(this.documents);
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
       });
-      console.log()
       this.allData = this.documents;
       this.dataSource.data = this.documents;
       this.dataSource.paginator = this.paginator;
@@ -184,10 +150,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-  * @description
-  * Updates the documents list as well as the filter term
-  * @param {SimpleChanges} changes
-  */
+   * @description
+   * Updates the documents list as well as the filter term
+   */
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.documents) {
       this.documents = changes.documents.currentValue;
@@ -207,10 +172,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   /**
-  * @description
-  * Checks if all currently displayed items are selected
-  * @returns true if the items are selected, false otherwise
-  */
+   * @description
+   * Checks if all currently displayed items are selected
+   * @returns true if the items are selected, false otherwise
+   */
   public isAllSelected() {
     const filteredData = this.dataSource.filteredData;
     for (let i = 0; i < filteredData.length; i++) {
@@ -222,9 +187,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Selects all visible rows if they are not all selected; otherwise clear selection.
-  */
+   * @description
+   * Selects all visible rows if they are not all selected; otherwise clear selection.
+   */
   public masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
@@ -232,13 +197,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Adds a new keyword to an IDocument object. Thorws an error if the keyword
-  * is already added to the document
-  * @param {IDocument} document
-  * @param {string} keyword
-  * @returns {Observable} Observable of the document
-  */
+   * @description
+   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+   * is already added to the document
+   */
   private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {
     if (iDoc.keywords.filter(kw => kw.value === keyword.value).length === 0) {
       iDoc.keywords.push(keyword);
@@ -250,18 +212,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
-  * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
-  * updated.
-  * @param {IDocument} document
-  * @param {IKeywordListEntry} keyword
-  */
+   * @description
+   * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
+   * to update the document. If angular compile switch to browserthe request is succesfull the datasource gets
+   * updated.
+   */
   public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
-    let to_add = [keyword.id]
-    to_add = to_add.concat(keyword.parents)
+    let to_add = [keyword.id];
+    to_add = to_add.concat(keyword.parents);
 
-    for(let i = 0; i < to_add.length; i++) {
+    for (let i = 0; i < to_add.length; i++) {
       const kw: IKeyword = {value: to_add[i], type: 'MANUAL'};
       this.addKeywordToDoc(doc, kw).subscribe(
         res => {
@@ -284,34 +244,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
- * @description
- * Adds a keyword and its parents to all selected documents.
- */
-  public applyBulkKeywords() {
-    if (this.selection.selected.length === 0) {
-      this.snackBar.open('no rows selected', ``, { duration: 3000 });
-    }
-    this.selectedBulkKeywords.forEach(keyword => {
-      if (!this.selectedKeywords.includes(keyword)) {
-        this.api.addUncategorizedKeyword(keyword.id).subscribe(() => {
-
-        });
-      }
-      this.selection.selected.forEach(doc => {
-        this.applyKeyword(doc, keyword);
-      });
-    });
-    this.selectedBulkKeywords = [];
-  }
-
-  /**
-  * @description
-  * Gets called when the delete button is pressed on a mat-chip.
-  * Removes the keyword from the document and sends the change to the backend.
-  * @param {IDocument} document the keyword should be removed from
-  * @param keyword to be removed
-  */
-  removeKeywordFromDocument(document: IDocument, keyword) {
+   * @description
+   * Gets called when the delete button is pressed on a mat-chip.
+   * Removes the keyword from the document and sends the change to the backend.
+   * @param keyword to be removed
+   */
+  public removeKeywordFromDocument(document: IDocument, keyword) {
     const index = document.keywords.indexOf(keyword);
     if (index >= 0) {
       document.keywords.splice(index, 1);
@@ -323,114 +261,43 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
-  * @description
-  * Gets called when a key is pressed while the search field for the keywords
-  * is in focus. Updates the filter term.
-  * @param event
-  */
+   * @description
+   * Gets called when a key is pressed while the search field for the keywords
+   * is in focus. Updates the filter term.
+   */
   public onKey(event) {
     this.selectedKeywords = this.search(event.target.value);
   }
 
   /**
-  * @description
-  * Searches the keywords list for a search term
-  * @param {string} search term
-  * @returns {IKeywordListEntry[]} List of keywords whose id starts with search term
-  */
+   * @description
+   * Searches the keywords list for a search term
+   */
   private search(value: string) {
     const filter = value.toLowerCase();
     return this.keywords.filter(kw => kw.id.toLowerCase().startsWith(filter));
   }
 
-  public changeTaggingMethod(event: any) {
-    this.selectedTaggingMethod = event.value;
-  }
-
-  /**
-   * Upon submitting the tagging mechanism, the method will be applied and the documents
-   * will be fetched again to update the table
-   */
-  public onSubmit(taggingData: ITaggingRequest) {
-
-    this.applyingTaggingMechanism = true;
-    taggingData.documents = this.selection.selected;
-    this.api.applyTaggingMethod(taggingData).subscribe( (response: any) => {
-      if (response.status === 200) {
-        this.api.getDocuments().subscribe((documents: any) => {
-          this.documents = documents.docs;
-          this.setDatasource();
-        });
-      }
-      this.applyingTaggingMechanism = false;
-      this.selection = new SelectionModel(true, []);
-    });
-  }
-
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      let kw: IKeywordListEntry = {id: value, kwm: null, parents: []}
-      this.selectedBulkKeywords.push(kw);
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-    this.bulkKwCtrl.setValue(null);
-  }
-
-  remove(keyword: IKeywordListEntry): void {
-    const index = this.selectedBulkKeywords.indexOf(keyword);
-
-    if (index >= 0) {
-      this.selectedBulkKeywords.splice(index, 1);
-    }
-  }
-
-  selected(event: MatAutocompleteSelectedEvent): void {
-    this.selectedBulkKeywords.push(event.option.value);
-    this.KWInput.nativeElement.value = '';
-    this.bulkKwCtrl.setValue(null);
-  }
-
-  private _filter(value): IKeywordListEntry[] {
-    let filterValue;
-    if(typeof(value) === "string") {
-      filterValue = value.toLowerCase();
-    } else {
-      filterValue = value.id.toLowerCase();
-    }
-    return this.selectedKeywords.filter(keyword => keyword.id.toLowerCase().indexOf(filterValue) === 0);
-  }
-
    /**
     * @description
     * Gets page event from frontand and runs the iterator.
-    * @returns {object} PageEvent e
     */
   public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder).subscribe((documents:any) => {
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder).subscribe((documents: any) => {
       this.documents = documents.docs;
-      console.log(this.documents)
+      console.log(this.documents);
       this.dataSource.data = this.documents;
-      //this.setDatasource();
-    })
+      // this.setDatasource();
+    });
     return e;
   }
 
   /**
-  * @description
-  * Updates the datasource with current documents.
-  * @returns {void}
-  */
-
+   * @description
+   * Updates the datasource with current documents.
+   */
   private iterator() {
     this.end = (this.currentPage + 1) * this.pageSize;
     this.start = this.currentPage * this.pageSize;
@@ -438,12 +305,23 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.dataSource.data = part;
   }
 
+
+  public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
+    this.editing = tabChangeEvent.index === 1;
+  }
+
+  public sync() {
+    this.ngOnInit();
+    this.selection = new SelectionModel(true, []);
+    this.syncRequested.emit();
+  }
+
   sortData(sort: Sort) {
-    if(sort.direction !== ''){
-      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction).subscribe((documents:any) => {
+    if (sort.direction !== ''){
+      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction).subscribe((documents: any) => {
         this.documents = documents.docs;
         this.dataSource.data = this.documents;
-      })
+      });
     }
   }
 }

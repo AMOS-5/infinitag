@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {Component } from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import { UploadService } from '../services/upload.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
@@ -31,6 +31,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogData, FileExistsDialogComponent } from '../../dialogs/file-exists.component';
 import { IFile } from '../models/IFile.model';
 import { Utils } from '../services/Utils.service';
+import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-upload.dialog.component';
 
 
 
@@ -47,6 +48,7 @@ import { Utils } from '../services/Utils.service';
  */
 export class FileUploadComponent {
   files: Array<IFile> = [];
+  @Output() uploadFinished = new EventEmitter<any>();
 
   constructor(
     private uploadService: UploadService,
@@ -55,20 +57,28 @@ export class FileUploadComponent {
     public utils: Utils) {
   }
 
-  openDialog(dialogData: DialogData): void {
+  openExistsDialog(dialogData: DialogData): void {
     const dialogRef = this.dialog.open(FileExistsDialogComponent, {
       width: '500px',
       data: dialogData
     });
 
     dialogRef.afterClosed().subscribe((result: { response: string, id: string, fid: string }) => {
-      console.log(this.files);
-
       const file: IFile | undefined = this.files.find((f: IFile) => f.fid === result.fid);
-      console.log(file);
-      console.log(result);
       this.resendFile(result, file);
     });
+  }
+
+  openUploadDialog(dialogData: UploadDialogData): void {
+    const dialogRef = this.dialog.open(FileUploadDialogComponent, {
+      width: '1200px',
+      data: dialogData
+    });
+
+    dialogRef.afterClosed()
+      .subscribe( () => {
+        this.uploadFinished.emit();
+      });
   }
 
   public resendFile(requestType: { response: string }, file: IFile) {
@@ -100,9 +110,12 @@ export class FileUploadComponent {
     for (let idx = 0; idx < files.length; idx++) {
       const file: IFile = {file: files[idx], status: 'ENQUEUED', progress: 0, icon: 'schedule', fid: this.utils.uuid4()};
       this.files.push(file);
-      console.log(file);
       this.sendFileToService(file);
     }
+    const dialogData: UploadDialogData = {
+      files: this.files
+    };
+    this.openUploadDialog(dialogData);
   }
 
   /**
@@ -147,7 +160,7 @@ export class FileUploadComponent {
             id,
             fid
           };
-          this.openDialog(dialogData);
+          this.openExistsDialog(dialogData);
         } else {
           file.status = 'SUCCESS';
           file.icon = 'cloud_done';

@@ -26,6 +26,8 @@ import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {environment} from '../environments/environment';
 import {TranslateService} from '@ngx-translate/core';
+import {ApiService} from './services/api.service';
+import {IDocument} from './models/IDocument.model';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private httpClient: HttpClient,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) {
     translate.addLangs(this.availableLanguages);
     translate.setDefaultLang(this.selectedLanguage);

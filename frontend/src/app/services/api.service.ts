@@ -54,6 +54,7 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordlist`);
   }
 
+<<<<<<< HEAD
   public getDocuments(page:any=0, num_per_page:any=5, sort_field="id", sort_order="asc") {
     console.log({
       page,
@@ -61,6 +62,9 @@ export class ApiService {
       sort_field,
       sort_order
     })
+=======
+  public getDocuments(page: any= 0, num_per_page: any= 5, sort_field= 'id', sort_order= 'asc') {
+>>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7
     const documentsUrl = `${environment.serverUrl}/documents`;
     page = page.toString();
     num_per_page = num_per_page.toString();
@@ -147,5 +151,13 @@ export class ApiService {
       })
     };
     return this.http.post(`${environment.serverUrl}/apply`, JSON.stringify(request), httpOptions);
+  }
+
+  public getTaggingJobStatus(jobId: string) {
+    return this.http.get(`${environment.serverUrl}/job/${jobId}`);
+  }
+
+  public cancelJob(jobId: string) {
+    return this.http.delete(`${environment.serverUrl}/job/${jobId}`);
   }
 }

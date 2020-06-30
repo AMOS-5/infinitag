@@ -22,11 +22,30 @@
  * SOFTWARE.
  */
 
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+import {IFile} from '../app/models/IFile.model';
+
+export interface TaggingDialogData {
+  status: string;
+  progress: number;
+  jobId: string;
+  timeRemaining: number
+}
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  selector: 'app-tagging-dialog',
+  templateUrl: 'tagging.dialog.html',
 })
-export class SettingsComponent { }
+export class TaggingDialogComponent {
+
+  constructor(
+    public dialogRef: MatDialogRef<TaggingDialogComponent>,
+    public translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: TaggingDialogData) {}
+
+  onDialogButtonClick(response: string): void {
+    this.dialogRef.close(response);
+  }
+}

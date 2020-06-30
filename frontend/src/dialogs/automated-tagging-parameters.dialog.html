@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>{{'DOCUMENTS.ML_PARAMETERS' | translate}}</h1>
+<div mat-dialog-content>
+  <p>{{'DOCUMENTS.ML_PARAMETERS_DIALOG' | translate}}</p>
+  <mat-form-field>
+    <mat-label>{{'DOCUMENTS.ML_PARAMETERS_NUMCLUSTERS' | translate}}</mat-label>
+    <input type="text" matInput cdkFocusInitial
+          [(ngModel)]="data.numClusters" appNaturalNumbersOnly
+    >
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>{{'DOCUMENTS.ML_PARAMETERS_NUMKEYWORDS' | translate}}</mat-label>
+    <input type="text" matInput
+          [(ngModel)]="data.numKeywords" appNaturalNumbersOnly
+    >
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onClose()">{{'CLOSE' | translate}}</button>
+    <button mat-button [mat-dialog-close]="data">{{'OK' | translate}}</button>
+</div>

@@ -1,0 +1,61 @@
+<mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="'250px'">
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
+    <div class="tab-content">
+      <mat-form-field class="example-chip-list">
+      <mat-chip-list #chipList aria-label="Keyword selection">
+        <mat-chip
+          *ngFor="let keyword of selectedBulkKeywords"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(keyword)">
+          {{keyword.kwm}} {{keyword.id}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="Search Keywords..."
+          #bulkKWInput
+          [formControl]="bulkKwCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let keyword of filteredBulkKeywords | async" [value]="keyword">
+          {{keyword.kwm}} {{keyword.id}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+      <button [disabled]="!editing" mat-raised-button color="primary" (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile [colspan]="4" [rowspan]="1">
+    <mat-grid-tile-header>{{'DOCUMENTS.AUTOMATED_TAGGING' | translate}}</mat-grid-tile-header>
+    <div class="tab-content">
+      <mat-form-field>
+        <mat-label>{{'DOCUMENTS.SELECT_TAGGING_METHOD' | translate}}</mat-label>
+        <mat-select (selectionChange)="changeTaggingMethod($event)" [(value)]="selectedTaggingMethod">
+          <mat-option *ngFor="let taggingMethod of taggingMethods" [value]="taggingMethod">{{taggingMethod.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="selectedTaggingMethod.type === 'KWM' && keywordModels.length > 0">
+        <mat-label>{{'DOCUMENTS.SELECT_KEYWORD_MODEL' | translate}}</mat-label>
+        <mat-select (selectionChange)="changeKWM($event)" [(value)]="selectedKeywordModel">
+          <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.id}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="applyingTaggingMechanism">
+        <span *ngIf="!applyingTaggingMechanism">
+          {{'DOCUMENTS.APPLY_TAGGING' | translate}}
+        </span>
+        <mat-progress-spinner *ngIf="applyingTaggingMechanism"
+        class="apply-spinner"
+        [color]="'primary'"
+        [mode]="'indeterminate'"
+        [diameter]="30">
+        </mat-progress-spinner>
+      </button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>

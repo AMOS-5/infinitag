@@ -30,6 +30,11 @@ from pathlib import Path
 import logging as log
 
 from backend.service import SolrService, SolrMiddleware
+from backend.service.tagging import (
+    TaggingService,
+    KWMJob,
+    AutomatedTaggingJob
+)
 from backend.solr import (
     SolrDoc,
     SolrHierarchy,
@@ -42,7 +47,9 @@ from utils.data_preprocessing import create_automated_keywords
 log.basicConfig(level=log.ERROR)
 
 app = Flask(__name__)
+tagging_service = TaggingService()
 solr = SolrService()
+
 app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
 
@@ -127,7 +134,7 @@ def change_keywords():
 
 
 @app.route("/documents", methods=["GET"])
-def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", sort_order: str = "asc", search_term=""):
+def get_documents():
     """
     Queries a given page from Solr and sends them to the front end
 
@@ -135,23 +142,22 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
     :param num_per_page: Number of entries per page
     :param sort_field: The field used for sorting (all fields in SolrDoc)
     :param sort_order: asc / desc
+    :param search_term: string which should be searched for in Solr
     :return: json object containing the documents or an error message
     """
     try:
-        if 'page' in request.args:
-            page = int(request.args.get('page'))
-        if 'num_per_page' in request.args:
-            num_per_page = int(request.args.get('num_per_page'))
-        if 'sort_field' in request.args:
-            sort_field = request.args.get('sort_field')
-        if 'sort_order' in request.args:
-            sort_order = request.args.get('sort_order')
+        page = int(request.args.get("page", 0))
+        num_per_page = int(request.args.get("num_per_page", 10))
+        sort_field = request.args.get("sort_field", "id")
+        sort_order = request.args.get("sort_order", "asc")
+        search_term = request.args.get("search_term", "")
 
         total_pages, docs = solr.docs.page(
             page,
             num_per_page,
             sort_field,
-            sort_order
+            sort_order,
+            search_term
         )
 
         docs = [doc.as_dict() for doc in docs]
@@ -160,6 +166,7 @@ def get_documents(page: int = 0, num_per_page: int = 5, sort_field: str = "id", 
             num_per_page=num_per_page,
             sort_field=sort_field,
             sort_order=sort_order,
+            search_term=search_term,
             total_pages=total_pages,
             docs=docs
         )
@@ -317,8 +324,6 @@ def stop_server():
     return jsonify({"success": True, "message": "Server is shutting down..."})
 
 
-
-
 @app.route("/apply", methods=["POST"])
 def apply_tagging_method():
     """
@@ -329,8 +334,9 @@ def apply_tagging_method():
     :return: json object containing a status message
     """
     data = request.json
+    job_id = data["jobId"]
 
-    if data["keywordModel"] is not None and data["taggingMethod"]["type"] == "KWM":
+    if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
         kwm = SolrHierarchy(kwm_data["id"], json.loads(kwm_data["hierarchy"]), kwm_data["keywords"])
@@ -347,28 +353,41 @@ def apply_tagging_method():
         if "documents" in data and len(data["documents"]) != 0:
             doc_ids = [doc["id"] for doc in docs_json]
 
-        solr.docs.apply_kwm(keywords, *doc_ids)
+        job = KWMJob(keywords, job_id, solr.docs, *doc_ids)
+        tagging_service.add_job(job)
+        job.start()
+        # solr.docs.apply_kwm(keywords, *doc_ids, job_id)
 
         stop_time = time.time() - start_time
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
 
     else:
         docs = data["documents"]
-        auto_keywords = create_automated_keywords(docs)
-
-        doc_ids = auto_keywords.keys()
-        docs = solr.docs.get(*doc_ids)
-
-        for doc in docs:
-            new_keywords = auto_keywords[doc.id]
-            doc.keywords.update(
-                SolrDocKeyword(kw, SolrDocKeywordTypes.ML)
-                for kw in new_keywords
-            )
-
-        solr.docs.update(*docs)
+        options = data["options"]
+        num_clusters = options["numClusters"]
+        num_keywords = options["numKeywords"]
+        job = AutomatedTaggingJob(job_id=job_id,
+                                  docs=docs,
+                                  num_clusters=num_clusters,
+                                  num_keywords=num_keywords,
+                                  solr_docs=solr.docs)
+        tagging_service.add_job(job)
+        job.start()
 
     return jsonify({"status": 200})
+
+
+@app.route("/job/<job_id>", methods=["GET", "DELETE"])
+def get_job_status(job_id):
+    job = tagging_service.get_job(job_id)
+    if request.method == "GET":
+        if job is None:
+            return jsonify({"status": 209, "message": "TAGGING_JOB.NO_JOB"}), 209
+        else:
+            return jsonify({"status": 200, "message": job.status, "progress": job.progress, "timeRemaining": job.time_remaining}), 200
+    elif request.method == "DELETE" and job is not None:
+        tagging_service.cancel_job(job_id)
+        return jsonify({"status": 200, "message": "TAGGING_JOB.CANCELED_JOB", "id": job_id}), 200
 
 
 if __name__ == "__main__":

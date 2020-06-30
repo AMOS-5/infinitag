@@ -22,11 +22,27 @@
  * SOFTWARE.
  */
 
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {TranslateService} from '@ngx-translate/core';
+
+export interface DialogData {
+  numClusters: number;
+  numKeywords: number;
+}
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  selector: 'app-automated-tagging-parameters-dialog',
+  templateUrl: 'automated-tagging-parameters.dialog.html',
 })
-export class SearchComponent { }
+export class AutomatedTaggingParametersDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<AutomatedTaggingParametersDialog>,
+    public translate: TranslateService,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+
+  onClose(): void {
+    this.dialogRef.close();
+  }
+}

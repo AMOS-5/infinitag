@@ -41,9 +41,9 @@ import { IKeyWordModel } from '../models/IKeyWordModel.model';
  * Type of the item of a node
  */
 const NodeType = {
-  DIMENSION : "DIMENSION",
-  KEYWORD : "KEYWORD",
-}
+  DIMENSION : 'DIMENSION',
+  KEYWORD : 'KEYWORD',
+};
 /**
  * Node for item
  */
@@ -64,7 +64,7 @@ export class ItemFlatNode {
 /**
  * The Json object for list data.
  */
-let TREE_DATA: any = [];
+const TREE_DATA: any = [];
 
 
 /**
@@ -74,23 +74,23 @@ let TREE_DATA: any = [];
  */
 @Injectable()
 export class ChecklistDatabase {
-  static data(): any {
-    throw new Error("Method not implemented.");
-  }
-  dataChange = new BehaviorSubject<ItemNode[]>([]);
 
   get data(): ItemNode[] { return this.dataChange.value; }
 
   constructor(private api: ApiService) {
     this.initialize();
   }
+  dataChange = new BehaviorSubject<ItemNode[]>([]);
+  static data(): any {
+    throw new Error('Method not implemented.');
+  }
 
   initialize() {
-    //Build the tree nodes from Json object. The result is a list of `ItemNode` with nested
+    // Build the tree nodes from Json object. The result is a list of `ItemNode` with nested
     //    file node as children.
     this.api.getKeywordModels()
     .subscribe((data: Array<IKeyWordModel>) => {
-      for (var i = 0 ; i < data.length; i++){
+      for (let i = 0 ; i < data.length; i++){
         TREE_DATA[i] = JSON.parse(data[i].hierarchy);
       }
     });
@@ -120,8 +120,8 @@ export class ChecklistDatabase {
 
   /** Adds a root node */
   insertRoot(name: string, nodeType: string): ItemNode {
-    const newItem = { item: name, nodeType: nodeType, children: []} as ItemNode;
-    this.data[0] = newItem
+    const newItem = { item: name, nodeType, children: []} as ItemNode;
+    this.data[0] = newItem;
     this.dataChange.next(this.data);
     return newItem;
   }
@@ -131,7 +131,7 @@ export class ChecklistDatabase {
     if (!parent.children) {
       parent.children = [];
     }
-    const newItem = { item: name, nodeType: nodeType } as ItemNode;
+    const newItem = { item: name, nodeType } as ItemNode;
     parent.children.push(newItem);
     this.dataChange.next(this.data);
     return newItem;
@@ -139,7 +139,7 @@ export class ChecklistDatabase {
 
   insertItemAbove(node: ItemNode, name: string, nodeType: string): ItemNode {
     const parentNode = this.getParentFromNodes(node);
-    const newItem = { item: name, nodeType: nodeType } as ItemNode;
+    const newItem = { item: name, nodeType } as ItemNode;
     if (parentNode != null) {
       parentNode.children.splice(parentNode.children.indexOf(node), 0, newItem);
     } else {
@@ -151,7 +151,7 @@ export class ChecklistDatabase {
 
   insertItemBelow(node: ItemNode, name: string, nodeType: string): ItemNode {
     const parentNode = this.getParentFromNodes(node);
-    const newItem = { item: name, nodeType: nodeType } as ItemNode;
+    const newItem = { item: name, nodeType } as ItemNode;
     if (parentNode != null) {
       parentNode.children.splice(parentNode.children.indexOf(node) + 1, 0, newItem);
     } else {
@@ -202,7 +202,7 @@ export class ChecklistDatabase {
   copyPasteItem(from: ItemNode, to: ItemNode, listItem?: ItemFlatNode): ItemNode {
     let newItem;
 
-    if(!from) {
+    if (!from) {
       newItem = this.insertItem(to, listItem.item, listItem.nodeType);
     } else {
       newItem = this.insertItem(to, from.item, from.nodeType);
@@ -219,7 +219,7 @@ export class ChecklistDatabase {
   copyPasteItemAbove(from: ItemNode, to: ItemNode, listItem?: ItemFlatNode): ItemNode {
     let newItem;
 
-    if(!from) {
+    if (!from) {
       newItem = this.insertItemAbove(to, listItem.item, listItem.nodeType);
     } else {
       newItem = this.insertItemAbove(to, from.item, from.nodeType);
@@ -235,7 +235,7 @@ export class ChecklistDatabase {
   copyPasteItemBelow(from: ItemNode, to: ItemNode, listItem?: ItemFlatNode): ItemNode {
 
     let newItem;
-    if(!from) {
+    if (!from) {
       newItem = this.insertItemBelow(to, listItem.item, listItem.nodeType);
     } else {
       newItem = this.insertItemBelow(to, from.item, from.nodeType);
@@ -269,12 +269,12 @@ export class ChecklistDatabase {
   * @returns {List[ItemNode]} List of the start node and all descendants
   */
   getDescendants(node: ItemNode) {
-    let ret = []
-    let toCheck = [node]
-    while(toCheck.length !== 0) {
-      let cur = toCheck.pop();
+    const ret = [];
+    let toCheck = [node];
+    while (toCheck.length !== 0) {
+      const cur = toCheck.pop();
       ret.push(cur);
-      if(cur.children) {
+      if (cur.children) {
         toCheck = toCheck.concat(cur.children);
       }
     }
@@ -289,7 +289,7 @@ export class ChecklistDatabase {
   providers: [ChecklistDatabase]
 })
 export class KeywordsComponent implements OnInit {
-  NodeType = NodeType; //add enum as variable so it is usable in html file
+  NodeType = NodeType; // add enum as variable so it is usable in html file
 
   /** contains the input string for the new dimension input field */
   newDimension: string;
@@ -306,13 +306,13 @@ export class KeywordsComponent implements OnInit {
   /** array of the keywordModels */
   keywordModels: Array<IKeyWordModel> = [];
 
-  isNewItem:boolean = false;
-  newItem:any;
+  isNewItem = false;
+  newItem: any;
 
   /**
    * Currently selected tree data.
    */
-  selectedKwmIdx: number = -1;
+  selectedKwmIdx = -1;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<ItemFlatNode, ItemNode>();
@@ -352,7 +352,7 @@ export class KeywordsComponent implements OnInit {
       this.dataSource.data = [];
       this.dataSource.data = data;
 
-      if(this.selectedKwmIdx !== -1) {
+      if (this.selectedKwmIdx !== -1) {
         this.keywordModels[this.selectedKwmIdx].hierarchy = this.dataSource.data;
         this.api.addKeywordModel(this.keywordModels[this.selectedKwmIdx]).subscribe(res => {
 
@@ -411,19 +411,19 @@ export class KeywordsComponent implements OnInit {
   * and added to the list as well as send to the backend
   */
   onDimEnter() {
-    const dimFormatted = this.newDimension.trim().toLowerCase();
-    if(dimFormatted !== "") {
-      if(!this.isDuplicate(this.uncatDimensions, dimFormatted)) {
+    const dimFormatted = this.newDimension.trim();
+    if (dimFormatted !== '') {
+      if (!this.isDuplicate(this.uncatDimensions, dimFormatted)) {
         this.api.addUncategorizedDimension(dimFormatted)
           .subscribe(res => {
-            this.uncatDimensions.push(dimFormatted)
+            this.uncatDimensions.push(dimFormatted);
             this.snackBar.open(`${dimFormatted} added into the database`, '', { duration: 3000 });
           });
       } else {
         this.snackBar.open(`${dimFormatted} already present`, '', { duration: 3000 });
       }
     }
-    this.newDimension="";
+    this.newDimension = '';
   }
 
   /**
@@ -433,19 +433,19 @@ export class KeywordsComponent implements OnInit {
   * and added to the list as well as send to the backend
   */
   onKeyEnter() {
-    const keyFormatted = this.newKeyword.trim().toLowerCase();
-    if(keyFormatted !== "") {
-      if(!this.isDuplicate(this.uncatKeywords, keyFormatted)) {
+    const keyFormatted = this.newKeyword.trim();
+    if (keyFormatted !== '') {
+      if (!this.isDuplicate(this.uncatKeywords, keyFormatted)) {
         this.api.addUncategorizedKeyword(keyFormatted)
           .subscribe(res => {
-            this.uncatKeywords.push(keyFormatted)
+            this.uncatKeywords.push(keyFormatted);
             this.snackBar.open(`${keyFormatted} added into the database`, '', { duration: 3000 });
           });
       } else {
         this.snackBar.open(`${keyFormatted} already present`, '', { duration: 3000 });
       }
     }
-    this.newKeyword="";
+    this.newKeyword = '';
   }
 
   /**
@@ -511,17 +511,17 @@ export class KeywordsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      let name = result;
+      const name = result;
 
-      if(name === "" || name === undefined) {
-        //invalid name
+      if (name === '' || name === undefined) {
+        // invalid name
         this.snackBar.open(`invalid name`, '', { duration: 3000 });
-      } else if(this.keywordModels.filter(function(kwm){ return kwm.id === name }).length !== 0) {
-        //duplicate
+      } else if (this.keywordModels.filter(function(kwm){ return kwm.id === name; }).length !== 0) {
+        // duplicate
         this.snackBar.open(`${name} already exists`, '', { duration: 3000 });
       } else {
-        //add new kwm
-        let newKwm: IKeyWordModel = {id: name, hierarchy: [], keywords: []};
+        // add new kwm
+        const newKwm: IKeyWordModel = {id: name, hierarchy: [], keywords: []};
         this.api.addKeywordModel(newKwm).subscribe(res => {
           const newIdx = this.keywordModels.length;
           this.keywordModels[newIdx] = newKwm;
@@ -530,7 +530,7 @@ export class KeywordsComponent implements OnInit {
         });
 
       }
-    })
+    });
   }
 
   /**
@@ -546,7 +546,7 @@ export class KeywordsComponent implements OnInit {
       this.selectedKwmIdx = -1;
       this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
 
-      this.database.dataChange.next([])
+      this.database.dataChange.next([]);
     });
   }
 
@@ -557,28 +557,28 @@ export class KeywordsComponent implements OnInit {
   * @param {ItemFlatNode} node to delete
   */
   public deleteFromHierarchy(node: ItemFlatNode) {
-    const descendants = this.database.getDescendants(this.flatNodeMap.get(node))
-    //re-add to uncatgegorized dimensions/keywords
+    const descendants = this.database.getDescendants(this.flatNodeMap.get(node));
+    // re-add to uncatgegorized dimensions/keywords
     descendants.forEach(node => {
-      if(node.nodeType === NodeType.DIMENSION) {
-        if(!this.isDuplicate(this.uncatDimensions, node.item)) {
-          this.uncatDimensions.push(node.item)
+      if (node.nodeType === NodeType.DIMENSION) {
+        if (!this.isDuplicate(this.uncatDimensions, node.item)) {
+          this.uncatDimensions.push(node.item);
           this.api.addUncategorizedDimension(node.item)
             .subscribe(res => {});
         }
-      } else if(node.nodeType === NodeType.KEYWORD) {
-        if(!this.isDuplicate(this.uncatKeywords, node.item)) {
-          this.uncatKeywords.push(node.item)
+      } else if (node.nodeType === NodeType.KEYWORD) {
+        if (!this.isDuplicate(this.uncatKeywords, node.item)) {
+          this.uncatKeywords.push(node.item);
           this.api.addUncategorizedKeyword(node.item)
             .subscribe(res => {});
         }
         const index = this.keywordModels[this.selectedKwmIdx].keywords.indexOf(node.item, 0);
         this.keywordModels[this.selectedKwmIdx].keywords.splice(index, 1);
       } else {
-        console.error("undefined type")
+        console.error('undefined type');
       }
     });
-    this.removeItem(node)
+    this.removeItem(node);
 
   }
 
@@ -594,8 +594,8 @@ export class KeywordsComponent implements OnInit {
   }
 
   removeItem(flatNode: ItemFlatNode) {
-    const node = this.flatNodeMap.get(flatNode)
-    this.database.deleteItem(node)
+    const node = this.flatNodeMap.get(flatNode);
+    this.database.deleteItem(node);
   }
 
   /** Select the category so we can insert the new item. */
@@ -618,9 +618,9 @@ export class KeywordsComponent implements OnInit {
    * @param event
    */
   dropOverEmptyTree(event) {
-    if(this.selectedKwmIdx !== -1) {
-      if(this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
-        if(this.newItem.nodeType === NodeType.DIMENSION) {
+    if (this.selectedKwmIdx !== -1) {
+      if (this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
+        if (this.newItem.nodeType === NodeType.DIMENSION) {
           this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
         } else {
           this.snackBar.open(`Root node must be a dimension`, '', { duration: 3000 });
@@ -630,7 +630,7 @@ export class KeywordsComponent implements OnInit {
   }
 
   handleDragStart(event, node, newItem, type?) {
-    if(newItem) {
+    if (newItem) {
       this.dragNode = new ItemFlatNode;
       this.dragNode.item = node;
       this.dragNode.nodeType = type;
@@ -681,31 +681,31 @@ export class KeywordsComponent implements OnInit {
   handleDrop(event, node) {
     if (node !== this.dragNode) {
       let newItem: ItemNode = null;
-      console.log("dragNode", this.flatNodeMap.get(this.dragNode), "node", this.flatNodeMap.get(node), "newItem", this.newItem)
-      if(this.newItem !== null
+      console.log('dragNode', this.flatNodeMap.get(this.dragNode), 'node', this.flatNodeMap.get(node), 'newItem', this.newItem);
+      if (this.newItem !== null
          && this.newItem.nodeType === NodeType.KEYWORD
          && this.keywordModels[this.selectedKwmIdx].keywords.includes(this.newItem.item)) {
         this.snackBar.open(`${this.newItem.item} is already in this keyword model`, '', { duration: 3000 });
       } else {
-        //dragNode is used if the item is moved within the tree, this.newItem otherwise
-        let nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
-        switch(this.dragNodeExpandOverArea) {
+        // dragNode is used if the item is moved within the tree, this.newItem otherwise
+        const nodeToDrop = this.dragNode === undefined ? this.newItem : this.dragNode;
+        switch (this.dragNodeExpandOverArea) {
           case 'above':
-            if(nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
+            if (nodeToDrop.nodeType === node.nodeType) { // must be same node type as sibling
               newItem = this.database.copyPasteItemAbove(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
             } else {
               this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
             }
             break;
           case 'below':
-            if(nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
+            if (nodeToDrop.nodeType === node.nodeType) {// must be same node type as sibling
               newItem = this.database.copyPasteItemBelow(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
             } else {
               this.snackBar.open(`${nodeToDrop.item} must be a ${node.nodeType} to be moved here`, '', { duration: 3000 });
             }
             break;
           case 'center':
-            if(nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
+            if (nodeToDrop.nodeType !== node.nodeType) {// must be different node type as parent
               newItem = this.database.copyPasteItem(this.flatNodeMap.get(this.dragNode), this.flatNodeMap.get(node), this.newItem);
             } else {
               this.snackBar.open(`A ${nodeToDrop.nodeType} can not be added to a  ${node.nodeType}`, '', { duration: 3000 });
@@ -713,15 +713,15 @@ export class KeywordsComponent implements OnInit {
             break;
         }
       }
-      if(newItem !== null) {
-        if(newItem.nodeType === NodeType.KEYWORD) { //add to keywords list
+      if (newItem !== null) {
+        if (newItem.nodeType === NodeType.KEYWORD) { // add to keywords list
           this.keywordModels[this.selectedKwmIdx].keywords.push(newItem.item);
         }
-        this.database.deleteItem(this.flatNodeMap.get(this.dragNode)); //remove old node
+        this.database.deleteItem(this.flatNodeMap.get(this.dragNode)); // remove old node
         this.treeControl.expandDescendants(this.nestedNodeMap.get(newItem));
       }
     }
-    //cleanup
+    // cleanup
     this.dragNode = null;
     this.dragNodeExpandOverNode = null;
     this.dragNodeExpandOverTime = 0;
