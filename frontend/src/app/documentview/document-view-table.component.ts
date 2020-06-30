@@ -102,8 +102,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   searchString :string = '';
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
-    KWM       : '#66ff66',
-    ML        : '#3399ff',
+    KWM      : '#66ff66',
+    ML       : '#3399ff',
+    META     : '#e8453c'
+  };
+
+  KEYWORD_TYPE_TOOLTIPS = {
+    MANUAL   : 'DOCUMENTS.TOOLTIP_MANUAL',
+    KWM      : 'DOCUMENTS.TOOLTIP_KWM',
+    ML       : 'DOCUMENTS.TOOLTIP_ML',
+    META     : 'DOCUMENTS.TOOLTIP_META'
   };
 
 
@@ -188,6 +196,43 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.filteredData.forEach(row => this.selection.select(row));
+  }
+
+  /**
+   * @description
+   * Download a single document from the server and opens a save file dialog
+   * @param {IDocument} document to download
+   */
+  public download(iDoc: IDocument) {
+    this.uploadService.getFiles([iDoc]).subscribe(res => {
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res.body);
+      link.setAttribute('download', iDoc.id);
+      link.click();
+    });
+  }
+
+  /**
+  * @description
+  * Downloads all selected documents from the server as a zip file
+  * and opens a save file dialog.
+  */
+  public downloadBulk() {
+    if (this.selection.selected.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
+    }
+
+    this.uploadService.getFiles(this.selection.selected).subscribe(res => {
+      let link = document.createElement('a');
+      link.href = window.URL.createObjectURL(res.body);
+      if (this.selection.selected.length === 1) {
+        link.setAttribute('download', this.selection.selected[0].id);
+      } else {
+        link.setAttribute('download', 'documents.zip');
+      }
+      link.click();
+    });
   }
 
   /**
@@ -288,7 +333,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
-    this.editing = tabChangeEvent.index === 1;
+    this.editing = tabChangeEvent.index > 0;
   }
 
   public sync() {

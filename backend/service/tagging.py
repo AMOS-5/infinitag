@@ -130,6 +130,8 @@ class AutomatedTaggingJob(Thread, TaggingJob):
 
         doc_ids = auto_keywords.keys()
         docs = self.solr_docs.get(*doc_ids)
+        if len(doc_ids)==1:
+            docs=[docs]
         self.status = 'TAGGING_JOB.APPLYING'
         start_time = time.time()
         time_index = 0

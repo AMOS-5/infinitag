@@ -35,7 +35,12 @@
     "ML_PARAMETERS": "ML Parameter",
     "ML_PARAMETERS_DIALOG": "Geben sie die Parameter für den ML Algorithmus an",
     "ML_PARAMETERS_NUMCLUSTERS" : "Anzahl der Cluster",
-    "ML_PARAMETERS_NUMKEYWORDS" : "Anzahl der Keywords pro Cluster"
+    "ML_PARAMETERS_NUMKEYWORDS" : "Anzahl der Keywords pro Cluster",
+    "DOWNLOAD_BUTTON" : "Herunterladen",
+    "TOOLTIP_MANUAL"  : "Manuel hinzugefügtes Keyword",
+    "TOOLTIP_KWM"     : "Kwm basierendes Keyword",
+    "TOOLTIP_ML"      : "ML basierendes Keyword",
+    "TOOLTIP_META"    : "Metadaten Keyword"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",

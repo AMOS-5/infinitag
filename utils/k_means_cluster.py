@@ -48,15 +48,18 @@ def kmeans_clustering(tfidf_matrix,
     # sort cluster centers by proximity to centroid
     order_centroids = km.cluster_centers_.argsort()[:, ::-1]
 
+    keywords_dict = {}
+
     if job is not None:
         job.status = 'TAGGING_JOB.START_SORT'
-    checking = {}
+    progress_step = 0
     start_time = time.time()
     time_index = 0
     iteration_time = None
     idx = 0
     if job is not None:
         job.status = 'TAGGING_JOB.APPLYING_CLUSTERS'
+
     for clustering in range(num_clusters):
         if idx == 0:
             progress_step = 50 / num_clusters
@@ -70,7 +73,7 @@ def kmeans_clustering(tfidf_matrix,
             docname.append(title)
 
         for filename in docname:
-            checking[filename] = keywords
+            keywords_dict[filename] = keywords
 
         if time_index == 0:
             end_time = time.time()
@@ -85,10 +88,10 @@ def kmeans_clustering(tfidf_matrix,
         if job is not None:
             job.progress += progress_step
 
-    return checking
+    return keywords_dict
 
 
-
+## Elbow method to determine the ideal amount of cluster
 """" cluster_error = []
     K = range(1,50)
     for k in K:

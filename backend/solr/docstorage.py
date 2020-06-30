@@ -75,6 +75,7 @@ class SolrDocStorage:
         Adds documents to Solr
         """
         extracted_data = self._extract(*docs)
+        #print(extracted_data)
         docs = [
             SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
