@@ -75,7 +75,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     private api: ApiService,
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder,
     public dialog: MatDialog
   ) {}
   // defines order of columns
@@ -87,22 +86,19 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
+  @Input() pageSize: number | undefined;
+  @Input() currentPage: number | undefined;
   @Input() sortField: string | undefined;
   @Input() sortOrder: string | undefined;
   @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
-
+  
   @Output() syncRequested = new EventEmitter();
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageSize = 5;
-  currentPage = 0;
-  totalSize;
-  end: number;
-  start: number;
-
+  searchString :string = '';
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM       : '#66ff66',
@@ -137,14 +133,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    */
   public setDatasource() {
     if (this.documents !== undefined) {
-      console.log(this.documents);
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
       });
-      this.allData = this.documents;
       this.dataSource.data = this.documents;
-      this.dataSource.paginator = this.paginator;
-      this.totalSize = this.documents.length;
+      this.dataSource.paginator ? this.dataSource.paginator = this.paginator: null;
     }
   }
 
@@ -285,26 +278,12 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder).subscribe((documents: any) => {
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
       this.documents = documents.docs;
-      console.log(this.documents);
       this.dataSource.data = this.documents;
-      // this.setDatasource();
     });
     return e;
   }
-
-  /**
-   * @description
-   * Updates the datasource with current documents.
-   */
-  private iterator() {
-    this.end = (this.currentPage + 1) * this.pageSize;
-    this.start = this.currentPage * this.pageSize;
-    const part = this.allData.slice(this.start, this.end);
-    this.dataSource.data = part;
-  }
-
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     this.editing = tabChangeEvent.index === 1;
@@ -316,13 +295,24 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.syncRequested.emit();
   }
 
-  sortData(sort: Sort) {
+  updateData(sort: Sort) {
     if (sort.direction !== ''){
-      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction).subscribe((documents: any) => {
+      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction, this.searchString).subscribe((documents: any) => {
         this.documents = documents.docs;
         this.dataSource.data = this.documents;
       });
     }
+  }
+
+  updateSearchString(event) {
+    this.searchString = event.target.value;
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+      this.pageSize = documents.pageSize;
+      this.currentPage = documents.currentPage;
+      this.totalPages = documents.total_pages*documents.num_per_page;
+    });
   }
 }
 

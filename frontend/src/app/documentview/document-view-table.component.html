@@ -3,8 +3,7 @@
   <form class="form-inline my-2 my-lg-0">
     <mat-form-field class="example-full-width">
       <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
-      <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="dataSource.filter"
-             [ngModelOptions]="{standalone: true}">
+      <input matInput placeholder="{{'SEARCH_TERM' | translate}}" (keyup)="updateSearchString($event)">
     </mat-form-field>
   </form>
   <h5>{{'DOCUMENTS.AVAILABLE_DOCUMENTS' | translate}}</h5>
@@ -17,7 +16,7 @@
                    (taggingApplied)="sync()"></app-tagging>
     </mat-tab>
   </mat-tab-group>
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="sortData($event)"
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="updateData($event)"
          matSortActive="carbs" matSortDirection="asc">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
@@ -89,8 +88,8 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  <mat-paginator *ngIf="totalSize > 0" class="paginator--centered" #paginator [pageSize]="5"
-                 [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalSize"
-                 [pageIndex]="0" (page)="paginate($event)">
+  <mat-paginator *ngIf="totalPages > 0" class="paginator--centered" #paginator [pageSize]="pageSize"
+                 [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true" [length]="totalPages"
+                 [pageIndex]="currentPage" (page)="paginate($event)">
   </mat-paginator>
 </div>

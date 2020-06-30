@@ -52,25 +52,17 @@ export class DocumentOverviewComponent implements OnInit {
 
 
 
-<<<<<<< HEAD:frontend/src/app/home/home.component.ts
-  constructor(private api: ApiService) {}
-=======
   constructor(private api: ApiService, private translate: TranslateService) {}
->>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7:frontend/src/app/document-overview/document-overview.component.ts
 
   public ngOnInit(): void {
     this.api.getDocuments()
       .subscribe((value: any) => {
-<<<<<<< HEAD:frontend/src/app/home/home.component.ts
-=======
-        console.log(value);
->>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7:frontend/src/app/document-overview/document-overview.component.ts
         this.documents = value.docs;
         this.page = value.page;
         this.num_per_page = value.num_per_page;
         this.sort_field = value.sort_field;
         this.sort_order = value.sort_order;
-        this.total_pages = value.total_pages;
+        this.total_pages = value.total_pages*value.num_per_page;
       });
   }
 }
