@@ -61,9 +61,8 @@ export class ApiService {
       sort_field,
       sort_order
     };
-    
-    (search_term !== undefined) ? params["search_term"] = search_term : null;
-    console.log(params)
+
+    (search_term !== undefined) ? params['search_term'] = search_term : null;
     const documentsUrl = `${environment.serverUrl}/documents`;
     page = page.toString();
     num_per_page = num_per_page.toString();

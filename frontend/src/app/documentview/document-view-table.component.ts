@@ -92,8 +92,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   @Input() sortOrder: string | undefined;
   @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
-  
+
   @Output() syncRequested = new EventEmitter();
+  @Output() pageEvent = new EventEmitter<PageEvent>();
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
@@ -278,6 +279,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
+    this.pageEvent.emit(e);
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
@@ -290,7 +292,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
-    this.ngOnInit();
+    // this.ngOnInit();
     this.selection = new SelectionModel(true, []);
     this.syncRequested.emit();
   }

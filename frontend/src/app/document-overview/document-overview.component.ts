@@ -27,6 +27,7 @@ import { IDocument } from '../models/IDocument.model';
 import { environment } from './../../environments/environment';
 import { ApiService } from '../services/api.service';
 import {TranslateService} from '@ngx-translate/core';
+import {PageEvent} from '@angular/material/paginator';
 @Component({
   selector: 'app-document-overview',
   templateUrl: './document-overview.component.html',
@@ -62,7 +63,19 @@ export class DocumentOverviewComponent implements OnInit {
         this.num_per_page = value.num_per_page;
         this.sort_field = value.sort_field;
         this.sort_order = value.sort_order;
-        this.total_pages = value.total_pages*value.num_per_page;
+        this.total_pages = value.total_pages * value.num_per_page;
+      });
+  }
+
+  public updatePageInfo(e: PageEvent) {
+    console.log(e);
+    this.num_per_page = e.pageSize;
+  }
+
+  public getDocuments(): void {
+    this.api.getDocuments()
+      .subscribe( (value: any) => {
+        this.documents = value.docs;
       });
   }
 }
