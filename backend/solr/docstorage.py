@@ -29,6 +29,7 @@ from pathlib import Path
 from urlpath import URL
 import copy
 import json
+import datetime
 
 
 # TODO setup a logging class discuss with everyone before
@@ -48,6 +49,15 @@ class SolrDocStorage:
     Provides functionality to strore / modify and retrive documents
     from Solr
     """
+
+    AVAILABLE_SORT_FIELDS = set(SolrDoc("path").as_dict().keys())
+    AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
+    AVAILABLE_SEARCH_FIELDS.remove("creation_date")
+    AVAILABLE_SEARCH_FIELDS.remove("size")
+    # we want to perform a string search for now so replace the fields
+    # with the corresponding copy field
+    AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
+    AVAILABLE_SEARCH_FIELDS.add("size_str")
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
@@ -100,11 +110,55 @@ class SolrDocStorage:
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
+        for doc in docs:
+            doc.update_date()
+
         self.con.add([doc.as_dict(True) for doc in docs])
 
+    def page(
+        self,
+        page: int = 0,
+        num_per_page: int = 5,
+        sort_field: str = "id",
+        sort_order: str = "asc",
+        search_term: str = "",
+    ) -> List[SolrDoc]:
+        """
+        Returns a paginated, sorted search query.
+
+        :param page: The page number
+        :param num_per_page: Number of entries per page
+        :param sort_field: The field used for sorting (all fields in SolrDoc)
+        :param sort_order: asc / desc
+        :param search_term: Search term which has to appear in any SolrDoc field
+        :return: total number of pages, search hits
+        """
+        if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
+            raise ValueError(f"Sort field '{sort_field}' does not exist")
+
+        search_query = "*:*"
+        if search_term:
+            search_query = " OR ".join(
+                f"{field}:*{search_term}*"
+                for field in SolrDocStorage.AVAILABLE_SEARCH_FIELDS
+            )
+
+        offset = page * num_per_page
+        res = self.con.search(
+            search_query,
+            rows=num_per_page,
+            start=offset,
+            sort=f"{sort_field} {sort_order}",
+        )
+
+        total_pages = res.hits // num_per_page
+        total_pages += 1 if res.hits % num_per_page else 0
+
+        return total_pages, [SolrDoc.from_hit(hit) for hit in res]
+
     # query syntax = Solr
-    def search(self, query: str, max_results: int = 300) -> dict:
-        return self.con.search(query, rows=max_results)
+    def search(self, query: str, rows: int = 300, **kwargs) -> dict:
+        return self.con.search(query, rows=rows, **kwargs)
 
     def delete(self, *docs: str) -> None:
         # the id of a doc corresponds to the path where it is stored (or where it was
@@ -198,3 +252,4 @@ class SolrDocStorage:
 
 
 __all__ = ["SolrDocStorage"]
+583603

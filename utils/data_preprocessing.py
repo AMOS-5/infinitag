@@ -33,6 +33,8 @@ import pandas as pd
 import threading as th
 
 # TODO tika should be configure correctly to ignore images and other unnecessary data
+os.environ["TIKA_SERVER"] = "tika-server.jar"
+print(f"Tika server set to: {os.environ['TIKA_SERVER']}")
 from tika import parser, detector, language
 from pptx import Presentation
 

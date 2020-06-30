@@ -3,7 +3,8 @@ from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, SolrDocKeyword
 import unittest
 from pathlib import Path
 import os
-
+import datetime
+import time
 
 class DocStorageTestCase(unittest.TestCase):
     config = {
@@ -24,6 +25,51 @@ class DocStorageTestCase(unittest.TestCase):
 
     def tearDown(self):
         SOLR_DOCS.clear()
+
+    def test_pagination_sort_asc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.docx", "test.pdf"]
+        _, docs = SOLR_DOCS.page(0, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pptx", "test.txt"]
+        _, docs = SOLR_DOCS.page(1, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_pagination_sort_desc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.txt", "test.pptx"]
+        _, docs = SOLR_DOCS.page(0, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pdf", "test.docx"]
+        _, docs = SOLR_DOCS.page(1, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_total_num_pages(self):
+        SOLR_DOCS.add(*self.docs)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 1)
+        self.assertEqual(total_num_pages, 4)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 2)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 3)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 4)
+        self.assertEqual(total_num_pages, 1)
+
+    def test_pagination_sort_field_does_not_exist(self):
+        with self.assertRaises(ValueError):
+            SOLR_DOCS.page(0, 1, "not_existing_field", "asc")
 
     def test_add_and_search(self):
         SOLR_DOCS.add(*self.docs)
@@ -96,6 +142,79 @@ class DocStorageTestCase(unittest.TestCase):
 
         self.assertEqual(doc.lang, expected_lang)
 
+    def test_pagination_sort_asc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.docx", "test.pdf"]
+        _, docs = SOLR_DOCS.page(0, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pptx", "test.txt"]
+        _, docs = SOLR_DOCS.page(1, 2, "id", "asc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_pagination_sort_desc(self):
+        SOLR_DOCS.add(*self.docs)
+
+        expected_page1 = ["test.txt", "test.pptx"]
+        _, docs = SOLR_DOCS.page(0, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page1)
+
+        expected_page2 = ["test.pdf", "test.docx"]
+        _, docs = SOLR_DOCS.page(1, 2, "id", "desc")
+        doc_ids = [doc.id for doc in docs]
+        self.assertEqual(doc_ids, expected_page2)
+
+    def test_total_num_pages(self):
+        SOLR_DOCS.add(*self.docs)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 1)
+        self.assertEqual(total_num_pages, 4)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 2)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 3)
+        self.assertEqual(total_num_pages, 2)
+
+        total_num_pages, _ = SOLR_DOCS.page(0, 4)
+        self.assertEqual(total_num_pages, 1)
+
+    def test_pagination_sort_field_does_not_exist(self):
+        with self.assertRaises(ValueError):
+            SOLR_DOCS.page(0, 1, "not_existing_field", "asc")
+
+    def test_pagination_search_term(self):
+        SOLR_DOCS.add(*self.docs)
+
+        try:
+            SOLR_DOCS.page(search_term="asdf")
+        except Exception as e:
+            self.fail(f"Raised unexpected exception: {e}")
+
+    def test_pagination_year_search(self):
+        SOLR_DOCS.add(*self.docs)
+
+        current_year = datetime.datetime.now().strftime("%Y")
+        _, docs = SOLR_DOCS.page(search_term=current_year)
+
+        self.assertEqual(len(docs), 4)
+
+    def test_doc_creation_date_changes_on_each_update(self):
+        doc = self.docs[0]
+
+        SOLR_DOCS.add(doc)
+        doc_before = SOLR_DOCS.get(doc.id)
+
+        time.sleep(5)
+
+        SOLR_DOCS.update(doc)
+        doc_after = SOLR_DOCS.get(doc.id)
+
+        self.assertNotEqual(doc_before.creation_date, doc_after.creation_date)
 
 SOLR_DOCS = SolrDocStorage(DocStorageTestCase.config)
 

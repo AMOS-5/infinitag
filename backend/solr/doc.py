@@ -109,7 +109,7 @@ class SolrDoc:
         self.size = size
         self.creation_date = creation_date
         self.content = content
-
+        self.full_path = None
         # current fix for windows / linux agnostic stuff. The doc can always be deleted with is's
         # id, and the full path is only used for extraction
         try:
@@ -175,6 +175,8 @@ class SolrDoc:
         # alias for id
         return self.id
 
+    def update_date(self) -> None:
+        self.creation_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
     return field in res and res[field]

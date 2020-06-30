@@ -70,6 +70,7 @@ import { TaggingComponent } from './tagging/tagging.component';
 import { TaggingDialogComponent } from '../dialogs/tagging.dialog.component';
 import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-parameters.component';
 import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
+import { DocumentOverviewComponent } from './document-overview/document-overview.component';
 
 
 
@@ -93,6 +94,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     TaggingDialogComponent,
     AutomatedTaggingParametersDialog,
     NaturalNumbersOnlyDirective,
+    DocumentOverviewComponent
   ],
     imports: [
         BrowserModule,

@@ -25,8 +25,18 @@
 import { IDocument } from '../models/IDocument.model';
 import { IKeyword } from '../models/IKeyword.model';
 
-import { Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild, ElementRef } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+  ElementRef,
+  EventEmitter,
+  Output
+} from '@angular/core';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -37,12 +47,10 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { UploadService } from '../services/upload.service';
 import { FormBuilder } from '@angular/forms';
-import { ITaggingRequest } from '../models/ITaggingRequest.model';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
-import { DialogData, AutomatedTaggingParametersDialog } from '../../dialogs/automated-tagging-parameters.component';
 
 /**
  *
@@ -67,7 +75,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     private api: ApiService,
     private uploadService: UploadService,
     private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder,
     public dialog: MatDialog
   ) {}
   // defines order of columns
@@ -79,17 +86,20 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   interval: Subscription;
   @Input() documents: Array<IDocument> | undefined;
+  @Input() pageSize: number | undefined;
+  @Input() currentPage: number | undefined;
+  @Input() sortField: string | undefined;
+  @Input() sortOrder: string | undefined;
+  @Input() totalPages: number | undefined;
   @Input() filter: string | undefined;
+
+  @Output() syncRequested = new EventEmitter();
+  @Output() pageEvent = new EventEmitter<PageEvent>();
   dataSource = new MatTableDataSource();
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  pageSize = 10;
-  currentPage = 0;
-  totalSize;
-  end: number;
-  start: number;
-
+  searchString :string = '';
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -106,29 +116,24 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
 
   public ngOnInit() {
-    this.api.getDocuments()
-      .subscribe((documents: Array<IDocument>) => {
-        this.documents = documents;
-        this.setDatasource();
-        this.api.getKeywordListEntries()
-          .subscribe((data: []) => {
-            this.keywords = data;
-            this.selectedKeywords = this.keywords;
-          });
-        this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
-
-        // tell MatTableDataSource how an entry should be searched for given a filter string
-        this.dataSource.filterPredicate =
-        (doc: IDocument, filter: string) =>
-        {
-          return  doc.title.includes(filter) === true ||
-                  doc.language.includes(filter) === true ||
-                  doc.size.toString().includes(filter) === true ||
-                  doc.type.includes(filter) === true ||
-                  doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
-        };
+    this.setDatasource();
+    this.api.getKeywordListEntries()
+      .subscribe((data: []) => {
+        this.keywords = data;
+        this.selectedKeywords = this.keywords;
       });
+    this.breakpoint = (window.innerWidth <= 400) ? 1 : 6;
 
+    // tell MatTableDataSource how an entry should be searched for given a filter string
+    this.dataSource.filterPredicate =
+    (doc: IDocument, filter: string) =>
+    {
+      return  doc.title.includes(filter) === true ||
+              doc.language.includes(filter) === true ||
+              doc.size.toString().includes(filter) === true ||
+              doc.type.includes(filter) === true ||
+              doc.keywords.filter(kw => kw.value.includes(filter)).length !== 0;
+    };
   }
 
   /**
@@ -140,14 +145,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
       });
-
-      this.allData = this.documents;
-      this.dataSource.paginator = this.paginator;
-      this.totalSize = this.allData.length;
-      this.iterator();
-      setTimeout(() => {
-        this.dataSource.sort = this.sort;
-      });
+      this.dataSource.data = this.documents;
+      this.dataSource.paginator ? this.dataSource.paginator = this.paginator: null;
     }
   }
 
@@ -322,22 +321,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     * @description
     * Gets page event from frontand and runs the iterator.
     */
-  public handlePage(e: PageEvent){
+  public paginate(e: PageEvent){
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
-    this.iterator();
+    this.pageEvent.emit(e);
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+    });
     return e;
-  }
-
-  /**
-   * @description
-   * Updates the datasource with current documents.
-   */
-  private iterator() {
-    this.end = (this.currentPage + 1) * this.pageSize;
-    this.start = this.currentPage * this.pageSize;
-    const part = this.allData.slice(this.start, this.end);
-    this.dataSource.data = part;
   }
 
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
@@ -345,7 +337,29 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
-    this.ngOnInit();
+    // this.ngOnInit();
     this.selection = new SelectionModel(true, []);
+    this.syncRequested.emit();
+  }
+
+  updateData(sort: Sort) {
+    if (sort.direction !== ''){
+      this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction, this.searchString).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        this.dataSource.data = this.documents;
+      });
+    }
+  }
+
+  updateSearchString(event) {
+    this.searchString = event.target.value;
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+      this.pageSize = documents.num_per_page;
+      this.currentPage = documents.page;
+      this.totalPages = documents.total_pages * documents.num_per_page;
+    });
   }
 }
+

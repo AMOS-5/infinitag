@@ -450,14 +450,27 @@
   <field name="_root_" type="string" docValues="false" indexed="true" stored="false"/>
   <field name="_text_" type="text_general" multiValued="true" indexed="true" stored="false"/>
   <field name="_version_" type="plong" indexed="false" stored="false"/>
+
   <field name="id" type="string" multiValued="false" indexed="true" required="true" stored="true"/>
+
   <field name="content" type="text_general" multiValued="false"/>
+  <copyField source="content" dest="content_str" maxChars="256"/>
+
   <field name="creation_date" type="pdates" multiValued="false"/>
+  <copyField source="creation_date" dest="creation_date_str" maxChars="256"/>
+
   <field name="keywords" type="string" multiValued="true"/>
+  <copyField source="keywords" dest="keywords_str" maxChars="256"/>
+
   <field name="language" type="string" multiValued="false"/>
+
   <field name="size" type="plongs" multiValued="false"/>
+  <copyField source="size" dest="size_str"/>
+
   <field name="title" type="text_general" multiValued="false"/>
-  <field name="type" type="text_general" multiValued="false"/>
+  <copyField source="title" dest="title_str" maxChars="256"/>
+
+  <field name="type" type="string" multiValued="false"/>
 
   <!-- <field name="last_modified" type="pdates"/> TODO CHANGE LATER-->
 
@@ -530,10 +543,5 @@
   <dynamicField name="*_f" type="pfloat" indexed="true" stored="true"/>
   <dynamicField name="*_d" type="pdouble" indexed="true" stored="true"/>
   <dynamicField name="*_p" type="location" indexed="true" stored="true"/>
-  <copyField source="language" dest="language_str" maxChars="256"/>
-  <copyField source="title" dest="title_str" maxChars="256"/>
-  <copyField source="type" dest="type_str" maxChars="256"/>
-  <copyField source="content" dest="content_str" maxChars="256"/>
-  <copyField source="keywords" dest="keywords_str" maxChars="256"/>
-  <copyField source="size" dest="size_str"/>
+
 </schema>
