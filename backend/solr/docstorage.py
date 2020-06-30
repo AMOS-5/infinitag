@@ -50,9 +50,6 @@ class SolrDocStorage:
     from Solr
     """
 
-<<<<<<< HEAD
-    AVAILABLE_FIELDS = set(SolrDoc("path").as_dict().keys())
-=======
     AVAILABLE_SORT_FIELDS = set(SolrDoc("path").as_dict().keys())
     AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
     AVAILABLE_SEARCH_FIELDS.remove("creation_date")
@@ -61,7 +58,6 @@ class SolrDocStorage:
     # with the corresponding copy field
     AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
     AVAILABLE_SEARCH_FIELDS.add("size_str")
->>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
@@ -136,39 +132,14 @@ class SolrDocStorage:
         :param search_term: Search term which has to appear in any SolrDoc field
         :return: total number of pages, search hits
         """
-<<<<<<< HEAD
-        if sort_field not in SolrDocStorage.AVAILABLE_FIELDS:
-=======
         if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
->>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
         search_query = "*:*"
         if search_term:
-<<<<<<< HEAD
-            fields_to_search = ["id", "title", "type", "language", "content"]
-
-            try:
-                int(search_term)
-                fields_to_search.append("size")
-            except:
-                pass
-
-            # TODO datetime has to be fixed. Currently excluding it since we don't
-            # know whether a search term from the frontend is a date or not
-            try:
-                datetime.datetime.strptime(search_term, "%YYYY-%MM-%DDT%HH:%MM:%SSZ")
-                fields_to_search.append("creation_date")
-            except Exception as e:
-                print(e)
-
-            search_query = " OR ".join(
-                f"{field}:{search_term}" for field in fields_to_search
-=======
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in SolrDocStorage.AVAILABLE_SEARCH_FIELDS
->>>>>>> 601ab2b1e13e1baa301faa9ce3344c1c0598f8b7
             )
 
         offset = page * num_per_page
