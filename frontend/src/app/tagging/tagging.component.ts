@@ -114,7 +114,6 @@ export class TaggingComponent implements OnInit {
             this.snackBar.open('Job cancelled', ``, { duration: 3000 });
           });
       }
-      dialogRef.close();
       this.taggingApplied.emit();
     });
   }
@@ -208,7 +207,6 @@ export class TaggingComponent implements OnInit {
     this.monitorJobProgress(taggingDialogData)
       .then( () => {
         this.snackBar.open(`Finished tagging with Job ID: ${taggingDialogData.jobId}`, '', { duration: 3000 });
-        this.taggingApplied.emit(true);
     });
   }
 
