@@ -14,19 +14,19 @@ import os
 test_config_keywords = {
     "corename": "test_keywords",
     # "url": "http://localhost:8983/solr/",
-    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
+    "url": "http://18.235.6.254:8983/solr/",
     "always_commit": True,
 }
 test_config_keyword_model = {
     "corename": "test_keyword_model",
     # "url": "http://localhost:8983/solr/",
-    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
+    "url": "http://18.235.6.254:8983/solr/",
     "always_commit": True,
 }
 test_config_docs = {
     "corename": "test_documents",
     # "url": "http://localhost:8983/solr/",
-    "url": "http://ec2-3-86-180-141.compute-1.amazonaws.com:8983/solr/",
+    "url": "http://18.235.6.254:8983/solr/",
     "always_commit": True,
 }
 
