@@ -19,9 +19,9 @@ from __future__ import print_function
 from nltk.stem.snowball import SnowballStemmer
 
 stemmer = SnowballStemmer("english")
-from utils.data_preprocessing import data_load
+from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering
+from utils.k_means_cluster import kmeans_clustering,silhoutteMethod
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
 import pickle
@@ -41,9 +41,7 @@ warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
 
-
-
-    directory = r'E:\clustering\t5_testdata'
+    directory = r'E:\Infinitag\tests\test_dataset'
     # directory =  r'E:\amos\utils\t5\dummy'
     unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home',
                          'left', 'right', 'history', 'daily', 'instruction',
@@ -67,44 +65,24 @@ if __name__ == "__main__":
     num_clusters_kmeans = 5
     words_per_cluster = 5
 
-    # Data loading process : Using pickle to save time while running experiments
-    data_files = r'..\utils\data_files.p'
-    pickle_data_files = Path(data_files)
+    flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
+    print(flattened)
 
-    if pickle_data_files.is_file():
-        print('')
-        print('Pickle files for data_load are AVAILABLE')
-        with open(data_files, "rb") as fp:
-            print('Data File available and loading..')  # Unpickling
-            flattened, vocab_frame, file_list, overall = pickle.load(fp)
 
-    else:
-        print('')
-        print('Pickle files for data_load are NOT AVAILABLE')
-        flattened, vocab_frame, file_list, overall = data_load(directory,
-                                                               unwanted_keywords,
-                                                               extensions_allowed)
-        pickle.dump([flattened, vocab_frame, file_list, overall],
-                    open("data_files.p", "wb"))
+    count=0
+    for words in flattened:
+        count+=len(words)
 
-    # TFIDF process : Using pickle to save time while running experiments. Computation time is high during training
-    distance_files = r'..\utils\distance.p'
-    pickle_distance_files = Path(distance_files)
+    print(count)
 
-    if pickle_distance_files.is_file():
-        print('')
-        print('Pickle files for distances are AVAILABLE')
-        with open(distance_files, "rb") as fp:
-            print('Distance file available and loading..')  # Unpickling
-            dist, tfidf_matrix, terms = pickle.load(fp)
+    dist, tfidf_matrix, terms = tfidf_vector(flattened)
 
-    else:
-        print('')
-        print('Pickle files for distances are NOT AVAILABLE')
-        dist, tfidf_matrix, terms = tfidf_vector(flattened)
-        pickle.dump([dist, tfidf_matrix, terms], open("distance.p", "wb"))
+    print(tfidf_matrix.shape)
 
     if clustering_type == 'k-means':
+        #nselectedfiles = len(file_list)
+        #clustering = silhoutteMethod(tfidf_matrix,nselectedfiles)
+        #clustering = optimal_clusters(tfidf_matrix,nselectedfiles)
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
                                        file_list, num_clusters_kmeans,
                                        words_per_cluster)

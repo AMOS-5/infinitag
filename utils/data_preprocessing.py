@@ -194,9 +194,10 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
     vocabulary = []
     overall = []
     for file in files:
+
         meta, content = get_clean_content(file)
         if content is not None:
-            vocabulary.extend(content)
+            vocabulary.append(content)
 
         # TODO why append the content as a list, when it itself is already a
         # list? is it rly okay that the content is None?
@@ -221,6 +222,7 @@ def load_data_from_frontend(docs: dict):
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
+
 
     return vocabulary, vocab_frame, filenames, overall
 
@@ -285,11 +287,11 @@ def clean_alphanumericals(content: List[str]) -> List[str]:
 
 
 def get_all_files(dir: str) -> List[str]:
-    files = []
+    datafiles = []
     for path, directories, files in os.walk(dir):
-        files.extend(os.path.join(path, file) for file in files)
+        datafiles.extend(os.path.join(path, file) for file in files)
 
-    return files
+    return datafiles
 
 
 def extract(path: str) -> Tuple[dict, str]:
