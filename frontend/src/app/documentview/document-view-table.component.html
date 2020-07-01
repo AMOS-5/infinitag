@@ -3,7 +3,7 @@
   <form class="form-inline my-2 my-lg-0">
       <mat-form-field class="example-full-width">
         <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
-        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="dataSource.filter" [ngModelOptions]="{standalone: true}">
+        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" (keyup)="updateSearchString($event)">
       </mat-form-field>
     </form>
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
