@@ -21,7 +21,11 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
+<<<<<<< HEAD
 from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
+=======
+from utils.k_means_cluster import kmeans_clustering,silhoutteMethod
+>>>>>>> research on optimal clusters
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
 from utils.dbscan import extract_keywords_yake
@@ -42,7 +46,11 @@ warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
 
+<<<<<<< HEAD
     directory = r'E:\amos\utils\t5\50'
+=======
+    directory = r'E:\Infinitag\tests\test_dataset'
+>>>>>>> research on optimal clusters
     # directory =  r'E:\amos\utils\t5\dummy'
     unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home',
                          'left', 'right', 'history', 'daily', 'instruction',
@@ -65,6 +73,7 @@ if __name__ == "__main__":
     num_topics = 10
 
 
+<<<<<<< HEAD
 
 
     flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
@@ -78,6 +87,26 @@ if __name__ == "__main__":
         start = time.time()
         num_clusters_kmeans = optimal_clusters_elbowMethod(tfidf_matrix,number_of_files, mini_batch= mini_batch)
         print('Number of Files Selected : ', number_of_files)
+=======
+    flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
+    print(flattened)
+
+
+    count=0
+    for words in flattened:
+        count+=len(words)
+
+    print(count)
+
+    dist, tfidf_matrix, terms = tfidf_vector(flattened)
+
+    print(tfidf_matrix.shape)
+
+    if clustering_type == 'k-means':
+        #nselectedfiles = len(file_list)
+        #clustering = silhoutteMethod(tfidf_matrix,nselectedfiles)
+        #clustering = optimal_clusters(tfidf_matrix,nselectedfiles)
+>>>>>>> research on optimal clusters
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
                                       file_list, num_clusters_kmeans,
                                       words_per_cluster,mini_batch=mini_batch)

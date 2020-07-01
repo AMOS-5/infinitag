@@ -26,6 +26,47 @@ import matplotlib.pyplot as plt
 from kneed import KneeLocator
 import time
 from sklearn.metrics import silhouette_score
+<<<<<<< HEAD
+=======
+
+def optimal_clusters_elbowMethod(tfidf_matrix,nselectedfiles):
+
+    startime= time.time()
+    cluster_error = []
+    K = range(1, nselectedfiles)
+    for k in K:
+        print(k)
+        kmeanModel = KMeans(n_clusters=k)
+        kmeanModel.fit(tfidf_matrix)
+        cluster_error.append(kmeanModel.inertia_)
+
+    clusters_df = pd.DataFrame({"num_clusters": K, "cluster_error": cluster_error})
+    print(clusters_df)
+
+    # Plot the elbow Plot
+    plt.figure(figsize=(12, 6))
+    plt.plot(clusters_df.num_clusters, clusters_df.cluster_error, marker="o")
+    plt.xlabel('k')
+    plt.ylabel('Clusters_Error')
+    plt.title('The Elbow Method showing the optimal k')
+    plt.show()
+    plt.savefig('Elbow.png')
+
+    x = range(1, len(cluster_error) + 1)
+
+
+    kn = KneeLocator(x, cluster_error, curve='convex', direction='decreasing')
+    nclust= kn.knee
+    print("\n\nOptimal no. of clusters : ",nclust)
+
+    plt.xlabel('number of clusters k')
+    plt.ylabel('Sum of squared distances')
+    plt.plot(x, cluster_error, 'bx-')
+    plt.vlines(kn.knee, plt.ylim()[0], plt.ylim()[1], linestyles='dashed')
+    plt.show()
+    plt.savefig('Knee.png')
+
+>>>>>>> research on optimal clusters
 
 def optimal_clusters_elbowMethod(tfidf_matrix,number_of_files, mini_batch = True):
 
@@ -86,6 +127,28 @@ def silhoutteMethod(tfidfmatrix, number_of_files, mini_batch=True):
     print("best clusters:",best_clusters)
     return best_clusters
 
+    return nclust
+
+
+def silhoutteMethod(tfidfmatrix,nselected):
+
+    range_n_clusters = range(2, nselected-1)# clusters range you want to select
+    #dataToFit = [[12, 23], [112, 46], [45, 23]]  # sample data
+    best_clusters = 0  # best cluster number which you will get
+    previous_silh_avg = 0.0
+
+    for n_clusters in range_n_clusters:
+        clusterer = KMeans(n_clusters=n_clusters)
+        cluster_labels = clusterer.fit_predict(tfidfmatrix)
+        silhouette_avg = silhouette_score(tfidfmatrix, cluster_labels)
+        print("silhoutte avg:",silhouette_avg)
+        if silhouette_avg > previous_silh_avg:
+            previous_silh_avg = silhouette_avg
+            best_clusters = n_clusters
+
+    print("best clusters:",best_clusters)
+    return best_clusters
+
 def kmeans_clustering(tfidf_matrix,
                       flattened,
                       terms,
@@ -96,12 +159,17 @@ def kmeans_clustering(tfidf_matrix,
                       mini_batch=True):
 
     ### Check the optimal clsuetrs here
+<<<<<<< HEAD
     if mini_batch:
         print('Mini Batch K Means')
         km = MiniBatchKMeans(n_clusters=num_clusters, init='k-means++', n_init=2, init_size=1000)
     else:
         print('K Means')
         km = KMeans(n_clusters=num_clusters)
+=======
+
+    km = KMeans(n_clusters=num_clusters)
+>>>>>>> research on optimal clusters
 
     km.fit(tfidf_matrix)
     joblib.dump(km, 'kmeans_model.pkl')
@@ -156,3 +224,7 @@ def kmeans_clustering(tfidf_matrix,
             job.progress += progress_step
     print('keywords_dict : ',keywords_dict)
     return keywords_dict
+<<<<<<< HEAD
+=======
+
+>>>>>>> research on optimal clusters
