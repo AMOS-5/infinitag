@@ -99,7 +99,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  searchString :string = '';
+  searchString = '';
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -146,7 +146,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         document.creation_date = new Date(document.creation_date);
       });
       this.dataSource.data = this.documents;
-      this.dataSource.paginator ? this.dataSource.paginator = this.paginator: null;
+      this.dataSource.paginator ? this.dataSource.paginator = this.paginator : null;
     }
   }
 
@@ -205,7 +205,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    */
   public download(iDoc: IDocument) {
     this.uploadService.getFiles([iDoc]).subscribe(res => {
-      let link = document.createElement('a');
+      const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       link.setAttribute('download', iDoc.id);
       link.click();
@@ -224,7 +224,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     this.uploadService.getFiles(this.selection.selected).subscribe(res => {
-      let link = document.createElement('a');
+      const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       if (this.selection.selected.length === 1) {
         link.setAttribute('download', this.selection.selected[0].id);
@@ -360,6 +360,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.currentPage = documents.page;
       this.totalPages = documents.total_pages * documents.num_per_page;
     });
+  }
+
+  public getSizePresentation(size: number): string {
+    const kilobytes = size / 1024;
+    const megabytes = kilobytes / 1024;
+    const gigabytes = megabytes / 1024;
+
+    if (gigabytes > 1) {
+      return `${gigabytes.toFixed(1)} GB`;
+    } else if (megabytes > 1) {
+      return `${megabytes.toFixed(1)} MB`;
+    } else if (kilobytes > 1) {
+      return `${kilobytes.toFixed(0)} KB`;
+    }
+    return `${size} B`;
   }
 }
 
