@@ -1,5 +1,6 @@
-import json
+import pytest
 import unittest
+import json
 import io
 import os
 from time import sleep
@@ -30,7 +31,8 @@ import app as application
 from app import app
 
 
-class BasicTestCase(unittest.TestCase):
+@pytest.mark.usefixtures("solr_docs", "solr_keywords", "solr_keyword_model")
+class TestController(unittest.TestCase):
     def setUp(self):
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
@@ -140,8 +142,6 @@ class BasicTestCase(unittest.TestCase):
         self.assertEqual(test1_file.read(), b"abc")
         test2_file = zip.open('documents/test2.txt')
         self.assertEqual(test2_file.read(), b"def")
-
-
 
     def test_change_keywords(self):
         application.solr.docs.clear()

@@ -149,7 +149,6 @@ def change_keywords():
         ]
         solr.docs.update(solDoc)
     except Exception as e:
-        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print("changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout)
