@@ -158,6 +158,8 @@ class TestDocStorage(unittest.TestCase):
         import time
         import copy
 
+        doc = self.docs[0]
+
         self.solr_docs.add(doc)
         doc_before = self.solr_docs.get(doc.id)
 
