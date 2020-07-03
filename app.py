@@ -100,7 +100,6 @@ def upload_file():
     try:
         solr.docs.add(doc)
     except Exception as e:
-        print(e)
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print(f"Uploaded, saved and indexed file: {file_name}", file=sys.stdout)
