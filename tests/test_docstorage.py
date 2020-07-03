@@ -154,21 +154,20 @@ class TestDocStorage(unittest.TestCase):
         _, docs = self.solr_docs.page(search_term="8137")
         self.assertEqual(len(docs), 1)
 
-    def test_doc_creation_date_changes_on_each_update(self):
+    def test_doc_last_modified_date_changes_on_each_update(self):
         import time
-
-        doc = self.docs[0]
+        import copy
 
         self.solr_docs.add(doc)
         doc_before = self.solr_docs.get(doc.id)
 
+        # wait and update to check the the modified date has changed
         time.sleep(5)
-
-        self.solr_docs.update(doc)
+        self.solr_docs.update(copy.deepcopy(doc_before))
         doc_after = self.solr_docs.get(doc.id)
 
-        self.assertNotEqual(doc_before.creation_date, doc_after.creation_date)
-
+        self.assertNotEqual(doc_before.last_modified, doc_after.last_modified)
+        self.assertEqual(doc_before.creation_date, doc_after.creation_date)
 
 if __name__ == "__main__":
     unittest.main()
