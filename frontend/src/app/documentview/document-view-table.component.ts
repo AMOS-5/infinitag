@@ -144,6 +144,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
+        document.last_modified = new Date(document.last_modified);
       });
       this.dataSource.data = this.documents;
       this.dataSource.paginator ? this.dataSource.paginator = this.paginator : null;
