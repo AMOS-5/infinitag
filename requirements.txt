@@ -1,25 +1,30 @@
+# backend base
 pyLDAvis
 flask
 flask_cors
 flask_jsonpify
-pytest
-nltk
-gensim
+gunicorn
+autoapi
+Werkzeug
+sphinx
 pysolr
+# file processing
+tika
+langdetect
+# machine learning / data science
+nltk
+sklearn
+scipy
+matplotlib
+snowballstemmer
+pandas
+numpy
+spacy
+gensim
+# misc
 urlpath
 atoma
 lxml
-gunicorn
-Werkzeug
-sklearn
-sphinx
-autoapi
-pandas
-scipy
-matplotlib
-numpy
-snowballstemmer
-tika
-python-pptx
-langdetect
-spacy
+# testing
+pytest
+pytest-solr
