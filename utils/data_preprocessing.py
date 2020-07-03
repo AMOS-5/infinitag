@@ -25,7 +25,6 @@ from nltk.stem.wordnet import WordNetLemmatizer
 import langdetect
 import spacy
 
-
 import os
 import io
 import string
@@ -33,11 +32,10 @@ import pandas as pd
 import threading as th
 
 # TODO tika should be configure correctly to ignore images and other unnecessary data
-os.environ["TIKA_SERVER"] = "tika-server.jar"
-print(f"Tika server set to: {os.environ['TIKA_SERVER']}")
-from tika import parser, detector, language
-from pptx import Presentation
+os.environ["TIKA_PATH"] = "./downloads/tika"
+print(f"Tika server set to: {os.environ['TIKA_PATH']}")
 
+from tika import parser, detector, language
 from typing import Set, List, Tuple
 
 
@@ -302,6 +300,8 @@ def extract(path: str) -> Tuple[dict, str]:
         return None, None
 
     data = parser.from_file(path, requestOptions={"timeout": 10000})
+    if data is None:
+        return None, None
 
     meta, content = data["metadata"], data["content"]
     meta["stream_size"] = os.path.getsize(path)

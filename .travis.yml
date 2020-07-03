@@ -12,9 +12,6 @@ matrix:
         - language: python
           python: 3.8.0
           install:
-              - pip install -r requirements.txt
-              - wget -O tika-server.jar http://search.maven.org/remotecontent?filepath=org/apache/tika/tika-server/1.24/tika-server-1.24.jar
-              - python -c "import nltk; nltk.download('all')"
-              - python -m spacy download de_core_news_sm
+              - source INSTALL.sh
           script:
-              - python -m unittest discover -s tests
+              - python3 -m pytest tests
