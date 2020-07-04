@@ -1,15 +1,46 @@
 <div class="container">
     <h1>Dashboard InfiniTag</h1>
     <h3>{{'HOME.MOTTO' | translate}}</h3>
-    <mat-grid-list cols="5" rowHeight="1:1.5">
-        <mat-grid-tile [colspan]="2">1</mat-grid-tile>
-        <mat-grid-tile [colspan]="2">2</mat-grid-tile>
-        <mat-grid-tile [colspan]="1">3</mat-grid-tile>
+    <mat-grid-list cols="5" rowHeight="1:2">
+        <mat-grid-tile [colspan]="2">
+            <div class="content-inside-grid">
+                <div echarts [options]="pieOptions" [autoResize]="true" class="demo-chart"></div>
+            </div>
+            <!-- <div class="content-inside-grid"></div> -->
+
+        </mat-grid-tile>
+
+        <mat-grid-tile [colspan]="2">
+            <div class="content-inside-grid">
+                <mat-form-field>
+                    <mat-label>Filter By</mat-label>
+                    <mat-select>
+                        <mat-option *ngFor="let option of options" [value]="option.value" (selectionChange)="changeBar($event)">
+                            {{option.viewValue}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="bar-chart"> 
+                    <div  echarts [options]="barOptions" [autoResize]="true" class="demo-chart"></div>
+                </div>
+            </div>
+        </mat-grid-tile>
+        <mat-grid-tile [colspan]="1">
+            <div fxLayout="column" fxLayoutAlign="space-evenly center">
+                <div class="content-inside-grid">
+                    <div class="circle">#Keywords<br>30</div>
+                </div>
+                <div class="content-inside-grid">
+                    <div class="circle">#Keyword Models<br>30</div>
+                </div>
+                <div class="content-inside-grid">
+                    <div class="circle">#Documents<br>30</div>
+                </div>
+            </div>
+           
+        </mat-grid-tile>
     </mat-grid-list>
     <div class="footer">
         <img class="footer__logo" src="../../assets/img/InfiniTag2.png" alt="InfiniTag" class="footer" />
     </div>
 </div>
-
-
-
