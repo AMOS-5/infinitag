@@ -78,7 +78,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     public dialog: MatDialog
   ) {}
   // defines order of columns
-  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
+  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'last_modified', 'MyKeywords'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;

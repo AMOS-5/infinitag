@@ -61,8 +61,8 @@
       <td mat-cell *matCellDef="let element"> {{ getSizePresentation(element.size)}}</td>
     </ng-container>
 
-    <ng-container matColumnDef="creation_date">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="creation_date"> {{'DOCUMENTS.LAST_MODIFIED' | translate}} </th>
+    <ng-container matColumnDef="last_modified">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="last_modified"> {{'DOCUMENTS.LAST_MODIFIED' | translate}} </th>
       <td mat-cell *matCellDef="let element"> {{element.last_modified | date:'dd.MM.yy HH:mm'}} </td>
     </ng-container>
   <ng-container matColumnDef="MyKeywords">
