@@ -39,6 +39,7 @@ __pycache__/
 venv/
 *.pyc
 tmp/
+downloads/
 
 *.rst
 !index.rst
