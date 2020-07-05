@@ -27,7 +27,12 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
-      <button [disabled]="!editing" mat-raised-button color="primary" (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}</button>
+      <button [disabled]="!editing" mat-raised-button color="primary"
+       (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}
+      </button>
+      <button [disabled]="!editing" mat-raised-button color="primary"
+       (click)="deleteBulkKeywords()">{{'DOCUMENTS.DELETE_KEYWORDS' | translate}}
+      </button>
     </div>
   </mat-grid-tile>
   <mat-grid-tile [colspan]="4" [rowspan]="1">

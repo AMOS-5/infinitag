@@ -140,6 +140,25 @@ export class TaggingComponent implements OnInit {
     this.selectedBulkKeywords = [];
   }
 
+  public deleteBulkKeywords() {
+    if (this.selectedDocuments.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+    }
+    this.selectedBulkKeywords.forEach(keyword => {
+      console.log(keyword)
+      this.selectedDocuments.forEach(document => {
+        console.log(document.keywords)
+        const index = document.keywords.map(kw => kw.value).indexOf(keyword.id);
+        if (index >= 0) {
+          document.keywords.splice(index, 1);
+        }
+
+        this.uploadService.patchKeywords(document).subscribe(res => {});
+      });
+    });
+    this.selectedBulkKeywords = [];
+  }
+
   public changeTaggingMethod(event: any) {
     this.selectedTaggingMethod = event.value;
   }
