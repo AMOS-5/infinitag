@@ -21,7 +21,7 @@ from backend.solr import (
     SolrDocKeyword,
 )
 
-from typing import Set, List, Generator
+from typing import Set, List, Generator, Tuple
 
 
 class SolrKeywordStatistics(SolrKeywords):
@@ -67,17 +67,17 @@ class SolrStatistics:
         self.solr_keywordmodel = solr_keywordmodel
         self.solr_keyword_statistics = solr_keyword_statistics
 
-    def docs(self):
+    def docs(self) ->  Tuple[int, int, int]:
         n_total = self.solr_docs.con.search("*:*", rows=1).hits
         # where keywords field empty
         n_untagged = self.solr_docs.con.search("-keywords:[* TO *]").hits
         n_tagged = n_total - n_untagged
         return n_total, n_tagged, n_untagged
 
-    def keywords(self):
+    def keywords(self) -> int:
         return self.solr_keyword_statistics.con.search("*:*", rows=1).hits
 
-    def keywordmodel(self):
+    def keywordmodel(self) -> int:
         return self.solr_keywordmodel.con.search("*:*", rows=1).hits
 
 
