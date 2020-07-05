@@ -25,6 +25,11 @@ from typing import Set, List, Generator, Tuple
 
 
 class SolrKeywordStatistics(SolrKeywords):
+    """
+    Keeps track of the number of distinct keywords which are active (attached) to
+    documents in Solr
+    """
+
     def __init__(self, config: dict, solr_docs: SolrDocStorage):
         super().__init__(config)
         self.solr_docs = solr_docs
@@ -32,6 +37,15 @@ class SolrKeywordStatistics(SolrKeywords):
     def update(
         self, keywords_before: Set[SolrDocKeyword], keywords_after: Set[SolrDocKeyword]
     ) -> None:
+        """
+        Performs an update to the Solr core by:
+        - adding new keywords
+        - deleting keywords IF they are not attached to a document in Solr
+
+        :param keywords_before: The keywords before the update
+        :param keywords_after: The keywords after the update
+        :return:
+        """
         keywords_before = {kw.value for kw in keywords_before}
         keywords_after = {kw.value for kw in keywords_after}
 
@@ -46,7 +60,9 @@ class SolrKeywordStatistics(SolrKeywords):
         if keywords_to_delete:
             self.delete(*keywords_to_delete)
 
-    def _keywords_to_delete(self, delete_candidates: Generator[str, None, None]) -> List[str]:
+    def _keywords_to_delete(
+        self, delete_candidates: Generator[str, None, None]
+    ) -> List[str]:
         keywords_to_delete = []
         for kw in delete_candidates:
             keyword_in_docs = self.solr_docs.search(f"keywords:{kw}", rows=1).hits
@@ -57,6 +73,10 @@ class SolrKeywordStatistics(SolrKeywords):
 
 
 class SolrStatistics:
+    """
+    Provides an API for statistics related to Solr
+    """
+
     def __init__(
         self,
         solr_docs: SolrDocStorage,
@@ -67,7 +87,12 @@ class SolrStatistics:
         self.solr_keywordmodel = solr_keywordmodel
         self.solr_keyword_statistics = solr_keyword_statistics
 
-    def docs(self) ->  Tuple[int, int, int]:
+    def docs(self) -> Tuple[int, int, int]:
+        """
+        Returns staticstics related to the documents core
+
+        :return: tuple(total documents, documents tagged, documents untagged)
+        """
         n_total = self.solr_docs.con.search("*:*", rows=1).hits
         # where keywords field empty
         n_untagged = self.solr_docs.con.search("-keywords:[* TO *]").hits
@@ -75,9 +100,17 @@ class SolrStatistics:
         return n_total, n_tagged, n_untagged
 
     def keywords(self) -> int:
+        """
+        Returns statistics related to keywords
+        :return: number of distinct keywords attached to documents
+        """
         return self.solr_keyword_statistics.con.search("*:*", rows=1).hits
 
     def keywordmodel(self) -> int:
+        """
+        Returns statistics related to keywordmodels
+        :return: number of keywordmodels
+        """
         return self.solr_keywordmodel.con.search("*:*", rows=1).hits
 
 
