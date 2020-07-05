@@ -462,7 +462,7 @@
   <field name="last_modified" type="pdates" multiValued="false"/>
   <copyField source="last_modified" dest="last_modified_str" maxChars="256"/>
 
-  <field name="keywords" type="string" multiValued="true"/>
+  <field name="keywords" type="text_general" multiValued="true"/>
   <copyField source="keywords" dest="keywords_str" maxChars="256"/>
 
   <field name="language" type="string" multiValued="false"/>
