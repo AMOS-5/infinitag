@@ -312,7 +312,7 @@ export class KeywordsComponent implements OnInit {
   /**
    * Currently selected tree data.
    */
-  selectedKwmIdx = -1;
+  selectedKwmIdx = undefined;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<ItemFlatNode, ItemNode>();
@@ -352,7 +352,7 @@ export class KeywordsComponent implements OnInit {
       this.dataSource.data = [];
       this.dataSource.data = data;
 
-      if (this.selectedKwmIdx !== -1) {
+      if (this.selectedKwmIdx !== undefined) {
         this.keywordModels[this.selectedKwmIdx].hierarchy = this.dataSource.data;
         this.api.addKeywordModel(this.keywordModels[this.selectedKwmIdx]).subscribe(res => {
 
@@ -533,6 +533,34 @@ export class KeywordsComponent implements OnInit {
     });
   }
 
+  public exportKeywordModel() {
+    const selectedKwm: IKeyWordModel = this.keywordModels[this.selectedKwmIdx];
+    var blob = new Blob([JSON.stringify(selectedKwm, null, 2) ], {type: 'text/plain'});
+
+    let link = document.createElement('a');
+    link.download = selectedKwm.id;
+    link.href = window.URL.createObjectURL(blob);
+    link.dataset.downloadurl = ['text/json', link.download, link.href].join(':');
+    link.click()
+  }
+
+  public importKeywordModel(files: FileList) {
+    const file: File = files.item(0);
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      console.log(fileReader.result as string);
+      const newKwm: IKeyWordModel = JSON.parse(fileReader.result as string)
+      console.log(newKwm)
+      this.api.addKeywordModel(newKwm).subscribe(res => {
+        const newIdx = this.keywordModels.length;
+        this.keywordModels[newIdx] = newKwm;
+        TREE_DATA[newIdx] = newKwm.hierarchy;
+        this.snackBar.open(`added new kwm with name: ${name}`, '', { duration: 3000 });
+      });
+    }
+    fileReader.readAsText(file);
+  }
+
   /**
   * @description
   * Deletes an keyword model.
@@ -543,7 +571,7 @@ export class KeywordsComponent implements OnInit {
       const removeIdx = this.selectedKwmIdx;
       this.keywordModels.splice(removeIdx, 1);
       TREE_DATA.splice(removeIdx, 1);
-      this.selectedKwmIdx = -1;
+      this.selectedKwmIdx = undefined;
       this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
 
       this.database.dataChange.next([]);
@@ -618,7 +646,7 @@ export class KeywordsComponent implements OnInit {
    * @param event
    */
   dropOverEmptyTree(event) {
-    if (this.selectedKwmIdx !== -1) {
+    if (this.selectedKwmIdx !== undefined) {
       if (this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
         if (this.newItem.nodeType === NodeType.DIMENSION) {
           this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
