@@ -21,13 +21,14 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering,silhoutteMethod
+from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
+from utils.dbscan import extract_keywords_yake
 import pickle
 from pathlib import Path
 import warnings
-
+import time
 warnings.filterwarnings("ignore")
 
 # ## to do
@@ -41,7 +42,7 @@ warnings.filterwarnings("ignore")
 
 if __name__ == "__main__":
 
-    directory = r'E:\Infinitag\tests\test_dataset'
+    directory = r'E:\amos\utils\t5\50'
     # directory =  r'E:\amos\utils\t5\dummy'
     unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home',
                          'left', 'right', 'history', 'daily', 'instruction',
@@ -55,37 +56,43 @@ if __name__ == "__main__":
     # 'lda' : Mention the num_words and num_topics if using lda
     # 'hierarchical' : to be implemented
     ####
-    clustering_type = 'k-means'
-
+    clustering_type = 'kmeans'
+    mini_batch = True # Values : Bool . True runs MiniBatch. K means False runs Kmeans
+    optimal_k_method = 'silhoutte' ## Values :  'silhoutte' , 'elbow'
+    words_per_cluster = 5
     # Change number of words and number of topics below for LDA model
     num_words = 5
     num_topics = 10
 
-    # Change hyperparameters below for customizing k-means clustering
-    num_clusters_kmeans = 5
-    words_per_cluster = 5
+
+
 
     flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
-    print(flattened)
-
-
-    count=0
-    for words in flattened:
-        count+=len(words)
-
-    print(count)
-
+    number_of_files = len(file_list)
     dist, tfidf_matrix, terms = tfidf_vector(flattened)
 
-    print(tfidf_matrix.shape)
 
-    if clustering_type == 'k-means':
-        #nselectedfiles = len(file_list)
-        #clustering = silhoutteMethod(tfidf_matrix,nselectedfiles)
-        #clustering = optimal_clusters(tfidf_matrix,nselectedfiles)
+
+    if clustering_type == 'kmeans' and optimal_k_method == 'elbow' :
+
+        start = time.time()
+        num_clusters_kmeans = optimal_clusters_elbowMethod(tfidf_matrix,number_of_files, mini_batch= mini_batch)
+        print('Number of Files Selected : ', number_of_files)
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
-                                       file_list, num_clusters_kmeans,
-                                       words_per_cluster)
+                                      file_list, num_clusters_kmeans,
+                                      words_per_cluster,mini_batch=mini_batch)
+        print('Execution Time Elbow Method and Mini Batch is ' + str(mini_batch)+ ': '  , time.time()- start)
+
+    elif clustering_type == 'kmeans' and optimal_k_method == 'silhoutte' :
+        start = time.time()
+        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch= mini_batch)
+        print('Number of Files Selected : ',number_of_files)
+        clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
+                                      file_list, num_clusters_kmeans,
+                                      words_per_cluster,mini_batch=mini_batch)
+        print('Execution Time Silhoutte Method and Mini Batch is ' + str(mini_batch) + ': '  , time.time()- start)
+
+
     elif clustering_type == 'lda':
         clustering = lda(flattened, num_topics, num_words)
     elif clustering_type == 'hierarchical':

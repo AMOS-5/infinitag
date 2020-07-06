@@ -18,7 +18,7 @@
 from __future__ import print_function
 
 from utils.tfidf_vector import tfidf_vector, tfidf_vector_keywords
-from utils.k_means_cluster import kmeans_clustering
+from utils.k_means_cluster import kmeans_clustering, silhoutteMethod
 
 from nltk.corpus import stopwords, wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -171,19 +171,20 @@ def lemmatize_keywords(keywords: dict) -> dict:
 
 def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, job=None) -> dict:
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
-
+    number_of_files = len(file_list)
     if len(docs) < 5:
         keywords = tfidf_vector_keywords(file_list, flattened, num_keywords)
     else:
         dist, tfidf_matrix, terms = tfidf_vector(flattened)
-
+        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch=True)
         keywords = kmeans_clustering(tfidf_matrix,
-                                     flattened,
-                                     terms,
-                                     file_list,
-                                     num_clusters,
-                                     num_keywords,
-                                     job)
+                          flattened,
+                          terms,
+                          file_list,
+                          num_clusters_kmeans,
+                          num_keywords,
+                          mini_batch=True,
+                          job)
 
     return keywords
 
