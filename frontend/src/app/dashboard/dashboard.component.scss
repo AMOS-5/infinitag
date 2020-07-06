@@ -37,6 +37,13 @@ mat-grid-tile{
   color: white;
   }
 
+  .parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
 
 
 

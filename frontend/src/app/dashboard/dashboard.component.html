@@ -1,10 +1,10 @@
 <div class="container">
     <h1>Dashboard InfiniTag</h1>
     <h3>{{'HOME.MOTTO' | translate}}</h3>
-    <mat-grid-list cols="5" rowHeight="1:2">
+    <mat-grid-list cols="5" rowHeight="1:2.2">
         <mat-grid-tile [colspan]="2">
             <div class="content-inside-grid">
-                <div echarts [options]="pieOptions" [autoResize]="true" class="demo-chart"></div>
+                <div *ngIf='selected' echarts [options]="pieOptions" [autoResize]="true" class="demo-chart"></div>
             </div>
             <!-- <div class="content-inside-grid"></div> -->
 
@@ -12,16 +12,19 @@
 
         <mat-grid-tile [colspan]="2">
             <div class="content-inside-grid">
-                <mat-form-field>
-                    <mat-label>Filter By</mat-label>
-                    <mat-select>
-                        <mat-option *ngFor="let option of options" [value]="option.value" (selectionChange)="changeBar($event)">
-                            {{option.viewValue}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="bar-chart"> 
-                    <div  echarts [options]="barOptions" [autoResize]="true" class="demo-chart"></div>
+                <div class="parent">
+                    <mat-form-field>
+                        <mat-label>Filter By</mat-label>
+                        <mat-select (selectionChange)="changeBar($event)">
+                            <mat-option *ngFor="let option of options" [value]="option.value">
+                                {{option.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="bar-chart">
+                    <div echarts [options]="barOptions" [autoResize]="true" [merge]="mergeOptions" class="demo-chart">
+                    </div>
                 </div>
             </div>
         </mat-grid-tile>
@@ -37,7 +40,7 @@
                     <div class="circle">#Documents<br>30</div>
                 </div>
             </div>
-           
+
         </mat-grid-tile>
     </mat-grid-list>
     <div class="footer">
