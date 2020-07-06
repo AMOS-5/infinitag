@@ -54,10 +54,13 @@ class SolrDocStorage:
     AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
     AVAILABLE_SEARCH_FIELDS.remove("creation_date")
     AVAILABLE_SEARCH_FIELDS.remove("size")
+    AVAILABLE_SEARCH_FIELDS.remove("last_modified")
     # we want to perform a string search for now so replace the fields
     # with the corresponding copy field
     AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
     AVAILABLE_SEARCH_FIELDS.add("size_str")
+    AVAILABLE_SEARCH_FIELDS.add("last_modified_str")
+
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
