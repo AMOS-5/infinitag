@@ -16,7 +16,7 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from .keywordmodel import SolrHierarchy
-
+from . import config
 
 import logging as log
 from datetime import datetime
@@ -27,7 +27,6 @@ import enum
 import re
 import sys
 import langdetect
-import re
 
 
 # if you activate this you will see why some fields are unknown and maybe can
@@ -130,7 +129,7 @@ class SolrDoc:
         doc.lang = Language.from_result(res)
         doc.size = FileSize.from_result(res)
         doc.creation_date = Date.now()
-        doc.last_modified = Date.now()
+        doc.last_modified = doc.creation_date
         doc.content = FileContent.from_result(res)
         doc.keywords.update(MetadataKeywords.from_result(res))
         return doc
@@ -336,7 +335,7 @@ class Language:
 class Date:
     @staticmethod
     def now() -> str:
-        return datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 class MetadataKeywords:
