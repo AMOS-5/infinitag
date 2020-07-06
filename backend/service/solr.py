@@ -15,23 +15,33 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 from backend.service.tagging import TaggingService
-from backend.solr import SolrKeywordModel, SolrKeywords, SolrDocStorage, config
+from backend.solr import (
+    SolrKeywordModel,
+    SolrKeywords,
+    SolrDocStorage,
+    SolrKeywordStatistics,
+    SolrStatistics,
+    config,
+)
 
 
 class SolrService:
     INITIALIZED = False
-    SOLR_KEYWORD_MODEL = None
-    SOLR_DOCS = None
 
     def __init__(self):
         self.initialize_solr()
-
 
     def initialize_solr(self):
         self.SOLR_KEYWORD_MODEL = SolrKeywordModel(config.keyword_model_solr)
         self.SOLR_KEYWORDS = SolrKeywords(config.keywords_solr)
         self.SOLR_DIMENSIONS = SolrKeywords(config.dimensions_solr)
         self.SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
+        self.SOLR_KEYWORD_STATISTICS = SolrKeywordStatistics(
+            config.keyword_statistics_solr, self.docs
+        )
+        self.SOLR_STATISTICS = SolrStatistics(
+            self.docs, self.keywordmodel, self.keyword_statistics
+        )
 
         self.INITIALIZED = True
 
@@ -55,7 +65,13 @@ class SolrService:
     def docs(self):
         return self.SOLR_DOCS
 
+    @property
+    def keyword_statistics(self):
+        return self.SOLR_KEYWORD_STATISTICS
 
-__all__ = [
-    'SolrService'
-]
+    @property
+    def statistics(self):
+        return self.SOLR_STATISTICS
+
+
+__all__ = ["SolrService"]

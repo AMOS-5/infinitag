@@ -43,6 +43,12 @@ doc_storage_solr = {
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
+keyword_statistics_solr = {
+    "corename": "keyword_statistics",
+    "url": "http://18.235.6.254:8983/solr",
+    "always_commit": True,
+}
+
 file_storage = {
     "path": "~/filestorage"
 }

@@ -16,7 +16,7 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 from .keywordmodel import SolrHierarchy
-
+from . import config
 
 import logging as log
 from datetime import datetime
@@ -27,7 +27,6 @@ import enum
 import re
 import sys
 import langdetect
-import re
 
 
 # if you activate this you will see why some fields are unknown and maybe can
@@ -99,6 +98,7 @@ class SolrDoc:
         lang: str = None,
         size: str = None,
         creation_date: str = None,
+        last_modified: str = None,
         content: str = None,
     ):
         _, self.id = os.path.split(path)
@@ -108,6 +108,7 @@ class SolrDoc:
         self.lang = lang
         self.size = size
         self.creation_date = creation_date
+        self.last_modified = last_modified
         self.content = content
         self.full_path = None
         # current fix for windows / linux agnostic stuff. The doc can always be deleted with is's
@@ -127,9 +128,9 @@ class SolrDoc:
         doc.file_type = FileType.from_result(res)
         doc.lang = Language.from_result(res)
         doc.size = FileSize.from_result(res)
-        doc.creation_date = CreationDate.from_result(res)
+        doc.creation_date = Date.now()
+        doc.last_modified = doc.creation_date
         doc.content = FileContent.from_result(res)
-
         doc.keywords.update(MetadataKeywords.from_result(res))
         return doc
 
@@ -141,7 +142,7 @@ class SolrDoc:
         :return:
         """
 
-        keywords = []
+        keywords = set()
         if "keywords" in hit:
             keywords = {SolrDocKeyword.from_str(kw) for kw in hit["keywords"]}
 
@@ -153,6 +154,7 @@ class SolrDoc:
             lang=hit["language"],
             size=hit["size"],
             creation_date=hit["creation_date"],
+            last_modified=hit["last_modified"],
             content=hit["content"],
         )
 
@@ -167,6 +169,7 @@ class SolrDoc:
             "language": self.lang,
             "size": self.size,
             "creation_date": self.creation_date,
+            "last_modified": self.last_modified,
             "content": self.content,
         }
 
@@ -176,7 +179,8 @@ class SolrDoc:
         return self.id
 
     def update_date(self) -> None:
-        self.creation_date = datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+        self.last_modified = Date.now()
+
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
     return field in res and res[field]
@@ -226,7 +230,6 @@ class Title:
             return fname
 
         log.debug(f"Title is unknown: {json.dumps(res, indent=2)}")
-
 
         return "unknown"
 
@@ -329,10 +332,11 @@ class Language:
         return Language.mapping[lang]
 
 
-class CreationDate:
+class Date:
     @staticmethod
-    def from_result(res: dict) -> str:
-        return datetime.now().strftime("%Y-%m-%dT%H:%M:%SZ")
+    def now() -> str:
+        return datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+
 
 class MetadataKeywords:
     @staticmethod
@@ -353,9 +357,9 @@ class MetadataKeywords:
             log.debug("No metadata keywords found")
 
         res = []
-        for kw in re.split(';|,| ',kw_str):
-            if(kw != ""):
-                res.append(SolrDocKeyword(kw, SolrDocKeywordTypes.META) )
+        for kw in re.split(";|,| ", kw_str):
+            if kw != "":
+                res.append(SolrDocKeyword(kw, SolrDocKeywordTypes.META))
         return res
 
 
