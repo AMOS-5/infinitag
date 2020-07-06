@@ -22,10 +22,14 @@ stemmer = SnowballStemmer("english")
 from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
 <<<<<<< HEAD
+<<<<<<< HEAD
 from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
 =======
 from utils.k_means_cluster import kmeans_clustering,silhoutteMethod
 >>>>>>> research on optimal clusters
+=======
+from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
+>>>>>>> - Automated Optimal Cluster Selection
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
 from utils.dbscan import extract_keywords_yake
@@ -47,10 +51,14 @@ warnings.filterwarnings("ignore")
 if __name__ == "__main__":
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     directory = r'E:\amos\utils\t5\50'
 =======
     directory = r'E:\Infinitag\tests\test_dataset'
 >>>>>>> research on optimal clusters
+=======
+    directory = r'E:\amos\utils\t5\50'
+>>>>>>> - Automated Optimal Cluster Selection
     # directory =  r'E:\amos\utils\t5\dummy'
     unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home',
                          'left', 'right', 'history', 'daily', 'instruction',
@@ -72,6 +80,7 @@ if __name__ == "__main__":
     num_words = 5
     num_topics = 10
 
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 
@@ -90,18 +99,20 @@ if __name__ == "__main__":
 =======
     flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
     print(flattened)
+=======
+
+>>>>>>> - Automated Optimal Cluster Selection
 
 
-    count=0
-    for words in flattened:
-        count+=len(words)
-
-    print(count)
-
+    flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
+    number_of_files = len(file_list)
     dist, tfidf_matrix, terms = tfidf_vector(flattened)
 
-    print(tfidf_matrix.shape)
 
+
+    if clustering_type == 'kmeans' and optimal_k_method == 'elbow' :
+
+<<<<<<< HEAD
     if clustering_type == 'k-means':
         #nselectedfiles = len(file_list)
         #clustering = silhoutteMethod(tfidf_matrix,nselectedfiles)
@@ -119,6 +130,23 @@ if __name__ == "__main__":
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
                                       file_list, num_clusters_kmeans,
                                       words_per_cluster,mini_batch=mini_batch)
+=======
+        start = time.time()
+        num_clusters_kmeans = optimal_clusters_elbowMethod(tfidf_matrix,number_of_files, mini_batch= mini_batch)
+        print('Number of Files Selected : ', number_of_files)
+        clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
+                                      file_list, num_clusters_kmeans,
+                                      words_per_cluster,mini_batch=mini_batch)
+        print('Execution Time Elbow Method and Mini Batch is ' + str(mini_batch)+ ': '  , time.time()- start)
+
+    elif clustering_type == 'kmeans' and optimal_k_method == 'silhoutte' :
+        start = time.time()
+        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch= mini_batch)
+        print('Number of Files Selected : ',number_of_files)
+        clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
+                                      file_list, num_clusters_kmeans,
+                                      words_per_cluster,mini_batch=mini_batch)
+>>>>>>> - Automated Optimal Cluster Selection
         print('Execution Time Silhoutte Method and Mini Batch is ' + str(mini_batch) + ': '  , time.time()- start)
 
 

@@ -181,18 +181,21 @@ def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, 
         keywords = tfidf_vector_keywords(file_list, flattened, num_keywords)
     else:
         dist, tfidf_matrix, terms = tfidf_vector(flattened)
+
         if default:
             num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch=True)
         else:
             num_clusters_kmeans = num_clusters
+
         keywords = kmeans_clustering(tfidf_matrix,
                           flattened,
                           terms,
                           file_list,
                           num_clusters_kmeans,
                           num_keywords,
-                          job,
-                          mini_batch=True )
+
+                          mini_batch=True,
+                          job)
 
     return keywords
 
