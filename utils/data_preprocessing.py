@@ -194,7 +194,7 @@ def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, 
                           num_clusters_kmeans,
                           num_keywords,
                           mini_batch=True,
-                          job = None)
+                          job = job)
 
     return keywords
 
@@ -233,7 +233,6 @@ def load_data_from_frontend(docs: dict):
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
-
 
     return vocabulary, vocab_frame, filenames, overall
 
