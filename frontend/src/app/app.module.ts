@@ -72,6 +72,8 @@ import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-p
 import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
 import { DocumentOverviewComponent } from './document-overview/document-overview.component';
 
+import * as echarts from 'echarts';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -134,7 +136,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         }),
         ReactiveFormsModule,
         MatProgressSpinnerModule,
-        MatTabsModule
+        MatTabsModule,
+        NgxEchartsModule.forRoot({
+          echarts
+        })
     ],
   providers: [],
   bootstrap: [AppComponent],

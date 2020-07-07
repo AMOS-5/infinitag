@@ -153,4 +153,8 @@ export class ApiService {
   public cancelJob(jobId: string) {
     return this.http.delete(`${environment.serverUrl}/job/${jobId}`);
   }
+
+  public getStats() {
+    return this.http.get(`${environment.serverUrl}/statistics`);
+  }
 }

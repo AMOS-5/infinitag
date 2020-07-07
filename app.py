@@ -29,6 +29,7 @@ import os
 from pathlib import Path
 import logging as log
 import zipfile
+import copy
 
 from backend.service import SolrService, SolrMiddleware
 from backend.service.tagging import (
@@ -99,6 +100,11 @@ def upload_file():
 
     try:
         solr.docs.add(doc)
+        doc = solr.docs.get(doc.id)
+
+        keywords_before = {}
+        keywords_after = doc.keywords
+        solr.keyword_statistics.update(keywords_before, keywords_after)
     except Exception as e:
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
@@ -125,6 +131,7 @@ def download_files():
             zipf.close()
             return send_from_directory("tmp", 'test.zip', as_attachment=True)
     except Exception as e:
+        log.error(f"/download {e}")
         return jsonify(f"Error: {e}"), 400
 
 
@@ -143,11 +150,17 @@ def change_keywords():
 
     try:
         solDoc = solr.docs.get(id)
-        solDoc.keywords = [
+        keywords_before = copy.deepcopy(solDoc.keywords)
+        keywords_after = {
             SolrDocKeyword(kw["value"], SolrDocKeywordTypes.from_str(kw["type"])) for kw in keywords
-        ]
+        }
+
+        solDoc.keywords = keywords_after
         solr.docs.update(solDoc)
+
+        solr.keyword_statistics.update(keywords_before, keywords_after)
     except Exception as e:
+        log.error(f"/changekeywords {e}")
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
     print("changed keywords on file " + id + " to " + ",".join([kw.value for kw in solDoc.keywords]), file=sys.stdout)
@@ -377,7 +390,6 @@ def apply_tagging_method():
         job = KWMJob(keywords, job_id, solr.docs, *doc_ids)
         tagging_service.add_job(job)
         job.start()
-        # solr.docs.apply_kwm(keywords, *doc_ids, job_id)
 
         stop_time = time.time() - start_time
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
@@ -410,6 +422,24 @@ def get_job_status(job_id):
         tagging_service.cancel_job(job_id)
         return jsonify({"status": 200, "message": "TAGGING_JOB.CANCELED_JOB", "id": job_id}), 200
 
+
+@app.route("/statistics", methods=["GET"])
+def get_statistics():
+    doc_stats = solr.statistics.docs()
+    n_keywords = solr.statistics.keywords()
+    n_keyword_models = solr.statistics.keywordmodel()
+
+    return jsonify(
+        n_total_docs=doc_stats.n_total,
+        n_tagged_docs=doc_stats.n_tagged,
+        n_untagged_docs=doc_stats.n_untagged,
+        uploaded_last_7_days=doc_stats.last_7_days,
+        uploaded_last_4_weeks=doc_stats.last_4_weeks,
+        uploaded_this_year=doc_stats.this_year,
+        uploaded_all_years=doc_stats.all_years,
+        n_keywords=n_keywords,
+        n_keyword_models=n_keyword_models,
+    )
 
 if __name__ == "__main__":
 
