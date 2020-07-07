@@ -312,7 +312,7 @@ export class KeywordsComponent implements OnInit {
   /**
    * Currently selected tree data.
    */
-  selectedKwmIdx = -1;
+  selectedKwmIdx = undefined;
 
   /** Map from flat node to nested node. This helps us finding the nested node to be modified */
   flatNodeMap = new Map<ItemFlatNode, ItemNode>();
@@ -352,7 +352,7 @@ export class KeywordsComponent implements OnInit {
       this.dataSource.data = [];
       this.dataSource.data = data;
 
-      if (this.selectedKwmIdx !== -1) {
+      if (this.selectedKwmIdx !== undefined) {
         this.keywordModels[this.selectedKwmIdx].hierarchy = this.dataSource.data;
         this.api.addKeywordModel(this.keywordModels[this.selectedKwmIdx]).subscribe(res => {
 
@@ -535,6 +535,105 @@ export class KeywordsComponent implements OnInit {
 
   /**
   * @description
+  * Exports the selected keyword model as a json and opens a save file dialog.
+  */
+  public exportKeywordModel() {
+    const selectedKwm: IKeyWordModel = this.keywordModels[this.selectedKwmIdx];
+    let kwmCopy = Object.assign({}, selectedKwm);
+    delete kwmCopy.keywords //delete unnecessary information
+    var blob = new Blob([JSON.stringify(kwmCopy, null, 2) ], {type: 'text/plain'});
+
+    //open dialog
+    let link = document.createElement('a');
+    link.download = selectedKwm.id + ".kwm";
+    link.href = window.URL.createObjectURL(blob);
+    link.dataset.downloadurl = ['text/json', link.download, link.href].join(':');
+    link.click()
+  }
+
+  private error(msg: string) {
+    this.snackBar.open(msg, '', { duration: 3000 });
+  }
+
+  /**
+  * @description
+  * Checks the correctness of a IKeyWordModel generated from an input file
+  * in the importKeywordModel function. The keywords from the hierarchy are
+  * extracted and added to the keywords array.
+  * @param {IKeyWordModel} kwm to check
+  * @returns {boolean} correctness
+  */
+  private checkCorrectness(kwm: IKeyWordModel) : boolean{
+    if(!kwm.hasOwnProperty("id")) {
+      this.error("The imported kwm has no id");
+      return false;
+    }
+    if(!kwm.hasOwnProperty("hierarchy")) {
+      this.error("The imported kwm has no hierarchy");
+      return false;
+    }
+    kwm["keywords"] = [];
+    let toCheck = kwm.hierarchy.slice() //deep copy
+    toCheck.forEach(node => node["shouldBe"] = NodeType.DIMENSION);
+    while(toCheck.length !== 0) {
+      let cur = toCheck.pop();
+      if(!cur.hasOwnProperty("item")) {
+        this.error("The imported kwm contains a node with no item");
+        return false;
+      }
+      if(!cur.hasOwnProperty("nodeType")) {
+        this.error(`The node ${cur.item} has no nodeType`);
+        return false;
+      }
+      if(cur.nodeType !== cur.shouldBe) {
+        this.error(`The node ${cur.item} has the wrong type`);
+        return false;
+      }
+      if(cur.nodeType === NodeType.KEYWORD) {
+        kwm.keywords.push(cur.item); //add keyword to keywords array
+      }
+      delete cur.shouldBe //remove temporary variable again
+      if(cur.hasOwnProperty("children")) {
+        cur.children.forEach(child => {
+          child["shouldBe"] = cur.nodeType === NodeType.DIMENSION ? NodeType.KEYWORD : NodeType.DIMENSION;
+          toCheck.push(child);
+        });
+      }
+    }
+    return true;
+  }
+
+  /**
+  * @description
+  * Reads the given file and creates a IKeyWordModel from it. If the hierarchy
+  * is correct and no model with the same name exists the model is added to
+  * the database
+  * @param {FileList} single file containing a kwm
+  */
+  public importKeywordModel(files: FileList) {
+    const file: File = files.item(0);
+    let fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const newKwm: IKeyWordModel = JSON.parse(fileReader.result as string)
+      const isCorrect = this.checkCorrectness(newKwm);
+      if(isCorrect) {
+        if(this.keywordModels.filter(function(kwm){ return kwm.id === newKwm.id; }).length === 0) {
+          this.api.addKeywordModel(newKwm).subscribe(res => {
+            const newIdx = this.keywordModels.length;
+            this.keywordModels[newIdx] = newKwm;
+            TREE_DATA[newIdx] = newKwm.hierarchy;
+            this.snackBar.open(`added new kwm with name: ${newKwm.id}`, '', { duration: 3000 });
+          });
+        } else {
+          this.snackBar.open(`A kwm with the name ${newKwm.id} already exists`, '', { duration: 3000 });
+        }
+      }
+    }
+    fileReader.readAsText(file);
+  }
+
+  /**
+  * @description
   * Deletes an keyword model.
   * @param {IKeyWordModel} kwm to remove
   */
@@ -543,7 +642,7 @@ export class KeywordsComponent implements OnInit {
       const removeIdx = this.selectedKwmIdx;
       this.keywordModels.splice(removeIdx, 1);
       TREE_DATA.splice(removeIdx, 1);
-      this.selectedKwmIdx = -1;
+      this.selectedKwmIdx = undefined;
       this.snackBar.open(`removed kwm with name: ${keywordModel.id}`, '', { duration: 3000 });
 
       this.database.dataChange.next([]);
@@ -618,7 +717,7 @@ export class KeywordsComponent implements OnInit {
    * @param event
    */
   dropOverEmptyTree(event) {
-    if (this.selectedKwmIdx !== -1) {
+    if (this.selectedKwmIdx !== undefined) {
       if (this.keywordModels[this.selectedKwmIdx].hierarchy.length === 0) {
         if (this.newItem.nodeType === NodeType.DIMENSION) {
           this.database.insertRoot(this.newItem.item, this.newItem.nodeType);
