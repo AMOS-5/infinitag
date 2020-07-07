@@ -1,7 +1,12 @@
 import pytest
 from pytest_solr.factories import solr_process, solr_core
 
-from backend.solr import SolrDocStorage, SolrKeywords, SolrKeywordModel
+from backend.solr import (
+    SolrDocStorage,
+    SolrKeywords,
+    SolrKeywordModel,
+    SolrKeywordStatistics,
+)
 
 solr_process = solr_process(
     executable="./downloads/solr-8.5.1/bin/solr",
@@ -17,6 +22,7 @@ solr_docs_core = solr_core("solr_process", "test_documents_core")
 solr_keywords_core = solr_core("solr_process", "test_keywords_core")
 solr_keyword_model_core = solr_core("solr_process", "test_keyword_model_core")
 solr_dimensions_core = solr_core("solr_process", "test_dimensions_core")
+solr_keyword_statistics_core = solr_core("solr_process", "test_keyword_statistics_core")
 
 
 @pytest.fixture(scope="function")
@@ -29,7 +35,7 @@ def solr_docs(request, solr_docs_core):
 
     request.cls.solr_docs = SolrDocStorage(config)
     request.cls.solr_docs.clear()
-    yield
+    yield request.cls.solr_docs
     request.cls.solr_docs.clear()
 
 
@@ -57,7 +63,7 @@ def solr_keyword_model(request, solr_keyword_model_core):
 
     request.cls.solr_keyword_model = SolrKeywordModel(config)
     request.cls.solr_keyword_model.clear()
-    yield
+    yield request.cls.solr_keyword_model
     request.cls.solr_keyword_model.clear()
 
 
@@ -76,7 +82,30 @@ def solr_dimensions(request, solr_dimensions_core):
 
 
 @pytest.fixture(scope="function")
-def app_fixture(request, solr_docs, solr_keywords, solr_keyword_model, solr_dimensions):
+def solr_keyword_statistics(request, solr_keyword_statistics_core, solr_docs):
+    config = {
+        "corename": "test_keyword_statistics_core",
+        "url": "http://localhost:8983/solr/",
+        "always_commit": True,
+    }
+
+    request.cls.solr_keyword_statistics = SolrKeywordStatistics(
+        config, request.cls.solr_docs
+    )
+    request.cls.solr_keyword_statistics.clear()
+    yield
+    request.cls.solr_keyword_statistics.clear()
+
+
+@pytest.fixture(scope="function")
+def app_fixture(
+    request,
+    solr_docs,
+    solr_keywords,
+    solr_keyword_model,
+    solr_dimensions,
+    solr_keyword_statistics,
+):
     from backend.solr import config
 
     # reinit for test
@@ -95,6 +124,10 @@ def app_fixture(request, solr_docs, solr_keywords, solr_keyword_model, solr_dime
     config_dims = config.dimensions_solr
     config_dims["corename"] = "test_dimensions_core"
     config_dims["url"] = "http://localhost:8983/solr"
+
+    config_kw_stat = config.keyword_statistics_solr
+    config_kw_stat["corename"] = "test_keyword_statistics_core"
+    config_kw_stat["url"] = "http://localhost:8983/solr"
 
     # will initialize the application with the test config
     import app as application

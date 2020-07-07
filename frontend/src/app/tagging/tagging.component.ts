@@ -7,24 +7,24 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {ITaggingMethod} from '../models/ITaggingMethod';
-import {ApiService} from '../services/api.service';
-import {FormBuilder, FormControl} from '@angular/forms';
-import {IKeywordListEntry} from '../models/IKeywordListEntry.model';
-import {ITaggingRequest} from '../models/ITaggingRequest.model';
-import {IDocument} from '../models/IDocument.model';
-import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
-import {MatChipInputEvent} from '@angular/material/chips';
-import {Observable, of, throwError} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
-import {COMMA, ENTER} from '@angular/cdk/keycodes';
-import {MatSnackBar} from '@angular/material/snack-bar';
-import {IKeyword} from '../models/IKeyword.model';
-import {UploadService} from '../services/upload.service';
-import {TaggingDialogComponent, TaggingDialogData} from '../../dialogs/tagging.dialog.component';
-import {MatDialog} from '@angular/material/dialog';
-import {Utils} from '../services/Utils.service';
-import {AutomatedTaggingParametersDialog, DialogData} from '../../dialogs/automated-tagging-parameters.component';
+import { ITaggingMethod } from '../models/ITaggingMethod';
+import { ApiService } from '../services/api.service';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
+import { ITaggingRequest } from '../models/ITaggingRequest.model';
+import { IDocument } from '../models/IDocument.model';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { Observable, of, throwError } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { IKeyword } from '../models/IKeyword.model';
+import { UploadService } from '../services/upload.service';
+import { TaggingDialogComponent, TaggingDialogData } from '../../dialogs/tagging.dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Utils } from '../services/Utils.service';
+import { AutomatedTaggingParametersDialog, DialogData } from '../../dialogs/automated-tagging-parameters.component';
 
 
 @Component({
@@ -33,8 +33,6 @@ import {AutomatedTaggingParametersDialog, DialogData} from '../../dialogs/automa
   styleUrls: ['./tagging.component.scss']
 })
 export class TaggingComponent implements OnInit {
-  keywords: IKeywordListEntry[] = [];
-  selectedKeywords: IKeywordListEntry[] = [];
   applyingTaggingMechanism = false;
   selectable = true;
   removable = true;
@@ -42,8 +40,18 @@ export class TaggingComponent implements OnInit {
   kwmToAdd = [];
   bulkKwCtrl = new FormControl([]);
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  // list of all keywords (uncategorized + kwm)
+  keywords: IKeywordListEntry[] = [];
+  selectedKeywords: IKeywordListEntry[] = [];
+
+  // list of keywords filtered and display in the drop down menu
   filteredBulkKeywords: Observable<IKeywordListEntry[]>;
+
+  // list of keywords selected for applying/deleting
   selectedBulkKeywords: IKeywordListEntry[] = [];
+
+  // kwm seclected from the drop down menu
   selectedKeywordModel: any;
 
   @Input() editing = false;
@@ -70,35 +78,35 @@ export class TaggingComponent implements OnInit {
 
   public selectedTaggingMethod = this.taggingMethods[0];
   constructor(private api: ApiService,
-              private formBuilder: FormBuilder,
-              public dialog: MatDialog,
-              private snackBar: MatSnackBar,
-              private uploadService: UploadService,
-              private utils: Utils) {
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private uploadService: UploadService,
+    private utils: Utils) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
       keywordModel: undefined,
       documents: [],
       bulkKeywords: []
     });
-    // @ts-ignore
-    this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
-      startWith(null),
-      map((selectedBulkKeyword: IKeywordListEntry | null) =>  {
-        selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice();
-      }));
   }
 
   public ngOnInit(): void {
     this.api.getKeywordListEntries()
-          .subscribe((data: []) => {
-            this.keywords = data;
-            this.selectedKeywords = this.keywords;
-          });
+      .subscribe((data: []) => {
+        this.keywords = data;
+        this.selectedKeywords = this.keywords;
+        this.filteredBulkKeywords = this.bulkKwCtrl.valueChanges.pipe(
+          startWith(''),
+          map((selectedBulkKeyword: IKeywordListEntry | null) => {
+            return selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()
+          })
+        );
+      })
     this.api.getKeywordModels()
-          .subscribe((data: any) => {
-            this.keywordModels = data;
-          });
+      .subscribe((data: any) => {
+        this.keywordModels = data;
+      });
   }
 
   public openTaggingDialog(dialogData: TaggingDialogData): void {
@@ -108,9 +116,9 @@ export class TaggingComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((response: string) => {
-      if  (response === 'cancel') {
+      if (response === 'cancel') {
         this.api.cancelJob(dialogData.jobId)
-          .subscribe( (res: any) => {
+          .subscribe((res: any) => {
             this.snackBar.open('Job cancelled', ``, { duration: 3000 });
           });
       }
@@ -120,7 +128,7 @@ export class TaggingComponent implements OnInit {
 
   /**
    * @description
-   * Adds a keyword and its parents to all selected documents.
+   * Adds all selected keywords and their parents to all selected documents.
    */
   public applyBulkKeywords() {
     if (this.selectedDocuments.length === 0) {
@@ -134,6 +142,29 @@ export class TaggingComponent implements OnInit {
       }
       this.selectedDocuments.forEach(doc => {
         this.applyKeyword(doc, keyword);
+      });
+    });
+    this.selectedBulkKeywords = [];
+  }
+
+  /**
+   * @description
+   * Removes all selected keywords from to all selected documents.
+   * Parent keywords are not touched and only the keyword string matters; the
+   * kwm of the keywords doesn't get compared.
+   */
+  public deleteBulkKeywords() {
+    if (this.selectedDocuments.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+    }
+    this.selectedBulkKeywords.forEach(keyword => {
+      this.selectedDocuments.forEach(document => {
+        const index = document.keywords.map(kw => kw.value).indexOf(keyword.id);
+        if (index >= 0) {
+          document.keywords.splice(index, 1);
+        }
+
+        this.uploadService.patchKeywords(document).subscribe(res => { });
       });
     });
     this.selectedBulkKeywords = [];
@@ -181,12 +212,12 @@ export class TaggingComponent implements OnInit {
 
         this.api.applyTaggingMethod(taggingData).subscribe(
           () => {
-          this.applyingTaggingMechanism = false;
-        });
+            this.applyingTaggingMechanism = false;
+          });
         this.openMonitoring(jobId);
       });
     } else {
-      this.api.applyTaggingMethod(taggingData).subscribe( () => {
+      this.api.applyTaggingMethod(taggingData).subscribe(() => {
         this.applyingTaggingMechanism = false;
       });
       this.openMonitoring(jobId);
@@ -205,9 +236,10 @@ export class TaggingComponent implements OnInit {
     this.applyingTaggingMechanism = true;
 
     this.monitorJobProgress(taggingDialogData)
-      .then( () => {
+      .then(() => {
         this.snackBar.open(`Finished tagging with Job ID: ${taggingDialogData.jobId}`, '', { duration: 3000 });
-    });
+      }
+    );
   }
 
   public selected(event: MatAutocompleteSelectedEvent): void {
@@ -222,7 +254,7 @@ export class TaggingComponent implements OnInit {
     const value = event.value;
 
     if ((value || '').trim()) {
-      const kw: IKeywordListEntry = {id: value, kwm: null, parents: []};
+      const kw: IKeywordListEntry = { id: value, kwm: null, parents: [] };
       this.selectedBulkKeywords.push(kw);
     }
 
@@ -251,12 +283,12 @@ export class TaggingComponent implements OnInit {
     let toAdd = [keyword.id];
     toAdd = toAdd.concat(keyword.parents);
     for (let i = 0; i < toAdd.length; i++) {
-      const kw: IKeyword = {value: toAdd[i], type: 'MANUAL'};
+      const kw: IKeyword = { value: toAdd[i], type: 'MANUAL' };
       this.addKeywordToDoc(doc, kw).subscribe(
         res => {
           doc = res;
         },
-        err => this.snackBar.open(err, ``, {duration: 3000})
+        err => this.snackBar.open(err, ``, { duration: 3000 })
       );
     }
 
@@ -283,11 +315,11 @@ export class TaggingComponent implements OnInit {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-   /**
-    * @description
-    * Adds a new keyword to an IDocument object. Thorws an error if the keyword
-    * is already added to the document
-    */
+  /**
+   * @description
+   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+   * is already added to the document
+   */
   private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {
     if (iDoc.keywords.filter(kw => kw.value === keyword.value).length === 0) {
       iDoc.keywords.push(keyword);
@@ -301,7 +333,7 @@ export class TaggingComponent implements OnInit {
 
   private _filter(value): IKeywordListEntry[] {
     let filterValue;
-    if (typeof(value) === 'string') {
+    if (typeof (value) === 'string') {
       filterValue = value.toLowerCase();
     } else {
       filterValue = value.id.toLowerCase();

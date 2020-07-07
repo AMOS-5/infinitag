@@ -9,10 +9,7 @@ from werkzeug.datastructures import FileStorage
 from flask_jsonpify import jsonify
 import zipfile
 
-# TODO hack to modify the config before the app gets initialized
-# we should use a better fixture where the app gets initialized with our
-# desired configurations
-from backend.solr import config, SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDoc, SolrHierarchy, SolrDocKeyword, SolrDocKeywordTypes
 
 @pytest.mark.usefixtures("app_fixture")
 class TestController(unittest.TestCase):

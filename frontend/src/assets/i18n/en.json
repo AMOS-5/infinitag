@@ -17,6 +17,8 @@
     "LAST_MODIFIED": "Last Edited",
     "MY_KEYWORDS": "MyKeywords",
     "APPLY_KEYWORDS": "Apply Keywords",
+    "DELETE_KEYWORDS": "Delete Keywords",
+    "DELETE_KEYWORDS_TOOLTIP": "Keywords get deleted individually and the respective keyword model isn't considered",
     "FILE_TYPE": "Type",
     "CREATEDAT": "Created At",
     "LAST_MODIFIED": "Last modified",
