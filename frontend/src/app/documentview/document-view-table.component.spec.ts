@@ -1,7 +1,7 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { DocumentViewTableComponent } from './document-view-table.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatSortable, MatSortModule } from '@angular/material/sort';
+import {MatSort, MatSortable, MatSortModule} from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -20,6 +20,7 @@ import { HttpClient } from '@angular/common/http';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatDialogModule } from '@angular/material/dialog';
+import {CdkTableModule} from "@angular/cdk/table";
 
 
 describe('DocumentViewTable', () => {
@@ -39,6 +40,7 @@ describe('DocumentViewTable', () => {
         MatFormFieldModule,
         MatInputModule,
         MatIconModule,
+        CdkTableModule,
         ReactiveFormsModule,
         MatSnackBarModule,
         MatCheckboxModule,
@@ -76,6 +78,7 @@ describe('DocumentViewTable', () => {
 
   it('test sorting data', () => {
     // tests sorting functionality by comparing first and last row before and after sorting
+    component.sort = new MatSort();
     component.sort.sort(({ id: 'name', start: 'asc' }) as MatSortable);
     const dataLength = component.dataSource.data.length;
     const firstrow = component.dataSource.sortData[0];

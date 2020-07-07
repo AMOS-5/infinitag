@@ -57,6 +57,7 @@ describe('UploadService', async () => {
     const iDoc: IDocument = {
       content: 'abc',
       creation_date: new Date(),
+      last_modified: new Date(),
       id: 'test/test_file.pdf',
       language: 'eng',
       size: 33,

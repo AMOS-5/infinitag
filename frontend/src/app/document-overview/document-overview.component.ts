@@ -72,10 +72,15 @@ export class DocumentOverviewComponent implements OnInit {
     this.num_per_page = e.pageSize;
   }
 
-  public getDocuments(): void {
-    this.api.getDocuments()
-      .subscribe( (value: any) => {
+  public sync(e) {
+    this.api.getDocuments(e.currentPage, e.pageSize)
+      .subscribe((value: any) => {
         this.documents = value.docs;
+        this.page = value.page;
+        this.num_per_page = value.num_per_page;
+        this.sort_field = value.sort_field;
+        this.sort_order = value.sort_order;
+        this.total_pages = value.total_pages * value.num_per_page;
       });
   }
 }

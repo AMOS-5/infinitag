@@ -78,7 +78,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     public dialog: MatDialog
   ) {}
   // defines order of columns
-  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'creation_date', 'MyKeywords'];
+  displayedColumns: string[] = ['select', 'title', 'type', 'language', 'size', 'last_modified', 'MyKeywords'];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatTable, { static: true }) table: MatTable<any>;
@@ -144,6 +144,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
+        document.last_modified = new Date(document.last_modified);
       });
       this.dataSource.data = this.documents;
       this.dataSource.paginator ? this.dataSource.paginator = this.paginator : null;
@@ -337,9 +338,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
+    console.log('Syncing....');
     // this.ngOnInit();
     this.selection = new SelectionModel(true, []);
-    this.syncRequested.emit();
+    const syncEvent = {
+      currentPage: this.currentPage,
+      pageSize: this.pageSize
+    };
+    this.syncRequested.emit(syncEvent);
   }
 
   updateData(sort: Sort) {

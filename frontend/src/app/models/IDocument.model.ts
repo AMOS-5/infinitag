@@ -21,11 +21,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { IKeyword } from "./IKeyword.model";
+import { IKeyword } from './IKeyword.model';
 
 export interface IDocument {
   content: string;
   creation_date: Date;
+  last_modified: Date;
   id: string;
   language: string;
   size: number;

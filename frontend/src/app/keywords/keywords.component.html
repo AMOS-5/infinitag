@@ -29,8 +29,18 @@
               </div>
             </mat-list-option>
           </mat-selection-list>
-          <button mat-icon-button (click)="newKeywordModel()">
+          <button mat-icon-button (click)="newKeywordModel()"
+                  matTooltip="add new kwm">
             <mat-icon>add</mat-icon>
+          </button>
+          <button mat-icon-button (click)="exportKeywordModel()"
+                  matTooltip="export kwm"
+                  [disabled]="selectedKwmIdx === undefined">
+            <mat-icon>save</mat-icon>
+          </button>
+          <input type='file' style="display: none" (change)="importKeywordModel($event.target.files)" #hiddenfileinput>
+          <button mat-icon-button matTooltip="import kwm" (click)="hiddenfileinput.click()">
+            <mat-icon>open_in_browser</mat-icon>
           </button>
         </div>
       </div>
@@ -76,7 +86,6 @@
                 </div>
             </mat-tree-node>
           </mat-tree>
-
           <span #emptyItem></span>
         </div>
       </div>
