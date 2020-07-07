@@ -27,6 +27,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 
 export interface DialogData {
+  computeOptimal: boolean;
   numClusters: number;
   numKeywords: number;
 }

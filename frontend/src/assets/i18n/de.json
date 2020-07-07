@@ -36,6 +36,8 @@
     "FILE_EXISTS_CANCEL": "Abbrechen",
     "ML_PARAMETERS": "ML Parameter",
     "ML_PARAMETERS_DIALOG": "Geben sie die Parameter für den ML Algorithmus an",
+    "ML_PARAMETERS_CHECKBOX": "Optimale Anzahl an Clustern berechnen",
+    "ML_PARAMETERS_CHECKBOX_TOOLTIP": "Die optimale Anzahl an Clustern wird mit Hilfe des Silhouettenkoeffizienten berechnet",
     "ML_PARAMETERS_NUMCLUSTERS" : "Anzahl der Cluster",
     "ML_PARAMETERS_NUMKEYWORDS" : "Anzahl der Keywords pro Cluster",
     "DOWNLOAD_BUTTON" : "Herunterladen",

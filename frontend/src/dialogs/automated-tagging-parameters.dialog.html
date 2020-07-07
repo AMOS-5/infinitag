@@ -1,9 +1,13 @@
 <h1 mat-dialog-title>{{'DOCUMENTS.ML_PARAMETERS' | translate}}</h1>
 <div mat-dialog-content>
   <p>{{'DOCUMENTS.ML_PARAMETERS_DIALOG' | translate}}</p>
+  <mat-checkbox [(ngModel)]="data.computeOptimal"
+    matTooltip="{{'DOCUMENTS.ML_PARAMETERS_CHECKBOX_TOOLTIP' | translate}}">
+      {{'DOCUMENTS.ML_PARAMETERS_CHECKBOX' | translate}}
+  </mat-checkbox>
   <mat-form-field>
     <mat-label>{{'DOCUMENTS.ML_PARAMETERS_NUMCLUSTERS' | translate}}</mat-label>
-    <input type="text" matInput cdkFocusInitial
+    <input [disabled]=data.computeOptimal type="text" matInput cdkFocusInitial
           [(ngModel)]="data.numClusters" appNaturalNumbersOnly
     >
   </mat-form-field>
@@ -18,5 +22,4 @@
 <div mat-dialog-actions>
     <button mat-button (click)="onClose()">{{'CLOSE' | translate}}</button>
     <button mat-button [mat-dialog-close]="data">{{'OK' | translate}}</button>
-    <button mat-button [mat-dialog-close]="data">{{'Default' | translate}}</button>
 </div>

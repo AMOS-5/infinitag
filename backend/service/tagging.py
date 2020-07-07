@@ -122,7 +122,7 @@ class AutomatedTaggingJob(Thread, TaggingJob):
         self.progress = 0
         self.cancelled = False
         self.time_remaining = -1
-        self.default = True
+        self.default = default
 
     def run(self):
         self.status = 'TAGGING_JOB.CREATE_KW'

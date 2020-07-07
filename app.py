@@ -387,6 +387,8 @@ def apply_tagging_method():
         options = data["options"]
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
+        default = options["computeOptimal"]
+        print(default)
 
         #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
 

@@ -163,7 +163,7 @@ export class TaggingComponent implements OnInit {
     if (this.selectedTaggingMethod.name === 'Automated') {
       const dialogRef = this.dialog.open(AutomatedTaggingParametersDialog, {
         width: '300px',
-        data: {numClusters: 5, numKeywords: 5}
+        data: { computeOptimal: false, numClusters: 5, numKeywords: 5 }
       });
 
       dialogRef.afterClosed().subscribe((result: DialogData) => {
