@@ -67,7 +67,7 @@ def optimal_clusters_elbowMethod(tfidf_matrix,number_of_files, mini_batch = True
 
 
 
-def silhoutteMethod(tfidfmatrix, number_of_files, mini_batch=True):
+def silhoutte_method(tfidfmatrix, number_of_files, mini_batch=True):
 
     range_n_clusters = range(2, number_of_files-1)# clusters range you want to select
     best_clusters = 0  # best cluster number which you will get

@@ -21,7 +21,7 @@ from nltk.stem.snowball import SnowballStemmer
 stemmer = SnowballStemmer("english")
 from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
+from utils.k_means_cluster import kmeans_clustering,silhoutte_method,optimal_clusters_elbowMethod
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
 import pickle
@@ -87,7 +87,7 @@ if __name__ == "__main__":
 
     elif clustering_type == 'kmeans' and optimal_k_method == 'silhoutte' :
         start = time.time()
-        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch= mini_batch)
+        num_clusters_kmeans = silhoutte_method(tfidf_matrix, number_of_files, mini_batch= mini_batch)
         print('Number of Files Selected : ',number_of_files)
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
                                       file_list, num_clusters_kmeans,
