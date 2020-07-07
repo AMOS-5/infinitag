@@ -387,10 +387,14 @@ def apply_tagging_method():
         options = data["options"]
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
+
+        #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
+
         job = AutomatedTaggingJob(job_id=job_id,
                                   docs=docs,
                                   num_clusters=num_clusters,
                                   num_keywords=num_keywords,
+                                  default = default,
                                   solr_docs=solr.docs)
         tagging_service.add_job(job)
         job.start()

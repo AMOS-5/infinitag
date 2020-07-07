@@ -73,10 +73,8 @@ def silhoutteMethod(tfidfmatrix, number_of_files, mini_batch=True):
 
     for n_clusters in range_n_clusters:
         if mini_batch:
-            print('this loop mini batch')
             clusterer = MiniBatchKMeans(n_clusters=n_clusters, init='k-means++', n_init=2, init_size=1000)
         else:
-            print('this loop')
             clusterer = KMeans(n_clusters=n_clusters)
         cluster_labels = clusterer.fit_predict(tfidfmatrix)
         silhouette_avg = silhouette_score(tfidfmatrix, cluster_labels)
@@ -94,8 +92,8 @@ def kmeans_clustering(tfidf_matrix,
                       file_list,
                       num_clusters,
                       words_per_cluster,
-                      mini_batch=True,
-                      job=None):
+                      job=None,
+                      mini_batch=True):
 
     ### Check the optimal clsuetrs here
     if mini_batch:

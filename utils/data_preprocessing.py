@@ -151,7 +151,12 @@ UNWANTED_KEYWORDS = {
     "intro",
     "open",
     "exit",
-    "intro"
+    "intro",
+    "stop",
+    "comment",
+    "intro",
+    "open",
+    "exit",
 }
 
 def lemmatize_keywords(keywords: dict) -> dict:
@@ -169,22 +174,25 @@ def lemmatize_keywords(keywords: dict) -> dict:
     return lemmatized_keywords
 
 
-def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, job=None) -> dict:
+def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
     number_of_files = len(file_list)
     if len(docs) < 5:
         keywords = tfidf_vector_keywords(file_list, flattened, num_keywords)
     else:
         dist, tfidf_matrix, terms = tfidf_vector(flattened)
-        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch=True)
+        if default:
+            num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch=True)
+        else:
+            num_clusters_kmeans = num_clusters
         keywords = kmeans_clustering(tfidf_matrix,
                           flattened,
                           terms,
                           file_list,
                           num_clusters_kmeans,
                           num_keywords,
-                          mini_batch=True,
-                          job)
+                          job,
+                          mini_batch=True )
 
     return keywords
 
@@ -277,7 +285,7 @@ def clean_digits(content: List[str]) -> List[str]:
 
 
 def clean_short_long_words(content: List[str]) -> List[str]:
-    return [word for word in content if len(word) > 3 and len(word)<15]
+    return [word for word in content if len(word) > 3 and len(word)<12]
 
 
 def clean_unwanted_words(content: List[str]) -> List[str]:
