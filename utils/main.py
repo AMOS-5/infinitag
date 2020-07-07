@@ -19,15 +19,15 @@ from __future__ import print_function
 from nltk.stem.snowball import SnowballStemmer
 
 stemmer = SnowballStemmer("english")
-from utils.data_preprocessing import data_load
+from utils.data_preprocessing import load_data
 from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering
+from utils.k_means_cluster import kmeans_clustering,silhoutteMethod,optimal_clusters_elbowMethod
 from utils.lda_model import lda
 from utils.hierarchichal_clustering import hierarchical_cluster
 import pickle
 from pathlib import Path
 import warnings
-
+import time
 warnings.filterwarnings("ignore")
 
 # ## to do
@@ -42,8 +42,8 @@ warnings.filterwarnings("ignore")
 if __name__ == "__main__":
 
 
+    directory = r'E:\Infinitag\tests\test_dataset'
 
-    directory = r'E:\clustering\t5_testdata'
     # directory =  r'E:\amos\utils\t5\dummy'
     unwanted_keywords = {'patient', 'order', 'showed', 'exam', 'number', 'home',
                          'left', 'right', 'history', 'daily', 'instruction',
@@ -57,57 +57,42 @@ if __name__ == "__main__":
     # 'lda' : Mention the num_words and num_topics if using lda
     # 'hierarchical' : to be implemented
     ####
-    clustering_type = 'k-means'
-
+    clustering_type = 'kmeans'
+    mini_batch = True # Values : Bool . True runs MiniBatch. K means False runs Kmeans
+    optimal_k_method = 'silhoutte' ## Values :  'silhoutte' , 'elbow'
+    words_per_cluster = 5
     # Change number of words and number of topics below for LDA model
     num_words = 5
     num_topics = 10
 
-    # Change hyperparameters below for customizing k-means clustering
-    num_clusters_kmeans = 5
-    words_per_cluster = 5
 
-    # Data loading process : Using pickle to save time while running experiments
-    data_files = r'..\utils\data_files.p'
-    pickle_data_files = Path(data_files)
+    flattened, vocab_frame, file_list, overall = load_data(directory, unwanted_keywords)
+    number_of_files = len(file_list)
+    dist, tfidf_matrix, terms = tfidf_vector(flattened)
 
-    if pickle_data_files.is_file():
-        print('')
-        print('Pickle files for data_load are AVAILABLE')
-        with open(data_files, "rb") as fp:
-            print('Data File available and loading..')  # Unpickling
-            flattened, vocab_frame, file_list, overall = pickle.load(fp)
 
-    else:
-        print('')
-        print('Pickle files for data_load are NOT AVAILABLE')
-        flattened, vocab_frame, file_list, overall = data_load(directory,
-                                                               unwanted_keywords,
-                                                               extensions_allowed)
-        pickle.dump([flattened, vocab_frame, file_list, overall],
-                    open("data_files.p", "wb"))
 
-    # TFIDF process : Using pickle to save time while running experiments. Computation time is high during training
-    distance_files = r'..\utils\distance.p'
-    pickle_distance_files = Path(distance_files)
+    if clustering_type == 'kmeans' and optimal_k_method == 'elbow' :
 
-    if pickle_distance_files.is_file():
-        print('')
-        print('Pickle files for distances are AVAILABLE')
-        with open(distance_files, "rb") as fp:
-            print('Distance file available and loading..')  # Unpickling
-            dist, tfidf_matrix, terms = pickle.load(fp)
-
-    else:
-        print('')
-        print('Pickle files for distances are NOT AVAILABLE')
-        dist, tfidf_matrix, terms = tfidf_vector(flattened)
-        pickle.dump([dist, tfidf_matrix, terms], open("distance.p", "wb"))
-
-    if clustering_type == 'k-means':
+        start = time.time()
+        num_clusters_kmeans = optimal_clusters_elbowMethod(tfidf_matrix,
+                                                           number_of_files,
+                                                           mini_batch=mini_batch)
+        print('Number of Files Selected : ', number_of_files)
         clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
                                        file_list, num_clusters_kmeans,
-                                       words_per_cluster)
+                                       words_per_cluster, mini_batch=mini_batch)
+        print('Execution Time Elbow Method and Mini Batch is ' + str(
+            mini_batch) + ': ', time.time() - start)
+
+    elif clustering_type == 'kmeans' and optimal_k_method == 'silhoutte' :
+        start = time.time()
+        num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch= mini_batch)
+        print('Number of Files Selected : ',number_of_files)
+        clustering = kmeans_clustering(tfidf_matrix, flattened, terms,
+                                      file_list, num_clusters_kmeans,
+                                      words_per_cluster,mini_batch=mini_batch)
+
     elif clustering_type == 'lda':
         clustering = lda(flattened, num_topics, num_words)
     elif clustering_type == 'hierarchical':
