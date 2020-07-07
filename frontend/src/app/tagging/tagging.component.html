@@ -28,10 +28,14 @@
       </mat-autocomplete>
     </mat-form-field>
       <button [disabled]="!editing" mat-raised-button color="primary"
-       (click)="applyBulkKeywords()">{{'DOCUMENTS.APPLY_KEYWORDS' | translate}}
+        (click)="applyBulkKeywords()">
+          {{'DOCUMENTS.APPLY_KEYWORDS' | translate}}
       </button>
       <button [disabled]="!editing" mat-raised-button color="primary"
-       (click)="deleteBulkKeywords()">{{'DOCUMENTS.DELETE_KEYWORDS' | translate}}
+        (click)="deleteBulkKeywords()"
+        matTooltip="{{'DOCUMENTS.DELETE_KEYWORDS_TOOLTIP' | translate}}"
+      >
+          {{'DOCUMENTS.DELETE_KEYWORDS' | translate}}
       </button>
     </div>
   </mat-grid-tile>

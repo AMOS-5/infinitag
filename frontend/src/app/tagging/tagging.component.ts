@@ -33,8 +33,6 @@ import { AutomatedTaggingParametersDialog, DialogData } from '../../dialogs/auto
   styleUrls: ['./tagging.component.scss']
 })
 export class TaggingComponent implements OnInit {
-  keywords: IKeywordListEntry[] = [];
-  selectedKeywords: IKeywordListEntry[] = [];
   applyingTaggingMechanism = false;
   selectable = true;
   removable = true;
@@ -42,8 +40,18 @@ export class TaggingComponent implements OnInit {
   kwmToAdd = [];
   bulkKwCtrl = new FormControl([]);
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  // list of all keywords (uncategorized + kwm)
+  keywords: IKeywordListEntry[] = [];
+  selectedKeywords: IKeywordListEntry[] = [];
+
+  // list of keywords filtered and display in the drop down menu
   filteredBulkKeywords: Observable<IKeywordListEntry[]>;
+
+  // list of keywords selected for applying/deleting
   selectedBulkKeywords: IKeywordListEntry[] = [];
+
+  // kwm seclected from the drop down menu
   selectedKeywordModel: any;
 
   @Input() editing = false;
@@ -121,7 +129,7 @@ export class TaggingComponent implements OnInit {
 
   /**
    * @description
-   * Adds a keyword and its parents to all selected documents.
+   * Adds all selected keywords and their parents to all selected documents.
    */
   public applyBulkKeywords() {
     if (this.selectedDocuments.length === 0) {
@@ -140,14 +148,18 @@ export class TaggingComponent implements OnInit {
     this.selectedBulkKeywords = [];
   }
 
+  /**
+   * @description
+   * Removes all selected keywords from to all selected documents.
+   * Parent keywords are not touched and only the keyword string matters; the
+   * kwm of the keywords doesn't get compared.
+   */
   public deleteBulkKeywords() {
     if (this.selectedDocuments.length === 0) {
       this.snackBar.open('no rows selected', ``, { duration: 3000 });
     }
     this.selectedBulkKeywords.forEach(keyword => {
-      console.log(keyword)
       this.selectedDocuments.forEach(document => {
-        console.log(document.keywords)
         const index = document.keywords.map(kw => kw.value).indexOf(keyword.id);
         if (index >= 0) {
           document.keywords.splice(index, 1);

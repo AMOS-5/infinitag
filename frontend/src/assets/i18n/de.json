@@ -17,6 +17,7 @@
     "MY_KEYWORDS": "Meine Keywords",
     "APPLY_KEYWORDS": "Keywords anwenden",
     "DELETE_KEYWORDS": "Keywords entfernen",
+    "DELETE_KEYWORDS_TOOLTIP": "Keywords werden einzeln entfernt und das dazu gehörende Keywword Modell wird nicht berücksichtigt",
     "SEARCH_KEYWORDS": "Nach Keywords suchen",
     "FILE_TYPE": "Dateityp",
     "CREATEDAT": "Erstellt am",
