@@ -23,7 +23,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-
+import { ApiService } from '../services/api.service';
 /**
  *
  * @class DashboardComponent
@@ -36,78 +36,93 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
   theme: string;
   selected: string = 'days';
+  isLoading: boolean = true;
   mergeOptions: object = {};
-  pieOptions = {
-    title: {
-      text: 'Tagged/Untagged Documents',
-      x: 'center'
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b} : {c} ({d}%)'
-    },
-    legend: {
-      x: 'center',
-      y: 'bottom',
-      data: ['Tagged Documents', 'Untagged Documents']
-    },
-    calculable: true,
-    series: [
-      {
-        name: 'area',
-        type: 'pie',
-        radius: [70, 110],
-        data: [
-          { value: 10, name: 'Tagged Documents' },
-          { value: 90, name: 'Untagged Documents' }
-        ]
-      }
-    ]
-  };
-
-  barOptions = {
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: {
-        type: 'shadow'
-      }
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: [
-      {
-        type: 'category',
-        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        axisTick: {
-          alignWithLabel: true
-        }
-      }
-    ],
-    yAxis: [{
-      type: 'value'
-    }],
-    series: [{
-      name: 'Documents Added',
-      type: 'bar',
-      barWidth: '50%',
-      data: [3, 5, 10, 3, 5, 2, 4, 4, 5, 12, 11, 12]
-    }]
-  };
+  stats: any = {};
+  pieOptions: object;
+  barOptions: object;
+  
 
   options = [
     { value: 'days', viewValue: 'Days (last 7 days)' },
     { value: 'weeks', viewValue: 'Weeks (last 4 weeks)' },
-    { value: 'months', viewValue: 'Months (last 12 months)' },
+    { value: 'months', viewValue: 'Months (This year)' },
     { value: 'years', viewValue: 'Years (since start)' }
   ];
 
+  constructor(private api: ApiService) {}
+
+  ngOnInit() {
+    this.api.getStats()
+      .subscribe((value: any) => {
+        this.stats = value;
+        this.pieOptions = {
+          title: {
+            text: 'Tagged/Untagged Documents',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+            x: 'center',
+            y: 'bottom',
+            data: ['Tagged Documents', 'Untagged Documents']
+          },
+          calculable: true,
+          series: [
+            {
+              name: 'Area',
+              type: 'pie',
+              radius: [70, 110],
+              data: [
+                { value: this.stats.n_tagged_docs, name: 'Tagged Documents' },
+                { value: this.stats.n_untagged_docs, name: 'Untagged Documents' }
+              ],
+              color: ['#39ff14', '#000000']
+            }
+          ]
+        };
+        this.barOptions = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: 'category',
+              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+            name: 'Documents Added',
+            type: 'bar',
+            barWidth: '50%',
+            color: ['#39ff14', '#000000'],
+            data: this.stats.uploaded_last_7_days
+          }]
+        };
+        this.isLoading = false;
+      });
+  }
   changeBar = (event) => {
     switch (event.value) {
       case 'days':
@@ -121,6 +136,12 @@ export class DashboardComponent {
               }
             }
           ],
+          series: [{
+            name: 'Documents Added',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.stats.uploaded_last_7_days
+          }]
         };
         break;
       case 'weeks':
@@ -135,11 +156,18 @@ export class DashboardComponent {
               }
             }
           ],
+          series: [{
+            name: 'Documents Added',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.stats.uploaded_last_4_weeks
+          }]
         };
         break;
       case 'months':
-        var months = this.getPreviousMonths();
-        console.log(months)
+        //var months = this.getPreviousMonths();
+        var months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+
         this.mergeOptions = {
           xAxis: [
             {
@@ -150,6 +178,12 @@ export class DashboardComponent {
               }
             }
           ],
+          series: [{
+            name: 'Documents Added',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.stats.uploaded_this_year
+          }]
         };
         break;
       case 'years':
@@ -164,6 +198,12 @@ export class DashboardComponent {
               }
             }
           ],
+          series: [{
+            name: 'Documents Added',
+            type: 'bar',
+            barWidth: '50%',
+            data: this.stats.uploaded_all_years
+          }]
         };
         break;
       default:
