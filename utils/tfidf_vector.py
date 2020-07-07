@@ -40,7 +40,7 @@ def tfidf_vector(flattened):
                                        stop_words='english',
                                        use_idf=True, tokenizer=dummy_fun,
                                        preprocessor=dummy_fun,
-                                       ngram_range=(1, 3))
+                                       ngram_range=(1, 1))
     tfidf_matrix = tfidf_vectorizer.fit_transform(flattened)
 
     terms = tfidf_vectorizer.get_feature_names()

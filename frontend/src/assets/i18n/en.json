@@ -38,6 +38,8 @@
     "FILE_EXISTS_CANCEL": "Cancel",
     "ML_PARAMETERS": "ML Parameters",
     "ML_PARAMETERS_DIALOG": "Insert the parameters for the ML algorithm",
+    "ML_PARAMETERS_CHECKBOX": "Compute optimal number of clusters",
+    "ML_PARAMETERS_CHECKBOX_TOOLTIP": "The optimal number of clusters gets computed by using the silhouette analysis method",
     "ML_PARAMETERS_NUMCLUSTERS" : "Number of clusters",
     "ML_PARAMETERS_NUMKEYWORDS" : "Number of keywords per cluster",
     "DOWNLOAD_BUTTON" : "Download",
