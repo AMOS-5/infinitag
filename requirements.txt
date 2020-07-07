@@ -21,6 +21,7 @@ pandas
 numpy
 spacy
 gensim
+kneed
 # misc
 urlpath
 atoma
