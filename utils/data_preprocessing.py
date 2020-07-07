@@ -18,7 +18,7 @@
 from __future__ import print_function
 
 from utils.tfidf_vector import tfidf_vector, tfidf_vector_keywords
-from utils.k_means_cluster import kmeans_clustering, silhoutteMethod
+from utils.k_means_cluster import kmeans_clustering
 
 from nltk.corpus import stopwords, wordnet
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -151,12 +151,7 @@ UNWANTED_KEYWORDS = {
     "intro",
     "open",
     "exit",
-    "intro",
-    "stop",
-    "comment",
-    "intro",
-    "open",
-    "exit",
+    "intro"
 }
 
 def lemmatize_keywords(keywords: dict) -> dict:
@@ -174,36 +169,21 @@ def lemmatize_keywords(keywords: dict) -> dict:
     return lemmatized_keywords
 
 
-def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
+def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, job=None) -> dict:
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
-    number_of_files = len(file_list)
+
     if len(docs) < 5:
         keywords = tfidf_vector_keywords(file_list, flattened, num_keywords)
     else:
         dist, tfidf_matrix, terms = tfidf_vector(flattened)
-<<<<<<< HEAD
 
-=======
->>>>>>> conflict resolve
-        if default:
-            num_clusters_kmeans = silhoutteMethod(tfidf_matrix, number_of_files, mini_batch=True)
-        else:
-            num_clusters_kmeans = num_clusters
-<<<<<<< HEAD
-
->>>>>>> conflict resolve
         keywords = kmeans_clustering(tfidf_matrix,
-                          flattened,
-                          terms,
-                          file_list,
-                          num_clusters_kmeans,
-                          num_keywords,
-<<<<<<< HEAD
-
-                          mini_batch=True,
-                          job)
-
->>>>>>> conflict resolve
+                                     flattened,
+                                     terms,
+                                     file_list,
+                                     num_clusters,
+                                     num_keywords,
+                                     job)
 
     return keywords
 
@@ -214,10 +194,9 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
     vocabulary = []
     overall = []
     for file in files:
-
         meta, content = get_clean_content(file)
         if content is not None:
-            vocabulary.append(content)
+            vocabulary.extend(content)
 
         # TODO why append the content as a list, when it itself is already a
         # list? is it rly okay that the content is None?
@@ -242,7 +221,6 @@ def load_data_from_frontend(docs: dict):
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
-
 
     return vocabulary, vocab_frame, filenames, overall
 
@@ -296,7 +274,7 @@ def clean_digits(content: List[str]) -> List[str]:
 
 
 def clean_short_long_words(content: List[str]) -> List[str]:
-    return [word for word in content if len(word) > 3 and len(word)<12]
+    return [word for word in content if len(word) > 3 and len(word)<15]
 
 
 def clean_unwanted_words(content: List[str]) -> List[str]:
@@ -307,11 +285,11 @@ def clean_alphanumericals(content: List[str]) -> List[str]:
 
 
 def get_all_files(dir: str) -> List[str]:
-    datafiles = []
+    files = []
     for path, directories, files in os.walk(dir):
-        datafiles.extend(os.path.join(path, file) for file in files)
+        files.extend(os.path.join(path, file) for file in files)
 
-    return datafiles
+    return files
 
 
 def extract(path: str) -> Tuple[dict, str]:
