@@ -88,6 +88,10 @@ export class DashboardComponent implements OnInit{
           ]
         };
         this.barOptions = {
+          title: {
+            text: 'Document upload/Day',
+            x: 'center'
+          },
           tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -123,10 +127,15 @@ export class DashboardComponent implements OnInit{
         this.isLoading = false;
       });
   }
+
   changeBar = (event) => {
     switch (event.value) {
       case 'days':
         this.mergeOptions = {
+          title: {
+            text: 'Document upload/Day',
+            x: 'center'
+          },
           xAxis: [
             {
               type: 'category',
@@ -147,6 +156,10 @@ export class DashboardComponent implements OnInit{
       case 'weeks':
         var mondays = this.getPreviousMondays();
         this.mergeOptions = {
+          title: {
+            text: 'Document upload/Week',
+            x: 'center'
+          },
           xAxis: [
             {
               type: 'category',
@@ -169,6 +182,10 @@ export class DashboardComponent implements OnInit{
         var months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
 
         this.mergeOptions = {
+          title: {
+            text: 'Document upload/Month',
+            x: 'center'
+          },
           xAxis: [
             {
               type: 'category',
@@ -189,6 +206,10 @@ export class DashboardComponent implements OnInit{
       case 'years':
         var years = this.getPreviousYears()
         this.mergeOptions = {
+          title: {
+            text: 'Document upload/Year',
+            x: 'center'
+          },
           xAxis: [
             {
               type: 'category',
