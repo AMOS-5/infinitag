@@ -171,5 +171,15 @@ class TestDocStorage(unittest.TestCase):
         self.assertNotEqual(doc_before.last_modified, doc_after.last_modified)
         self.assertEqual(doc_before.creation_date, doc_after.creation_date)
 
+    def test_uploading_empty_documents(self):
+        doc = SolrDoc("tests/test_docstorage_files/empty_doc.txt")
+        try:
+            self.solr_docs.add(doc)
+            doc = self.solr_docs.get(doc.id)
+
+            assert doc.content == "unknown"
+        except Exception as e:
+            self.fail(f"Raised unexpected exception: {e}")
+
 if __name__ == "__main__":
     unittest.main()

@@ -319,9 +319,11 @@ class Language:
             lang = res["language"]
         elif exists_and_not_empty(res, "dc:language"):
             lang = res["dc:language"]
-        else:  # language could not be extracted by tika
+        elif content is not None:  # language could not be extracted by tika
             scontent = " ".join(word for word in content)
             lang = langdetect.detect(scontent)
+        else:
+            lang = "unknown"
 
         lang = lang.lower()
 
