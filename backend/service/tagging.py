@@ -1,8 +1,8 @@
 import time
 from threading import Thread
 
+# from backend.service import SolrService
 from backend.solr import (
-    SolrDocStorage,
     SolrDoc,
     SolrDocKeyword,
     SolrDocKeywordTypes
@@ -22,12 +22,12 @@ class TaggingJob:
 
 
 class KWMJob(Thread, TaggingJob):
-    def __init__(self, keywords: dict, job_id, solr_docs: SolrDocStorage, *doc_ids: str):
+    def __init__(self, keywords: dict, job_id: str, solr_service: "SolrService", *doc_ids: str):
         super().__init__()
         self.keywords = keywords
         self.doc_ids = doc_ids
         self.job_id = job_id
-        self.solr_docs = solr_docs
+        self.solr_service = solr_service
         self.status = 'STARTED'
         self.progress = 0
         self.cancelled = False
@@ -51,7 +51,7 @@ class KWMJob(Thread, TaggingJob):
         self.progress = lemmatize_progress
 
         self.status = 'TAGGING_JOB.DOC_FIND'
-        id_query = self.solr_docs.build_id_query(self.doc_ids)
+        id_query = self.solr_service.docs.build_id_query(self.doc_ids)
         self.status = 'TAGGING_JOB.DOC_FOUND'
         changed_docs = {}
         self.status = 'TAGGING_JOB.APPLY_KWM'
@@ -67,14 +67,15 @@ class KWMJob(Thread, TaggingJob):
                 break
             if idx == 0:
                 progress_step = (100 - lemmatize_progress) / len(lemmatized_keywords)
-            query = self.solr_docs.build_kwm_query(id_query, lemmatized_keyword)
+            query = self.solr_service.docs.build_kwm_query(id_query, lemmatized_keyword)
 
-            res = self.solr_docs.search(query)
+            res = self.solr_service.docs.search(query)
             res = [SolrDoc.from_hit(hit) for hit in res]
 
             for doc in res:
                 if self.cancelled:
                     break
+
                 # check whether the doc was already updated
                 if doc.id in changed_docs:
                     doc = changed_docs[doc.id]
@@ -100,10 +101,16 @@ class KWMJob(Thread, TaggingJob):
             if iteration_time != - 1:
                 self.time_remaining = iteration_time * remaining_iterations
             self.progress += progress_step
+
         changed_docs = changed_docs.values()
         self.status = 'TAGGING_JOB.DOC_UPDATE'
         if not self.cancelled:
-            self.solr_docs.update(*changed_docs)
+            self.solr_service.docs.update(*changed_docs)
+
+        keywords_added = set()
+        keywords_added.update(kw for doc in changed_docs for kw in doc.keywords)
+        self.solr_service.keyword_statistics.update({}, keywords_added)
+
         self.status = 'FINISHED'
 
     def stop(self):
@@ -111,13 +118,13 @@ class KWMJob(Thread, TaggingJob):
 
 
 class AutomatedTaggingJob(Thread, TaggingJob):
-    def __init__(self, job_id: str, docs, num_clusters, num_keywords, default,  solr_docs: SolrDocStorage):
+    def __init__(self, job_id: str, docs, num_clusters, num_keywords, default,  solr_service: "SolrService"):
         super().__init__()
         self.job_id = job_id
         self.docs = docs
         self.num_clusters = num_clusters
         self.num_keywords = num_keywords
-        self.solr_docs = solr_docs
+        self.solr_service = solr_service
         self.status = 'STARTED'
         self.progress = 0
         self.cancelled = False
@@ -130,7 +137,7 @@ class AutomatedTaggingJob(Thread, TaggingJob):
         self.status = 'TAGGING_JOB.KW_FOUND'
 
         doc_ids = auto_keywords.keys()
-        docs = self.solr_docs.get(*doc_ids)
+        docs = self.solr_service.docs.get(*doc_ids)
         if len(doc_ids)==1:
             docs=[docs]
         self.status = 'TAGGING_JOB.APPLYING'
@@ -163,7 +170,11 @@ class AutomatedTaggingJob(Thread, TaggingJob):
             self.progress += progress_step
 
         self.status = 'FINISHED'
-        self.solr_docs.update(*docs)
+        self.solr_service.docs.update(*docs)
+
+        keywords_added = set()
+        keywords_added.update(kw for doc in docs for kw in doc.keywords)
+        self.solr_service.keyword_statistics.update({}, keywords_added)
 
     def stop(self):
         self.cancelled = True
