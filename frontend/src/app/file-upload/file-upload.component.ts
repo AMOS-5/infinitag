@@ -49,6 +49,10 @@ import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-
 export class FileUploadComponent {
   files: Array<IFile> = [];
   @Output() uploadFinished = new EventEmitter<any>();
+  public progressMonitor = {
+    progress: 0,
+    finished: 0
+  };
 
   constructor(
     private uploadService: UploadService,
@@ -113,7 +117,8 @@ export class FileUploadComponent {
       this.sendFileToService(file);
     }
     const dialogData: UploadDialogData = {
-      files: this.files
+      files: this.files,
+      progressMonitor: this.progressMonitor
     };
     this.openUploadDialog(dialogData);
   }
@@ -149,6 +154,7 @@ export class FileUploadComponent {
       case HttpEventType.UploadProgress:
         // update progress
         file.progress = Math.round(event.loaded / event.total * 100);
+        this.progressMonitor.progress += file.progress;
         file.status = 'UPLOADING';
         file.icon = 'cloud_upload';
         break;
@@ -164,6 +170,7 @@ export class FileUploadComponent {
         } else {
           file.status = 'SUCCESS';
           file.icon = 'cloud_done';
+          this.progressMonitor.finished++;
         }
         break;
     }

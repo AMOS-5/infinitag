@@ -98,6 +98,7 @@
   "RESPONSE_RECEIVED": "Rückmeldung bekommen",
   "TAGGING": "Tagging",
   "STARTED": "Gestartet.",
-  "FINISHED": "Fertig."
+  "FINISHED": "Fertig.",
+  "PROGRESS": "Progress"
 }
 

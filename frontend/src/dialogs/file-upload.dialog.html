@@ -1,11 +1,17 @@
 <h1 mat-dialog-title>{{'UPLOADING' | translate}}</h1>
 <div mat-dialog-content>
+  <div class="total-upload-progress">
+    <h4>{{ 'PROGRESS' | translate}}</h4>
+    <mat-progress-bar mode="determinate" value="{{data.progressMonitor.progress / data.files.length}}"></mat-progress-bar>
+    <span>{{data.progressMonitor.finished}} / {{data.files.length}}</span>
+  </div>
   <mat-list>
     <mat-list-item *ngFor="let file of data.files; index as i">
       <mat-icon matListIcon>{{file.icon}}</mat-icon>
       <h2 matLine> {{file.file.name}} </h2>
       <span matLine> {{file.status | translate}} </span>
       <mat-progress-bar matLine mode="determinate" value={{file.progress}}></mat-progress-bar>
+      <button mat-button color="warn" (click)="cancelUpload(file)">{{'CANCEL' | translate}}</button>
     </mat-list-item>
   </mat-list>
 </div>
