@@ -210,6 +210,19 @@ def get_documents():
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
+@app.route("/documents/<file_name>", methods=["DELETE"])
+def delete_document(file_name):
+    f = file_name
+    docs = solr.docs.search(f"id:*{file_name}*")
+    for doc in docs.docs:
+        try:
+            solr.docs.delete(doc['id'])
+        except Exception as e:
+            return jsonify({"message": "could not delete", "error": e}), 502
+
+    return jsonify({"message": "success"}), 201
+
+
 @app.route("/health")
 def get_health():
     return jsonify({"status": "UP"})

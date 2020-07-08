@@ -94,6 +94,7 @@
   "UPLOADING": "Uploading",
   "ERROR": "Error",
   "CANCEL": "Cancel",
+  "CANCEL_ALL": "Cancel All",
   "CANCELLED": "Cancelled",
   "REQUEST_SEND": "Request Sent",
   "RESPONSE_RECEIVED": "Response Received",

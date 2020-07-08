@@ -82,7 +82,19 @@ export class FileUploadComponent {
     dialogRef.afterClosed()
       .subscribe( () => {
         this.uploadFinished.emit();
+        this.cleanUpCancelledFiles(dialogData.files);
       });
+  }
+
+  public cleanUpCancelledFiles(files: Array<IFile>) {
+    for (const file of files) {
+      if (file.status === 'CANCELLED') {
+        this.uploadService.deleteFile(file).subscribe( (result) => {
+          console.log(result);
+        });
+      }
+
+    }
   }
 
   public resendFile(requestType: { response: string }, file: IFile) {
@@ -129,7 +141,9 @@ export class FileUploadComponent {
    * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
-    this.uploadService.postFile(file)
+    if (file.status !== 'CANCELLED') {
+      console.log(file.status);
+      this.uploadService.postFile(file)
       .pipe(
         // catch errors
         catchError(error => {
@@ -140,11 +154,14 @@ export class FileUploadComponent {
       ).subscribe((event: HttpEvent<any>) => {
       this.handleFileSend(event, file);
     });
+    }
+
 
   }
 
   private handleFileSend(event: HttpEvent<any>, file: IFile) {
-    switch (event.type) {
+    if (file.status !== 'CANCELLED') {
+      switch (event.type) {
       case HttpEventType.Sent:
         file.status = 'REQUEST_SEND';
         break;
@@ -173,6 +190,7 @@ export class FileUploadComponent {
           this.progressMonitor.finished++;
         }
         break;
+    }
     }
   }
 

@@ -58,4 +58,10 @@ export class FileUploadDialogComponent {
     file.status = 'CANCELLED';
     file.icon = 'cloud_done';
   }
+
+  public cancelAll() {
+    for (const file of this.data.files) {
+      this.cancelUpload(file);
+    }
+  }
 }
