@@ -143,14 +143,12 @@ def docs_for_last_4_weeks(solr_docs, solr_doc_statistics):
 
 
 @pytest.fixture
-def docs_for_this_year(solr_docs, solr_doc_statistics):
-    # patch utcnow such the we can test whether unquerried months
-    # are correctly returned with 0's
-    solr_doc_statistics._now = lambda: datetime(2020, 11, 2, 0, 0, 0)
+def docs_for_last_12_months(solr_docs, solr_doc_statistics):
+    solr_doc_statistics._now = lambda: datetime(2020, 12, 10, 0, 0, 0)
 
-    dates = [datetime(2020, month, 1, 0, 0, 0) for month in range(1, 12)]
+    dates = [datetime(2020, month, 2, 0, 0, 0) for month in range(1, 13)]
 
-    docs_per_month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] # 0 will be added
+    docs_per_month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     push_docs_in_interval(solr_docs, solr_doc_statistics, docs_per_month, dates)
 
 
@@ -220,16 +218,10 @@ class TestStatistics:
         for docs_per_week, expected_docs_per_week in zip(docs_stats, range(1, 5)):
             assert docs_per_week == expected_docs_per_week
 
-    def test_docs_in_this_year(self, solr_doc_statistics, docs_for_this_year):
-        docs_stats = solr_doc_statistics._this_year()
-
-        for docs_per_month, expected_docs_per_month in zip(
-            docs_stats[:-1], range(1, 12)
-        ):
+    def test_docs_in_last_12_months(self, solr_doc_statistics, docs_for_last_12_months):
+        docs_stats = solr_doc_statistics._last_12_months()
+        for docs_per_month, expected_docs_per_month in zip(docs_stats, range(1, 12)):
             assert docs_per_month == expected_docs_per_month
-
-        # unquerried month got correctly added
-        assert docs_stats[-1] == 0
 
     def test_docs_in_all_years(self, solr_doc_statistics, docs_for_last_2_years):
         docs_stats = solr_doc_statistics._all_years()
