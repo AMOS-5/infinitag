@@ -153,7 +153,7 @@ class SolrDoc:
             file_type=hit["type"],
             lang=hit["language"],
             size=hit["size"],
-            creation_date=hit["creation_date"],
+            creation_date=hit["creation_date"] if "creation_date" in hit else "unknown",
             last_modified=hit["last_modified"],
             content=hit["content"],
         )
