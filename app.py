@@ -185,7 +185,7 @@ def get_documents():
         sort_field = request.args.get("sort_field", "id")
         sort_order = request.args.get("sort_order", "asc")
         search_term = request.args.get("search_term", "")
-        keywords_only = request.args.get("keywords_only", False)
+        keywords_only = request.args.get("keywords_only") == 'True'
 
         total_pages, docs = solr.docs.page(
             page,

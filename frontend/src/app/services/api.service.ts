@@ -54,18 +54,17 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordlist`);
   }
 
-  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string) {
-    let params = {
+  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string, keywords_only?: string) {
+    const params = {
       page,
       num_per_page,
       sort_field,
-      sort_order
+      sort_order,
+      keywords_only
     };
 
     (search_term !== undefined) ? params['search_term'] = search_term : null;
     const documentsUrl = `${environment.serverUrl}/documents`;
-    page = page.toString();
-    num_per_page = num_per_page.toString();
     return this.http.get(
       documentsUrl,
       {

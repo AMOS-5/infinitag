@@ -5,6 +5,9 @@
         <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
         <input matInput placeholder="{{'SEARCH_TERM' | translate}}" (keyup)="updateSearchString($event)">
       </mat-form-field>
+        <mat-checkbox [(ngModel)]="searchOnlyKeywords" [ngModelOptions]="{standalone: true}">
+          {{'DOCUMENTS.SEARCH_ONLY_KEYWORD' | translate}}
+        </mat-checkbox>
     </form>
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
     <mat-tab label="{{'FILE_UPLOAD' | translate}}" class="mat-tab">
