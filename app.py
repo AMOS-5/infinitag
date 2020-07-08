@@ -387,7 +387,7 @@ def apply_tagging_method():
         if "documents" in data and len(data["documents"]) != 0:
             doc_ids = [doc["id"] for doc in docs_json]
 
-        job = KWMJob(keywords, job_id, solr.docs, *doc_ids)
+        job = KWMJob(keywords, job_id, solr, *doc_ids)
         tagging_service.add_job(job)
         job.start()
 
@@ -400,7 +400,6 @@ def apply_tagging_method():
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
         default = options["computeOptimal"]
-        print(default)
 
         #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
 
@@ -409,7 +408,8 @@ def apply_tagging_method():
                                   num_clusters=num_clusters,
                                   num_keywords=num_keywords,
                                   default = default,
-                                  solr_docs=solr.docs)
+                                  solr_service=solr)
+
         tagging_service.add_job(job)
         job.start()
 
