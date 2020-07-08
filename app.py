@@ -484,7 +484,7 @@ def get_statistics():
         n_untagged_docs=doc_stats.n_untagged,
         uploaded_last_7_days=doc_stats.last_7_days,
         uploaded_last_4_weeks=doc_stats.last_4_weeks,
-        uploaded_this_year=doc_stats.this_year,
+        uploaded_last_12_months=doc_stats.last_12_months,
         uploaded_all_years=doc_stats.all_years,
         n_keywords=n_keywords,
         n_keyword_models=n_keyword_models,
