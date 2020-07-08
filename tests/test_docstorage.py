@@ -97,6 +97,33 @@ def doc_with_key2(solr_docs, doc_paths, kw2):
     solr_docs.add(doc)
     return doc
 
+@pytest.fixture
+def doc_with_germany(solr_docs):
+    doc_id = "doc_with_germany"
+    doc = SolrDoc(
+        doc_id,
+        content="germany",
+        title="title",
+        file_type="file_type",
+        lang="lang",
+        size=1,
+    )
+    solr_docs.update(doc)
+    return doc_id
+
+@pytest.fixture
+def doc_with_deutschland(solr_docs):
+    doc_id = "doc_with_deutschland"
+    doc = SolrDoc(
+        doc_id,
+        content="deutschland",
+        title="title",
+        file_type="file_type",
+        lang="lang",
+        size=1,
+    )
+    solr_docs.update(doc)
+    return doc_id
 
 @pytest.mark.usefixtures("solr_docs")
 class TestDocStorage:
@@ -229,6 +256,13 @@ class TestDocStorage:
 
         assert doc.last_modified != doc_after.last_modified
         assert doc.creation_date == doc_after.creation_date
+
+    def test_translation_search(self, doc_with_germany, doc_with_deutschland):
+        _, docs = self.solr_docs.page(search_term="germany")
+        assert len(docs) == 2
+
+        _, docs = self.solr_docs.page(search_term="deutschland")
+        assert len(docs) == 2
 
 
     def test_uploading_empty_documents(self):

@@ -30,6 +30,7 @@ from urlpath import URL
 import copy
 import json
 import datetime
+from googletrans import Translator
 
 
 # TODO setup a logging class discuss with everyone before
@@ -72,6 +73,7 @@ class SolrDocStorage:
         _conf["url"] = str(self.url)
         # connection to the solr instance
         self.con = pysolr.Solr(**_conf)
+        self.translator = Translator()
 
     def add(self, *docs: SolrDoc) -> bool:
         """
@@ -148,6 +150,13 @@ class SolrDocStorage:
         search_query = "*:*"
         if search_term:
             search_terms = search_term.split()
+
+            eng_search_terms = self.translator.translate(search_terms, src="de", dest="en")
+            ger_search_terms = self.translator.translate(search_terms, src="en", dest="de")
+
+            search_terms = {term.text for term in eng_search_terms}
+            search_terms.update(term.text for term in ger_search_terms)
+
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in search_fields
