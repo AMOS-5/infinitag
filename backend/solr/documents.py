@@ -37,7 +37,7 @@ import datetime
 # log.basicConfig(level=log.ERROR)
 
 
-class SolrDocStorage:
+class SolrDocuments:
     """
     Provides functionality to strore / modify and retrive documents
     from Solr
@@ -136,10 +136,10 @@ class SolrDocStorage:
         :param keywords_only: Whether the search should only occur on the keywords field
         :return: total number of pages, search hits for this page
         """
-        if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
+        if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_fields = SolrDocStorage.AVAILABLE_SEARCH_FIELDS
+        search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
         if keywords_only:
             search_fields = ["keywords"]
 
@@ -271,4 +271,4 @@ class SolrDocStorage:
         return id_query
 
 
-__all__ = ["SolrDocStorage"]
+__all__ = ["SolrDocuments"]

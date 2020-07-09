@@ -2,7 +2,7 @@ import pytest
 from pytest_solr.factories import solr_process, solr_core
 
 from backend.solr import (
-    SolrDocStorage,
+    SolrDocuments,
     SolrKeywords,
     SolrKeywordModel,
     SolrKeywordStatistics,
@@ -34,7 +34,7 @@ def solr_docs(request, solr_docs_core):
         "translator_target_languages": ["de", "en"]
     }
 
-    request.cls.solr_docs = SolrDocStorage(config)
+    request.cls.solr_docs = SolrDocuments(config)
     request.cls.solr_docs.clear()
     yield request.cls.solr_docs
     request.cls.solr_docs.clear()
@@ -118,7 +118,7 @@ def app_fixture(
     config_keywords["corename"] = "test_keywords_core"
     config_keywords["url"] = "http://localhost:8983/solr"
 
-    config_docs = config.doc_storage_solr
+    config_docs = config.documents_solr
     config_docs["corename"] = "test_documents_core"
     config_docs["url"] = "http://localhost:8983/solr"
 

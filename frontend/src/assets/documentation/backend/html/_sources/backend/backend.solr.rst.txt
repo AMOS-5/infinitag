@@ -15,7 +15,7 @@ Submodules
 
    backend.solr.config
    backend.solr.doc
-   backend.solr.docstorage
+   backend.solr.documents
    backend.solr.keywordmodel
 
 .. currentmodule:: backend.solr
