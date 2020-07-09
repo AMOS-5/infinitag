@@ -15,6 +15,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from backend import Translator
 from .doc import SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 from .keywordmodel import SolrHierarchy
 
@@ -30,15 +31,6 @@ from urlpath import URL
 import copy
 import json
 import datetime
-from googletrans import Translator
-
-
-# TODO setup a logging class discuss with everyone before
-try:
-    os.mkdir("./log")
-except:
-    # dir exists
-    pass
 
 
 # log.basicConfig(level=log.INFO)
@@ -67,13 +59,17 @@ class SolrDocStorage:
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
 
+        self.translator = None
+        target_languages = _conf.pop("translator_target_languages")
+        if target_languages:
+            self.translator = Translator(target_languages)
+
         # build the full url
         self.corename = _conf.pop("corename")
         self.url = URL(_conf["url"]) / self.corename
         _conf["url"] = str(self.url)
         # connection to the solr instance
         self.con = pysolr.Solr(**_conf)
-        self.translator = Translator()
 
     def add(self, *docs: SolrDoc) -> bool:
         """
@@ -151,12 +147,10 @@ class SolrDocStorage:
         if search_term:
             search_terms = search_term.split()
 
-            eng_search_terms = self.translator.translate(search_terms, src="de", dest="en")
-            ger_search_terms = self.translator.translate(search_terms, src="en", dest="de")
+            if self.translator is not None:
+                search_terms = self.translator.translate(search_terms)
 
-            search_terms = {term.text for term in eng_search_terms}
-            search_terms.update(term.text for term in ger_search_terms)
-
+            search_terms = [search_term.lower() for search_term in search_terms]
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in search_fields

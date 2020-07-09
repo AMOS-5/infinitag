@@ -33,7 +33,7 @@ import threading as th
 
 # TODO tika should be configure correctly to ignore images and other unnecessary data
 os.environ["TIKA_PATH"] = "./downloads/tika"
-print(f"Tika server set to: {os.environ['TIKA_PATH']}")
+os.environ["TIKA_LOG_PATH"] = "./backend/log/tika"
 
 from tika import parser, detector, language
 from typing import Set, List, Tuple
