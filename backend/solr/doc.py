@@ -181,6 +181,26 @@ class SolrDoc:
     def update_date(self) -> None:
         self.last_modified = Date.now()
 
+    @staticmethod
+    def _base_fields():
+        return {"id", "keywords", "title", "type", "language", "content"}
+
+    @staticmethod
+    def sort_fields():
+        base = SolrDoc._base_fields()
+        base.add("creation_date")
+        base.add("last_modified")
+        base.add("size")
+        return base
+
+    @staticmethod
+    def search_fields():
+        base = SolrDoc._base_fields()
+        base.add("creation_date_str")
+        base.add("last_modified_str")
+        base.add("size_str")
+        return base
+
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
     return field in res and res[field]

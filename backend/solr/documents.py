@@ -42,18 +42,8 @@ class SolrDocuments:
     Provides functionality to strore / modify and retrive documents
     from Solr
     """
-
-    AVAILABLE_SORT_FIELDS = set(SolrDoc("path").as_dict().keys())
-    AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
-    AVAILABLE_SEARCH_FIELDS.remove("creation_date")
-    AVAILABLE_SEARCH_FIELDS.remove("size")
-    AVAILABLE_SEARCH_FIELDS.remove("last_modified")
-    # we want to perform a string search for now so replace the fields
-    # with the corresponding copy field
-    AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
-    AVAILABLE_SEARCH_FIELDS.add("size_str")
-    AVAILABLE_SEARCH_FIELDS.add("last_modified_str")
-
+    AVAILABLE_SEARCH_FIELDS = SolrDoc.search_fields()
+    AVAILABLE_SORT_FIELDS = SolrDoc.sort_fields()
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
@@ -76,7 +66,7 @@ class SolrDocuments:
         Adds documents to Solr
         """
         extracted_data = self._extract(*docs)
-        #print(extracted_data)
+        # print(extracted_data)
         docs = [
             SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
