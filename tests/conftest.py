@@ -31,6 +31,7 @@ def solr_docs(request, solr_docs_core):
         "corename": "test_documents_core",
         "url": "http://localhost:8983/solr/",
         "always_commit": True,
+        "translator_target_languages": ["de", "en"]
     }
 
     request.cls.solr_docs = SolrDocStorage(config)
