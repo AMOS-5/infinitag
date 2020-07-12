@@ -37,23 +37,13 @@ import datetime
 # log.basicConfig(level=log.ERROR)
 
 
-class SolrDocStorage:
+class SolrDocuments:
     """
     Provides functionality to strore / modify and retrive documents
     from Solr
     """
-
-    AVAILABLE_SORT_FIELDS = set(SolrDoc("path").as_dict().keys())
-    AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
-    AVAILABLE_SEARCH_FIELDS.remove("creation_date")
-    AVAILABLE_SEARCH_FIELDS.remove("size")
-    AVAILABLE_SEARCH_FIELDS.remove("last_modified")
-    # we want to perform a string search for now so replace the fields
-    # with the corresponding copy field
-    AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
-    AVAILABLE_SEARCH_FIELDS.add("size_str")
-    AVAILABLE_SEARCH_FIELDS.add("last_modified_str")
-
+    AVAILABLE_SEARCH_FIELDS = SolrDoc.search_fields()
+    AVAILABLE_SORT_FIELDS = SolrDoc.sort_fields()
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
@@ -76,7 +66,7 @@ class SolrDocStorage:
         Adds documents to Solr
         """
         extracted_data = self._extract(*docs)
-        #print(extracted_data)
+        # print(extracted_data)
         docs = [
             SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
@@ -136,10 +126,10 @@ class SolrDocStorage:
         :param keywords_only: Whether the search should only occur on the keywords field
         :return: total number of pages, search hits for this page
         """
-        if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
+        if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_fields = SolrDocStorage.AVAILABLE_SEARCH_FIELDS
+        search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
         if keywords_only:
             search_fields = ["keywords"]
 
@@ -271,4 +261,4 @@ class SolrDocStorage:
         return id_query
 
 
-__all__ = ["SolrDocStorage"]
+__all__ = ["SolrDocuments"]

@@ -7,7 +7,7 @@ from backend.solr import (
     SolrKeywordModel,
     SolrKeywords,
     SolrHierarchy,
-    SolrDocStorage,
+    SolrDocuments,
     SolrDoc,
     SolrDocKeyword,
     SolrDocKeywordTypes,

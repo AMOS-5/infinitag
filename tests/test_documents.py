@@ -1,6 +1,6 @@
 import pytest
 import unittest
-from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDocuments, SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 
 
 @pytest.fixture
@@ -38,7 +38,7 @@ def doc_with_keyword_in_keywords_field(solr_docs):
 def doc_paths():
     import os
 
-    base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+    base = f"{os.getcwd()}/tests/test_files/test"
     doc_types = ["pdf", "txt", "pptx", "docx"]
 
     doc_paths = [f"{base}.{doc_type}" for doc_type in doc_types]
@@ -126,7 +126,7 @@ def doc_with_deutschland(solr_docs):
     return doc_id
 
 @pytest.mark.usefixtures("solr_docs")
-class TestDocStorage:
+class TestDocuments:
     def test_add_and_search(self, docs_in_solr):
         added = self.solr_docs.search("*:*")
         assert len(added) == len(docs_in_solr)
@@ -266,14 +266,11 @@ class TestDocStorage:
 
 
     def test_uploading_empty_documents(self):
-        doc = SolrDoc("tests/test_docstorage_files/empty_doc.txt")
+        doc = SolrDoc("tests/test_files/empty_doc.txt")
         try:
             self.solr_docs.add(doc)
             doc = self.solr_docs.get(doc.id)
 
             assert doc.content == "unknown"
         except Exception as e:
-            self.fail(f"Raised unexpected exception: {e}")
-
-if __name__ == "__main__":
-    unittest.main()
+            pytest.fail(f"Raised unexpected exception: {e}")

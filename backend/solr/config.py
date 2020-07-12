@@ -35,7 +35,7 @@ dimensions_solr = {
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
-doc_storage_solr = {
+documents_solr = {
     "corename": "documents",
     "url": "http://18.235.6.254:8983/solr",
     # "url": "http://localhost:8983/solr",
