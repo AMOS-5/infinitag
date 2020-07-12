@@ -19,6 +19,7 @@ from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
+from utils.tagcloud import update_tagcloud
 
 from argparse import ArgumentParser
 import sys
@@ -30,6 +31,7 @@ from pathlib import Path
 import logging as log
 import zipfile
 import copy
+
 
 from backend.service import SolrService, SolrMiddleware
 from backend.service.tagging import (
@@ -403,6 +405,7 @@ def apply_tagging_method():
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
         default = options["computeOptimal"]
+        start_time = time.time()
 
         #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
 
@@ -416,6 +419,11 @@ def apply_tagging_method():
         tagging_service.add_job(job)
         job.start()
 
+        stop_time = time.time() - start_time
+
+        print("Applying keywords took:", "{:10.7f}".format(stop_time))
+
+    update_tagcloud()
     return jsonify({"status": 200})
 
 
