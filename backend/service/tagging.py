@@ -171,6 +171,7 @@ class AutomatedTaggingJob(Thread, TaggingJob):
             if iteration_time != - 1:
                 self.time_remaining = iteration_time * remaining_iterations
             self.progress += progress_step
+
         self.solr_service.docs.update(*docs)
         keywords_added = set()
         keywords_added.update(kw for doc in docs for kw in doc.keywords)
