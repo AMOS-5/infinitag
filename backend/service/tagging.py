@@ -122,7 +122,7 @@ class AutomatedTaggingJob(Thread, TaggingJob):
         super().__init__()
         self.job_id = job_id
         self.docs = solr_service.docs.get(*docs_ids)
-        if len(self.docs) == 1:
+        if isinstance(self.docs, list) == False:
             self.docs=[self.docs]
         self.num_clusters = num_clusters
         self.num_keywords = num_keywords
@@ -135,7 +135,6 @@ class AutomatedTaggingJob(Thread, TaggingJob):
 
     def run(self):
         self.status = 'TAGGING_JOB.CREATE_KW'
-        print("=======", self.docs)
         auto_keywords = create_automated_keywords(self.docs, self.num_clusters, self.num_keywords, self.default, self)
         self.status = 'TAGGING_JOB.KW_FOUND'
 
@@ -172,13 +171,12 @@ class AutomatedTaggingJob(Thread, TaggingJob):
             if iteration_time != - 1:
                 self.time_remaining = iteration_time * remaining_iterations
             self.progress += progress_step
-
-        self.status = 'FINISHED'
         self.solr_service.docs.update(*docs)
-
         keywords_added = set()
         keywords_added.update(kw for doc in docs for kw in doc.keywords)
         self.solr_service.keyword_statistics.update({}, keywords_added)
+        self.status = 'FINISHED'
+
 
     def stop(self):
         self.cancelled = True

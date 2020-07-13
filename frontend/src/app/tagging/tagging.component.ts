@@ -194,7 +194,10 @@ export class TaggingComponent implements OnInit {
       options: {applyToAllDocuments: this.applyToAllDocuments},
       jobId
     };
-    console.log(taggingData)
+    if(taggingData.documents.length === 0 && taggingData.options["applyToAllDocuments"] === false) {
+      this.snackBar.open('no documents selected', ``, { duration: 3000 });
+      return;
+    }
     if (this.selectedTaggingMethod.name === 'Automated') {
       const dialogRef = this.dialog.open(AutomatedTaggingParametersDialog, {
         width: '300px',
@@ -223,6 +226,10 @@ export class TaggingComponent implements OnInit {
         this.openMonitoring(jobId);
       });
     } else {
+      if (taggingData.keywordModel === undefined) {
+        this.snackBar.open('no keyword model given', ``, { duration: 3000 });
+        return;
+      }
       this.api.applyTaggingMethod(taggingData).subscribe(() => {
         this.applyingTaggingMechanism = false;
       });

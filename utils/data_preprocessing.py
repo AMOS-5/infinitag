@@ -233,7 +233,7 @@ def load_data_from_frontend(docs):
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
-    print(vocab_frame)
+
     return vocabulary, vocab_frame, filenames, overall
 
 

@@ -378,9 +378,6 @@ def apply_tagging_method():
     else:
         docs_ids = [doc["id"] for doc in docs]
 
-    print("docs", docs_ids)
-    print("num docs: ", len(docs_ids))
-
     if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
         kwm_data = data["keywordModel"]
@@ -444,9 +441,10 @@ def get_statistics():
         n_keywords=n_keywords,
         n_keyword_models=n_keyword_models,
     )
-import re
-if __name__ == "__main__":
 
+if __name__ == "__main__":
+    #solr.docs.wipe_keywords()
+    #solr.docs.clear()
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
