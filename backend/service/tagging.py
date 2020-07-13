@@ -118,10 +118,10 @@ class KWMJob(Thread, TaggingJob):
 
 
 class AutomatedTaggingJob(Thread, TaggingJob):
-    def __init__(self, job_id: str, docs_ids, num_clusters, num_keywords, default,  solr_service: "SolrService"):
+    def __init__(self, job_id: str, doc_ids, num_clusters, num_keywords, default,  solr_service: "SolrService"):
         super().__init__()
         self.job_id = job_id
-        self.docs = solr_service.docs.get(*docs_ids)
+        self.docs = solr_service.docs.get(*doc_ids)
         if isinstance(self.docs, list) == False:
             self.docs=[self.docs]
         self.num_clusters = num_clusters

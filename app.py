@@ -374,9 +374,9 @@ def apply_tagging_method():
 
     if options["applyToAllDocuments"]:
         res = solr.docs.search("*:*", rows=5000)
-        docs_ids = [SolrDoc.from_hit(hit).id for hit in res]
+        doc_ids = [SolrDoc.from_hit(hit).id for hit in res]
     else:
-        docs_ids = [doc["id"] for doc in docs]
+        doc_ids = [doc["id"] for doc in docs]
 
     if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
@@ -387,7 +387,7 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 
-        job = KWMJob(keywords, job_id, solr, *docs_ids)
+        job = KWMJob(keywords, job_id, solr, *doc_ids)
         tagging_service.add_job(job)
         job.start()
 
@@ -399,7 +399,7 @@ def apply_tagging_method():
 
 
         job = AutomatedTaggingJob(job_id=job_id,
-                                  docs_ids=docs_ids,
+                                  doc_ids=doc_ids,
                                   num_clusters=num_clusters,
                                   num_keywords=num_keywords,
                                   default = default,
