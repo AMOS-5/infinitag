@@ -174,7 +174,7 @@ def lemmatize_keywords(keywords: dict) -> dict:
     return lemmatized_keywords
 
 
-def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
+def create_automated_keywords(docs, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
     number_of_files = len(file_list)
     if len(docs) < 5:
@@ -219,10 +219,10 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
     return vocabulary, vocabulary_frame, files, overall
 
 
-def load_data_from_frontend(docs: dict):
-    filenames = [doc["id"] for doc in docs]
-    texts = [doc["content"] for doc in docs]
-    langs = [doc["language"] for doc in docs]
+def load_data_from_frontend(docs):
+    filenames = [doc.id for doc in docs]
+    texts = [doc.content for doc in docs]
+    langs = [doc.lang for doc in docs]
     lang = 0
     for i in langs:
         lang = i
@@ -233,7 +233,7 @@ def load_data_from_frontend(docs: dict):
     vocabulary.extend(content for content in overall)
 
     vocab_frame = pd.DataFrame({"words": vocabulary})
-
+    print(vocab_frame)
     return vocabulary, vocab_frame, filenames, overall
 
 

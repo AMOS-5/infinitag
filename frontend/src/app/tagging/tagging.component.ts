@@ -41,6 +41,9 @@ export class TaggingComponent implements OnInit {
   bulkKwCtrl = new FormControl([]);
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  //Checkbox variable indicating if automated taggin should be applied to all documents
+  applyToAllDocuments: boolean = false;
+
   // list of all keywords (uncategorized + kwm)
   keywords: IKeywordListEntry[] = [];
   selectedKeywords: IKeywordListEntry[] = [];
@@ -188,9 +191,10 @@ export class TaggingComponent implements OnInit {
       taggingMethod: this.selectedTaggingMethod,
       documents: this.selectedDocuments,
       keywordModel: this.selectedKeywordModel,
-      options: {},
+      options: {applyToAllDocuments: this.applyToAllDocuments},
       jobId
     };
+    console.log(taggingData)
     if (this.selectedTaggingMethod.name === 'Automated') {
       const dialogRef = this.dialog.open(AutomatedTaggingParametersDialog, {
         width: '300px',
@@ -208,7 +212,9 @@ export class TaggingComponent implements OnInit {
           return;
         }
 
-        taggingData.options = result;
+        taggingData.options["computeOptimal"] = result.computeOptimal;
+        taggingData.options["numClusters"]    = result.numClusters;
+        taggingData.options["numKeywords"]    = result.numKeywords;
 
         this.api.applyTaggingMethod(taggingData).subscribe(
           () => {

@@ -368,7 +368,18 @@ def apply_tagging_method():
     :return: json object containing a status message
     """
     data = request.json
+    docs = data["documents"]
+    options = data["options"]
     job_id = data["jobId"]
+
+    if options["applyToAllDocuments"]:
+        res = solr.docs.search("*:*", rows=5000)
+        docs_ids = [SolrDoc.from_hit(hit).id for hit in res]
+    else:
+        docs_ids = [doc["id"] for doc in docs]
+
+    print("docs", docs_ids)
+    print("num docs: ", len(docs_ids))
 
     if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
@@ -379,32 +390,19 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 
-        start_time = time.time()
-
-        docs_json = data["documents"]
-
-        doc_ids = []
-        if "documents" in data and len(data["documents"]) != 0:
-            doc_ids = [doc["id"] for doc in docs_json]
-
-        job = KWMJob(keywords, job_id, solr, *doc_ids)
+        job = KWMJob(keywords, job_id, solr, *docs_ids)
         tagging_service.add_job(job)
         job.start()
 
-        stop_time = time.time() - start_time
-        print("Applying keywords took:", "{:10.7f}".format(stop_time))
 
     else:
-        docs = data["documents"]
-        options = data["options"]
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
         default = options["computeOptimal"]
 
-        #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
 
         job = AutomatedTaggingJob(job_id=job_id,
-                                  docs=docs,
+                                  docs_ids=docs_ids,
                                   num_clusters=num_clusters,
                                   num_keywords=num_keywords,
                                   default = default,
@@ -446,7 +444,7 @@ def get_statistics():
         n_keywords=n_keywords,
         n_keyword_models=n_keyword_models,
     )
-
+import re
 if __name__ == "__main__":
 
     parser = ArgumentParser(description="Infinitag Rest Server")

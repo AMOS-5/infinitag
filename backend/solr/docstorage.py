@@ -102,14 +102,15 @@ class SolrDocStorage:
         return docs[0] if len(docs) == 1 else docs
 
     def _get(self, doc: str) -> SolrDoc:
+        doc_formated = doc.replace("(", "\\(")
+        doc_formated = doc_formated.replace(")", "\\)")
         # TODO don't know 100% whether this can fail or not
-        query = f"id:*{doc}"
-
+        query = f"id:*{doc_formated}"
+        print("q", query)
         res = self.con.search(query)
         hit = self._get_hit(res, doc)
         if hit is None:
             return None
-
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
