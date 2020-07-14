@@ -147,11 +147,11 @@ def download_files():
         if len(docs) == 1:
             return send_from_directory("tmp", filename=docs[0]["id"], as_attachment=True)
         else:
-            zipf = zipfile.ZipFile('tmp/test.zip', 'w', zipfile.ZIP_DEFLATED)
+            zipf = zipfile.ZipFile('tmp/download.zip', 'w', zipfile.ZIP_DEFLATED)
             for doc in docs:
                 zipf.write(os.path.join("tmp", doc["id"]), os.path.join("documents", doc["id"]))
             zipf.close()
-            return send_from_directory("tmp", 'test.zip', as_attachment=True)
+            return send_from_directory("tmp", "download.zip", as_attachment=True)
     except Exception as e:
         log.error(f"/download {e}")
         return jsonify(f"Error: {e}"), 400
@@ -451,11 +451,13 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
 
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
-    # Currently this code lags behind one apply tagging click tag (word) cloud
-    # Has to placed at a better place
-    update_tagcloud(path_to_save='frontend/src/assets/img')
+
     return jsonify({"status": 200})
 
+@app.route('/wordcloud', methods=['GET'])
+def get_wordcloud():
+    update_tagcloud(path_to_save='tmp', solrService=solr)
+    return send_from_directory("tmp", "tag_cloud.png", as_attachment=True)
 
 @app.route("/job/<job_id>", methods=["GET", "DELETE"])
 def get_job_status(job_id):

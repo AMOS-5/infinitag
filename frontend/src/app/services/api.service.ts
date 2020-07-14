@@ -55,7 +55,7 @@ export class ApiService {
   }
 
 
-  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term='', keywords_only?: string) {
+  public getDocuments(page: any= 0, num_per_page: any= 10, sort_field= 'id', sort_order= 'asc', search_term='', keywords_only?: string) {
     const params = {
       page,
       num_per_page,
@@ -158,4 +158,13 @@ export class ApiService {
   public getStats() {
     return this.http.get(`${environment.serverUrl}/statistics`);
   }
+
+  public getWordcloud() {
+    const headers = new HttpHeaders()
+      .set("Cache-Control", "no-store");
+
+    return this.http.get(`${environment.serverUrl}/wordcloud`, {headers, responseType: 'blob' });
+  }
+
+
 }
