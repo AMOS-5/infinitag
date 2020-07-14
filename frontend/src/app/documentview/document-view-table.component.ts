@@ -400,8 +400,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     
     event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
     event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
+    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     if(moment(event.startDate).isSame(event.endDate, 'date')) {
-      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate).subscribe((documents: any) => {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
         console.log(documents)
         this.dataSource.data = this.documents;
@@ -410,7 +411,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.totalPages = documents.total_pages * documents.num_per_page;
       });
     } else {
-      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
         console.log(documents)
         this.dataSource.data = this.documents;
