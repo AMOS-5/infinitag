@@ -144,7 +144,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * Sets the data variable of this components MatTableDataSource instance
    */
   public setDatasource() {
-    console.log(this.documents)
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
@@ -398,13 +397,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   updateDateString(event) {
     let mom:any = moment;
-    this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z";
-    this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z";
+    console.log(event)
+    event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
+    event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
 
-    console.log(this.startDate)
-    console.log(this.endDate)
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
       this.documents = documents.docs;
+      console.log(documents)
       this.dataSource.data = this.documents;
       this.pageSize = documents.num_per_page;
       this.currentPage = documents.page;

@@ -10,7 +10,7 @@
         </mat-checkbox>
       <mat-form-field class="example-full-width">
         <mat-label>{{'DOCUMENTS.SEARCH_BY_DATE_RANGE' | translate}}</mat-label>
-        <input matInput ngxDaterangepickerMd (change)="updateDateString($event)"/>
+        <input matInput ngxDaterangepickerMd (change)="updateDateString($event)" [showClearButton]="true"/>
       </mat-form-field>
     </form>
 
