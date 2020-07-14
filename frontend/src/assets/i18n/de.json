@@ -31,6 +31,8 @@
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
     "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
     "SELECT_KEYWORD_MODEL": "Keyword-Model auswählen",
+    "ALL_DOCUMENTS_CHECKBOX": "Auf alle Dokumente anwenden",
+    "ALL_DOCUMENTS_CHECKBOX_TOOLTIP": "Die manuelle Dokumentenauswahl wird ignoriert und das automatische Tagging wird auf alle in der Datenbank gespeicherten Dokumente angewandt",
     "FILE_EXISTS": "Folgende Datei existiert",
     "FILE_EXISTS_QUESTION": "Was möchten Sie tun?",
     "FILE_EXISTS_OVERWRITE": "Überschreiben",

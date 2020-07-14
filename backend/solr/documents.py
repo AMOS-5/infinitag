@@ -31,6 +31,7 @@ from urlpath import URL
 import copy
 import json
 import datetime
+import re
 
 
 # log.basicConfig(level=log.INFO)
@@ -90,14 +91,14 @@ class SolrDocuments:
         return docs[0] if len(docs) == 1 else docs
 
     def _get(self, doc: str) -> SolrDoc:
+        special_chars = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+        doc_formated = special_chars.sub(r'\\\g<char>', doc)
         # TODO don't know 100% whether this can fail or not
-        query = f"id:*{doc}"
-
+        query = f"id:*{doc_formated}"
         res = self.con.search(query)
         hit = self._get_hit(res, doc)
         if hit is None:
             return None
-
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
@@ -198,7 +199,7 @@ class SolrDocuments:
         res = self.search("*:*")
         docs = [SolrDoc.from_hit(hit) for hit in res]
         for doc in docs:
-            doc.keywords = []
+            doc.keywords = [kw for kw in doc.keywords if kw.type == SolrDocKeywordTypes.META]
             self.update(doc)
 
     def apply_kwm(self, keywords: dict, *doc_ids: str,) -> None:

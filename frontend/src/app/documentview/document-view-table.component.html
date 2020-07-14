@@ -101,7 +101,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
   <mat-paginator *ngIf="totalPages > 0" class="paginator--centered" #paginator [pageSize]="pageSize"
-                 [pageSizeOptions]="[100, 500, 1000]" [showFirstLastButtons]="true" [length]="totalPages"
+                 [pageSizeOptions]="[10, 100, 500, 1000]" [showFirstLastButtons]="true" [length]="totalPages"
                  [pageIndex]="currentPage" (page)="paginate($event)">
   </mat-paginator>
 </div>
