@@ -33,7 +33,7 @@ import threading as th
 
 # TODO tika should be configure correctly to ignore images and other unnecessary data
 os.environ["TIKA_PATH"] = "./downloads/tika"
-print(f"Tika server set to: {os.environ['TIKA_PATH']}")
+os.environ["TIKA_LOG_PATH"] = "./backend/log/tika"
 
 from tika import parser, detector, language
 from typing import Set, List, Tuple
@@ -174,7 +174,7 @@ def lemmatize_keywords(keywords: dict) -> dict:
     return lemmatized_keywords
 
 
-def create_automated_keywords(docs: dict, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
+def create_automated_keywords(docs, num_clusters: int, num_keywords: int, default: bool, job=None) -> dict:
     flattened, vocab_frame, file_list, overall = load_data_from_frontend(docs)
     number_of_files = len(file_list)
     if len(docs) < 5:
@@ -219,10 +219,10 @@ def load_data(dir: str, unwanted_keywords: Set[str]):
     return vocabulary, vocabulary_frame, files, overall
 
 
-def load_data_from_frontend(docs: dict):
-    filenames = [doc["id"] for doc in docs]
-    texts = [doc["content"] for doc in docs]
-    langs = [doc["language"] for doc in docs]
+def load_data_from_frontend(docs):
+    filenames = [doc.id for doc in docs]
+    texts = [doc.content for doc in docs]
+    langs = [doc.lang for doc in docs]
     lang = 0
     for i in langs:
         lang = i

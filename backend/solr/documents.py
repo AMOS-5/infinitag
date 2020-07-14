@@ -125,7 +125,6 @@ class SolrDocStorage:
         sort_field: str = "id",
         sort_order: str = "asc",
         search_term: str = "",
-        keywords_only: bool = False,
     ) -> List[SolrDoc]:
         """
         Returns a paginated, sorted search query.
@@ -135,23 +134,16 @@ class SolrDocStorage:
         :param sort_field: The field used for sorting (all fields in SolrDoc)
         :param sort_order: asc / desc
         :param search_term: Search term which has to appear in any SolrDoc field
-        :param keywords_only: Whether the search should only occur on the keywords field
-        :return: total number of pages, search hits for this page
+        :return: total number of pages, search hits
         """
         if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_fields = SolrDocStorage.AVAILABLE_SEARCH_FIELDS
-        if keywords_only:
-            search_fields = ["keywords"]
-
         search_query = "*:*"
         if search_term:
-            search_terms = search_term.split()
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
-                for field in search_fields
-                for search_term in search_terms
+                for field in SolrDocStorage.AVAILABLE_SEARCH_FIELDS
             )
 
         offset = page * num_per_page
@@ -162,16 +154,10 @@ class SolrDocStorage:
             sort=f"{sort_field} {sort_order}",
         )
 
-        total_pages = self._calculate_total_pages(res.hits, num_per_page)
+        total_pages = res.hits // num_per_page
+        total_pages += 1 if res.hits % num_per_page else 0
 
         return total_pages, [SolrDoc.from_hit(hit) for hit in res]
-
-    def _calculate_total_pages(self, n_hits, num_per_page):
-        total_pages = n_hits // num_per_page
-        if n_hits % num_per_page:
-            total_pages += 1
-
-        return total_pages
 
     # query syntax = Solr
     def search(self, query: str, rows: int = 300, **kwargs) -> dict:
@@ -269,3 +255,4 @@ class SolrDocStorage:
 
 
 __all__ = ["SolrDocStorage"]
+583603

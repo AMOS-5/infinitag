@@ -8,7 +8,7 @@
     <div class="container">
         <h1>Dashboard InfiniTag</h1>
         <h3>{{'HOME.MOTTO' | translate}}</h3>
-        <mat-grid-list cols="5" rowHeight="1:2.2">
+        <mat-grid-list cols="5" rowHeight="1:2.2" [gutterSize]="'10px'">
             <mat-grid-tile [colspan]="2">
                 <div class="content-inside-grid">
                     <div *ngIf='selected' echarts [options]="pieOptions" [autoResize]="true" class="demo-chart"></div>
@@ -49,6 +49,12 @@
                     </div>
                 </div>
 
+            </mat-grid-tile>
+             <mat-grid-tile [colspan]="5" >
+                <div>
+                <img src="../../assets/img/tag_cloud.png" alt="InfiniTag" class="tagcloud" layout-fill  />
+
+                </div>
             </mat-grid-tile>
         </mat-grid-list>
         <div class="footer">

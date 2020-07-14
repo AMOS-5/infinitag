@@ -185,15 +185,13 @@ def get_documents():
         sort_field = request.args.get("sort_field", "id")
         sort_order = request.args.get("sort_order", "asc")
         search_term = request.args.get("search_term", "")
-        keywords_only = request.args.get("keywords_only") == 'True'
 
         total_pages, docs = solr.docs.page(
             page,
             num_per_page,
             sort_field,
             sort_order,
-            search_term,
-            keywords_only
+            search_term
         )
 
         docs = [doc.as_dict() for doc in docs]
@@ -209,7 +207,6 @@ def get_documents():
 
         return res, 200
     except Exception as e:
-        log.error(f"/documents {e}")
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
