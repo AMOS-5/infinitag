@@ -387,18 +387,28 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   updateDateString(event) {
     let mom:any = moment;
-    console.log(event)
+    
     event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
     event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
-
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
-      this.documents = documents.docs;
-      console.log(documents)
-      this.dataSource.data = this.documents;
-      this.pageSize = documents.num_per_page;
-      this.currentPage = documents.page;
-      this.totalPages = documents.total_pages * documents.num_per_page;
-    });
+    if(moment(event.startDate).isSame(event.endDate, 'date')) {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        console.log(documents)
+        this.dataSource.data = this.documents;
+        this.pageSize = documents.num_per_page;
+        this.currentPage = documents.page;
+        this.totalPages = documents.total_pages * documents.num_per_page;
+      });
+    } else {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        console.log(documents)
+        this.dataSource.data = this.documents;
+        this.pageSize = documents.num_per_page;
+        this.currentPage = documents.page;
+        this.totalPages = documents.total_pages * documents.num_per_page;
+      });
+    }
   }
 }
 
