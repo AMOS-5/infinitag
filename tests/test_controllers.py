@@ -251,6 +251,7 @@ class TestController(unittest.TestCase):
                             'keywords': ['test', 'text', 'faufm'],
                          },
             documents=[{'id': "test.txt"}, {'id':"test.pdf"}],
+            options={"applyToAllDocuments": False},
             jobId='JOB-ID'
         ))
 

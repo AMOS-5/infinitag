@@ -23,6 +23,8 @@ numpy
 spacy
 gensim
 kneed
+
+wordcloud
 # misc
 urlpath
 atoma

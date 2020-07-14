@@ -30,6 +30,7 @@ from pathlib import Path
 from urlpath import URL
 import copy
 import json
+import re
 from datetime import datetime, timedelta
 
 
@@ -91,14 +92,14 @@ class SolrDocuments:
         return docs[0] if len(docs) == 1 else docs
 
     def _get(self, doc: str) -> SolrDoc:
+        special_chars = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+        doc_formated = special_chars.sub(r'\\\g<char>', doc)
         # TODO don't know 100% whether this can fail or not
-        query = f"id:*{doc}"
-
+        query = f"id:*{doc_formated}"
         res = self.con.search(query)
         hit = self._get_hit(res, doc)
         if hit is None:
             return None
-
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
@@ -134,7 +135,9 @@ class SolrDocuments:
         if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_query = self._build_search_query(search_term, start_date, end_date, keywords_only)
+        search_query = self._build_search_query(
+            search_term, start_date, end_date, keywords_only
+        )
 
         offset = page * num_per_page
         res = self.con.search(
@@ -148,8 +151,11 @@ class SolrDocuments:
 
         return total_pages, [SolrDoc.from_hit(hit) for hit in res]
 
-    def _build_search_query(self, search_term: str, start_date: str, end_date: str, keywords_only: bool) -> str:
+    def _build_search_query(
+        self, search_term: str, start_date: str, end_date: str, keywords_only: bool
+    ) -> str:
         search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
+
         if keywords_only:
             search_fields = ["keywords"]
 
@@ -167,6 +173,7 @@ class SolrDocuments:
             # build and OR query where we search each field in Solr for each search term
             # n_searches = n_fields * n_search_terms
             search_terms = [search_term.lower() for search_term in search_terms]
+
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in search_fields
@@ -174,16 +181,32 @@ class SolrDocuments:
             )
 
         if start_date and end_date:
-            search_query = self._append_time_interval(search_query, start_date, end_date)
+            search_query = self._append_time_interval(
+                search_query, start_date, end_date
+            )
         elif start_date:
+            # parse start date
             start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
-            start_date -= timedelta(hours=start_date.hours, minutes=start_date.minutes, seconds=start_date.seconds)
+            # reset the start date (hours, minutes, seconds) = 0
+            start_date = start_date - timedelta(
+                hours=start_date.hour,
+                minutes=start_date.minute,
+                seconds=start_date.second,
+            )
+            # create end_date = start_date + 24 hours
             end_date = start_date + timedelta(hours=24)
-            search_query = self._append_time_interval(search_query, start_date, end_date)
+
+            search_query = self._append_time_interval(
+                search_query,
+                start_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            )
 
         return search_query
 
-    def _append_time_interval(self, search_query: str, start_date: str, end_date: str) -> str:
+    def _append_time_interval(
+        self, search_query: str, start_date: str, end_date: str
+    ) -> str:
         return f"({search_query}) AND creation_date: [ {start_date} TO {end_date} ]"
 
     def _calculate_total_pages(self, n_hits, num_per_page) -> int:
@@ -225,7 +248,7 @@ class SolrDocuments:
         res = self.search("*:*")
         docs = [SolrDoc.from_hit(hit) for hit in res]
         for doc in docs:
-            doc.keywords = []
+            doc.keywords = [kw for kw in doc.keywords if kw.type == SolrDocKeywordTypes.META]
             self.update(doc)
 
     def apply_kwm(self, keywords: dict, *doc_ids: str,) -> None:
@@ -289,3 +312,4 @@ class SolrDocuments:
 
 
 __all__ = ["SolrDocuments"]
+

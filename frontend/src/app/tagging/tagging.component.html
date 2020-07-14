@@ -54,6 +54,10 @@
           <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.id}}</mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-checkbox [(ngModel)]="applyToAllDocuments"
+        matTooltip="{{'DOCUMENTS.ALL_DOCUMENTS_CHECKBOX_TOOLTIP' | translate}}">
+          {{'DOCUMENTS.ALL_DOCUMENTS_CHECKBOX' | translate}}
+      </mat-checkbox>
       <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="applyingTaggingMechanism">
         <span *ngIf="!applyingTaggingMechanism">
           {{'DOCUMENTS.APPLY_TAGGING' | translate}}

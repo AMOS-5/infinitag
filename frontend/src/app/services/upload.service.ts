@@ -27,7 +27,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { IDocument } from '../models/IDocument.model';
-import {IFile} from "../models/IFile.model";
+import {IFile} from '../models/IFile.model';
 
 
 /**
@@ -80,8 +80,12 @@ export class UploadService {
   public getFiles(iDocs: IDocument[]): Observable<any> {
     return this.httpClient.post(`${environment.serverUrl}/download`, iDocs, {
       observe: 'response',
-      responseType: "blob"
+      responseType: 'blob'
     });
+  }
+
+  public deleteFile(file: IFile) {
+    return this.httpClient.delete(`${environment.serverUrl}/documents/${file.file.name}`);
   }
 
   public patchKeywords(iDoc: IDocument): Observable<object> {
