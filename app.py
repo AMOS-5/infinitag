@@ -74,11 +74,31 @@ def upload_file():
         f = request.files["fileKey"]
         f_id = request.form['fid']
         file_name = secure_filename(f.filename)
+
         file_name = str("tmp" / Path(file_name))
 
         if request.method == "PUT":
             name, ext = os.path.splitext(str(file_name))
-            file_name = f"{name}_{uuid4()}{ext}"
+            base = os.path.basename(name)
+            docs = solr.docs.search(f"id:*{base}*")
+            if len(docs.docs) == 1:
+                file_name = f"{name}_(1){ext}"
+            else:
+                largest = 1
+                for doc in docs.docs:
+                    id = doc['id']
+                    suffix_start = id.rfind('(')
+                    suffix_end = id.rfind(')')
+
+                    if suffix_start > 0 and suffix_end > suffix_start:
+                        number = id[suffix_start + 1: suffix_end]
+                        try:
+                            number = int(number)
+                            if number > largest:
+                                largest = number
+                        except:
+                            largest = 1
+                file_name = f"{name}_({largest + 1}){ext}"
 
         doc = SolrDoc(file_name)
         if request.method == "POST":
