@@ -70,6 +70,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   visible = true;
 
   editing = false;
+  public searchOnlyKeywords = false;
 
   constructor(
     private api: ApiService,
@@ -327,7 +328,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.pageEvent.emit(e);
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    console.log(keywordsOnly);
+    this.api.getDocuments(
+      this.currentPage,
+      this.pageSize,
+      this.sortField,
+      this.sortOrder,
+      this.searchString,
+      keywordsOnly)
+      .subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
     });
@@ -357,8 +367,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   updateSearchString(event) {
+    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.searchString = event.target.value;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
       this.pageSize = documents.num_per_page;

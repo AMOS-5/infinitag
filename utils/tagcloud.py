@@ -26,14 +26,15 @@ def update_tagcloud(path_to_save):
     distinct = list(dict.fromkeys(all_keywords))
     string = " ".join(str(x) for x in distinct)
     print(string)
-
-    wordcloud = WordCloud(width=1200 , height=700,max_font_size=100, max_words=1000,
-                          background_color="white").generate(string)
+    if len(distinct) > 0:
+        wordcloud = WordCloud(width=1200 , height=700,max_font_size=100, max_words=1000,
+                              background_color="white").generate(string)
+        wordcloud.to_file(path.join(path_to_save, 'tag_cloud.png'))
 
     #Saved image in the Assets folder so it can be updated everytime
-    plt.figure()
-    plt.axis("off")
-    plt.imshow(wordcloud, interpolation="bilinear")
-    print('Printing word cloud now..')
-    wordcloud.to_file(path.join(path_to_save,'tag_cloud.png'))
+    # plt.figure()
+    # plt.axis("off")
+    # plt.imshow(wordcloud, interpolation="bilinear")
+    # print('Printing word cloud now..')
+
 

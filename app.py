@@ -207,7 +207,8 @@ def get_documents():
         sort_field = request.args.get("sort_field", "id")
         sort_order = request.args.get("sort_order", "asc")
         search_term = request.args.get("search_term", "")
-        keywords_only = request.args.get("keywords_only", False)
+        keywords_only = request.args.get("keywords_only") == 'True'
+
 
         total_pages, docs = solr.docs.page(
             page,
@@ -452,7 +453,7 @@ def apply_tagging_method():
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
     # Currently this code lags behind one apply tagging click tag (word) cloud
     # Has to placed at a better place
-    update_tagcloud(path_to_save='.\\frontend\\src\\assets\\img')
+    update_tagcloud(path_to_save='frontend/src/assets/img')
     return jsonify({"status": 200})
 
 

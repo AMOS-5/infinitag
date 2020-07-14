@@ -130,7 +130,9 @@ class SolrDocuments:
         if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
+
         search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
+
         if keywords_only:
             search_fields = ["keywords"]
 
@@ -142,6 +144,7 @@ class SolrDocuments:
                 search_terms = self.translator.translate(search_terms)
 
             search_terms = [search_term.lower() for search_term in search_terms]
+
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in search_fields
@@ -263,3 +266,4 @@ class SolrDocuments:
 
 
 __all__ = ["SolrDocuments"]
+
