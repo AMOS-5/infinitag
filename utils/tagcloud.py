@@ -11,7 +11,7 @@ import os
 from os import path
 
 
-def update_tagcloud():
+def update_tagcloud(path_to_save):
     solrservice = SolrDocuments(config.documents_solr)
     q_keywords = solrservice.search("*:*", fl='keywords')
     docs = q_keywords.docs
@@ -31,11 +31,10 @@ def update_tagcloud():
                           background_color="white").generate(string)
 
     #TODO: Save image in the Assets folder so it can be updated everytime
-    #path_to_save = r"..\..\frontend\src\assets\img"
     plt.figure()
     plt.axis("off")
     plt.imshow(wordcloud, interpolation="bilinear")
-    #wordcloud.to_file(path.join(path_to_save,"tag_cloud.png"))
-    wordcloud.to_file("tag_cloud.png")
-
-
+    print('Printing word cloud now..')
+    wordcloud.to_file(path.join(path_to_save,'tag_cloud.png'))
+    #wordcloud.to_file("tag_cloud.png")
+    #update_tagcloud()

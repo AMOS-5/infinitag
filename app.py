@@ -422,8 +422,9 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
 
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
-
-    update_tagcloud()
+    # Currently this code lags behind one apply tagging click tag (word) cloud
+    # Has to placed at a better place
+    update_tagcloud(path_to_save='.\\frontend\\src\\assets\\img')
     return jsonify({"status": 200})
 
 
@@ -445,7 +446,6 @@ def get_statistics():
     doc_stats = solr.statistics.docs()
     n_keywords = solr.statistics.keywords()
     n_keyword_models = solr.statistics.keywordmodel()
-
     return jsonify(
         n_total_docs=doc_stats.n_total,
         n_tagged_docs=doc_stats.n_tagged,
