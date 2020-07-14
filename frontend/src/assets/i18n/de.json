@@ -13,6 +13,7 @@
   "DOCUMENTS": {
     "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
     "SEARCH_FOR_DOCUMENTS": "Nach Dokumenten Suchen",
+    "SEARCH_BY_DATE_RANGE": "Suche nach Datumsbereich",
     "FILENAME": "Dateiname",
     "LAST_MODIFIED": "Bearbeitet am",
     "MY_KEYWORDS": "Meine Keywords",
