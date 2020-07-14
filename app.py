@@ -488,8 +488,7 @@ def get_statistics():
     )
 
 if __name__ == "__main__":
-    #solr.docs.wipe_keywords()
-    #solr.docs.clear()
+
     parser = ArgumentParser(description="Infinitag Rest Server")
     parser.add_argument("--debug", type=bool, default=True)
     parser.add_argument("--port", type=int, default=5000)
