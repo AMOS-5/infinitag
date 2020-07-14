@@ -18,7 +18,7 @@ class TestController(unittest.TestCase):
         self.app = app
         # the id will be the full_path "__contains__" can only be checked with the full path
         # this path is a mimic of our ec2 setup
-        self.base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+        self.base = f"{os.getcwd()}/tests/test_files/test"
         self.doc_types = ["pdf", "txt", "pptx", "docx"]
         self.doc_paths = [f"{self.base}.{doc_type}" for doc_type in self.doc_types]
         self.docs = [SolrDoc(path) for path in self.doc_paths]

@@ -11,6 +11,7 @@ pysolr
 # file processing
 tika
 langdetect
+googletrans
 # machine learning / data science
 nltk
 sklearn
