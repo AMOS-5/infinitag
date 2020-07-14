@@ -24,6 +24,7 @@ from backend.solr import (
 from typing import Set, List, Generator, Tuple
 import itertools as it
 from datetime import datetime, timedelta, date
+from dateutil.relativedelta import relativedelta
 
 
 def pairwise(iterable):
@@ -87,7 +88,7 @@ class DocStatistics:
         self.n_untagged = None
         self.last_7_days = None
         self.last_4_weeks = None
-        self.this_year = None
+        self.last_12_months = None
         self.all_years = None
 
 
@@ -100,7 +101,7 @@ class SolrDocStatistics:
         ret.n_total, ret.n_tagged, ret.n_untagged = self._n_doc_statistics()
         ret.last_7_days = self._last_7_days()
         ret.last_4_weeks = self._last_4_weeks()
-        ret.this_year = self._this_year()
+        ret.last_12_months = self._last_12_months()
         ret.all_years = self._all_years()
         return ret
 
@@ -139,19 +140,19 @@ class SolrDocStatistics:
         search_intervals = self._create_search_intervals(weekly_frames)
         return self._get_docs_in_intervals(search_intervals)
 
-    def _this_year(self) -> List[int]:
+    def _last_12_months(self) -> List[int]:
         now = self._now()
+        begin_month = self._reset_month(now)
 
-        # querry past months and this month in this year
-        monthly_frames = [
-            datetime(now.year, month, 1, 0, 0, 0) for month in range(1, now.month + 1)
-        ]
-        monthly_frames.append(now)
+        # build the frames for last 12 months
+        monthly_frames = [now, begin_month]
+        monthly_frames.extend(
+            begin_month - relativedelta(months=months) for months in range(1, 12)
+        )
+        monthly_frames = reversed(monthly_frames)
 
         search_intervals = self._create_search_intervals(monthly_frames)
-        this_year = self._get_docs_in_intervals(search_intervals)
-        this_year.extend(0 for missing_months in range(12 - now.month))
-        return this_year
+        return self._get_docs_in_intervals(search_intervals)
 
     def _all_years(self) -> List[int]:
         now = self._now()

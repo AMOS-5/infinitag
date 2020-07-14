@@ -96,7 +96,7 @@ export class DashboardComponent implements OnInit{
                 { value: this.stats.n_tagged_docs, name: 'Tagged Documents' },
                 { value: this.stats.n_untagged_docs, name: 'Untagged Documents' }
               ],
-              color: ['#39ff14', '#000000']
+              color: ['#3f51b5', '#e83e8c']
             }
           ]
         };
@@ -120,7 +120,7 @@ export class DashboardComponent implements OnInit{
           xAxis: [
             {
               type: 'category',
-              data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              data: this.getPreviousDays(),
               axisTick: {
                 alignWithLabel: true
               }
@@ -133,7 +133,7 @@ export class DashboardComponent implements OnInit{
             name: 'Documents Added',
             type: 'bar',
             barWidth: '50%',
-            color: ['#39ff14', '#000000'],
+            color: ['#3f51b5', '#e83e8c'],
             data: this.stats.uploaded_last_7_days
           }]
         };
@@ -191,8 +191,7 @@ export class DashboardComponent implements OnInit{
         };
         break;
       case 'months':
-        //var months = this.getPreviousMonths();
-        var months = new Array("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
+        var months = this.getPreviousMonths();
 
         this.mergeOptions = {
           title: {
@@ -212,7 +211,7 @@ export class DashboardComponent implements OnInit{
             name: 'Documents Added',
             type: 'bar',
             barWidth: '50%',
-            data: this.stats.uploaded_this_year
+            data: this.stats.uploaded_last_12_months
           }]
         };
         break;
