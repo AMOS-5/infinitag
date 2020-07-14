@@ -5,7 +5,12 @@
         <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
         <input matInput placeholder="{{'SEARCH_TERM' | translate}}" (keyup)="updateSearchString($event)">
       </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>{{'DOCUMENTS.SEARCH_BY_DATE_RANGE' | translate}}</mat-label>
+        <input matInput ngxDaterangepickerMd (change)="updateDateString($event)"/>
+      </mat-form-field>
     </form>
+    
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
     <mat-tab label="{{'FILE_UPLOAD' | translate}}" class="mat-tab">
       <app-file-upload (uploadFinished)="sync()"></app-file-upload>

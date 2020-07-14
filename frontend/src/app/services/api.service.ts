@@ -54,7 +54,7 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordlist`);
   }
 
-  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string) {
+  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string, start_date?: string, end_date?:string) {
     let params = {
       page,
       num_per_page,
@@ -63,9 +63,12 @@ export class ApiService {
     };
 
     (search_term !== undefined) ? params['search_term'] = search_term : null;
+    (start_date !== undefined) ? params['start_date'] = start_date : null;
+    (end_date !== undefined) ? params['end_date'] = end_date : null;
     const documentsUrl = `${environment.serverUrl}/documents`;
     page = page.toString();
     num_per_page = num_per_page.toString();
+    console.log(params)
     return this.http.get(
       documentsUrl,
       {
