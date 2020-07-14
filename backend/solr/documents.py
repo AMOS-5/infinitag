@@ -135,7 +135,9 @@ class SolrDocuments:
         if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_query = self._build_search_query(search_term, start_date, end_date, keywords_only)
+        search_query = self._build_search_query(
+            search_term, start_date, end_date, keywords_only
+        )
 
         offset = page * num_per_page
         res = self.con.search(
@@ -149,7 +151,9 @@ class SolrDocuments:
 
         return total_pages, [SolrDoc.from_hit(hit) for hit in res]
 
-    def _build_search_query(self, search_term: str, start_date: str, end_date: str, keywords_only: bool) -> str:
+    def _build_search_query(
+        self, search_term: str, start_date: str, end_date: str, keywords_only: bool
+    ) -> str:
         search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
 
         if keywords_only:
@@ -177,16 +181,32 @@ class SolrDocuments:
             )
 
         if start_date and end_date:
-            search_query = self._append_time_interval(search_query, start_date, end_date)
+            search_query = self._append_time_interval(
+                search_query, start_date, end_date
+            )
         elif start_date:
+            # parse start date
             start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
-            start_date -= timedelta(hours=start_date.hours, minutes=start_date.minutes, seconds=start_date.seconds)
+            # reset the start date (hours, minutes, seconds) = 0
+            start_date = start_date - timedelta(
+                hours=start_date.hour,
+                minutes=start_date.minute,
+                seconds=start_date.second,
+            )
+            # create end_date = start_date + 24 hours
             end_date = start_date + timedelta(hours=24)
-            search_query = self._append_time_interval(search_query, start_date, end_date)
+
+            search_query = self._append_time_interval(
+                search_query,
+                start_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+                end_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            )
 
         return search_query
 
-    def _append_time_interval(self, search_query: str, start_date: str, end_date: str) -> str:
+    def _append_time_interval(
+        self, search_query: str, start_date: str, end_date: str
+    ) -> str:
         return f"({search_query}) AND creation_date: [ {start_date} TO {end_date} ]"
 
     def _calculate_total_pages(self, n_hits, num_per_page) -> int:

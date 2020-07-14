@@ -261,7 +261,10 @@ class TestDocuments:
         start_date = datetime.utcnow() - timedelta(hours=2)
         end_date = start_date + timedelta(hours=4)
 
-        _, docs = self.solr_docs.page(start_date=start_date, end_date=end_date)
+        _, docs = self.solr_docs.page(
+            start_date=start_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            end_date=end_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        )
         assert len(docs) == 4
 
     def test_doc_last_modified_date_changes_on_each_update(self, doc):
