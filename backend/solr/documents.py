@@ -173,13 +173,13 @@ class SolrDocuments:
                 for search_term in search_terms
             )
 
-            if start_date and end_date:
-                search_query = self._append_time_interval(search_query, start_date, end_date)
-            elif start_date:
-                start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
-                start_date -= timedelta(hours=start_date.hours, minutes=start_date.minutes, seconds=start_date.seconds)
-                end_date = start_date + timedelta(hours=24)
-                search_query = self._append_time_interval(search_query, start_date, end_date)
+        if start_date and end_date:
+            search_query = self._append_time_interval(search_query, start_date, end_date)
+        elif start_date:
+            start_date = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%SZ")
+            start_date -= timedelta(hours=start_date.hours, minutes=start_date.minutes, seconds=start_date.seconds)
+            end_date = start_date + timedelta(hours=24)
+            search_query = self._append_time_interval(search_query, start_date, end_date)
 
         return search_query
 
