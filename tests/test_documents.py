@@ -97,6 +97,7 @@ def doc_with_key2(solr_docs, doc_paths, kw2):
     solr_docs.add(doc)
     return doc
 
+
 @pytest.fixture
 def doc_with_germany(solr_docs):
     doc_id = "doc_with_germany"
@@ -111,6 +112,7 @@ def doc_with_germany(solr_docs):
     solr_docs.update(doc)
     return doc_id
 
+
 @pytest.fixture
 def doc_with_deutschland(solr_docs):
     doc_id = "doc_with_deutschland"
@@ -124,6 +126,7 @@ def doc_with_deutschland(solr_docs):
     )
     solr_docs.update(doc)
     return doc_id
+
 
 @pytest.mark.usefixtures("solr_docs")
 class TestDocuments:
@@ -245,6 +248,25 @@ class TestDocuments:
         _, docs = self.solr_docs.page(search_term="key1 key2")
         assert len(docs) == 2
 
+    def test_pagination_search_with_start_date(self, docs_in_solr):
+        from datetime import datetime
+
+        start_date = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+        _, docs = self.solr_docs.page(start_date=start_date)
+        assert len(docs) == 4
+
+    def test_pagination_search_with_start_and_end_date(self, docs_in_solr):
+        from datetime import datetime, timedelta
+
+        start_date = datetime.utcnow() - timedelta(hours=2)
+        end_date = start_date + timedelta(hours=4)
+
+        _, docs = self.solr_docs.page(
+            start_date=start_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            end_date=end_date.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        )
+        assert len(docs) == 4
+
     def test_doc_last_modified_date_changes_on_each_update(self, doc):
         import time
         import copy
@@ -263,7 +285,6 @@ class TestDocuments:
 
         _, docs = self.solr_docs.page(search_term="deutschland")
         assert len(docs) == 2
-
 
     def test_uploading_empty_documents(self):
         doc = SolrDoc("tests/test_files/empty_doc.txt")
