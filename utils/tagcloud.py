@@ -30,11 +30,10 @@ def update_tagcloud(path_to_save):
     wordcloud = WordCloud(width=1200 , height=700,max_font_size=100, max_words=1000,
                           background_color="white").generate(string)
 
-    #TODO: Save image in the Assets folder so it can be updated everytime
+    #Saved image in the Assets folder so it can be updated everytime
     plt.figure()
     plt.axis("off")
     plt.imshow(wordcloud, interpolation="bilinear")
     print('Printing word cloud now..')
     wordcloud.to_file(path.join(path_to_save,'tag_cloud.png'))
-    #wordcloud.to_file("tag_cloud.png")
-    #update_tagcloud()
+
