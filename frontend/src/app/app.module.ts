@@ -53,6 +53,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
 
 import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
@@ -139,7 +140,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
         MatTabsModule,
         NgxEchartsModule.forRoot({
           echarts
-        })
+        }),
+        NgxDaterangepickerMd.forRoot()
     ],
   providers: [],
   bootstrap: [AppComponent],

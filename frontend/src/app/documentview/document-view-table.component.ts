@@ -51,7 +51,7 @@ import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
-
+import * as moment from 'moment';
 /**
  *
  * Component gets document data from the backend and displays it as a table.
@@ -101,6 +101,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   breakpoint: number;
   allData: any;
   searchString = '';
+  startDate: string;
+  endDate: string;
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -142,6 +144,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * Sets the data variable of this components MatTableDataSource instance
    */
   public setDatasource() {
+    console.log(this.documents)
     if (this.documents !== undefined) {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
@@ -391,6 +394,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return `${kilobytes.toFixed(0)} KB`;
     }
     return `${size} B`;
+  }
+
+  updateDateString(event) {
+    let mom:any = moment;
+    this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z";
+    this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z";
+
+    console.log(this.startDate)
+    console.log(this.endDate)
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+      this.pageSize = documents.num_per_page;
+      this.currentPage = documents.page;
+      this.totalPages = documents.total_pages * documents.num_per_page;
+    });
   }
 }
 
