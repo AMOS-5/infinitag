@@ -10,10 +10,8 @@ from backend.solr import (
 import os
 from os import path
 
-
-def update_tagcloud(path_to_save):
-    solrservice = SolrDocuments(config.documents_solr)
-    q_keywords = solrservice.search("*:*", fl='keywords')
+def update_tagcloud(path_to_save, solrService):
+    q_keywords = solrService.docs.search("*:*", fl='keywords')
     docs = q_keywords.docs
     all_keywords =[]
 
@@ -25,7 +23,7 @@ def update_tagcloud(path_to_save):
 
     distinct = list(dict.fromkeys(all_keywords))
     string = " ".join(str(x) for x in distinct)
-    print(string)
+    #print(string)
     if len(distinct) > 0:
         wordcloud = WordCloud(width=1200 , height=700,max_font_size=100, max_words=1000,
                               background_color="white").generate(string)
