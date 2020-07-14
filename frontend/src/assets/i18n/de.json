@@ -93,11 +93,13 @@
   "UPLOADING": "wird hochgeladen",
   "ERROR": "Fehler",
   "CANCEL": "Abbrechen",
+  "CANCEL_ALL": "Alle abbrechen",
   "CANCELLED": "Abgebrochen",
   "REQUEST_SEND": "Anfrage geschickt",
   "RESPONSE_RECEIVED": "Rückmeldung bekommen",
   "TAGGING": "Tagging",
   "STARTED": "Gestartet.",
-  "FINISHED": "Fertig."
+  "FINISHED": "Fertig.",
+  "PROGRESS": "Progress"
 }
 

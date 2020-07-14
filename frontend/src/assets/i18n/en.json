@@ -94,10 +94,12 @@
   "UPLOADING": "Uploading",
   "ERROR": "Error",
   "CANCEL": "Cancel",
+  "CANCEL_ALL": "Cancel All",
   "CANCELLED": "Cancelled",
   "REQUEST_SEND": "Request Sent",
   "RESPONSE_RECEIVED": "Response Received",
   "TAGGING": "Tagging",
   "STARTED": "Started.",
-  "FINISHED": "Finished."
+  "FINISHED": "Finished.",
+  "PROGRESS": "Progress"
 }
