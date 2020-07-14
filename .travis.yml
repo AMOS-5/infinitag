@@ -13,6 +13,5 @@ matrix:
           python: 3.8.0
           install:
               - source INSTALL.sh
-              - ./INSTALL.sh
           script:
               - python3 -m pytest tests
