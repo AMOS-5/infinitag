@@ -198,7 +198,7 @@ export class DashboardComponent implements OnInit{
             name: 'Documents Added',
             type: 'bar',
             barWidth: '50%',
-            data: this.stats.uploaded_this_year
+            data: this.stats.uploaded_last_12_months
           }]
         };
         break;
