@@ -161,4 +161,13 @@ export class ApiService {
   public getStats() {
     return this.http.get(`${environment.serverUrl}/statistics`);
   }
+
+  public getWordcloud() {
+    const headers = new HttpHeaders()
+      .set("Cache-Control", "no-store");
+
+    return this.http.get(`${environment.serverUrl}/wordcloud`, {headers, responseType: 'blob' });
+  }
+
+
 }

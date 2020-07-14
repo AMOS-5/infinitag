@@ -23,6 +23,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ApiService } from '../services/api.service';
 /**
  *
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit{
   stats: any = {};
   pieOptions: object;
   barOptions: object;
-  
+
 
   options = [
     { value: 'days', viewValue: 'Days (last 7 days)' },
@@ -53,9 +54,21 @@ export class DashboardComponent implements OnInit{
     { value: 'years', viewValue: 'Years (since start)' }
   ];
 
-  constructor(private api: ApiService) {}
+  wordcloud_img;
+
+  constructor(private api: ApiService, private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
+    this.api.getWordcloud().subscribe(blob => {
+
+
+      var reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload = (_event) => {
+        this.wordcloud_img = this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      }
+
+    });
     this.api.getStats()
       .subscribe((value: any) => {
         this.stats = value;
@@ -242,6 +255,8 @@ export class DashboardComponent implements OnInit{
     }
 
   }
+
+
 
   getPreviousDays = () => {
     var days = [];
