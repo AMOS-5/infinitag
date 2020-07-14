@@ -44,4 +44,9 @@ export class Utils {
       return v.toString(16);
   });
   }
+
+  public sleep(milliseconds: number) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  }
+
 }

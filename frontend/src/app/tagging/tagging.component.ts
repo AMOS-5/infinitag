@@ -164,7 +164,9 @@ export class TaggingComponent implements OnInit {
           document.keywords.splice(index, 1);
         }
 
-        this.uploadService.patchKeywords(document).subscribe(res => { });
+        this.uploadService.patchKeywords(document).subscribe(res => {
+          this.keywordsApplied.emit();
+        });
       });
     });
     this.selectedBulkKeywords = [];

@@ -278,6 +278,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.data = data;
       data.splice(index, 0, doc);
       this.dataSource.data = data;
+      this.sync();
     });
 
 
@@ -296,7 +297,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     this.uploadService.patchKeywords(document).subscribe(res => {
-
+      this.sync();
     });
   }
 
@@ -338,8 +339,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
-    console.log('Syncing....');
-    // this.ngOnInit();
     this.selection = new SelectionModel(true, []);
     const syncEvent = {
       currentPage: this.currentPage,

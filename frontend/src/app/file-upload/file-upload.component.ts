@@ -49,6 +49,10 @@ import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-
 export class FileUploadComponent {
   files: Array<IFile> = [];
   @Output() uploadFinished = new EventEmitter<any>();
+  public progressMonitor = {
+    progress: 0,
+    finished: 0
+  };
 
   constructor(
     private uploadService: UploadService,
@@ -78,7 +82,19 @@ export class FileUploadComponent {
     dialogRef.afterClosed()
       .subscribe( () => {
         this.uploadFinished.emit();
+        this.cleanUpCancelledFiles(dialogData.files);
       });
+  }
+
+  public cleanUpCancelledFiles(files: Array<IFile>) {
+    for (const file of files) {
+      if (file.status === 'CANCELLED') {
+        this.uploadService.deleteFile(file).subscribe( (result) => {
+          console.log(result);
+        });
+      }
+
+    }
   }
 
   public resendFile(requestType: { response: string }, file: IFile) {
@@ -113,7 +129,8 @@ export class FileUploadComponent {
       this.sendFileToService(file);
     }
     const dialogData: UploadDialogData = {
-      files: this.files
+      files: this.files,
+      progressMonitor: this.progressMonitor
     };
     this.openUploadDialog(dialogData);
   }
@@ -124,7 +141,9 @@ export class FileUploadComponent {
    * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
-    this.uploadService.postFile(file)
+    if (file.status !== 'CANCELLED') {
+      console.log(file.status);
+      this.uploadService.postFile(file)
       .pipe(
         // catch errors
         catchError(error => {
@@ -135,11 +154,14 @@ export class FileUploadComponent {
       ).subscribe((event: HttpEvent<any>) => {
       this.handleFileSend(event, file);
     });
+    }
+
 
   }
 
   private handleFileSend(event: HttpEvent<any>, file: IFile) {
-    switch (event.type) {
+    if (file.status !== 'CANCELLED') {
+      switch (event.type) {
       case HttpEventType.Sent:
         file.status = 'REQUEST_SEND';
         break;
@@ -149,6 +171,7 @@ export class FileUploadComponent {
       case HttpEventType.UploadProgress:
         // update progress
         file.progress = Math.round(event.loaded / event.total * 100);
+        this.progressMonitor.progress += file.progress;
         file.status = 'UPLOADING';
         file.icon = 'cloud_upload';
         break;
@@ -164,8 +187,10 @@ export class FileUploadComponent {
         } else {
           file.status = 'SUCCESS';
           file.icon = 'cloud_done';
+          this.progressMonitor.finished++;
         }
         break;
+    }
     }
   }
 
