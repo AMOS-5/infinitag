@@ -15,6 +15,7 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+from backend import Translator
 from .doc import SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 from .keywordmodel import SolrHierarchy
 
@@ -30,41 +31,29 @@ from urlpath import URL
 import copy
 import json
 import datetime
-
-
-# TODO setup a logging class discuss with everyone before
-try:
-    os.mkdir("./log")
-except:
-    # dir exists
-    pass
+import re
 
 
 # log.basicConfig(level=log.INFO)
 # log.basicConfig(level=log.ERROR)
 
 
-class SolrDocStorage:
+class SolrDocuments:
     """
     Provides functionality to strore / modify and retrive documents
     from Solr
     """
-
-    AVAILABLE_SORT_FIELDS = set(SolrDoc("path").as_dict().keys())
-    AVAILABLE_SEARCH_FIELDS = copy.deepcopy(AVAILABLE_SORT_FIELDS)
-    AVAILABLE_SEARCH_FIELDS.remove("creation_date")
-    AVAILABLE_SEARCH_FIELDS.remove("size")
-    AVAILABLE_SEARCH_FIELDS.remove("last_modified")
-    # we want to perform a string search for now so replace the fields
-    # with the corresponding copy field
-    AVAILABLE_SEARCH_FIELDS.add("creation_date_str")
-    AVAILABLE_SEARCH_FIELDS.add("size_str")
-    AVAILABLE_SEARCH_FIELDS.add("last_modified_str")
-
+    AVAILABLE_SEARCH_FIELDS = SolrDoc.search_fields()
+    AVAILABLE_SORT_FIELDS = SolrDoc.sort_fields()
 
     def __init__(self, config: dict):
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
+
+        self.translator = None
+        target_languages = _conf.pop("translator_target_languages")
+        if target_languages:
+            self.translator = Translator(target_languages)
 
         # build the full url
         self.corename = _conf.pop("corename")
@@ -78,7 +67,7 @@ class SolrDocStorage:
         Adds documents to Solr
         """
         extracted_data = self._extract(*docs)
-        #print(extracted_data)
+        # print(extracted_data)
         docs = [
             SolrDoc.from_extract(doc, res).as_dict(True)
             for doc, res in zip(docs, extracted_data)
@@ -102,14 +91,14 @@ class SolrDocStorage:
         return docs[0] if len(docs) == 1 else docs
 
     def _get(self, doc: str) -> SolrDoc:
+        special_chars = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
+        doc_formated = special_chars.sub(r'\\\g<char>', doc)
         # TODO don't know 100% whether this can fail or not
-        query = f"id:*{doc}"
-
+        query = f"id:*{doc_formated}"
         res = self.con.search(query)
         hit = self._get_hit(res, doc)
         if hit is None:
             return None
-
         return SolrDoc.from_hit(hit)
 
     def update(self, *docs: SolrDoc):
@@ -138,16 +127,24 @@ class SolrDocStorage:
         :param keywords_only: Whether the search should only occur on the keywords field
         :return: total number of pages, search hits for this page
         """
-        if sort_field not in SolrDocStorage.AVAILABLE_SORT_FIELDS:
+        if sort_field not in SolrDocuments.AVAILABLE_SORT_FIELDS:
             raise ValueError(f"Sort field '{sort_field}' does not exist")
 
-        search_fields = SolrDocStorage.AVAILABLE_SEARCH_FIELDS
+
+        search_fields = SolrDocuments.AVAILABLE_SEARCH_FIELDS
+
         if keywords_only:
             search_fields = ["keywords"]
 
         search_query = "*:*"
         if search_term:
             search_terms = search_term.split()
+
+            if self.translator is not None:
+                search_terms = self.translator.translate(search_terms)
+
+            search_terms = [search_term.lower() for search_term in search_terms]
+
             search_query = " OR ".join(
                 f"{field}:*{search_term}*"
                 for field in search_fields
@@ -205,7 +202,7 @@ class SolrDocStorage:
         res = self.search("*:*")
         docs = [SolrDoc.from_hit(hit) for hit in res]
         for doc in docs:
-            doc.keywords = []
+            doc.keywords = [kw for kw in doc.keywords if kw.type == SolrDocKeywordTypes.META]
             self.update(doc)
 
     def apply_kwm(self, keywords: dict, *doc_ids: str,) -> None:
@@ -268,4 +265,5 @@ class SolrDocStorage:
         return id_query
 
 
-__all__ = ["SolrDocStorage"]
+__all__ = ["SolrDocuments"]
+

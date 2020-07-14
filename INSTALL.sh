@@ -17,3 +17,6 @@ tar xzf solr-8.5.1.tgz
 rm solr-8.5.1.tgz
 
 popd
+
+# create log dir
+mkdir -p backend/log/tika

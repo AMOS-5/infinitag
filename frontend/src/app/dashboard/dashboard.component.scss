@@ -4,6 +4,7 @@
 mat-grid-tile{
     border-style: solid;
     border-width: thin;
+    margin-bottom: 24px !important;
 }
 
 .edit {
@@ -15,6 +16,11 @@ mat-grid-tile{
     position: fixed;
     bottom: 20px;
     right: 20px;
+}
+
+.tagcloud {
+  width: 1000px;
+  height: 470px;
 }
 
 .content-inside-grid {

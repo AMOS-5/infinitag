@@ -1,6 +1,6 @@
 import pytest
 import unittest
-from backend.solr import SolrDocStorage, SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
+from backend.solr import SolrDocuments, SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 
 
 @pytest.fixture
@@ -38,7 +38,7 @@ def doc_with_keyword_in_keywords_field(solr_docs):
 def doc_paths():
     import os
 
-    base = f"{os.getcwd()}/tests/test_docstorage_files/test"
+    base = f"{os.getcwd()}/tests/test_files/test"
     doc_types = ["pdf", "txt", "pptx", "docx"]
 
     doc_paths = [f"{base}.{doc_type}" for doc_type in doc_types]
@@ -97,9 +97,36 @@ def doc_with_key2(solr_docs, doc_paths, kw2):
     solr_docs.add(doc)
     return doc
 
+@pytest.fixture
+def doc_with_germany(solr_docs):
+    doc_id = "doc_with_germany"
+    doc = SolrDoc(
+        doc_id,
+        content="germany",
+        title="title",
+        file_type="file_type",
+        lang="lang",
+        size=1,
+    )
+    solr_docs.update(doc)
+    return doc_id
+
+@pytest.fixture
+def doc_with_deutschland(solr_docs):
+    doc_id = "doc_with_deutschland"
+    doc = SolrDoc(
+        doc_id,
+        content="deutschland",
+        title="title",
+        file_type="file_type",
+        lang="lang",
+        size=1,
+    )
+    solr_docs.update(doc)
+    return doc_id
 
 @pytest.mark.usefixtures("solr_docs")
-class TestDocStorage:
+class TestDocuments:
     def test_add_and_search(self, docs_in_solr):
         added = self.solr_docs.search("*:*")
         assert len(added) == len(docs_in_solr)
@@ -230,6 +257,20 @@ class TestDocStorage:
         assert doc.last_modified != doc_after.last_modified
         assert doc.creation_date == doc_after.creation_date
 
+    def test_translation_search(self, doc_with_germany, doc_with_deutschland):
+        _, docs = self.solr_docs.page(search_term="germany")
+        assert len(docs) == 2
 
-if __name__ == "__main__":
-    unittest.main()
+        _, docs = self.solr_docs.page(search_term="deutschland")
+        assert len(docs) == 2
+
+
+    def test_uploading_empty_documents(self):
+        doc = SolrDoc("tests/test_files/empty_doc.txt")
+        try:
+            self.solr_docs.add(doc)
+            doc = self.solr_docs.get(doc.id)
+
+            assert doc.content == "unknown"
+        except Exception as e:
+            pytest.fail(f"Raised unexpected exception: {e}")

@@ -26,9 +26,15 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 import {IFile} from '../app/models/IFile.model';
+import {Utils} from '../app/services/Utils.service';
+import {of} from 'rxjs';
 
 export interface UploadDialogData {
   files: Array<IFile>;
+  progressMonitor: {
+    progress: number;
+    finished: number;
+  };
 }
 
 @Component({
@@ -40,9 +46,22 @@ export class FileUploadDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<FileUploadDialogComponent>,
     public translate: TranslateService,
+    private utils: Utils,
     @Inject(MAT_DIALOG_DATA) public data: UploadDialogData) {}
 
   onDialogButtonClick(response: string): void {
     console.log(response);
+  }
+
+  public cancelUpload(file: IFile) {
+    file.progress = 100;
+    file.status = 'CANCELLED';
+    file.icon = 'cloud_done';
+  }
+
+  public cancelAll() {
+    for (const file of this.data.files) {
+      this.cancelUpload(file);
+    }
   }
 }

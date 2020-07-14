@@ -426,6 +426,19 @@ export class KeywordsComponent implements OnInit {
     this.newDimension = '';
   }
 
+  private error(msg: string) {
+    this.snackBar.open(msg, '', { duration: 3000 });
+  }
+
+  private checkKeyword(kw: string) : boolean {
+    const re = new RegExp("^[a-zA-ZäöüÄÖÜ]+$");
+    if(!re.test(kw)) {
+      this.error(`The keyword ${kw} contains invalid characters`)
+      return false;
+    }
+    return true;
+  }
+
   /**
   * @description
   * Gets called when the enter key is pressed while the uncategorized keyword
@@ -435,6 +448,9 @@ export class KeywordsComponent implements OnInit {
   onKeyEnter() {
     const keyFormatted = this.newKeyword.trim();
     if (keyFormatted !== '') {
+      if(!this.checkKeyword(keyFormatted)) {
+        return;
+      }
       if (!this.isDuplicate(this.uncatKeywords, keyFormatted)) {
         this.api.addUncategorizedKeyword(keyFormatted)
           .subscribe(res => {
@@ -551,9 +567,6 @@ export class KeywordsComponent implements OnInit {
     link.click()
   }
 
-  private error(msg: string) {
-    this.snackBar.open(msg, '', { duration: 3000 });
-  }
 
   /**
   * @description
@@ -590,6 +603,13 @@ export class KeywordsComponent implements OnInit {
         return false;
       }
       if(cur.nodeType === NodeType.KEYWORD) {
+        if(!this.checkKeyword(cur.item)) {
+          return false;
+        }
+        if(kwm.keywords.includes(cur.item)) {
+          this.error(`The keyword ${cur.item} is mentioned twice in the keyword model`);
+          return false;
+        }
         kwm.keywords.push(cur.item); //add keyword to keywords array
       }
       delete cur.shouldBe //remove temporary variable again
