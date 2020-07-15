@@ -13,6 +13,7 @@
   "DOCUMENTS": {
     "AVAILABLE_DOCUMENTS": "Verfügbare Dokumente",
     "SEARCH_FOR_DOCUMENTS": "Nach Dokumenten Suchen",
+    "SEARCH_BY_DATE_RANGE": "Suche nach Datumsbereich",
     "FILENAME": "Dateiname",
     "LAST_MODIFIED": "Bearbeitet am",
     "MY_KEYWORDS": "Meine Keywords",
@@ -31,6 +32,8 @@
     "AUTOMATED_TAGGING": "Automatisiertes Tagging",
     "SELECT_TAGGING_METHOD": "Tagging-Methode auswählen",
     "SELECT_KEYWORD_MODEL": "Keyword-Model auswählen",
+    "ALL_DOCUMENTS_CHECKBOX": "Auf alle Dokumente anwenden",
+    "ALL_DOCUMENTS_CHECKBOX_TOOLTIP": "Die manuelle Dokumentenauswahl wird ignoriert und das automatische Tagging wird auf alle in der Datenbank gespeicherten Dokumente angewandt",
     "FILE_EXISTS": "Folgende Datei existiert",
     "FILE_EXISTS_QUESTION": "Was möchten Sie tun?",
     "FILE_EXISTS_OVERWRITE": "Überschreiben",
@@ -46,7 +49,8 @@
     "TOOLTIP_MANUAL"  : "Manuel hinzugefügtes Keyword",
     "TOOLTIP_KWM"     : "Kwm basierendes Keyword",
     "TOOLTIP_ML"      : "ML basierendes Keyword",
-    "TOOLTIP_META"    : "Metadaten Keyword"
+    "TOOLTIP_META"    : "Metadaten Keyword",
+    "SEARCH_ONLY_KEYWORD": "Nur Keywords suchen"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",
@@ -93,11 +97,13 @@
   "UPLOADING": "wird hochgeladen",
   "ERROR": "Fehler",
   "CANCEL": "Abbrechen",
+  "CANCEL_ALL": "Alle abbrechen",
   "CANCELLED": "Abgebrochen",
   "REQUEST_SEND": "Anfrage geschickt",
   "RESPONSE_RECEIVED": "Rückmeldung bekommen",
   "TAGGING": "Tagging",
   "STARTED": "Gestartet.",
-  "FINISHED": "Fertig."
+  "FINISHED": "Fertig.",
+  "PROGRESS": "Progress"
 }
 

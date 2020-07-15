@@ -1,3 +1,3 @@
-from backend.solr import SolrDocStorage, SolrDoc, config
-docs = SolrDocStorage(config.doc_storage_solr)
+from backend.solr import SolrDocuments, SolrDoc, config
+docs = SolrDocuments(config.documents_solr)
 docs.clear()

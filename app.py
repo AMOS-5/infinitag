@@ -19,6 +19,7 @@ from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
+from utils.tagcloud import update_tagcloud
 
 from argparse import ArgumentParser
 import sys
@@ -30,6 +31,7 @@ from pathlib import Path
 import logging as log
 import zipfile
 import copy
+
 
 from backend.service import SolrService, SolrMiddleware
 from backend.service.tagging import (
@@ -74,11 +76,31 @@ def upload_file():
         f = request.files["fileKey"]
         f_id = request.form['fid']
         file_name = secure_filename(f.filename)
+
         file_name = str("tmp" / Path(file_name))
 
         if request.method == "PUT":
             name, ext = os.path.splitext(str(file_name))
-            file_name = f"{name}_{uuid4()}{ext}"
+            base = os.path.basename(name)
+            docs = solr.docs.search(f"id:*{base}*")
+            if len(docs.docs) == 1:
+                file_name = f"{name}_(1){ext}"
+            else:
+                largest = 1
+                for doc in docs.docs:
+                    id = doc['id']
+                    suffix_start = id.rfind('(')
+                    suffix_end = id.rfind(')')
+
+                    if suffix_start > 0 and suffix_end > suffix_start:
+                        number = id[suffix_start + 1: suffix_end]
+                        try:
+                            number = int(number)
+                            if number > largest:
+                                largest = number
+                        except:
+                            largest = 1
+                file_name = f"{name}_({largest + 1}){ext}"
 
         doc = SolrDoc(file_name)
         if request.method == "POST":
@@ -185,13 +207,19 @@ def get_documents():
         sort_field = request.args.get("sort_field", "id")
         sort_order = request.args.get("sort_order", "asc")
         search_term = request.args.get("search_term", "")
+        start_date = request.args.get("start_date", "")
+        end_date = request.args.get("end_date", "")
+        keywords_only = request.args.get("keywords_only", False)
 
         total_pages, docs = solr.docs.page(
             page,
             num_per_page,
             sort_field,
             sort_order,
-            search_term
+            search_term,
+            start_date,
+            end_date,
+            keywords_only
         )
 
         docs = [doc.as_dict() for doc in docs]
@@ -207,7 +235,21 @@ def get_documents():
 
         return res, 200
     except Exception as e:
+        log.error(f"/documents {e}")
         return jsonify(f"Bad Gateway to solr: {e}"), 502
+
+
+@app.route("/documents/<file_name>", methods=["DELETE"])
+def delete_document(file_name):
+    f = file_name
+    docs = solr.docs.search(f"id:*{file_name}*")
+    for doc in docs.docs:
+        try:
+            solr.docs.delete(doc['id'])
+        except Exception as e:
+            return jsonify({"message": "could not delete", "error": e}), 502
+
+    return jsonify({"message": "success"}), 201
 
 
 @app.route("/health")
@@ -368,7 +410,15 @@ def apply_tagging_method():
     :return: json object containing a status message
     """
     data = request.json
+    docs = data["documents"]
+    options = data["options"]
     job_id = data["jobId"]
+
+    if options["applyToAllDocuments"]:
+        res = solr.docs.search("*:*", rows=5000)
+        doc_ids = [SolrDoc.from_hit(hit).id for hit in res]
+    else:
+        doc_ids = [doc["id"] for doc in docs]
 
     if data["taggingMethod"]["type"] == "KWM" and data["keywordModel"] is not None:
         print("Applying keyword model")
@@ -379,32 +429,20 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
         print("time for extracting ", len(keywords), "keywords from hierarchy: ", "{:10.7f}".format(stop_time), "sec")
 
-        start_time = time.time()
-
-        docs_json = data["documents"]
-
-        doc_ids = []
-        if "documents" in data and len(data["documents"]) != 0:
-            doc_ids = [doc["id"] for doc in docs_json]
-
         job = KWMJob(keywords, job_id, solr, *doc_ids)
         tagging_service.add_job(job)
         job.start()
 
-        stop_time = time.time() - start_time
-        print("Applying keywords took:", "{:10.7f}".format(stop_time))
 
     else:
-        docs = data["documents"]
-        options = data["options"]
         num_clusters = options["numClusters"]
         num_keywords = options["numKeywords"]
         default = options["computeOptimal"]
+        start_time = time.time()
 
-        #default = options["useDefault"] # when default selected from frontend. If clicked on default the value should be true
 
         job = AutomatedTaggingJob(job_id=job_id,
-                                  docs=docs,
+                                  doc_ids=doc_ids,
                                   num_clusters=num_clusters,
                                   num_keywords=num_keywords,
                                   default = default,
@@ -413,6 +451,12 @@ def apply_tagging_method():
         tagging_service.add_job(job)
         job.start()
 
+        stop_time = time.time() - start_time
+
+        print("Applying keywords took:", "{:10.7f}".format(stop_time))
+    # Currently this code lags behind one apply tagging click tag (word) cloud
+    # Has to placed at a better place
+    update_tagcloud(path_to_save='frontend/src/assets/img')
     return jsonify({"status": 200})
 
 
@@ -434,7 +478,6 @@ def get_statistics():
     doc_stats = solr.statistics.docs()
     n_keywords = solr.statistics.keywords()
     n_keyword_models = solr.statistics.keywordmodel()
-
     return jsonify(
         n_total_docs=doc_stats.n_total,
         n_tagged_docs=doc_stats.n_tagged,

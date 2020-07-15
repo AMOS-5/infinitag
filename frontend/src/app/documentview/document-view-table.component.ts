@@ -51,7 +51,7 @@ import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
-
+import * as moment from 'moment';
 /**
  *
  * Component gets document data from the backend and displays it as a table.
@@ -70,6 +70,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   visible = true;
 
   editing = false;
+  public searchOnlyKeywords = false;
 
   constructor(
     private api: ApiService,
@@ -100,6 +101,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   breakpoint: number;
   allData: any;
   searchString = '';
+  startDate: string;
+  endDate: string;
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -278,6 +281,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.dataSource.data = data;
       data.splice(index, 0, doc);
       this.dataSource.data = data;
+      this.sync();
     });
 
 
@@ -296,7 +300,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
 
     this.uploadService.patchKeywords(document).subscribe(res => {
-
+      this.sync();
     });
   }
 
@@ -326,7 +330,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.pageEvent.emit(e);
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    console.log(keywordsOnly);
+    this.api.getDocuments(
+      this.currentPage,
+      this.pageSize,
+      this.sortField,
+      this.sortOrder,
+      this.searchString,
+      keywordsOnly)
+      .subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
     });
@@ -338,8 +351,6 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   public sync() {
-    console.log('Syncing....');
-    // this.ngOnInit();
     this.selection = new SelectionModel(true, []);
     const syncEvent = {
       currentPage: this.currentPage,
@@ -358,8 +369,9 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   updateSearchString(event) {
+    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.searchString = event.target.value;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString).subscribe((documents: any) => {
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
       this.pageSize = documents.num_per_page;
@@ -381,6 +393,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return `${kilobytes.toFixed(0)} KB`;
     }
     return `${size} B`;
+  }
+
+  updateDateString(event) {
+    let mom:any = moment;
+    console.log(event)
+    event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
+    event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
+
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      console.log(documents)
+      this.dataSource.data = this.documents;
+      this.pageSize = documents.num_per_page;
+      this.currentPage = documents.page;
+      this.totalPages = documents.total_pages * documents.num_per_page;
+    });
   }
 }
 

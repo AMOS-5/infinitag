@@ -153,7 +153,7 @@ class SolrDoc:
             file_type=hit["type"],
             lang=hit["language"],
             size=hit["size"],
-            creation_date=hit["creation_date"],
+            creation_date=hit["creation_date"] if "creation_date" in hit else "unknown",
             last_modified=hit["last_modified"],
             content=hit["content"],
         )
@@ -180,6 +180,26 @@ class SolrDoc:
 
     def update_date(self) -> None:
         self.last_modified = Date.now()
+
+    @staticmethod
+    def _base_fields():
+        return {"id", "keywords", "title", "type", "language", "content"}
+
+    @staticmethod
+    def sort_fields():
+        base = SolrDoc._base_fields()
+        base.add("creation_date")
+        base.add("last_modified")
+        base.add("size")
+        return base
+
+    @staticmethod
+    def search_fields():
+        base = SolrDoc._base_fields()
+        base.add("creation_date_str")
+        base.add("last_modified_str")
+        base.add("size_str")
+        return base
 
 
 def exists_and_not_empty(res: dict, field: str) -> bool:
@@ -319,9 +339,11 @@ class Language:
             lang = res["language"]
         elif exists_and_not_empty(res, "dc:language"):
             lang = res["dc:language"]
-        else:  # language could not be extracted by tika
+        elif content is not None:  # language could not be extracted by tika
             scontent = " ".join(word for word in content)
             lang = langdetect.detect(scontent)
+        else:
+            lang = "unknown"
 
         lang = lang.lower()
 

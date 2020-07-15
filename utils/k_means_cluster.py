@@ -84,7 +84,6 @@ def silhoutte_method(tfidfmatrix, number_of_files, mini_batch=True):
         if silhouette_avg > previous_silh_avg:
             previous_silh_avg = silhouette_avg
             best_clusters = n_clusters
-        end = time.time()
     print("best clusters:",best_clusters)
     return best_clusters
 

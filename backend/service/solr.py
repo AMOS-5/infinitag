@@ -18,7 +18,7 @@ from backend.service.tagging import TaggingService
 from backend.solr import (
     SolrKeywordModel,
     SolrKeywords,
-    SolrDocStorage,
+    SolrDocuments,
     SolrKeywordStatistics,
     SolrStatistics,
     config,
@@ -35,7 +35,7 @@ class SolrService:
         self.SOLR_KEYWORD_MODEL = SolrKeywordModel(config.keyword_model_solr)
         self.SOLR_KEYWORDS = SolrKeywords(config.keywords_solr)
         self.SOLR_DIMENSIONS = SolrKeywords(config.dimensions_solr)
-        self.SOLR_DOCS = SolrDocStorage(config.doc_storage_solr)
+        self.SOLR_DOCS = SolrDocuments(config.documents_solr)
         self.SOLR_KEYWORD_STATISTICS = SolrKeywordStatistics(
             config.keyword_statistics_solr, self.docs
         )

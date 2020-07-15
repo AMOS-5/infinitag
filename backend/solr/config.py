@@ -14,7 +14,6 @@
 # DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 keyword_model_solr = {
     "corename": "keyword_model",
     "url": "http://18.235.6.254:8983/solr",
@@ -36,11 +35,16 @@ dimensions_solr = {
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
-doc_storage_solr = {
+documents_solr = {
     "corename": "documents",
     "url": "http://18.235.6.254:8983/solr",
     # "url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
+    # the translator uses the google translation api to detect and translate
+    # the search terms. If you don't want that your search terms are translated
+    # by google set the target lang array to be empty. See "googletrans" package
+    # for more information on language codes.
+    "translator_target_languages": ["de", "en"]
 }
 
 keyword_statistics_solr = {

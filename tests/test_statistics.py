@@ -22,7 +22,7 @@ from backend.solr import (
 POST_MULTIPART = {"content_type": "multipart/form-data", "follow_redirects": True}
 POST_JSON = {"content_type": "application/json"}
 
-BASE_PATH = Path("tests/test_docstorage_files")
+BASE_PATH = Path("tests/test_files")
 
 
 def doc_from_id(doc_id):

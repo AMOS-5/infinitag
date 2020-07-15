@@ -1,25 +1,25 @@
 ===========================
-``backend.solr.docstorage``
+``backend.solr.documents``
 ===========================
 
-.. automodule:: backend.solr.docstorage
+.. automodule:: backend.solr.documents
 
    .. contents::
       :local:
 
-.. currentmodule:: backend.solr.docstorage
+.. currentmodule:: backend.solr.documents
 
 
 Classes
 =======
 
-- :py:class:`SolrDocStorage`:
+- :py:class:`SolrDocuments`:
   Undocumented.
 
 
-.. autoclass:: SolrDocStorage
+.. autoclass:: SolrDocuments
    :members:
 
    .. rubric:: Inheritance
-   .. inheritance-diagram:: SolrDocStorage
+   .. inheritance-diagram:: SolrDocuments
       :parts: 1

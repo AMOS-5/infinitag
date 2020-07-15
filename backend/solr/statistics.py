@@ -16,7 +16,7 @@
 # USE OR OTHER DEALINGS IN THE SOFTWARE.
 from backend.solr import (
     SolrKeywordModel,
-    SolrDocStorage,
+    SolrDocuments,
     SolrKeywords,
     SolrDocKeyword,
 )
@@ -39,7 +39,7 @@ class SolrKeywordStatistics(SolrKeywords):
     documents in Solr
     """
 
-    def __init__(self, config: dict, solr_docs: SolrDocStorage):
+    def __init__(self, config: dict, solr_docs: SolrDocuments):
         super().__init__(config)
         self.solr_docs = solr_docs
 
@@ -93,7 +93,7 @@ class DocStatistics:
 
 
 class SolrDocStatistics:
-    def __init__(self, solr_docs: SolrDocStorage):
+    def __init__(self, solr_docs: SolrDocuments):
         self.solr_docs = solr_docs
 
     def statistics(self) -> DocStatistics:
@@ -216,7 +216,7 @@ class SolrStatistics:
 
     def __init__(
         self,
-        solr_docs: SolrDocStorage,
+        solr_docs: SolrDocuments,
         solr_keywordmodel: SolrKeywordModel,
         solr_keyword_statistics: SolrKeywordStatistics,
     ):
