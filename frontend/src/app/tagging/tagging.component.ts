@@ -252,7 +252,7 @@ export class TaggingComponent implements OnInit {
 
     this.monitorJobProgress(taggingDialogData)
       .then(() => {
-        this.snackBar.open(`Finished tagging with Job ID: ${taggingDialogData.jobId}`, '', { duration: 3000 });
+        this.snackBar.open(`Finished tagging.`, '', { duration: 3000 });
       }
     );
   }
