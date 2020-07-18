@@ -3,7 +3,7 @@
   <form class="form-inline my-2 my-lg-0">
       <mat-form-field class="">
         <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
-        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="searchString" (keydown.enter)="submitSearch()" [ngModelOptions]="{standalone: true}">
+        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="searchString" [ngModelOptions]="{standalone: true}">
       </mat-form-field>
       <mat-checkbox [(ngModel)]="searchOnlyKeywords" [ngModelOptions]="{standalone: true}">
         {{'DOCUMENTS.SEARCH_ONLY_KEYWORD' | translate}}
