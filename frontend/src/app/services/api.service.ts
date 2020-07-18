@@ -54,7 +54,7 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordlist`);
   }
 
-  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string, keywords_only?: string, start_date?: string, end_date?:string) {
+  public getDocuments(page: any= 0, num_per_page: any= 10, sort_field= 'id', sort_order= 'asc', search_term?: string, keywords_only?: string, start_date?: string, end_date?:string) {
     let params = {
       page,
       num_per_page,

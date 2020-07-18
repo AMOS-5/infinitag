@@ -240,6 +240,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
+  * @description
+  * Deletes all selected documents from the server and the database.
+  */
+  public deleteBulk() {
+    if (this.selection.selected.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
+    }
+
+    this.uploadService.deleteFiles(this.selection.selected).subscribe();
+
+    this.sync();
+  }
+
+  /**
    * @description
    * Adds a new keyword to an IDocument object. Thorws an error if the keyword
    * is already added to the document
@@ -397,7 +412,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   updateDateString(event) {
     let mom:any = moment;
-    
+
     event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
     event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
     const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
