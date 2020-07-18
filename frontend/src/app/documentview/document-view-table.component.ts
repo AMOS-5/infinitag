@@ -52,6 +52,7 @@ import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
 import * as moment from 'moment';
+import {Moment} from "moment";
 /**
  *
  * Component gets document data from the backend and displays it as a table.
@@ -103,6 +104,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   searchString = '';
   startDate: string;
   endDate: string;
+  dateRange: {startDate: Moment, endDate: Moment};
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -368,9 +370,8 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  updateSearchString(event) {
+  updateSearchString() {
     const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    this.searchString = event.target.value;
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
@@ -378,6 +379,15 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.currentPage = documents.page;
       this.totalPages = documents.total_pages * documents.num_per_page;
     });
+  }
+
+  submitSearch() {
+    console.log(this.dateRange);
+    if (this.dateRange === undefined || this.dateRange === null) {
+      this.updateSearchString();
+    } else {
+      this.updateDateString();
+    }
   }
 
   public getSizePresentation(size: number): string {
@@ -395,16 +405,16 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return `${size} B`;
   }
 
-  updateDateString(event) {
-    let mom:any = moment;
-    
-    event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
-    event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
+  updateDateString() {
+    const mom: any = moment;
+
+    this.dateRange.startDate !== null ? this.startDate = mom.utc(this.dateRange.startDate).toISOString().split('.')[0] + 'Z' : this.startDate = '';
+    this.dateRange.endDate !== null ? this.endDate = mom.utc(this.dateRange.endDate).toISOString().split('.')[0] + 'Z' : this.endDate = '';
     const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    if(moment(event.startDate).isSame(event.endDate, 'date')) {
+    if (moment(this.dateRange.startDate).isSame(this.dateRange.endDate, 'date')) {
       this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
-        console.log(documents)
+        console.log(documents);
         this.dataSource.data = this.documents;
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;
@@ -413,7 +423,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     } else {
       this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
-        console.log(documents)
+        console.log(documents);
         this.dataSource.data = this.documents;
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;

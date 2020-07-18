@@ -1,17 +1,18 @@
 <div class="container">
   <h1>{{'HOME.DOCUMENT_OVERVIEW' | translate}}</h1>
   <form class="form-inline my-2 my-lg-0">
-      <mat-form-field class="example-full-width">
+      <mat-form-field class="">
         <mat-label>{{'DOCUMENTS.SEARCH_FOR_DOCUMENTS' | translate}}</mat-label>
-        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" (keyup)="updateSearchString($event)">
+        <input matInput placeholder="{{'SEARCH_TERM' | translate}}" [(ngModel)]="searchString" (keydown.enter)="submitSearch()" [ngModelOptions]="{standalone: true}">
       </mat-form-field>
-        <mat-checkbox [(ngModel)]="searchOnlyKeywords" [ngModelOptions]="{standalone: true}">
-          {{'DOCUMENTS.SEARCH_ONLY_KEYWORD' | translate}}
-        </mat-checkbox>
+      <mat-checkbox [(ngModel)]="searchOnlyKeywords" [ngModelOptions]="{standalone: true}">
+        {{'DOCUMENTS.SEARCH_ONLY_KEYWORD' | translate}}
+      </mat-checkbox>
       <mat-form-field class="example-full-width">
         <mat-label>{{'DOCUMENTS.SEARCH_BY_DATE_RANGE' | translate}}</mat-label>
-        <input matInput ngxDaterangepickerMd (change)="updateDateString($event)" [showClearButton]="true"/>
+        <input matInput ngxDaterangepickerMd [showClearButton]="true" [(ngModel)]="dateRange" [ngModelOptions]="{standalone: true}"/>
       </mat-form-field>
+    <button type="submit" mat-button mat-raised-button color="primary" (click)="submitSearch()">{{'SEARCH' | translate }}</button>
     </form>
   <mat-tab-group (selectedTabChange)="tabChanged($event)">
     <mat-tab label="{{'FILE_UPLOAD' | translate}}" class="mat-tab">
