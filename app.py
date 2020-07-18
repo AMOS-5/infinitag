@@ -239,17 +239,15 @@ def get_documents():
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
-@app.route("/documents/<file_name>", methods=["DELETE"])
-def delete_document(file_name):
-    f = file_name
-    docs = solr.docs.search(f"id:*{file_name}*")
-    for doc in docs.docs:
-        try:
-            solr.docs.delete(doc['id'])
-        except Exception as e:
-            return jsonify({"message": "could not delete", "error": e}), 502
+@app.route("/documents", methods=["DELETE"])
+def delete_documents():
+    iDocs = request.json["iDocs"]
+    print(iDocs)
+    doc_ids = [iDoc["id"] for iDoc in iDocs]
+    print(doc_ids)
 
-    return jsonify({"message": "success"}), 201
+    #TODO delete docs here
+    return jsonify({"message": "success"}), 200
 
 
 @app.route("/health")

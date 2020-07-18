@@ -21,9 +21,13 @@
       <app-tagging [editing]="editing" [selectedDocuments]="selection.selected" (keywordsApplied)="sync()"
                    (taggingApplied)="sync()"></app-tagging>
     </mat-tab>
-    <mat-tab label="{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}" class="mat-tab">
+    <mat-tab label="{{'DOCUMENTS.FILE_TAB' | translate}}" class="mat-tab">
       <button [disabled]=!editing mat-raised-button color="primary"
             (click)="downloadBulk()">{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}
+      </button>
+      <br>
+      <button [disabled]=!editing mat-raised-button color="primary"
+            (click)="deleteBulk()">{{'DOCUMENTS.DELETE_BUTTON' | translate}}
       </button>
     </mat-tab>
   </mat-tab-group>
