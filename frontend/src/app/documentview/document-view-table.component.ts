@@ -249,9 +249,22 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.uploadService.deleteFiles(this.selection.selected).subscribe();
-
-    this.sync();
+    this.uploadService.deleteFiles(this.selection.selected).subscribe(res => {
+      //update table
+      const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+      this.api.getDocuments(
+        this.currentPage,
+        this.pageSize,
+        this.sortField,
+        this.sortOrder,
+        this.searchString,
+        keywordsOnly)
+        .subscribe((documents: any) => {
+          this.documents = documents.docs;
+          this.dataSource.data = this.documents;
+          this.selection.clear()
+        });
+    });
   }
 
   /**
