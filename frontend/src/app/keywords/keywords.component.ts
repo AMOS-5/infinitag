@@ -332,6 +332,11 @@ export class KeywordsComponent implements OnInit {
 
   dataSource: MatTreeFlatDataSource<ItemNode, ItemFlatNode>;
 
+  nodeStyles = {
+    DIMENSION: {'color': 'darkblue', 'text-decoration': 'underline'},
+    KEYWORD: {'color': 'black'}
+  }
+
   /* Drag and drop */
   dragNode: any;
   dragNodeExpandOverWaitTimeMs = 300;
