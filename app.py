@@ -459,7 +459,7 @@ def apply_tagging_method():
 
 @app.route('/wordcloud', methods=['GET'])
 def get_wordcloud():
-    update_tagcloud(path_to_save='tmp', solrService=solr)
+    update_tagcloud(path_to_save='tmp', solr_service=solr)
     return send_from_directory("tmp", "tag_cloud.png", as_attachment=True)
 
 @app.route("/job/<job_id>", methods=["GET", "DELETE"])
