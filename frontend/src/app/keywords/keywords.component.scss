@@ -9,6 +9,8 @@
 .list-flex {
   display: flex;
   height: 100%;
+  overflow-x: scroll;
+  max-width: 100%;
 
 }
 .list-container {
