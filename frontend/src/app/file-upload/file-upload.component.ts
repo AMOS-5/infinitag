@@ -83,6 +83,7 @@ export class FileUploadComponent {
       .subscribe( () => {
         this.uploadFinished.emit();
         this.cleanUpCancelledFiles(dialogData.files);
+        this.progressMonitor.finished = 0;
       });
   }
 
