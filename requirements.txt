@@ -8,10 +8,12 @@ autoapi
 Werkzeug
 sphinx
 pysolr
+
 # file processing
 tika
 langdetect
 googletrans
+
 # machine learning / data science
 nltk
 sklearn
@@ -23,12 +25,14 @@ numpy
 spacy
 gensim
 kneed
-
 wordcloud
+
 # misc
 urlpath
 atoma
 lxml
+click
+
 # testing
 pytest
 pytest-solr

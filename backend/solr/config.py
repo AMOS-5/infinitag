@@ -17,21 +17,21 @@
 keyword_model_solr = {
     "corename": "keyword_model",
     "url": "http://18.235.6.254:8983/solr",
-    #"url": "http://localhost:8983/solr",
+    # "url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
 keywords_solr = {
     "corename": "keywords",
     "url": "http://18.235.6.254:8983/solr",
-    #"url": "http://localhost:8983/solr",
+    # "url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
 dimensions_solr = {
     "corename": "dimensions",
     "url": "http://18.235.6.254:8983/solr",
-    #"url": "http://localhost:8983/solr",
+    # "url": "http://localhost:8983/solr",
     "always_commit": True,  # will instantly apply changes, maybe change later
 }
 
@@ -50,6 +50,7 @@ documents_solr = {
 keyword_statistics_solr = {
     "corename": "keyword_statistics",
     "url": "http://18.235.6.254:8983/solr",
+    # "url": "http://localhost:8983/solr",
     "always_commit": True,
 }
 
