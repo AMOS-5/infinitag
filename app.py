@@ -248,6 +248,14 @@ def delete_documents():
 
     try:
         solr.docs.delete(*doc_ids)
+
+        for doc_id in doc_ids:
+            path = f"tmp/{doc_id}"
+            try:
+                os.remove(path)
+            except:
+                pass
+
         return jsonify({"message": "success"}), 200
     except Exception as e:
         log.error(f"/documents {e}")
