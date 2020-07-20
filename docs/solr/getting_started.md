@@ -6,7 +6,7 @@
 
 ## Dependencies
 
-    python 2.7 - 3.7
+    python 3.7
 
 # Getting started
 
@@ -30,7 +30,6 @@ will stop all running solr instances
     solr stop
 
 ## create
-create a core ("table") and attach to running solr instance
 
     solr create_core -c <corename> <optional -p PORT>
 
@@ -41,14 +40,3 @@ delete a core entirely, the working directory will also be deleted
 
 ## visual overview
     localhost:8983/solr/#/<corename>
-
-## comment on pysolr
-
-I had problems creating a core with the library, if you don't have problems, then it's something on my side. This fixed it for me:
-
-    L:1307 change this
-    resp = requests.get(url, data=safe_urlencode(params), headers=headers)
-
-    to
-
-    resp = requests.get(url, data=params, headers=headers)

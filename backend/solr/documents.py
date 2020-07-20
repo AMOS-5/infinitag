@@ -25,14 +25,13 @@ import pysolr
 
 import os
 import logging as log
-from typing import List, Union, Tuple
 from pathlib import Path
 from urlpath import URL
 import copy
 import json
 import re
 from datetime import datetime, timedelta
-
+from typing import List, Union, Tuple
 
 # log.basicConfig(level=log.INFO)
 # log.basicConfig(level=log.ERROR)
@@ -51,8 +50,8 @@ class SolrDocuments:
         # we'll modify the original configuration
         _conf = copy.deepcopy(config)
 
-        self.translator = None
         target_languages = _conf.pop("translator_target_languages")
+        self.translator = None
         if target_languages:
             self.translator = Translator(target_languages)
 
@@ -94,7 +93,7 @@ class SolrDocuments:
     def _get(self, doc: str) -> SolrDoc:
         special_chars = re.compile(r'(?<!\\)(?P<char>[&|+\-!(){}[\]^"~*?:])')
         doc_formated = special_chars.sub(r'\\\g<char>', doc)
-        # TODO don't know 100% whether this can fail or not
+
         query = f"id:*{doc_formated}"
         res = self.con.search(query)
         hit = self._get_hit(res, doc)
@@ -118,7 +117,7 @@ class SolrDocuments:
         start_date: str = "",
         end_date: str = "",
         keywords_only: bool = False,
-    ) -> List[SolrDoc]:
+    ) -> Tuple[int, List[SolrDoc]]:
         """
         Returns a paginated, sorted search query.
 
@@ -166,7 +165,7 @@ class SolrDocuments:
             search_terms = search_term.split()
 
             # translate each word into our target languages defined in the translator
-            # search terms now include our src language and our dest langauges
+            # config; search terms now include our src language and our dest languages
             if self.translator is not None:
                 search_terms = self.translator.translate(search_terms)
 
@@ -193,7 +192,6 @@ class SolrDocuments:
                 minutes=start_date.minute,
                 seconds=start_date.second,
             )
-            # create end_date = start_date + 24 hours
             end_date = start_date + timedelta(hours=24)
 
             search_query = self._append_time_interval(
