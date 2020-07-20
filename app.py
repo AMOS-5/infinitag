@@ -211,6 +211,8 @@ def get_documents():
         start_date = request.args.get("start_date", "")
         end_date = request.args.get("end_date", "")
         keywords_only = request.args.get("keywords_only", False)
+        if keywords_only == "False":
+            keywords_only = False
 
         total_pages, docs = solr.docs.page(
             page,
@@ -469,7 +471,7 @@ def apply_tagging_method():
 
 @app.route('/wordcloud', methods=['GET'])
 def get_wordcloud():
-    update_tagcloud(path_to_save='tmp', solrService=solr)
+    update_tagcloud(path_to_save='tmp', solr_service=solr)
     return send_from_directory("tmp", "tag_cloud.png", as_attachment=True)
 
 @app.route("/job/<job_id>", methods=["GET", "DELETE"])
