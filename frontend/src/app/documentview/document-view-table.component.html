@@ -28,11 +28,12 @@
       </button>
     </mat-tab>
   </mat-tab-group>
-  <div class="loading-documents" *ngIf="dataSource.data.length === 0">
-    <mat-spinner color="primary"></mat-spinner>
+  <div class="loading-documents" *ngIf="isLoading; else table">
+    <mat-spinner [diameter]="40"></mat-spinner>
   </div>
+  <ng-template #table>
   <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="updateData($event)"
-         matSortActive="carbs" matSortDirection="asc">
+         matSortActive="last_modified" matSortDirection="asc">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
@@ -112,4 +113,5 @@
                  [pageSizeOptions]="[10, 100, 500, 1000]" [showFirstLastButtons]="true" [length]="totalPages"
                  [pageIndex]="currentPage" (page)="paginate($event)">
   </mat-paginator>
+  </ng-template>
 </div>

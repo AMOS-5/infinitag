@@ -2,6 +2,7 @@
   <mat-grid-tile [colspan]="4" [rowspan]="1">
     <mat-grid-tile-header>{{'DOCUMENTS.MANUAL_TAGGING' | translate}}</mat-grid-tile-header>
     <div class="tab-content">
+      <small >{{'DOCUMENTS.kEYWORD_WARN' | translate}}</small>
       <mat-form-field class="example-chip-list">
       <mat-chip-list #chipList aria-label="Keyword selection">
         <mat-chip
@@ -27,6 +28,7 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+    
       <button [disabled]="!editing" mat-raised-button color="primary"
         (click)="applyBulkKeywords()">
           {{'DOCUMENTS.APPLY_KEYWORDS' | translate}}
