@@ -220,10 +220,8 @@ class SolrDocuments:
     def search(self, query: str, rows: int = 300, **kwargs) -> dict:
         return self.con.search(query, rows=rows, **kwargs)
 
-    def delete(self, *docs: str) -> None:
-        # the id of a doc corresponds to the path where it is stored (or where it was
-        # indexed from), in our case our filestorage
-        self.con.delete(id=docs)
+    def delete(self, *doc_ids: str) -> None:
+        self.con.delete(id=doc_ids)
 
     def __contains__(self, doc: str) -> bool:
         query = f"id:*{doc}"

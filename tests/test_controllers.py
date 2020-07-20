@@ -152,6 +152,35 @@ class TestController(unittest.TestCase):
         self.assertIsNotNone(data_response)
         self.assertEqual(len(data_response["docs"]), len(self.docs))
 
+    def test_delete_documents(self):
+        self.application.solr.docs.add(*self.docs)
+        tester = self.app.test_client(self)
+
+        doc0 = self.docs[0]
+        response = tester.delete(
+            "/documents",
+            data=json.dumps({"iDocs": [{"id": doc0.id}]}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(doc0.id, self.application.solr.docs)
+
+        doc1 = self.docs[1]
+        doc2 = self.docs[2]
+        response = tester.delete(
+            "/documents",
+            data=json.dumps({
+                "iDocs": [
+                    {"id": doc1.id},
+                    {"id": doc2.id}
+                ]
+            }),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(doc1.id, self.application.solr.docs)
+        self.assertNotIn(doc2.id, self.application.solr.docs)
+
     def test_dimensions(self):
         tester = self.app.test_client(self)
         data=json.dumps(dict(

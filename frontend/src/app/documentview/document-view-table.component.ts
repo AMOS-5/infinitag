@@ -243,6 +243,34 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   }
 
   /**
+  * @description
+  * Deletes all selected documents from the server and the database.
+  */
+  public deleteBulk() {
+    if (this.selection.selected.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
+    }
+
+    this.uploadService.deleteFiles(this.selection.selected).subscribe(res => {
+      //update table
+      const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+      this.api.getDocuments(
+        this.currentPage,
+        this.pageSize,
+        this.sortField,
+        this.sortOrder,
+        this.searchString,
+        keywordsOnly)
+        .subscribe((documents: any) => {
+          this.documents = documents.docs;
+          this.dataSource.data = this.documents;
+          this.selection.clear()
+        });
+    });
+  }
+
+  /**
    * @description
    * Adds a new keyword to an IDocument object. Thorws an error if the keyword
    * is already added to the document
@@ -413,6 +441,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
     return `${size} B`;
   }
+
 
   updateDateString() {
     const mom: any = moment;

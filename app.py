@@ -32,6 +32,7 @@ import logging as log
 import zipfile
 import copy
 
+from typing import List
 
 from backend.service import SolrService, SolrMiddleware
 from backend.service.tagging import (
@@ -236,22 +237,31 @@ def get_documents():
         )
 
         return res, 200
+
     except Exception as e:
         log.error(f"/documents {e}")
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
-@app.route("/documents/<file_name>", methods=["DELETE"])
-def delete_document(file_name):
-    f = file_name
-    docs = solr.docs.search(f"id:*{file_name}*")
-    for doc in docs.docs:
-        try:
-            solr.docs.delete(doc['id'])
-        except Exception as e:
-            return jsonify({"message": "could not delete", "error": e}), 502
+@app.route("/documents", methods=["DELETE"])
+def delete_documents():
+    iDocs = request.json["iDocs"]
+    doc_ids = [iDoc["id"] for iDoc in iDocs]
 
-    return jsonify({"message": "success"}), 201
+    try:
+        solr.docs.delete(*doc_ids)
+
+        for doc_id in doc_ids:
+            path = f"tmp/{doc_id}"
+            try:
+                os.remove(path)
+            except:
+                pass
+
+        return jsonify({"message": "success"}), 200
+    except Exception as e:
+        log.error(f"/documents {e}")
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
 @app.route("/health")
