@@ -38,7 +38,7 @@ import {IFile} from '../models/IFile.model';
 @Injectable({
   providedIn: 'root'
 })
-export class UploadService {
+export class FileService {
   constructor(private httpClient: HttpClient) { }
 
   public postFile(file: IFile): Observable<object> {
