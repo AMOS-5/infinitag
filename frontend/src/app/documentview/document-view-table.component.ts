@@ -369,10 +369,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.sortOrder,
       this.searchString,
       this.keywordsOnly)
-      .subscribe((documents: any) => {
-      this.documents = documents.docs;
-      this.dataSource.data = this.documents;
-    });
+        .subscribe((documents: any) => {
+          this.documents = documents.docs;
+          this.dataSource.data = this.documents;
+        });
+    this.selection.clear()
     return e;
   }
 
