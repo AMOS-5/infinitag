@@ -19,7 +19,7 @@ from backend import Translator
 from .doc import SolrDoc, SolrDocKeyword, SolrDocKeywordTypes
 from .keywordmodel import SolrHierarchy
 
-from utils.data_preprocessing import get_clean_content, lemmatize_keywords
+from backend.autotagging.data_preprocessing import get_clean_content, lemmatize_keywords
 
 import pysolr
 

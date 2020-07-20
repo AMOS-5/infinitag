@@ -8,7 +8,7 @@ from backend.solr import (
     SolrDocKeywordTypes
 )
 
-from utils.data_preprocessing import (
+from backend.autotagging.data_preprocessing import (
     lemmatize_keywords,
     create_automated_keywords
 )

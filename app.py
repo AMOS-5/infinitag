@@ -19,7 +19,6 @@ from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
-from utils.tagcloud import update_tagcloud
 
 from argparse import ArgumentParser
 import sys
@@ -47,7 +46,8 @@ from backend.solr import (
     SolrDocKeywordTypes
 )
 
-from utils.data_preprocessing import create_automated_keywords
+from backend.autotagging.data_preprocessing import create_automated_keywords
+from backend.autotagging.tagcloud import update_tagcloud
 
 log.basicConfig(level=log.ERROR)
 

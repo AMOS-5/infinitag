@@ -1,7 +1,6 @@
 import unittest
 
-from utils.data_preprocessing import clean_text
-from utils.data_preprocessing import LemmatizerFactory
+from backend.autotagging.data_preprocessing import clean_text, LemmatizerFactory
 from nltk.corpus import stopwords
 
 import string
