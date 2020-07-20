@@ -30,7 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData, FileExistsDialogComponent } from '../../dialogs/file-exists.component';
 import { IFile } from '../models/IFile.model';
-import { Utils } from '../services/Utils.service';
+import { Utils } from '../services/utils.service';
 import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-upload.dialog.component';
 
 

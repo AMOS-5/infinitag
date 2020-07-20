@@ -26,7 +26,7 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {TranslateService} from '@ngx-translate/core';
 import {IFile} from '../app/models/IFile.model';
-import {Utils} from '../app/services/Utils.service';
+import {Utils} from '../app/services/utils.service';
 import {of} from 'rxjs';
 
 export interface UploadDialogData {

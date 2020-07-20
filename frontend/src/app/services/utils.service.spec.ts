@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { Utils } from './Utils.service';
+import { Utils } from './utils.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Utils', () => {

@@ -23,7 +23,7 @@ import { IKeyword } from '../models/IKeyword.model';
 import { FileService } from '../services/file.service';
 import { TaggingDialogComponent, TaggingDialogData } from '../../dialogs/tagging.dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Utils } from '../services/Utils.service';
+import { Utils } from '../services/utils.service';
 import { AutomatedTaggingParametersDialog, DialogData } from '../../dialogs/automated-tagging-parameters.component';
 
 
