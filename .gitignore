@@ -38,7 +38,7 @@ upload-dir
 __pycache__/
 venv/
 *.pyc
-tmp/
+storage/
 downloads/
 
 *.rst
@@ -46,3 +46,4 @@ downloads/
 
 kmeans_model.pkl
 *.pdf
+tika.log
