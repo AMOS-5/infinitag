@@ -210,6 +210,8 @@ def get_documents():
         start_date = request.args.get("start_date", "")
         end_date = request.args.get("end_date", "")
         keywords_only = request.args.get("keywords_only", False)
+        if keywords_only == "False":
+            keywords_only = False
 
         total_pages, docs = solr.docs.page(
             page,

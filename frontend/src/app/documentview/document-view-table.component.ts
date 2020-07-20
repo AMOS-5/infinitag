@@ -52,6 +52,7 @@ import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
 import * as moment from 'moment';
+import {Moment} from 'moment';
 /**
  *
  * Component gets document data from the backend and displays it as a table.
@@ -100,9 +101,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  searchString = '';
+  searchString: string;
   startDate: string;
   endDate: string;
+  keywordsOnly = 'False';
+  dateRange: {startDate: Moment, endDate: Moment};
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -330,15 +333,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.pageEvent.emit(e);
-    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    console.log(keywordsOnly);
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.api.getDocuments(
       this.currentPage,
       this.pageSize,
       this.sortField,
       this.sortOrder,
       this.searchString,
-      keywordsOnly)
+      this.keywordsOnly)
       .subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
@@ -352,15 +354,25 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public sync() {
     this.selection = new SelectionModel(true, []);
-    const syncEvent = {
-      currentPage: this.currentPage,
-      pageSize: this.pageSize
-    };
-    this.syncRequested.emit(syncEvent);
+    this.api.getDocuments(
+      this.currentPage,
+      this.pageSize,
+      this.sortField,
+      this.sortOrder,
+      this.searchString,
+      this.keywordsOnly,
+      this.startDate,
+      this.endDate
+    ).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+    });
   }
 
   updateData(sort: Sort) {
     if (sort.direction !== ''){
+      this.sortField = sort.active;
+      this.sortOrder = sort.direction;
       this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction, this.searchString).subscribe((documents: any) => {
         this.documents = documents.docs;
         this.dataSource.data = this.documents;
@@ -368,16 +380,23 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  updateSearchString(event) {
-    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    this.searchString = event.target.value;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly).subscribe((documents: any) => {
+  updateSearchString() {
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
       this.pageSize = documents.num_per_page;
       this.currentPage = documents.page;
       this.totalPages = documents.total_pages * documents.num_per_page;
     });
+  }
+
+  submitSearch() {
+    if (this.dateRange === undefined || this.dateRange === null) {
+      this.updateSearchString();
+    } else {
+      this.updateDateString();
+    }
   }
 
   public getSizePresentation(size: number): string {
@@ -395,25 +414,23 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return `${size} B`;
   }
 
-  updateDateString(event) {
-    let mom:any = moment;
-    
-    event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
-    event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
-    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    if(moment(event.startDate).isSame(event.endDate, 'date')) {
-      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.endDate).subscribe((documents: any) => {
+  updateDateString() {
+    const mom: any = moment;
+
+    this.dateRange.startDate !== null ? this.startDate = mom.utc(this.dateRange.startDate).toISOString().split('.')[0] + 'Z' : this.startDate = '';
+    this.dateRange.endDate !== null ? this.endDate = mom.utc(this.dateRange.endDate).toISOString().split('.')[0] + 'Z' : this.endDate = '';
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    if (moment(this.dateRange.startDate).isSame(this.dateRange.endDate, 'date')) {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
-        console.log(documents)
         this.dataSource.data = this.documents;
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;
         this.totalPages = documents.total_pages * documents.num_per_page;
       });
     } else {
-      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
         this.documents = documents.docs;
-        console.log(documents)
         this.dataSource.data = this.documents;
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;
