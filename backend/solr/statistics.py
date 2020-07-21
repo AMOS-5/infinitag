@@ -251,4 +251,4 @@ class SolrStatistics:
         return self.solr_keywordmodel.con.search("*:*", rows=1).hits
 
 
-__all__ = ["SolrKeywordStatistics", "SolrStatistics"]
+__all__ = ["SolrKeywordStatistics", "SolrStatistics", "SolrDocStatistics"]
