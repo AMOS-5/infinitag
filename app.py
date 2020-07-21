@@ -19,7 +19,6 @@ from flask_cors import CORS
 from flask_jsonpify import jsonify
 from flask import Flask, request, send_file, send_from_directory, safe_join
 from werkzeug.utils import secure_filename
-from utils.tagcloud import update_tagcloud
 
 from argparse import ArgumentParser
 import sys
@@ -32,6 +31,7 @@ import logging as log
 import zipfile
 import copy
 
+from typing import List
 
 from backend.service import SolrService, SolrMiddleware
 from backend.service.tagging import (
@@ -46,7 +46,8 @@ from backend.solr import (
     SolrDocKeywordTypes
 )
 
-from utils.data_preprocessing import create_automated_keywords
+from backend.autotagging.data_preprocessing import create_automated_keywords
+from backend.autotagging.tagcloud import update_tagcloud
 
 log.basicConfig(level=log.ERROR)
 
@@ -57,8 +58,14 @@ solr = SolrService()
 app.wsgi_app = SolrMiddleware(app.wsgi_app, solr)
 CORS(app)
 
-if not os.path.exists("tmp"):
-    os.mkdir("tmp")
+if not os.path.exists("storage"):
+    os.mkdir("storage")
+
+if not os.path.exists("storage/documents"):
+    os.mkdir("storage/documents")
+
+if not os.path.exists("storage/tmp"):
+    os.mkdir("storage/tmp")
 
 
 @app.route("/")
@@ -77,7 +84,7 @@ def upload_file():
         f_id = request.form['fid']
         file_name = secure_filename(f.filename)
 
-        file_name = str("tmp" / Path(file_name))
+        file_name = str("storage/documents" / Path(file_name))
 
         if request.method == "PUT":
             name, ext = os.path.splitext(str(file_name))
@@ -145,13 +152,13 @@ def download_files():
         docs = request.json
         print(f"Downloading {len(docs)} files")
         if len(docs) == 1:
-            return send_from_directory("tmp", filename=docs[0]["id"], as_attachment=True)
+            return send_from_directory("storage/documents", filename=docs[0]["id"], as_attachment=True)
         else:
-            zipf = zipfile.ZipFile('tmp/test.zip', 'w', zipfile.ZIP_DEFLATED)
+            zipf = zipfile.ZipFile('storage/tmp/download.zip', 'w', zipfile.ZIP_DEFLATED)
             for doc in docs:
-                zipf.write(os.path.join("tmp", doc["id"]), os.path.join("documents", doc["id"]))
+                zipf.write(os.path.join("storage/documents", doc["id"]), os.path.join("documents", doc["id"]))
             zipf.close()
-            return send_from_directory("tmp", 'test.zip', as_attachment=True)
+            return send_from_directory("storage/tmp", "download.zip", as_attachment=True)
     except Exception as e:
         log.error(f"/download {e}")
         return jsonify(f"Error: {e}"), 400
@@ -210,6 +217,8 @@ def get_documents():
         start_date = request.args.get("start_date", "")
         end_date = request.args.get("end_date", "")
         keywords_only = request.args.get("keywords_only", False)
+        if keywords_only == "False":
+            keywords_only = False
 
         total_pages, docs = solr.docs.page(
             page,
@@ -234,22 +243,31 @@ def get_documents():
         )
 
         return res, 200
+
     except Exception as e:
         log.error(f"/documents {e}")
         return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
-@app.route("/documents/<file_name>", methods=["DELETE"])
-def delete_document(file_name):
-    f = file_name
-    docs = solr.docs.search(f"id:*{file_name}*")
-    for doc in docs.docs:
-        try:
-            solr.docs.delete(doc['id'])
-        except Exception as e:
-            return jsonify({"message": "could not delete", "error": e}), 502
+@app.route("/documents", methods=["DELETE"])
+def delete_documents():
+    iDocs = request.json["iDocs"]
+    doc_ids = [iDoc["id"] for iDoc in iDocs]
 
-    return jsonify({"message": "success"}), 201
+    try:
+        solr.docs.delete(*doc_ids)
+
+        for doc_id in doc_ids:
+            path = f"storage/documents/{doc_id}"
+            try:
+                os.remove(path)
+            except:
+                pass
+
+        return jsonify({"message": "success"}), 200
+    except Exception as e:
+        log.error(f"/documents {e}")
+        return jsonify(f"Bad Gateway to solr: {e}"), 502
 
 
 @app.route("/health")
@@ -454,11 +472,13 @@ def apply_tagging_method():
         stop_time = time.time() - start_time
 
         print("Applying keywords took:", "{:10.7f}".format(stop_time))
-    # Currently this code lags behind one apply tagging click tag (word) cloud
-    # Has to placed at a better place
-    update_tagcloud(path_to_save='frontend/src/assets/img')
+
     return jsonify({"status": 200})
 
+@app.route('/wordcloud', methods=['GET'])
+def get_wordcloud():
+    update_tagcloud(path_to_save='storage/tmp', solr_service=solr)
+    return send_from_directory("storage/tmp", "tag_cloud.png", as_attachment=True)
 
 @app.route("/job/<job_id>", methods=["GET", "DELETE"])
 def get_job_status(job_id):

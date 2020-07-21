@@ -59,7 +59,7 @@ import { AppComponent } from './app.component';
 import { DocumentViewTableComponent } from './documentview/document-view-table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DocumentationComponent } from './documentation/documentation.component';
-import { KeywordsComponent, KWMNameDialog } from './keywords/keywords.component';
+import { KeywordsComponent } from './keywords/keywords.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { DragdropDirective } from '../directives/dragdrop.directive';
@@ -72,6 +72,7 @@ import { TaggingDialogComponent } from '../dialogs/tagging.dialog.component';
 import { AutomatedTaggingParametersDialog } from '../dialogs/automated-tagging-parameters.component';
 import { NaturalNumbersOnlyDirective } from '../directives/natural-numbers-only.directive';
 import { DocumentOverviewComponent } from './document-overview/document-overview.component';
+import { KWMNameDialog } from '../dialogs/keyword-input.dialog.component';
 
 import * as echarts from 'echarts';
 import { NgxEchartsModule } from 'ngx-echarts';

@@ -33,8 +33,8 @@ import { BehaviorSubject } from 'rxjs';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { throwError } from 'rxjs';
 
+import { KWMNameDialog } from '../../dialogs/keyword-input.dialog.component'
 import { IKeyWordModel } from '../models/IKeyWordModel.model';
-
 
 
 /**
@@ -331,6 +331,11 @@ export class KeywordsComponent implements OnInit {
   treeFlattener: MatTreeFlattener<ItemNode, ItemFlatNode>;
 
   dataSource: MatTreeFlatDataSource<ItemNode, ItemFlatNode>;
+
+  nodeStyles = {
+    DIMENSION: {'color': 'darkblue', 'text-decoration': 'underline'},
+    KEYWORD: {'color': 'black'}
+  }
 
   /* Drag and drop */
   dragNode: any;
@@ -860,18 +865,3 @@ export class KeywordsComponent implements OnInit {
   }
 }
 
-
-@Component({
-  selector: 'input-dialog',
-  templateUrl: 'input-dialog.html',
-})
-export class KWMNameDialog {
-
-  constructor(
-    public dialogRef: MatDialogRef<KWMNameDialog>,
-    @Inject(MAT_DIALOG_DATA) public name: string) {}
-
-  onClose(): void {
-    this.dialogRef.close();
-  }
-}

@@ -19,11 +19,11 @@ from __future__ import print_function
 from nltk.stem.snowball import SnowballStemmer
 
 stemmer = SnowballStemmer("english")
-from utils.data_preprocessing import load_data
-from utils.tfidf_vector import tfidf_vector
-from utils.k_means_cluster import kmeans_clustering,silhoutte_method,optimal_clusters_elbowMethod
-from utils.lda_model import lda
-from utils.hierarchichal_clustering import hierarchical_cluster
+from backend.autotagging.data_preprocessing import load_data
+from backend.autotagging.tfidf_vector import tfidf_vector
+from backend.autotagging.k_means_cluster import kmeans_clustering, silhoutte_method, optimal_clusters_elbowMethod
+from backend.autotagging.lda_model import lda
+from backend.autotagging.hierarchichal_clustering import hierarchical_cluster
 import pickle
 from pathlib import Path
 import warnings

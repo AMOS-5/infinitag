@@ -17,8 +17,8 @@
 
 from __future__ import print_function
 
-from utils.tfidf_vector import tfidf_vector, tfidf_vector_keywords
-from utils.k_means_cluster import kmeans_clustering, silhoutte_method
+from backend.autotagging.tfidf_vector import tfidf_vector, tfidf_vector_keywords
+from backend.autotagging.k_means_cluster import kmeans_clustering, silhoutte_method
 
 from nltk.corpus import stopwords, wordnet
 from nltk.stem.wordnet import WordNetLemmatizer

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 import {Component, EventEmitter, Output} from '@angular/core';
-import { UploadService } from '../services/upload.service';
+import { FileService } from '../services/file.service';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -30,7 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogData, FileExistsDialogComponent } from '../../dialogs/file-exists.component';
 import { IFile } from '../models/IFile.model';
-import { Utils } from '../services/Utils.service';
+import { Utils } from '../services/utils.service';
 import { FileUploadDialogComponent, UploadDialogData } from '../../dialogs/file-upload.dialog.component';
 
 
@@ -55,7 +55,7 @@ export class FileUploadComponent {
   };
 
   constructor(
-    private uploadService: UploadService,
+    private fileService: FileService,
     private translate: TranslateService,
     public dialog: MatDialog,
     public utils: Utils) {
@@ -83,13 +83,14 @@ export class FileUploadComponent {
       .subscribe( () => {
         this.uploadFinished.emit();
         this.cleanUpCancelledFiles(dialogData.files);
+        this.progressMonitor.finished = 0;
       });
   }
 
   public cleanUpCancelledFiles(files: Array<IFile>) {
     for (const file of files) {
       if (file.status === 'CANCELLED') {
-        this.uploadService.deleteFile(file).subscribe( (result) => {
+        this.fileService.deleteFile(file).subscribe( (result) => {
           console.log(result);
         });
       }
@@ -100,12 +101,12 @@ export class FileUploadComponent {
   public resendFile(requestType: { response: string }, file: IFile) {
     if (file !== undefined) {
       if (requestType.response === 'overwrite') {
-        this.uploadService.patchFile(file)
+        this.fileService.patchFile(file)
           .subscribe((event: HttpEvent<any>) => {
             this.handleFileSend(event, file);
           });
       } else if (requestType.response === 'add') {
-        this.uploadService.putFile(file)
+        this.fileService.putFile(file)
           .subscribe((event: HttpEvent<any>) => {
             this.handleFileSend(event, file);
           });
@@ -137,13 +138,13 @@ export class FileUploadComponent {
 
   /**
    * @description
-   * Takes IFile, sends it to the uploadService and updates the progress accordingly
+   * Takes IFile, sends it to the fileService and updates the progress accordingly
    * @param {IFile} file: IFile object containing the file to be send
    */
   private sendFileToService(file: IFile) {
     if (file.status !== 'CANCELLED') {
       console.log(file.status);
-      this.uploadService.postFile(file)
+      this.fileService.postFile(file)
       .pipe(
         // catch errors
         catchError(error => {

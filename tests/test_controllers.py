@@ -38,7 +38,7 @@ class TestController(unittest.TestCase):
         self.assertEqual(health, "UP")
 
     def test_upload_file(self):
-        doc_path = "tmp/test_upload.test"
+        doc_path = "storage/documents/test_upload.test"
 
         # delete file if it already exists
         if os.path.exists(doc_path):
@@ -76,38 +76,38 @@ class TestController(unittest.TestCase):
             os.remove(doc_path)
 
     def test_download_file(self):
-        file = open("tmp/test1.txt", "w")
+        file = open("storage/documents/test_controller_test1.txt", "w")
         file.write("abc")
         file.close()
 
         tester = self.app.test_client(self)
         response = tester.post(
             "/download",
-            data=json.dumps([{"id": "test1.txt"}]),
+            data=json.dumps([{"id": "test_controller_test1.txt"}]),
             content_type='application/json',
         )
         # check status code
         self.assertEqual(response.status_code, 200)
 
         #check file
-        file = open("tmp/test1.txt", "rb")
+        file = open("storage/documents/test_controller_test1.txt", "rb")
         file.seek(0)
         self.assertEqual(response.data, file.read())
         file.close()
 
     def test_download_multiple_files(self):
-        file = open("tmp/test1.txt", "w")
+        file = open("storage/documents/test_controller_test1.txt", "w")
         file.write("abc")
         file.close()
 
-        file = open("tmp/test2.txt", "w")
+        file = open("storage/documents/test_controller_test2.txt", "w")
         file.write("def")
         file.close()
 
         tester = self.app.test_client(self)
         response = tester.post(
             "/download",
-            data=json.dumps([{"id": "test1.txt"}, {"id": "test2.txt"}]),
+            data=json.dumps([{"id": "test_controller_test1.txt"}, {"id": "test_controller_test2.txt"}]),
             content_type='application/json',
         )
         # check status code
@@ -115,9 +115,9 @@ class TestController(unittest.TestCase):
 
         #check files
         zip = zipfile.ZipFile(io.BytesIO(response.data))
-        test1_file = zip.open('documents/test1.txt')
+        test1_file = zip.open('documents/test_controller_test1.txt')
         self.assertEqual(test1_file.read(), b"abc")
-        test2_file = zip.open('documents/test2.txt')
+        test2_file = zip.open('documents/test_controller_test2.txt')
         self.assertEqual(test2_file.read(), b"def")
 
     def test_change_keywords(self):
@@ -151,6 +151,35 @@ class TestController(unittest.TestCase):
         data_response = json.loads(response.data)
         self.assertIsNotNone(data_response)
         self.assertEqual(len(data_response["docs"]), len(self.docs))
+
+    def test_delete_documents(self):
+        self.application.solr.docs.add(*self.docs)
+        tester = self.app.test_client(self)
+
+        doc0 = self.docs[0]
+        response = tester.delete(
+            "/documents",
+            data=json.dumps({"iDocs": [{"id": doc0.id}]}),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(doc0.id, self.application.solr.docs)
+
+        doc1 = self.docs[1]
+        doc2 = self.docs[2]
+        response = tester.delete(
+            "/documents",
+            data=json.dumps({
+                "iDocs": [
+                    {"id": doc1.id},
+                    {"id": doc2.id}
+                ]
+            }),
+            content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertNotIn(doc1.id, self.application.solr.docs)
+        self.assertNotIn(doc2.id, self.application.solr.docs)
 
     def test_dimensions(self):
         tester = self.app.test_client(self)

@@ -38,7 +38,7 @@ import {IFile} from '../models/IFile.model';
 @Injectable({
   providedIn: 'root'
 })
-export class UploadService {
+export class FileService {
   constructor(private httpClient: HttpClient) { }
 
   public postFile(file: IFile): Observable<object> {
@@ -83,6 +83,21 @@ export class UploadService {
       responseType: 'blob'
     });
   }
+
+  public deleteFiles(iDocs: IDocument[]): Observable<any> {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: {
+        iDocs: iDocs
+      }
+    }
+
+    return this.httpClient.delete(`${environment.serverUrl}/documents`, options);
+  }
+
+
 
   public deleteFile(file: IFile) {
     return this.httpClient.delete(`${environment.serverUrl}/documents/${file.file.name}`);

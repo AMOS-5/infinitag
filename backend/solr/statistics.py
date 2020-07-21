@@ -80,6 +80,9 @@ class SolrKeywordStatistics(SolrKeywords):
 
         return keywords_to_delete
 
+    def keywords(self, rows: int=100) -> List[str]:
+        res = self.con.search("*:*", rows=rows)
+        return [hit["id"] for hit in res]
 
 class DocStatistics:
     def __init__(self):
@@ -107,7 +110,7 @@ class SolrDocStatistics:
 
     def _n_doc_statistics(self) -> Tuple[int, int, int]:
         n_total = self.solr_docs.con.search("*:*", rows=1).hits
-        n_untagged = self.solr_docs.con.search("-keywords:[* TO *]").hits
+        n_untagged = self.solr_docs.con.search("-keywords:[* TO *]", rows=1).hits
         n_tagged = n_total - n_untagged
         return n_total, n_tagged, n_untagged
 

@@ -8,7 +8,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
-import { UploadService } from '../services/upload.service';
+import { FileService } from '../services/file.service';
 import { of } from 'rxjs';
 import { IFile } from '../models/IFile.model';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -18,7 +18,7 @@ describe('FileUploadComponent', () => {
   let component: FileUploadComponent;
   let fixture: ComponentFixture<FileUploadComponent>;
   let translate: TranslateService;
-  let uploadService: UploadService;
+  let fileService: FileService;
 
   const file1 = new File(['test1'], 'spec_test_file1.test', { type: 'text/plain' });
   const file2 = new File(['test2'], 'spec_test_file2.test', { type: 'text/plain' });
@@ -45,7 +45,7 @@ describe('FileUploadComponent', () => {
     })
     .compileComponents();
     translate = TestBed.get(TranslateService);
-    uploadService = TestBed.get(UploadService);
+    fileService = TestBed.get(FileService);
   }));
 
   beforeEach(() => {
@@ -72,15 +72,15 @@ describe('FileUploadComponent', () => {
     };
 
     const response = new HttpResponse();
-    spyOn(uploadService, 'patchFile').and.returnValue(of(response));
+    spyOn(fileService, 'patchFile').and.returnValue(of(response));
     component.resendFile(requestType, file);
-    expect(uploadService.patchFile).toHaveBeenCalled();
+    expect(fileService.patchFile).toHaveBeenCalled();
 
-    spyOn(uploadService, 'putFile').and.returnValue(of(response));
+    spyOn(fileService, 'putFile').and.returnValue(of(response));
     requestType.response = 'add';
 
     component.resendFile(requestType, file);
-    expect(uploadService.putFile).toHaveBeenCalled();
+    expect(fileService.putFile).toHaveBeenCalled();
   });
 
   it('should add files to list', () => {

@@ -45,13 +45,14 @@ import { ApiService } from '../services/api.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
-import { UploadService } from '../services/upload.service';
+import { FileService } from '../services/file.service';
 import { FormBuilder } from '@angular/forms';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
 import { MatTabChangeEvent} from '@angular/material/tabs';
 
 import * as moment from 'moment';
+import {Moment} from 'moment';
 /**
  *
  * Component gets document data from the backend and displays it as a table.
@@ -74,7 +75,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   constructor(
     private api: ApiService,
-    private uploadService: UploadService,
+    private fileService: FileService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
@@ -100,9 +101,11 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   selection = new SelectionModel(true, []);
   breakpoint: number;
   allData: any;
-  searchString = '';
+  searchString: string;
   startDate: string;
   endDate: string;
+  keywordsOnly = 'False';
+  dateRange: {startDate: Moment, endDate: Moment};
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -209,7 +212,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * @param {IDocument} document to download
    */
   public download(iDoc: IDocument) {
-    this.uploadService.getFiles([iDoc]).subscribe(res => {
+    this.fileService.getFiles([iDoc]).subscribe(res => {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       link.setAttribute('download', iDoc.id);
@@ -228,7 +231,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.uploadService.getFiles(this.selection.selected).subscribe(res => {
+    this.fileService.getFiles(this.selection.selected).subscribe(res => {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       if (this.selection.selected.length === 1) {
@@ -237,6 +240,34 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         link.setAttribute('download', 'documents.zip');
       }
       link.click();
+    });
+  }
+
+  /**
+  * @description
+  * Deletes all selected documents from the server and the database.
+  */
+  public deleteBulk() {
+    if (this.selection.selected.length === 0) {
+      this.snackBar.open('no rows selected', ``, { duration: 3000 });
+      return;
+    }
+
+    this.fileService.deleteFiles(this.selection.selected).subscribe(res => {
+      //update table
+      const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+      this.api.getDocuments(
+        this.currentPage,
+        this.pageSize,
+        this.sortField,
+        this.sortOrder,
+        this.searchString,
+        keywordsOnly)
+        .subscribe((documents: any) => {
+          this.documents = documents.docs;
+          this.dataSource.data = this.documents;
+          this.selection.clear()
+        });
     });
   }
 
@@ -275,7 +306,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       );
     }
 
-    this.uploadService.patchKeywords(doc).subscribe(() => {
+    this.fileService.patchKeywords(doc).subscribe(() => {
       const index = this.documents.findIndex(document => document.id === doc.id);
       const data = this.dataSource.data;
       data.splice(index, 1);
@@ -300,7 +331,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       document.keywords.splice(index, 1);
     }
 
-    this.uploadService.patchKeywords(document).subscribe(res => {
+    this.fileService.patchKeywords(document).subscribe(res => {
       this.sync();
     });
   }
@@ -332,20 +363,21 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.pageEvent.emit(e);
-    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    console.log(keywordsOnly);
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.api.getDocuments(
       this.currentPage,
       this.pageSize,
       this.sortField,
       this.sortOrder,
       this.searchString,
-      keywordsOnly)
+      this.keywordsOnly)
       .subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
       this.isLoading = false;
     });
+    this.selection.clear()
+
     return e;
   }
 
@@ -355,16 +387,26 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   public sync() {
     this.selection = new SelectionModel(true, []);
-    const syncEvent = {
-      currentPage: this.currentPage,
-      pageSize: this.pageSize
-    };
-    this.syncRequested.emit(syncEvent);
+    this.api.getDocuments(
+      this.currentPage,
+      this.pageSize,
+      this.sortField,
+      this.sortOrder,
+      this.searchString,
+      this.keywordsOnly,
+      this.startDate,
+      this.endDate
+    ).subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+    });
   }
 
   updateData(sort: Sort) {
     this.isLoading = true;
     if (sort.direction !== ''){
+      this.sortField = sort.active;
+      this.sortOrder = sort.direction;
       this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction, this.searchString).subscribe((documents: any) => {
         this.documents = documents.docs;
         this.dataSource.data = this.documents;
@@ -373,11 +415,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
-  updateSearchString(event) {
-    const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
-    this.searchString = event.target.value;
+  updateSearchString() {
     this.isLoading = true;
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, keywordsOnly).subscribe((documents: any) => {
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
       this.dataSource.data = this.documents;
       this.pageSize = documents.num_per_page;
@@ -385,6 +426,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.totalPages = documents.total_pages * documents.num_per_page;
       this.isLoading = false;
     });
+  }
+
+  submitSearch() {
+    if (this.dateRange === undefined || this.dateRange === null) {
+      this.updateSearchString();
+    } else {
+      this.updateDateString();
+    }
   }
 
   public getSizePresentation(size: number): string {
@@ -402,20 +451,32 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return `${size} B`;
   }
 
-  updateDateString(event) {
-    this.isLoading = true;
-    let mom:any = moment;
-    event.startDate !== null ? this.startDate = mom.utc(event.startDate).toISOString().split('.')[0]+"Z" : this.startDate = "",
-    event.endDate !== null ? this.endDate = mom.utc(event.endDate).toISOString().split('.')[0]+"Z": this.endDate = "";
+  updateDateString() {
+    const mom: any = moment;
+     this.isLoading = true;
+    this.dateRange.startDate !== null ? this.startDate = mom.utc(this.dateRange.startDate).toISOString().split('.')[0] + 'Z' : this.startDate = '';
+    this.dateRange.endDate !== null ? this.endDate = mom.utc(this.dateRange.endDate).toISOString().split('.')[0] + 'Z' : this.endDate = '';
+    this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
+    if (moment(this.dateRange.startDate).isSame(this.dateRange.endDate, 'date')) {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly, this.endDate).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        this.dataSource.data = this.documents;
+        this.pageSize = documents.num_per_page;
+        this.currentPage = documents.page;
+        this.totalPages = documents.total_pages * documents.num_per_page;
+        this.isLoading = false;
+      });
+    } else {
+      this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
+        this.documents = documents.docs;
+        this.dataSource.data = this.documents;
+        this.pageSize = documents.num_per_page;
+        this.currentPage = documents.page;
+        this.totalPages = documents.total_pages * documents.num_per_page;
+        this.isLoading = false;
+      });
+    }
 
-    this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.startDate, this.endDate).subscribe((documents: any) => {
-      this.documents = documents.docs;
-      this.dataSource.data = this.documents;
-      this.pageSize = documents.num_per_page;
-      this.currentPage = documents.page;
-      this.totalPages = documents.total_pages * documents.num_per_page;
-      this.isLoading = false;
-    });
   }
 }
 

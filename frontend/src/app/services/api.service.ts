@@ -54,8 +54,8 @@ export class ApiService {
     return this.http.get(`${environment.serverUrl}/keywordlist`);
   }
 
-  public getDocuments(page: any= 0, num_per_page: any= 100, sort_field= 'id', sort_order= 'asc', search_term?: string, 
-  keywords_only?: string, start_date?: string, end_date?:string) {
+
+  public getDocuments(page: any= 0, num_per_page: any= 10, sort_field= 'id', sort_order= 'asc', search_term?: string, keywords_only?: string, start_date?: string, end_date?:string) {
     let params = {
       page,
       num_per_page,
@@ -67,6 +67,7 @@ export class ApiService {
     (keywords_only!== undefined) ? params['keywords_only'] = keywords_only : null;
     (start_date !== undefined) ? params['start_date'] = start_date : null;
     (end_date !== undefined) ? params['end_date'] = end_date : null;
+    (keywords_only !== undefined) ? params['keywords_only'] = keywords_only : null;
     const documentsUrl = `${environment.serverUrl}/documents`;
     page = page.toString();
     num_per_page = num_per_page.toString();
@@ -162,4 +163,13 @@ export class ApiService {
   public getStats() {
     return this.http.get(`${environment.serverUrl}/statistics`);
   }
+
+  public getWordcloud() {
+    const headers = new HttpHeaders()
+      .set("Cache-Control", "no-store");
+
+    return this.http.get(`${environment.serverUrl}/wordcloud`, {headers, responseType: 'blob' });
+  }
+
+
 }
