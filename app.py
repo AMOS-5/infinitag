@@ -251,6 +251,11 @@ def get_documents():
 
 @app.route("/documents", methods=["DELETE"])
 def delete_documents():
+    """
+    Handles the delete request for documents by removing the document from solr
+    and deleting the file from storage if possible.
+    :return: a succes/error message
+    """
     iDocs = request.json["iDocs"]
     doc_ids = [iDoc["id"] for iDoc in iDocs]
 
@@ -409,6 +414,10 @@ def remove_keyword_model(model_id):
 
 @app.route("/stopServer", methods=["GET"])
 def stop_server():
+    """
+    Tries to shut down the server.
+    :return: success/failure message
+    """
     shutdown = request.environ.get("werkzeug.server.shutdown")
     if shutdown is None:
         return jsonify(
@@ -423,8 +432,9 @@ def apply_tagging_method():
     """
     Endpoint for autotagging of documents.
     If the keyword model autotagging is choosen, the documents and the hierarchy
-    are parsed and the keywords get applied. If no documents are given the
-    keywords get applied to all documents
+    are parsed and the keywords get applied. If the applyToAllDocuments option
+    is given, all documents get queried from solr and the send documents get
+    ignored.
     :return: json object containing a status message
     """
     data = request.json
@@ -477,11 +487,19 @@ def apply_tagging_method():
 
 @app.route('/wordcloud', methods=['GET'])
 def get_wordcloud():
+    """
+    Generates the wordcloud and sends it to the front end as a png file.
+    :return: generated tag_cloud.png file
+    """
     update_tagcloud(path_to_save='storage/tmp', solr_service=solr)
     return send_from_directory("storage/tmp", "tag_cloud.png", as_attachment=True)
 
 @app.route("/job/<job_id>", methods=["GET", "DELETE"])
 def get_job_status(job_id):
+    """
+    Handles GET and DELETE request for tagging jobs.
+    :return: the job status
+    """
     job = tagging_service.get_job(job_id)
     if request.method == "GET":
         if job is None:
@@ -495,6 +513,10 @@ def get_job_status(job_id):
 
 @app.route("/statistics", methods=["GET"])
 def get_statistics():
+    """
+    Queries all statistics from the database and send them to the front end.
+    :return: all statistics used in the dashboard
+    """
     doc_stats = solr.statistics.docs()
     n_keywords = solr.statistics.keywords()
     n_keyword_models = solr.statistics.keywordmodel()
