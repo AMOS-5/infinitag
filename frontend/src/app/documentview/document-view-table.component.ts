@@ -106,6 +106,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
   endDate: string;
   keywordsOnly = 'False';
   dateRange: {startDate: Moment, endDate: Moment};
+
   KEYWORD_TYPE_COLORS = {
     MANUAL   : '#a6a6a6',
     KWM      : '#66ff66',
@@ -377,10 +378,18 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return e;
   }
 
+  /**
+   * @description
+   * Gets called when the tab is changed. Sets the editing variable accordingly
+   */
   public tabChanged(tabChangeEvent: MatTabChangeEvent): void {
     this.editing = tabChangeEvent.index > 0;
   }
 
+  /**
+   * @description
+   * Updates the documents and the table data.
+   */
   public sync() {
     this.selection = new SelectionModel(true, []);
     this.api.getDocuments(
@@ -398,6 +407,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * @description
+   * Updates the documents and the table data when the table gets sorted.
+   */
   updateData(sort: Sort) {
     if (sort.direction !== ''){
       this.sortField = sort.active;
@@ -409,6 +422,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * @description
+   * Updates the documents and the table data when the search string changes.
+   */
   updateSearchString() {
     this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly).subscribe((documents: any) => {
@@ -420,6 +437,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     });
   }
 
+  /**
+   * @description
+   * Updates the documents and the table data when the search button is pressed.
+   */
   submitSearch() {
     if (this.dateRange === undefined || this.dateRange === null) {
       this.updateSearchString();
@@ -428,6 +449,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     }
   }
 
+    /**
+   * @description
+   * Converts documents size to fitting unit.
+   */
   public getSizePresentation(size: number): string {
     const kilobytes = size / 1024;
     const megabytes = kilobytes / 1024;
@@ -443,7 +468,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     return `${size} B`;
   }
 
-
+  /**
+   * @description
+   * Updates the documents and the table data when the date changes.
+   */
   updateDateString() {
     const mom: any = moment;
 

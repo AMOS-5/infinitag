@@ -435,6 +435,12 @@ export class KeywordsComponent implements OnInit {
     this.snackBar.open(msg, '', { duration: 3000 });
   }
 
+  /**
+  * @description
+  * Checks the correctness of a keyword.
+  * @param keyword to be checked
+  * @returns correctness of the keyword
+  */
   private checkKeyword(kw: string) : boolean {
     const re = new RegExp("^[a-zA-ZäöüÄÖÜ]+$");
     if(!re.test(kw)) {
@@ -753,6 +759,13 @@ export class KeywordsComponent implements OnInit {
     }
   }
 
+  /**
+   * Handles the start of the dragging of an item
+   * @param event
+   * @param node
+   * @param newItem: indicates if item gets moved from outside the tree
+   * @param type: NodeType of the item
+   */
   handleDragStart(event, node, newItem, type?) {
     if (newItem) {
       this.dragNode = new ItemFlatNode;
@@ -769,6 +782,13 @@ export class KeywordsComponent implements OnInit {
     this.treeControl.collapse(node);
   }
 
+  /**
+   * Handles the dragover of an item over the tree.
+   * @param event
+   * @param node
+   * @param newItem: indicates if item gets moved from outside the tree
+   * @param type: NodeType of the item
+   */
   handleDragOver(event, node) {
     event.preventDefault();
 
@@ -859,6 +879,11 @@ export class KeywordsComponent implements OnInit {
     this.isNewItem = false;
   }
 
+  /**
+   * Gets called when another kwm gets selected and updates the
+   * tree view accordingly.
+   * @param event
+   */
   selectionChange(event){
     this.selectedKwmIdx = event[0].value;
     this.database.dataChange.next(TREE_DATA[this.selectedKwmIdx]);

@@ -336,6 +336,10 @@ export class TaggingComponent implements OnInit {
     });
   }
 
+  /**
+   * @description
+   * Updates the job progress.
+   */
   public async monitorJobProgress(taggingDialogData: TaggingDialogData) {
     const jobId = taggingDialogData.jobId;
 
@@ -356,7 +360,7 @@ export class TaggingComponent implements OnInit {
 
   /**
    * @description
-   * Adds a new keyword to an IDocument object. Thorws an error if the keyword
+   * Adds a new keyword to an IDocument object. Throws an error if the keyword
    * is already added to the document
    */
   private addKeywordToDoc = (iDoc: IDocument, keyword: IKeyword): Observable<IDocument> => {

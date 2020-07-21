@@ -32,7 +32,8 @@ import {ITaggingRequest} from '../models/ITaggingRequest.model';
  *
  * @class ApiService
  *
- * Service handling communication regarding the keywords with the backend
+ * Service handling communication regarding the keywords, the tagging jobs and
+ * the dashboard data with the backend.
  *
  */
 @Injectable({

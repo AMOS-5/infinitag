@@ -156,10 +156,15 @@ export class FileUploadComponent {
       this.handleFileSend(event, file);
     });
     }
-
-
   }
 
+  /**
+   * @description
+   * Processes the HttpEvents of send files and updates the progress and
+   * status accordingly.
+   * @param {HttpEvent} event: The HttpEvent to process
+   * @param {IFile} file: the corresponding file
+   */
   private handleFileSend(event: HttpEvent<any>, file: IFile) {
     if (file.status !== 'CANCELLED') {
       switch (event.type) {
