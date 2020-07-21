@@ -20,10 +20,10 @@ import { map, startWith } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IKeyword } from '../models/IKeyword.model';
-import { UploadService } from '../services/upload.service';
+import { FileService } from '../services/file.service';
 import { TaggingDialogComponent, TaggingDialogData } from '../../dialogs/tagging.dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Utils } from '../services/Utils.service';
+import { Utils } from '../services/utils.service';
 import { AutomatedTaggingParametersDialog, DialogData } from '../../dialogs/automated-tagging-parameters.component';
 
 
@@ -84,7 +84,7 @@ export class TaggingComponent implements OnInit {
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private uploadService: UploadService,
+    private fileService: FileService,
     private utils: Utils) {
     this.taggingForm = this.formBuilder.group({
       taggingMethod: this.selectedTaggingMethod,
@@ -167,7 +167,7 @@ export class TaggingComponent implements OnInit {
           document.keywords.splice(index, 1);
         }
 
-        this.uploadService.patchKeywords(document).subscribe(res => {
+        this.fileService.patchKeywords(document).subscribe(res => {
           this.keywordsApplied.emit();
         });
       });
@@ -307,7 +307,7 @@ export class TaggingComponent implements OnInit {
       );
     }
 
-    this.uploadService.patchKeywords(doc).subscribe(() => {
+    this.fileService.patchKeywords(doc).subscribe(() => {
       this.keywordsApplied.emit();
     });
   }

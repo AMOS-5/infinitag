@@ -105,7 +105,7 @@ def kmeans_clustering(tfidf_matrix,
 
 
     km.fit(tfidf_matrix)
-    joblib.dump(km, 'kmeans_model.pkl')
+    joblib.dump(km, 'storage/tmp/kmeans_model.pkl')
     clusters = km.labels_.tolist()
     document = {'title': file_list, 'synopsis': flattened, 'cluster': clusters}
 

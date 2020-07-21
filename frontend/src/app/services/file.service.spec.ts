@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { UploadService } from './upload.service';
+import { FileService } from './file.service';
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
 import { HttpEventType, HttpEvent } from '@angular/common/http';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 import { skipWhile } from 'rxjs/operators';
 import { IDocument } from '../models/IDocument.model';
 import {IFile} from "../models/IFile.model";
 
 
-describe('UploadService', async () => {
-  let service: UploadService;
+describe('FileService', async () => {
+  let service: FileService;
   let http: HttpTestingController;
   const fileData = new File(['test'], 'spec_test_file.test', { type: 'text/plain' });
   const file: IFile = {
@@ -26,7 +26,7 @@ describe('UploadService', async () => {
         HttpClientTestingModule,
       ]
     });
-    service = TestBed.inject(UploadService);
+    service = TestBed.inject(FileService);
     http = TestBed.get(HttpTestingController);
   });
 

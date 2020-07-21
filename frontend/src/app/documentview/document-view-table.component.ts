@@ -45,7 +45,7 @@ import { ApiService } from '../services/api.service';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 
-import { UploadService } from '../services/upload.service';
+import { FileService } from '../services/file.service';
 import { FormBuilder } from '@angular/forms';
 import { IKeywordListEntry } from '../models/IKeywordListEntry.model';
 
@@ -75,7 +75,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
 
   constructor(
     private api: ApiService,
-    private uploadService: UploadService,
+    private fileService: FileService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog
   ) {}
@@ -211,7 +211,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * @param {IDocument} document to download
    */
   public download(iDoc: IDocument) {
-    this.uploadService.getFiles([iDoc]).subscribe(res => {
+    this.fileService.getFiles([iDoc]).subscribe(res => {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       link.setAttribute('download', iDoc.id);
@@ -230,7 +230,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.uploadService.getFiles(this.selection.selected).subscribe(res => {
+    this.fileService.getFiles(this.selection.selected).subscribe(res => {
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(res.body);
       if (this.selection.selected.length === 1) {
@@ -252,7 +252,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.uploadService.deleteFiles(this.selection.selected).subscribe(res => {
+    this.fileService.deleteFiles(this.selection.selected).subscribe(res => {
       //update table
       const keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
       this.api.getDocuments(
@@ -305,7 +305,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       );
     }
 
-    this.uploadService.patchKeywords(doc).subscribe(() => {
+    this.fileService.patchKeywords(doc).subscribe(() => {
       const index = this.documents.findIndex(document => document.id === doc.id);
       const data = this.dataSource.data;
       data.splice(index, 1);
@@ -330,7 +330,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       document.keywords.splice(index, 1);
     }
 
-    this.uploadService.patchKeywords(document).subscribe(res => {
+    this.fileService.patchKeywords(document).subscribe(res => {
       this.sync();
     });
   }

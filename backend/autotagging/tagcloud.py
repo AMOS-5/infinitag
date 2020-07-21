@@ -1,12 +1,10 @@
-from backend.service import SolrService
-
 from wordcloud import WordCloud
 from os import path
 
-def update_tagcloud(path_to_save: str, solr_service: SolrService) -> None:
+def update_tagcloud(path_to_save: str, solr_service) -> None:
     max_words = 1000
 
-    keywords = solr_service.keyword_statistics.keywords(rows=max_words)
+    keywords = (solr_service).keyword_statistics.keywords(rows=max_words)
     keywords_str = " ".join(kw for kw in keywords)
 
     if len(keywords) > 0:
