@@ -8,7 +8,7 @@
      Lemmatize, 
      Tokenize and Split
      
-*   _Loads Files for tagging 
+*   Loads Files for tagging 
 
 
 
