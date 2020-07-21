@@ -51,7 +51,8 @@
     "TOOLTIP_KWM"     : "Kwm based keyword",
     "TOOLTIP_ML"      : "ML based keyword",
     "TOOLTIP_META"    : "Metadata keyword",
-    "SEARCH_ONLY_KEYWORD": "Search Only Keywords"
+    "SEARCH_ONLY_KEYWORD": "Search Only Keywords",
+    "kEYWORD_WARN": "Press enter to convert text to keyword"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Keyword Model Settings",

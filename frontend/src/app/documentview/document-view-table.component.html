@@ -20,11 +20,11 @@
     </mat-tab>
     <mat-tab label="{{'DOCUMENTS.TAGGING' | translate}}" class="mat-tab">
       <app-tagging [editing]="editing" [selectedDocuments]="selection.selected" (keywordsApplied)="sync()"
-                   (taggingApplied)="sync()"></app-tagging>
+        (taggingApplied)="sync()"></app-tagging>
     </mat-tab>
     <mat-tab label="{{'DOCUMENTS.FILE_TAB' | translate}}" class="mat-tab">
       <button [disabled]=!editing mat-raised-button color="primary"
-            (click)="downloadBulk()">{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}
+        (click)="downloadBulk()">{{'DOCUMENTS.DOWNLOAD_BUTTON' | translate}}
       </button>
       <br>
       <button [disabled]=!editing mat-raised-button color="primary"
@@ -32,88 +32,92 @@
       </button>
     </mat-tab>
   </mat-tab-group>
-  <div class="loading-documents" *ngIf="dataSource.data.length === 0">
-    <mat-spinner color="primary"></mat-spinner>
+  <div *ngIf="isLoading" class="spinner-wrapper">
+    <mat-spinner [diameter]="40"></mat-spinner>
   </div>
-  <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort (matSortChange)="updateData($event)"
-         matSortActive="carbs" matSortDirection="asc">
-    <!-- Checkbox Column -->
-    <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-checkbox [hidden]=!editing (change)="$event ? masterToggle() : null"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()">
-        </mat-checkbox>
-      </th>
-      <td mat-cell *matCellDef="let row">
-        <mat-checkbox [hidden]=!editing (click)="$event.stopPropagation()"
-                      (change)="$event ? selection.toggle(row) : null"
-                      [checked]="selection.isSelected(row)">
-        </mat-checkbox>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.FILENAME' | translate}} </th>
-      <td mat-cell *matCellDef="let element">
-        <button class="download-button" (click)="download(element)">
-          {{element.title}}
-        </button>
-      </td>
-    </ng-container>
+  <div *ngIf="dataSource.data.length === 0 && !isLoading" class="spinner-wrapper">
+    <p> No Documents found!</p>
+  </div>
 
-    <ng-container matColumnDef="type">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> {{'DOCUMENTS.FILE_TYPE' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
-    </ng-container>
+    <div *ngIf="dataSource.data.length > 0 && !isLoading">
+      <table *ngIf="dataSource.data.length > 0" mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort
+        (matSortChange)="updateData($event)" matSortActive="last_modified" matSortDirection="asc">
+        <!-- Checkbox Column -->
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox [disabled]=!editing (change)="$event ? masterToggle() : null"
+              [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row">
+            <mat-checkbox [disabled]=!editing (click)="$event.stopPropagation()"
+              (change)="$event ? selection.toggle(row) : null" [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'DOCUMENTS.FILENAME' | translate}} </th>
+          <td mat-cell *matCellDef="let element">
+            <button class="download-button" (click)="download(element)">
+              {{element.title}}
+            </button>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="type"> {{'DOCUMENTS.FILE_TYPE' | translate}} </th>
+          <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="language">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="language"> {{'HOME.LANGUAGE' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.language}} </td>
-    </ng-container>
+        <ng-container matColumnDef="language">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="language"> {{'HOME.LANGUAGE' | translate}} </th>
+          <td mat-cell *matCellDef="let element"> {{element.language}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="size">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="size"> {{'SIZE' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{ getSizePresentation(element.size)}}</td>
-    </ng-container>
+        <ng-container matColumnDef="size">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="size"> {{'SIZE' | translate}} </th>
+          <td mat-cell *matCellDef="let element"> {{ getSizePresentation(element.size)}}</td>
+        </ng-container>
 
-    <ng-container matColumnDef="last_modified">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header="last_modified"> {{'DOCUMENTS.LAST_MODIFIED' | translate}} </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_modified.toLocaleString('en-GB')}} </td>
-    </ng-container>
-  <ng-container matColumnDef="MyKeywords">
-    <th mat-header-cell *matHeaderCellDef> {{'DOCUMENTS.MY_KEYWORDS' | translate}} </th>
-    <td mat-cell *matCellDef="let element">
-      <mat-chip-list #chipList>
-        <mat-chip *ngFor="let keyword of element.keywords"
-                  [ngStyle]="{'background-color': KEYWORD_TYPE_COLORS[keyword.type]}"
-                  matTooltip="{{KEYWORD_TYPE_TOOLTIPS[keyword.type] | translate}}"
-                  attr.aria-label="{{KEYWORD_TYPE_TOOLTIPS[keyword.type] | translate}}"
-                  [selectable]="false"
-                  [removable]="true" (removed)="removeKeywordFromDocument(element, keyword)">
-          {{keyword.value}}
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-      </mat-chip-list>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>add_circle</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <mat-form-field (click)="$event.stopPropagation()">
-            <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
-            <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
-                   autocomplete="off">
-          </mat-form-field>
-          <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">
-            {{keyword.kwm}} {{keyword.id}}
-          </button>
-        </mat-menu>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-  <mat-paginator *ngIf="totalPages > 0" class="paginator--centered" #paginator [pageSize]="pageSize"
-                 [pageSizeOptions]="[10, 100, 500, 1000]" [showFirstLastButtons]="true" [length]="totalPages"
-                 [pageIndex]="currentPage" (page)="paginate($event)">
-  </mat-paginator>
+        <ng-container matColumnDef="last_modified">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header="last_modified">
+            {{'DOCUMENTS.LAST_MODIFIED' | translate}} </th>
+          <td mat-cell *matCellDef="let element"> {{element.last_modified.toLocaleString('en-GB')}} </td>
+        </ng-container>
+        <ng-container matColumnDef="MyKeywords">
+          <th mat-header-cell *matHeaderCellDef> {{'DOCUMENTS.MY_KEYWORDS' | translate}} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-chip-list #chipList>
+              <mat-chip *ngFor="let keyword of element.keywords"
+                [ngStyle]="{'background-color': KEYWORD_TYPE_COLORS[keyword.type]}"
+                matTooltip="{{KEYWORD_TYPE_TOOLTIPS[keyword.type] | translate}}"
+                attr.aria-label="{{KEYWORD_TYPE_TOOLTIPS[keyword.type] | translate}}" [selectable]="false"
+                [removable]="true" (removed)="removeKeywordFromDocument(element, keyword)">
+                {{keyword.value}}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+            </mat-chip-list>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>add_circle</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <mat-form-field (click)="$event.stopPropagation()">
+                <mat-label>{{ 'DOCUMENTS.SEARCH_KEYWORDS' | translate}}</mat-label>
+                <input matInput (keyup)="onKey($event)" (blur)="focus($event)" (click)="$event.stopPropagation()"
+                  autocomplete="off">
+              </mat-form-field>
+              <button *ngFor="let keyword of selectedKeywords" mat-menu-item (click)="applyKeyword(element, keyword)">
+                {{keyword.kwm}} {{keyword.id}}
+              </button>
+            </mat-menu>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+      <mat-paginator *ngIf="totalPages > 0" class="paginator--centered" #paginator [pageSize]="pageSize"
+        [pageSizeOptions]="[10, 100, 500, 1000]" [showFirstLastButtons]="true" [length]="totalPages"
+        [pageIndex]="currentPage" (page)="paginate($event)">
+      </mat-paginator>
+      </div>
 </div>

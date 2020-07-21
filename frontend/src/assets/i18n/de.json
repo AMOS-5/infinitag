@@ -51,7 +51,8 @@
     "TOOLTIP_KWM"     : "Kwm basierendes Keyword",
     "TOOLTIP_ML"      : "ML basierendes Keyword",
     "TOOLTIP_META"    : "Metadaten Keyword",
-    "SEARCH_ONLY_KEYWORD": "Nur Keywords suchen"
+    "SEARCH_ONLY_KEYWORD": "Nur Keywords suchen",
+    "kEYWORD_WARN": "Drücken Sie die Eingabetaste, um Text in ein Tag umzuwandeln"
   },
   "KEYWORDS": {
     "KEYWORD_MODEL_SETTINGS": "Modell Einstellungen",
