@@ -32,7 +32,7 @@ import {IFile} from '../models/IFile.model';
 
 /**
  *
- * Service handling uploading and updating documents
+ * Service handling uploading, updating and deleting documents
  *
  */
 @Injectable({
@@ -96,8 +96,6 @@ export class FileService {
 
     return this.httpClient.delete(`${environment.serverUrl}/documents`, options);
   }
-
-
 
   public deleteFile(file: IFile) {
     return this.httpClient.delete(`${environment.serverUrl}/documents/${file.file.name}`);
