@@ -120,7 +120,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     ML       : 'DOCUMENTS.TOOLTIP_ML',
     META     : 'DOCUMENTS.TOOLTIP_META'
   };
-
+  isLoading: boolean = true;
 
   public ngOnInit() {
     this.setDatasource();
@@ -152,6 +152,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.documents.map((document: IDocument) => {
         document.creation_date = new Date(document.creation_date);
         document.last_modified = new Date(document.last_modified);
+        this.isLoading = false;
       });
       this.dataSource.data = this.documents;
       this.dataSource.paginator ? this.dataSource.paginator = this.paginator : null;
@@ -359,6 +360,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
     * Gets page event from frontand and runs the iterator.
     */
   public paginate(e: PageEvent){
+    this.isLoading = true;
     this.currentPage = e.pageIndex;
     this.pageSize = e.pageSize;
     this.pageEvent.emit(e);
@@ -370,11 +372,13 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.sortOrder,
       this.searchString,
       this.keywordsOnly)
-        .subscribe((documents: any) => {
-          this.documents = documents.docs;
-          this.dataSource.data = this.documents;
-        });
+      .subscribe((documents: any) => {
+      this.documents = documents.docs;
+      this.dataSource.data = this.documents;
+      this.isLoading = false;
+    });
     this.selection.clear()
+
     return e;
   }
 
@@ -412,12 +416,14 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * Updates the documents and the table data when the table gets sorted.
    */
   updateData(sort: Sort) {
+    this.isLoading = true;
     if (sort.direction !== ''){
       this.sortField = sort.active;
       this.sortOrder = sort.direction;
       this.api.getDocuments(this.currentPage, this.pageSize, sort.active, sort.direction, this.searchString).subscribe((documents: any) => {
         this.documents = documents.docs;
         this.dataSource.data = this.documents;
+        this.isLoading = false;
       });
     }
   }
@@ -427,6 +433,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    * Updates the documents and the table data when the search string changes.
    */
   updateSearchString() {
+    this.isLoading = true;
     this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
     this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly).subscribe((documents: any) => {
       this.documents = documents.docs;
@@ -434,6 +441,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
       this.pageSize = documents.num_per_page;
       this.currentPage = documents.page;
       this.totalPages = documents.total_pages * documents.num_per_page;
+      this.isLoading = false;
     });
   }
 
@@ -474,7 +482,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
    */
   updateDateString() {
     const mom: any = moment;
-
+     this.isLoading = true;
     this.dateRange.startDate !== null ? this.startDate = mom.utc(this.dateRange.startDate).toISOString().split('.')[0] + 'Z' : this.startDate = '';
     this.dateRange.endDate !== null ? this.endDate = mom.utc(this.dateRange.endDate).toISOString().split('.')[0] + 'Z' : this.endDate = '';
     this.keywordsOnly = this.searchOnlyKeywords ? 'True' : 'False';
@@ -485,6 +493,7 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;
         this.totalPages = documents.total_pages * documents.num_per_page;
+        this.isLoading = false;
       });
     } else {
       this.api.getDocuments(this.currentPage, this.pageSize, this.sortField, this.sortOrder, this.searchString, this.keywordsOnly, this.startDate, this.endDate).subscribe((documents: any) => {
@@ -493,8 +502,10 @@ export class DocumentViewTableComponent implements OnInit, OnChanges {
         this.pageSize = documents.num_per_page;
         this.currentPage = documents.page;
         this.totalPages = documents.total_pages * documents.num_per_page;
+        this.isLoading = false;
       });
     }
+
   }
 }
 

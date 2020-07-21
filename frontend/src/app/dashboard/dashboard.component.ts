@@ -50,7 +50,7 @@ export class DashboardComponent implements OnInit{
   options = [
     { value: 'days', viewValue: 'Days (last 7 days)' },
     { value: 'weeks', viewValue: 'Weeks (last 4 weeks)' },
-    { value: 'months', viewValue: 'Months (this year)' },
+    { value: 'months', viewValue: 'Months (last 12 months)' },
     { value: 'years', viewValue: 'Years (since start)' }
   ];
 
