@@ -13,8 +13,8 @@
 
 
 \title{User Manual for the InifiniTag Document Tagging Service}
-\author{Barnhill, Hanif, Vinokour, Wich, Sakib}
-\date{June 2020}
+\author{Barnhill, Hanif, Vinokour, Wich, Sakib, Daudrich, Sippl}
+\date{Juli 2020}
 
 \begin{document}
 
@@ -43,38 +43,63 @@ For help getting the Solr database up and running. See the various files in our 
 
 
 
-\section{Document Overview / Start Page}
+\section{Start Page}
 \label{docoverview}
-Once the front end is up and running, navigate to the start page to see a table with a list of documents as seen in Figure \ref{fig:start_page}.
+
+Once the front end is up and running, navigate to the start page to see a dashboard as seen in Figure \ref{fig:start_page} giving you a some statistics about the state of your documents and keyword models.
 
 Notice in the top right corner is a status badge indicating the connection to the back end. If this is 'DOWN', then you will not be able to send or receive information from the server and will not be able to continue.
+Right next to it is a language option, which allows you to use our software in both english and german, whatever you prefer.
 
-The search bar on this page enables you to filter documents by any criteria. Any word entered into the search box will be used to check for matching words in the name, tags, language, etc.
-
-The + icon in the keywords column allows you to add any existing tag to a document.
-
-Clicking on the edit button will enable the checkboxes to the right of the document name. By doing so you can apply one keyword to multiple documents.
+At the bottom of the page you can see a wordcloud of all currently applied keywords, providing you with a quick and easy way to see what keywords are used often and how many there are total.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.25]{img/doc1.png}
+    \includegraphics[scale=0.25]{img/dashboard.png}
     \caption{The Start page}
     \label{fig:start_page}
 \end{figure}
 
-\section{Adding Documents}
-Navigating to \verb|\documents| in the browser or clicking on the \verb|Add Documents| link in the menu will take the user to a form where they can select one or more documents to be uploaded. This can be seen in Figure \ref{fig:doc_upload}.
 
-Upon selecting one or more documents all of the documents will be sent to the server for further processing. At the moment the documents will be stored in the database and the meta-information such as name, language, type, etc. will be extracted and stored along with the document content.
+\section{Document Overview}
+
+By clicking on the Document Overview tab in the toolbar you can navigate to the page showing you all documents in the database as seen in Figure \ref{fig:doc_overview}.
+The files can be sorted by their attributes by clicking on the respective label. At the top of the page is a search bar allowing you to filter files by a search term.
+As the default every field in the database gets searched for the entered term, which also includes the documents name and content.
+If you only want to search for specific tags you can press the Search keywords only checkbox.
+In addition to that you can filter documents by their last edited timestamp by clicking on the Search By Date Range field.
+
+You can upload more files by dragging them into the designated area marked blue or open a file dialog by clicking on it.
+A dialog will open ahowing you the upload status as well as giving you an option to cancel the upload.
+
+Keywords can be added to documents by clicking on the + sign in the MyKeywords column and can be deleted by pressing the x next to the keyword.
+If you wish to add/delete multiple keywords to/from multiple documents at once, you can do so by selecting the Tagging tab.
+A checkbox will become visible next to each document and you can enter multiple keywords into field titled Search Keywords....
+Then the selected keywords can be applied or deleted by pressing the respective button.
+
+In the Tagging tab you can use our automated taggin solution, too. We provide two ways to automatically tag your documents. They can be choosen by selecting them from the drop down menu on the right.
+The first one tags documents by utalising something we call keyword models. Keyword models will explained in detail later in the Section \ref{}.
+The second method is completly automated. You only need to select the documents or click the Apply to all documents button and typing in the amount of clusters and keywords you want.
+The result of all tagging methods can be seen in Figure \ref{fig:applied_kw}. Notice how the keywords are color coded indicating by which method they were created.
+
+If you want to download a document you can do that by clicking on the documents title or you can download multiple files at once by navigating to the Download/Delete tab.
+If you download a couple of files at once, they are combined into a zip file for your convenience. In this tab you can also delete files from the database if you don't need them anymore.
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.4]{img/doc2.png}
-    \caption{Uploading Documents}
-    \label{fig:doc_upload}
+    \includegraphics[scale=0.25]{img/doc1.png}
+    \caption{The Document Overview}
+    \label{fig:doc_overview}
 \end{figure}
 
-\section{Maintaining Keywords}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{img/applied_kw.png}
+    \caption{Keywords applied to a document}
+    \label{fig:applied_kw}
+\end{figure}
+
+\section{Keyword Models}
 Navigating to \verb|keywords| or clicking on the \verb|Keywords| link will take the user to a page where they can add dimensions and keywords to a keyword model as seen in Figure \ref{fig:key1}. These keywords are then available to be assigned to the documents on the start / document overview page.
 
 Here one can add dimensions as well as keywords, which will enable the construction of hierarchical keyword models.
