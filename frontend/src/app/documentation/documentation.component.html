@@ -1,343 +1,653 @@
 <div class="container">
   <h1>API Documentation</h1>
   <div class="example-action-buttons">
-  <button mat-button (click)="accordion.openAll()">Expand All</button>
-  <button mat-button (click)="accordion.closeAll()">Collapse All</button>
+    <button mat-button (click)="accordion.openAll()">Expand All</button>
+    <button mat-button (click)="accordion.closeAll()">Collapse All</button>
   </div>
   <mat-accordion class="example-headers-align" multi>
-  <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/upload</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Upload a document to the backend
-        <div class="routes">POST</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>POST</div>
-      <mat-list-item>
-        <div mat-line>Type: Body</div>
-        <div mat-line>Parameters:
-          <ul>
-            <li>fileKey: Form data with file under the fileKey key.</li>
-          </ul>
-        </div>
-        <div mat-line>Returns:
-          <ul>
-            <li>200: Successfully saved file</li>
-            <li>400: Sent file could not be read</li>
-            <li>500: Sent file could not be saved</li>
-            <li>502: Sent file could not be entered into the database</li>
-          </ul>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/changekeywords</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Change keywords assigned to document
-        <div class="routes">PATCH</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>PATCH</div>
-      <mat-list-item>
-        <div mat-line>Type: Body</div>
-        <div mat-line>Parameters:
-          <ul>
-            <li>id: id of the document to be changed</li>
-            <li>keywords: Array of keywords to assign to the document</li>
-          </ul>
-        </div>
-        <div mat-line>Returns:
-          <ul>
-            <li>200: Successfully updated keywords on file</li>
-            <li>400: Reading of request unsuccessful</li>
-            <li>502: Keywords on document could not be updated in database</li>
-          </ul>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/upload</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Upload a document to the backend
+          <div class="routes">POST, PATCH, PUT</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Description: Saves a new file</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>fileKey: Form data with file under the fileKey key.</li>
+                <li>f_id: Randomly assigned file id.</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Successfully saved file</li>
+                <li>207: File exists already.</li>
+                <li>400: Sent file could not be read</li>
+                <li>500: Sent file could not be saved</li>
+                <li>502: Sent file could not be entered into the database</li>
+              </ul>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <div mat-subheader>PUT</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Description: Adds a copy of an existing file</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>fileKey: Form data with file under the fileKey key.</li>
+                <li>f_id: Randomly assigned file id.</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Successfully saved file</li>
+                <li>400: Sent file could not be read</li>
+                <li>500: Sent file could not be saved</li>
+                <li>502: Sent file could not be entered into the database</li>
+              </ul>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <div mat-subheader>PATCH</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Description: Overwrites an existing file</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>fileKey: Form data with file under the fileKey key.</li>
+                <li>f_id: Randomly assigned file id.</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Successfully saved file</li>
+                <li>400: Sent file could not be read</li>
+                <li>500: Sent file could not be saved</li>
+                <li>502: Sent file could not be entered into the database</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/documents</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Get documents from database
-        <div class="routes">GET</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Query</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
-          <ul>
-            <li>200: Array of all documents in database</li>
-            <li>502: Database could not be reached</li>
-          </ul>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/download</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Downloads a document
+          <div class="routes">POST</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>ids: Array of IDs of documents to be downloaded</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Successfully downloaded file</li>
+                <li>400: Error on the server.</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/dims</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Handle uncategorized dimensions
-        <div class="routes">GET, POST, DELETE</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Quey</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
-          <ul>
-            <li>200: A list of uncategorized dimensions</li>
-            <li>500: Dimensions could not be fetched</li>
-          </ul>
-        </div>
-      </mat-list-item>
-    </mat-list>
-      <mat-divider></mat-divider>
-      <mat-list>
-        <div mat-subheader>POST</div>
-        <mat-list-item>
-          <div mat-line>Type: Body</div>
-          <div mat-line>Parameters:
-            <ul>
-              <li>dim: String indicating the dimension to be added to the database</li>
-            </ul>
-          </div>
-          <div mat-line>Returns:
-            <ul>
-              <li>200: Dimension succesfully added to database</li>
-              <li>500: Dimension not succesfully added to database</li>
-            </ul>
-          </div>
-        </mat-list-item>
-      </mat-list>
-      <mat-divider></mat-divider>
-      <mat-list>
-        <div mat-subheader>DELETE</div>
-        <mat-list-item>
-          <div mat-line>Type: Query</div>
-          <div mat-line>Parameters:
-            <ul>
-              <li>dimension id: String indicating the dimension to be removed to the database</li>
-            </ul>
-          </div>
-          <div mat-line>Returns:
-            <ul>
-              <li>200: Dimension successfully removed from database</li>
-              <li>500: Dimension not successfully removed from database</li>
-            </ul>
-          </div>
-          <div mat-line>Example (Angular):
-            <pre><code> {{"
-              export class DeleteExample {
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/changekeywords</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Change keywords assigned to document
+          <div class="routes">PATCH</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>PATCH</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>id: id of the document to be changed</li>
+                <li>keywords: Array of keywords to assign to the document</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Successfully updated keywords on file</li>
+                <li>400: Reading of request unsuccessful</li>
+                <li>502: Keywords on document could not be updated in database</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/documents</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Get documents from database
+          <div class="routes">GET, DELETE</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Array of all documents in database</li>
+                <li>502: Database could not be reached</li>
+              </ul>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <div mat-subheader>DELETE</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>id: id of the document to be deleted</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>201: Document has been deleted</li>
+                <li>502: Document could not be deleted.</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/dims</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Handle uncategorized dimensions
+          <div class="routes">GET, POST, DELETE</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Quey</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: A list of uncategorized dimensions</li>
+                <li>500: Dimensions could not be fetched</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <mat-list>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>dim: String indicating the dimension to be added to the database</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Dimension succesfully added to database</li>
+                <li>500: Dimension not succesfully added to database</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <mat-list>
+          <div mat-subheader>DELETE</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>dimension id: String indicating the dimension to be removed to the database</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Dimension successfully removed from database</li>
+                <li>500: Dimension not successfully removed from database</li>
+              </ul>
+            </div>
+            <div mat-line>Example (Angular):
+              <pre><code> {{"
+                export class DeleteExample {
                 constructor(private httpClient: HttpClient) {}
                 ngOnInit() {
-                   this.httpClient.delete('/dims/123456');
+                this.httpClient.delete('/dims/123456');
                 }
-              }
-            "}}</code>
+                }
+                "}}</code>
             </pre>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </mat-expansion-panel>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/keys</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Handle uncategorized keys
-        <div class="routes">GET, POST, DELETE</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Quey</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
-          <ul>
-            <li>200: A list of uncategorized keys</li>
-            <li>500: keys could not be fetched</li>
-          </ul>
-        </div>
-      </mat-list-item>
-    </mat-list>
-      <mat-divider></mat-divider>
-      <mat-list>
-        <div mat-subheader>POST</div>
-        <mat-list-item>
-          <div mat-line>Type: Body</div>
-          <div mat-line>Parameters:
-            <ul>
-              <li>key: String indicating the key to be added to the database</li>
-            </ul>
-          </div>
-          <div mat-line>Returns:
-            <ul>
-              <li>200: key successfully added to database</li>
-              <li>500: key not successfully added to database</li>
-            </ul>
-          </div>
-          <div mat-line>Example (Angular):
-            <pre><code> {{"
-              export class PostExample {
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/keys</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Handle uncategorized keys
+          <div class="routes">GET, POST, DELETE</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Quey</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: A list of uncategorized keys</li>
+                <li>500: keys could not be fetched</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <mat-list>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>key: String indicating the key to be added to the database</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: key successfully added to database</li>
+                <li>500: key not successfully added to database</li>
+              </ul>
+            </div>
+            <div mat-line>Example (Angular):
+              <pre><code> {{"
+                export class PostExample {
                 constructor(private httpClient: HttpClient) {}
                 ngOnInit() {
-                  const key: {
-                    'key': 'my-key',
-                  };
-                  this.httpClient.post('/keys', key);
+                const key: {
+                'key': 'my-key',
+              };
+                this.httpClient.post('/keys', key);
                 }
-              }
-            "}}</code>
+                }
+                "}}</code>
             </pre>
-          </div>
-        </mat-list-item>
-      </mat-list>
-      <mat-divider></mat-divider>
-      <mat-list>
-        <div mat-subheader>DELETE</div>
-        <mat-list-item>
-          <div mat-line>Type: Query</div>
-          <div mat-line>Parameters:
-            <ul>
-              <li>dimension id: String indicating the dimension to be removed to the database</li>
-            </ul>
-          </div>
-          <div mat-line>Returns:
-            <ul>
-              <li>200: Dimension successfully removed from database</li>
-              <li>500: Dimension not successfully removed from database</li>
-            </ul>
-          </div>
-          <div mat-line>Example (Angular):
-            <pre><code> {{"
-              export class DeleteExample {
+            </div>
+          </mat-list-item>
+        </mat-list>
+        <mat-divider></mat-divider>
+        <mat-list>
+          <div mat-subheader>DELETE</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>dimension id: String indicating the dimension to be removed to the database</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Dimension successfully removed from database</li>
+                <li>500: Dimension not successfully removed from database</li>
+              </ul>
+            </div>
+            <div mat-line>Example (Angular):
+              <pre><code> {{"
+                export class DeleteExample {
                 constructor(private httpClient: HttpClient) {}
                 ngOnInit() {
-                   this.httpClient.delete('/keys/123456');
+                this.httpClient.delete('/keys/123456');
                 }
-              }
-            "}}</code>
+                }
+                "}}</code>
             </pre>
-          </div>
-        </mat-list-item>
-      </mat-list>
-    </div>
-  </mat-expansion-panel>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/health</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Make sure the backend is running
-        <div class="routes">GET</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Query</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
-          <pre><code>{{" {status: 'UP'} "}}</code></pre>
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/health</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Make sure the backend is running
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <pre><code>{{" {status: 'UP'} "}}</code></pre>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/stopServer</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Stops the backend
-        <div class="routes">GET</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Query</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
-
-          <ul>
-            <li>Success: <pre><code>{{" {success: 'True', message: 'Server is shutting down...'} "}}</code></pre></li>
-            <li>Failure: <pre><code>{{" {success: 'False', message: 'Server could not be shut down'} "}}</code></pre></li>
-          </ul>
-
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/keywordlist</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Get a list of all keywords
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Array with all keywords</li>
+                <li>500: Error on server</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
     <mat-expansion-panel>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        <h2>/</h2>
-      </mat-panel-title>
-      <mat-panel-description>
-        Hello World Route
-        <div class="routes">GET</div>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="panel-content">
-      <mat-list>
-      <div mat-subheader>GET</div>
-      <mat-list-item>
-        <div mat-line>Type: Query</div>
-        <div mat-line>Parameters:
-        </div>
-        <div mat-line>Returns:
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/models</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Manage keyword models
+          <div class="routes">GET, POST, DELETE</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Array with all keyword models</li>
+                <li>500: Error on server</li>
+              </ul>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>id: ID of the model</li>
+                <li>hierarchy: Order of the KWM</li>
+                <li>keywords: A list of keywords in the KWM</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Model successfully added</li>
+                <li>500: Error on server</li>
+              </ul>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+          <div mat-subheader>DELETE</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>id: ID of the model to delete</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Model successfully deleted</li>
+                <li>500: Error on server</li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/apply</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Apply tagging mechanism
+          <div class="routes">POST</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>POST</div>
+          <mat-list-item>
+            <div mat-line>Type: Body</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>documents: Array of documents to be tagged</li>
+                <li>options: An object containing the method and additional parameters to be used when tagging</li>
+                <li>job_id: A random string used to monitoring the job</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Tagging successfully applied </li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/wordcloud</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Get word cloud
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: PNG of the word cloud </li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/job</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Manage tagging jobs
+          <div class="routes">GET, DELETE</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>job_id: Id of the job to be fetched</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Status of the job including percentage complete </li>
+                <li>209: Job not found </li>
+              </ul>
+            </div>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <div mat-subheader>DELETE</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+              <ul>
+                <li>job_id: Id of the job to be deleted</li>
+              </ul>
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: Job deleted </li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/statistics</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Get information about documents and keywords
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+              <ul>
+                <li>200: An object containing information such as number of documents, number of keywords, etc. </li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/stopServer</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Stops the backend
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
 
-          <ul>
-            <li>Success: <pre><code>{{" 'Hello World' "}}</code></pre></li>
-          </ul>
+              <ul>
+                <li>Success:
+                  <pre><code>{{" {success: 'True', message: 'Server is shutting down...'} "}}</code></pre>
+                </li>
+                <li>Failure:
+                  <pre><code>{{" {success: 'False', message: 'Server could not be shut down'} "}}</code></pre>
+                </li>
+              </ul>
 
-        </div>
-      </mat-list-item>
-    </mat-list>
-    </div>
-  </mat-expansion-panel>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2>/</h2>
+        </mat-panel-title>
+        <mat-panel-description>
+          Hello World Route
+          <div class="routes">GET</div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <div class="panel-content">
+        <mat-list>
+          <div mat-subheader>GET</div>
+          <mat-list-item>
+            <div mat-line>Type: Query</div>
+            <div mat-line>Parameters:
+            </div>
+            <div mat-line>Returns:
+
+              <ul>
+                <li>Success:
+                  <pre><code>{{" 'Hello World' "}}</code></pre>
+                </li>
+              </ul>
+            </div>
+          </mat-list-item>
+        </mat-list>
+      </div>
+    </mat-expansion-panel>
   </mat-accordion>
 </div>
