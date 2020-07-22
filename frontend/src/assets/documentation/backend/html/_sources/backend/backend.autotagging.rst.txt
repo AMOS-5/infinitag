@@ -1,0 +1,24 @@
+=======================
+``backend.autotagging``
+=======================
+
+.. automodule:: backend.autotagging
+
+   .. contents::
+      :local:
+
+
+Submodules
+==========
+
+.. toctree::
+
+   backend.autotagging.data_preprocessing
+   backend.autotagging.hierarchichal_clustering
+   backend.autotagging.k_means_cluster
+   backend.autotagging.lda_model
+   backend.autotagging.main
+   backend.autotagging.tagcloud
+   backend.autotagging.tfidf_vector
+
+.. currentmodule:: backend.autotagging

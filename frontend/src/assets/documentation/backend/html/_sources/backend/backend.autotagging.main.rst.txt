@@ -1,0 +1,10 @@
+============================
+``backend.autotagging.main``
+============================
+
+.. automodule:: backend.autotagging.main
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.main

@@ -14,7 +14,7 @@ Classes
 =======
 
 - :py:class:`SolrKeywordModel`:
-  Undocumented.
+  Class representing the keyword model as it appears in solr
 
 - :py:class:`SolrKeywords`:
   Undocumented.

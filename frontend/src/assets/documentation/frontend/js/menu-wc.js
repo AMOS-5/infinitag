@@ -55,20 +55,28 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="modules/AppModule.html" data-type="entity-link">AppModule</a>
                                     <li class="chapter inner">
                                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' : 'data-target="#xs-components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' }>
+                                            'data-target="#components-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' : 'data-target="#xs-components-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' }>
                                             <span class="icon ion-md-cog"></span>
                                             <span>Components</span>
                                             <span class="icon ion-ios-arrow-down"></span>
                                         </div>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' :
-                                            'id="xs-components-links-module-AppModule-6e9327bf41956544ce25712d95bad296"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="components-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' :
+                                            'id="xs-components-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' }>
                                             <li class="link">
                                                 <a href="components/AppComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">AppComponent</a>
                                             </li>
                                             <li class="link">
+                                                <a href="components/AutomatedTaggingParametersDialog.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">AutomatedTaggingParametersDialog</a>
+                                            </li>
+                                            <li class="link">
                                                 <a href="components/DashboardComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">DashboardComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/DocumentOverviewComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">DocumentOverviewComponent</a>
                                             </li>
                                             <li class="link">
                                                 <a href="components/DocumentViewTableComponent.html"
@@ -79,27 +87,54 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">DocumentationComponent</a>
                                             </li>
                                             <li class="link">
+                                                <a href="components/FileExistsDialogComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">FileExistsDialogComponent</a>
+                                            </li>
+                                            <li class="link">
                                                 <a href="components/FileUploadComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">FileUploadComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/HomeComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">HomeComponent</a>
+                                                <a href="components/FileUploadDialogComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">FileUploadDialogComponent</a>
+                                            </li>
+                                            <li class="link">
+                                                <a href="components/KWMNameDialog.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">KWMNameDialog</a>
                                             </li>
                                             <li class="link">
                                                 <a href="components/KeywordsComponent.html"
                                                     data-type="entity-link" data-context="sub-entity" data-context-id="modules">KeywordsComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SearchComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SearchComponent</a>
+                                                <a href="components/TaggingComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">TaggingComponent</a>
                                             </li>
                                             <li class="link">
-                                                <a href="components/SettingsComponent.html"
-                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">SettingsComponent</a>
+                                                <a href="components/TaggingDialogComponent.html"
+                                                    data-type="entity-link" data-context="sub-entity" data-context-id="modules">TaggingDialogComponent</a>
                                             </li>
                                         </ul>
                                     </li>
+                                <li class="chapter inner">
+                                    <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ?
+                                        'data-target="#directives-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' : 'data-target="#xs-directives-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' }>
+                                        <span class="icon ion-md-code-working"></span>
+                                        <span>Directives</span>
+                                        <span class="icon ion-ios-arrow-down"></span>
+                                    </div>
+                                    <ul class="links collapse" ${ isNormalMode ? 'id="directives-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' :
+                                        'id="xs-directives-links-module-AppModule-6e41a48792226344dcfd7e6b6d162535"' }>
+                                        <li class="link">
+                                            <a href="directives/DragdropDirective.html"
+                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules">DragdropDirective</a>
+                                        </li>
+                                        <li class="link">
+                                            <a href="directives/NaturalNumbersOnlyDirective.html"
+                                                data-type="entity-link" data-context="sub-entity" data-context-id="modules">NaturalNumbersOnlyDirective</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </li>
                             <li class="link">
                                 <a href="modules/AppRoutingModule.html" data-type="entity-link">AppRoutingModule</a>
@@ -137,7 +172,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <a href="injectables/ApiService.html" data-type="entity-link">ApiService</a>
                                 </li>
                                 <li class="link">
-                                    <a href="injectables/UploadService.html" data-type="entity-link">UploadService</a>
+                                    <a href="injectables/FileService.html" data-type="entity-link">FileService</a>
+                                </li>
+                                <li class="link">
+                                    <a href="injectables/Utils.html" data-type="entity-link">Utils</a>
                                 </li>
                             </ul>
                         </li>
@@ -150,10 +188,40 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
+                                <a href="interfaces/DialogData.html" data-type="entity-link">DialogData</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/DialogData-1.html" data-type="entity-link">DialogData</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/IDocument.html" data-type="entity-link">IDocument</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/IFile.html" data-type="entity-link">IFile</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IKeyword.html" data-type="entity-link">IKeyword</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IKeywordListEntry.html" data-type="entity-link">IKeywordListEntry</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IKeyWordModel.html" data-type="entity-link">IKeyWordModel</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/IResponse.html" data-type="entity-link">IResponse</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/ITaggingMethod.html" data-type="entity-link">ITaggingMethod</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/ITaggingRequest.html" data-type="entity-link">ITaggingRequest</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/TaggingDialogData.html" data-type="entity-link">TaggingDialogData</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/UploadDialogData.html" data-type="entity-link">UploadDialogData</a>
                             </li>
                         </ul>
                     </li>
@@ -165,6 +233,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             <span class="icon ion-ios-arrow-down"></span>
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="miscellaneous-links"' : 'id="xs-miscellaneous-links"' }>
+                            <li class="link">
+                                <a href="miscellaneous/functions.html" data-type="entity-link">Functions</a>
+                            </li>
                             <li class="link">
                                 <a href="miscellaneous/variables.html" data-type="entity-link">Variables</a>
                             </li>

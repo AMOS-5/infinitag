@@ -1,0 +1,10 @@
+================================
+``backend.autotagging.tagcloud``
+================================
+
+.. automodule:: backend.autotagging.tagcloud
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.tagcloud

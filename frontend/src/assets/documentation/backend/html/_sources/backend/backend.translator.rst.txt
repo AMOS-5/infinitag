@@ -1,0 +1,25 @@
+======================
+``backend.translator``
+======================
+
+.. automodule:: backend.translator
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.translator
+
+
+Classes
+=======
+
+- :py:class:`Translator`:
+  Undocumented.
+
+
+.. autoclass:: Translator
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: Translator
+      :parts: 1

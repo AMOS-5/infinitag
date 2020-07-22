@@ -82,6 +82,10 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#addKeywordModel">addKeywordModel</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#addUncategorizedDimension">addUncategorizedDimension</a>
                             </li>
                             <li>
@@ -90,11 +94,47 @@
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
+                                <a href="#applyTaggingMethod">applyTaggingMethod</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#cancelJob">cancelJob</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getDocuments">getDocuments</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getKeywordListEntries">getKeywordListEntries</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getKeywordModels">getKeywordModels</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getStats">getStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getTaggingJobStatus">getTaggingJobStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
                                 <a href="#getUncategorizedDimensions">getUncategorizedDimensions</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#getUncategorizedKeywords">getUncategorizedKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getWordcloud">getWordcloud</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#removeKeywordModel">removeKeywordModel</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
@@ -127,7 +167,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/app/services/api.service.ts:40</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/services/api.service.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -174,6 +214,78 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="addKeywordModel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            addKeywordModel
+                        </b>
+                        <a href="#addKeywordModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addKeywordModel(kwm: <a href="../interfaces/IKeyWordModel.html">IKeyWordModel</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/app/services/api.service.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>kwm</td>
+                                    <td>
+                                                <code><a href="../interfaces/IKeyWordModel.html" target="_self" >IKeyWordModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="addUncategorizedDimension"></a>
                     <span class="name">
                         <b>
@@ -194,8 +306,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/services/api.service.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/app/services/api.service.ts:83</a></div>
                 </td>
             </tr>
 
@@ -262,8 +374,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/app/services/api.service.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="92"
+                            class="link-to-prism">src/app/services/api.service.ts:92</a></div>
                 </td>
             </tr>
 
@@ -310,6 +422,522 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="applyTaggingMethod"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            applyTaggingMethod
+                        </b>
+                        <a href="#applyTaggingMethod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyTaggingMethod(request: <a href="../interfaces/ITaggingRequest.html">ITaggingRequest</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="147"
+                            class="link-to-prism">src/app/services/api.service.ts:147</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>request</td>
+                                    <td>
+                                                <code><a href="../interfaces/ITaggingRequest.html" target="_self" >ITaggingRequest</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelJob"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            cancelJob
+                        </b>
+                        <a href="#cancelJob"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>cancelJob(jobId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="160"
+                            class="link-to-prism">src/app/services/api.service.ts:160</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>jobId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDocuments"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getDocuments
+                        </b>
+                        <a href="#getDocuments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDocuments(page: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, num_per_page: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, sort_field: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, sort_order: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, search_term?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, keywords_only?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, start_date?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, end_date?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/app/services/api.service.ts:59</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>page</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>0</code>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>num_per_page</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>10</code>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>sort_field</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>&#x27;id&#x27;</code>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>sort_order</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>&#x27;asc&#x27;</code>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>search_term</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>keywords_only</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>start_date</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>end_date</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getKeywordListEntries"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getKeywordListEntries
+                        </b>
+                        <a href="#getKeywordListEntries"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getKeywordListEntries()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="54"
+                            class="link-to-prism">src/app/services/api.service.ts:54</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getKeywordModels"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getKeywordModels
+                        </b>
+                        <a href="#getKeywordModels"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getKeywordModels()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">src/app/services/api.service.ts:119</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStats"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getStats
+                        </b>
+                        <a href="#getStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStats()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/app/services/api.service.ts:164</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTaggingJobStatus"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getTaggingJobStatus
+                        </b>
+                        <a href="#getTaggingJobStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTaggingJobStatus(jobId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="156"
+                            class="link-to-prism">src/app/services/api.service.ts:156</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>jobId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getUncategorizedDimensions"></a>
                     <span class="name">
                         <b>
@@ -330,8 +958,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/app/services/api.service.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/app/services/api.service.ts:46</a></div>
                 </td>
             </tr>
 
@@ -371,8 +999,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="48"
-                            class="link-to-prism">src/app/services/api.service.ts:48</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="50"
+                            class="link-to-prism">src/app/services/api.service.ts:50</a></div>
                 </td>
             </tr>
 
@@ -383,6 +1011,119 @@
                     <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
 
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getWordcloud"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            getWordcloud
+                        </b>
+                        <a href="#getWordcloud"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getWordcloud()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/services/api.service.ts:168</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="removeKeywordModel"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            removeKeywordModel
+                        </b>
+                        <a href="#removeKeywordModel"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>removeKeywordModel(kwm: <a href="../interfaces/IKeyWordModel.html">IKeyWordModel</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="137"
+                            class="link-to-prism">src/app/services/api.service.ts:137</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>kwm</td>
+                                    <td>
+                                                <code><a href="../interfaces/IKeyWordModel.html" target="_self" >IKeyWordModel</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Observable&lt;object&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -412,8 +1153,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="70"
-                            class="link-to-prism">src/app/services/api.service.ts:70</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/services/api.service.ts:101</a></div>
                 </td>
             </tr>
 
@@ -480,8 +1221,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="79"
-                            class="link-to-prism">src/app/services/api.service.ts:79</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="110"
+                            class="link-to-prism">src/app/services/api.service.ts:110</a></div>
                 </td>
             </tr>
 
@@ -534,12 +1275,14 @@
 import { HttpClient, HttpHeaders } from &#x27;@angular/common/http&#x27;;
 import { environment } from &#x27;./../../environments/environment&#x27;;
 import { Observable } from &#x27;rxjs&#x27;;
-
+import { IKeyWordModel } from &#x27;./../models/IKeyWordModel.model&#x27;;
+import {ITaggingRequest} from &#x27;../models/ITaggingRequest.model&#x27;;
 /**
  *
  * @class ApiService
  *
- * Service handling communication regarding the keywords with the backend
+ * Service handling communication regarding the keywords, the tagging jobs and
+ * the dashboard data with the backend.
  *
  */
 @Injectable({
@@ -557,13 +1300,42 @@ export class ApiService {
     return this.http.get(&#x60;${environment.serverUrl}/keys&#x60;);
   }
 
+  public getKeywordListEntries() {
+    return this.http.get(&#x60;${environment.serverUrl}/keywordlist&#x60;);
+  }
+
+
+  public getDocuments(page: any&#x3D; 0, num_per_page: any&#x3D; 10, sort_field&#x3D; &#x27;id&#x27;, sort_order&#x3D; &#x27;asc&#x27;, search_term?: string, keywords_only?: string, start_date?: string, end_date?:string) {
+    let params &#x3D; {
+      page,
+      num_per_page,
+      sort_field,
+      sort_order
+    };
+
+    (search_term !&#x3D;&#x3D; undefined) ? params[&#x27;search_term&#x27;] &#x3D; search_term : null;
+    (keywords_only!&#x3D;&#x3D; undefined) ? params[&#x27;keywords_only&#x27;] &#x3D; keywords_only : null;
+    (start_date !&#x3D;&#x3D; undefined) ? params[&#x27;start_date&#x27;] &#x3D; start_date : null;
+    (end_date !&#x3D;&#x3D; undefined) ? params[&#x27;end_date&#x27;] &#x3D; end_date : null;
+    (keywords_only !&#x3D;&#x3D; undefined) ? params[&#x27;keywords_only&#x27;] &#x3D; keywords_only : null;
+    const documentsUrl &#x3D; &#x60;${environment.serverUrl}/documents&#x60;;
+    page &#x3D; page.toString();
+    num_per_page &#x3D; num_per_page.toString();
+    console.log(params)
+    return this.http.get(
+      documentsUrl,
+      {
+        params
+      });
+  }
+
   public addUncategorizedDimension(dim): Observable&lt;object&gt; {
     const httpOptions &#x3D; {
       headers: new HttpHeaders({
         &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
       })
     };
-    return this.http.post(&#x60;${environment.serverUrl}/dims&#x60;, { dim: dim }, httpOptions);
+    return this.http.post(&#x60;${environment.serverUrl}/dims&#x60;, { dim }, httpOptions);
   }
 
   public addUncategorizedKeyword(key): Observable&lt;object&gt; {
@@ -572,7 +1344,7 @@ export class ApiService {
         &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
       })
     };
-    return this.http.post(&#x60;${environment.serverUrl}/keys&#x60;, { key: key }, httpOptions);
+    return this.http.post(&#x60;${environment.serverUrl}/keys&#x60;, { key }, httpOptions);
   }
 
   public removeUncategorizedDimension(dim): Observable&lt;object&gt; {
@@ -591,6 +1363,62 @@ export class ApiService {
       })
     };
     return this.http.delete(&#x60;${environment.serverUrl}/keys/${key}&#x60;, httpOptions);
+  }
+
+  public getKeywordModels() {
+    return this.http.get(&#x60;${environment.serverUrl}/models&#x60;);
+  }
+
+  public addKeywordModel(kwm: IKeyWordModel): Observable&lt;object&gt; {
+    const dict &#x3D; {
+      id : kwm.id,
+      hierarchy : kwm.hierarchy,
+      keywords : kwm.keywords,
+    };
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      })
+    };
+    return this.http.post(&#x60;${environment.serverUrl}/models&#x60;, JSON.stringify(dict), httpOptions);
+  }
+
+  public removeKeywordModel(kwm: IKeyWordModel): Observable&lt;object&gt; {
+
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      })
+    };
+    return this.http.delete(&#x60;${environment.serverUrl}/models/${kwm.id}&#x60;, httpOptions);
+  }
+
+  public applyTaggingMethod(request: ITaggingRequest) {
+    const httpOptions &#x3D; {
+      headers: new HttpHeaders({
+        &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+      })
+    };
+    return this.http.post(&#x60;${environment.serverUrl}/apply&#x60;, JSON.stringify(request), httpOptions);
+  }
+
+  public getTaggingJobStatus(jobId: string) {
+    return this.http.get(&#x60;${environment.serverUrl}/job/${jobId}&#x60;);
+  }
+
+  public cancelJob(jobId: string) {
+    return this.http.delete(&#x60;${environment.serverUrl}/job/${jobId}&#x60;);
+  }
+
+  public getStats() {
+    return this.http.get(&#x60;${environment.serverUrl}/statistics&#x60;);
+  }
+
+  public getWordcloud() {
+    const headers &#x3D; new HttpHeaders()
+      .set(&quot;Cache-Control&quot;, &quot;no-store&quot;);
+
+    return this.http.get(&#x60;${environment.serverUrl}/wordcloud&#x60;, {headers, responseType: &#x27;blob&#x27; });
   }
 
 

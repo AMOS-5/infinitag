@@ -15,5 +15,6 @@ Submodules
 
    backend.service.middleware
    backend.service.solr
+   backend.service.tagging
 
 .. currentmodule:: backend.service

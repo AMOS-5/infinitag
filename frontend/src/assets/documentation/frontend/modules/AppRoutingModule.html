@@ -96,22 +96,18 @@
 
 import { NgModule } from &#x27;@angular/core&#x27;;
 import { Routes, RouterModule } from &#x27;@angular/router&#x27;;
-import { HomeComponent } from &#x27;./home/home.component&#x27;;
-import { SearchComponent } from &#x27;./search/search.component&#x27;;
-import { SettingsComponent } from &#x27;./settings/settings.component&#x27;;
 import { KeywordsComponent } from &#x27;./keywords/keywords.component&#x27;;
 import { DashboardComponent } from &#x27;./dashboard/dashboard.component&#x27;;
-import {DocumentationComponent} from &#x27;./documentation/documentation.component&#x27;;
+import { DocumentationComponent } from &#x27;./documentation/documentation.component&#x27;;
+import { DocumentOverviewComponent } from &#x27;./document-overview/document-overview.component&#x27;;
 
 
 const routes: Routes &#x3D; [
-  { path: &#x27;&#x27;, component: HomeComponent },
-  { path: &#x27;search&#x27;, component: SearchComponent },
-  { path: &#x27;documents&#x27;, component: SettingsComponent },
+  { path: &#x27;&#x27;, component: DashboardComponent },
+  { path: &#x27;documents&#x27;, component: DocumentOverviewComponent },
   { path: &#x27;keywords&#x27;, component: KeywordsComponent },
-  { path: &#x27;dashboard&#x27;, component: DashboardComponent },
   { path: &#x27;documentation&#x27;, component: DocumentationComponent },
-  { path: &#x27;**&#x27;, component: HomeComponent }
+  { path: &#x27;**&#x27;, component: DashboardComponent }
 ];
 
 @NgModule({

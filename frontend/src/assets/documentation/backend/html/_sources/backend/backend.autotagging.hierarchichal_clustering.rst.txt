@@ -1,0 +1,10 @@
+================================================
+``backend.autotagging.hierarchichal_clustering``
+================================================
+
+.. automodule:: backend.autotagging.hierarchichal_clustering
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.hierarchichal_clustering

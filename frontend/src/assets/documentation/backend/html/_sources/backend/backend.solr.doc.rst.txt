@@ -14,7 +14,13 @@ Classes
 =======
 
 - :py:class:`SolrDoc`:
-  SolrDoc
+  Class representing a document in Solr
+
+- :py:class:`SolrDocKeyword`:
+  Class representing a keyword applied to a document
+
+- :py:class:`SolrDocKeywordTypes`:
+  Enum representing the applied keyword types
 
 
 .. autoclass:: SolrDoc
@@ -22,4 +28,18 @@ Classes
 
    .. rubric:: Inheritance
    .. inheritance-diagram:: SolrDoc
+      :parts: 1
+
+.. autoclass:: SolrDocKeyword
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrDocKeyword
+      :parts: 1
+
+.. autoclass:: SolrDocKeywordTypes
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrDocKeywordTypes
       :parts: 1

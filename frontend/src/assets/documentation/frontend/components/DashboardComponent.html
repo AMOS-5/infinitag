@@ -126,6 +126,59 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#barOptions">barOptions</a>
+                            </li>
+                            <li>
+                                <a href="#changeBar">changeBar</a>
+                            </li>
+                            <li>
+                                <a href="#getPreviousDays">getPreviousDays</a>
+                            </li>
+                            <li>
+                                <a href="#getPreviousMondays">getPreviousMondays</a>
+                            </li>
+                            <li>
+                                <a href="#getPreviousMonths">getPreviousMonths</a>
+                            </li>
+                            <li>
+                                <a href="#getPreviousYears">getPreviousYears</a>
+                            </li>
+                            <li>
+                                <a href="#isLoading">isLoading</a>
+                            </li>
+                            <li>
+                                <a href="#mergeOptions">mergeOptions</a>
+                            </li>
+                            <li>
+                                <a href="#options">options</a>
+                            </li>
+                            <li>
+                                <a href="#pieOptions">pieOptions</a>
+                            </li>
+                            <li>
+                                <a href="#selected">selected</a>
+                            </li>
+                            <li>
+                                <a href="#stats">stats</a>
+                            </li>
+                            <li>
+                                <a href="#theme">theme</a>
+                            </li>
+                            <li>
+                                <a href="#wordcloud_img">wordcloud_img</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -156,15 +209,57 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor()</code>
+<code>constructor(api: <a href="../injectables/ApiService.html">ApiService</a>, sanitizer: <a href="https://angular.io/api/platform-browser/DomSanitizer" target="_blank">DomSanitizer</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/app/dashboard/dashboard.component.ts:39</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/dashboard/dashboard.component.ts:57</a></div>
                             </td>
                         </tr>
 
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>sanitizer</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/platform-browser/DomSanitizer" target="_blank" >DomSanitizer</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
 </section>
@@ -200,8 +295,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/app/dashboard/dashboard.component.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/app/dashboard/dashboard.component.ts:61</a></div>
                 </td>
             </tr>
 
@@ -218,13 +313,417 @@
         </tbody>
     </table>
 </section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="barOptions"></a>
+                        <span class="name">
+                            <b>
+                            barOptions</b>
+                            <a href="#barOptions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/dashboard/dashboard.component.ts:47</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="changeBar"></a>
+                        <span class="name">
+                            <b>
+                            changeBar</b>
+                            <a href="#changeBar"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/app/dashboard/dashboard.component.ts:144</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getPreviousDays"></a>
+                        <span class="name">
+                            <b>
+                            getPreviousDays</b>
+                            <a href="#getPreviousDays"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="260" class="link-to-prism">src/app/dashboard/dashboard.component.ts:260</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getPreviousMondays"></a>
+                        <span class="name">
+                            <b>
+                            getPreviousMondays</b>
+                            <a href="#getPreviousMondays"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="271" class="link-to-prism">src/app/dashboard/dashboard.component.ts:271</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getPreviousMonths"></a>
+                        <span class="name">
+                            <b>
+                            getPreviousMonths</b>
+                            <a href="#getPreviousMonths"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="285" class="link-to-prism">src/app/dashboard/dashboard.component.ts:285</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getPreviousYears"></a>
+                        <span class="name">
+                            <b>
+                            getPreviousYears</b>
+                            <a href="#getPreviousYears"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="299" class="link-to-prism">src/app/dashboard/dashboard.component.ts:299</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isLoading"></a>
+                        <span class="name">
+                            <b>
+                            isLoading</b>
+                            <a href="#isLoading"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/dashboard/dashboard.component.ts:43</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mergeOptions"></a>
+                        <span class="name">
+                            <b>
+                            mergeOptions</b>
+                            <a href="#mergeOptions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="44" class="link-to-prism">src/app/dashboard/dashboard.component.ts:44</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="options"></a>
+                        <span class="name">
+                            <b>
+                            options</b>
+                            <a href="#options"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[
+    { value: &#x27;days&#x27;, viewValue: &#x27;Days (last 7 days)&#x27; },
+    { value: &#x27;weeks&#x27;, viewValue: &#x27;Weeks (last 4 weeks)&#x27; },
+    { value: &#x27;months&#x27;, viewValue: &#x27;Months (last 12 months)&#x27; },
+    { value: &#x27;years&#x27;, viewValue: &#x27;Years (since start)&#x27; }
+  ]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/dashboard/dashboard.component.ts:50</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="pieOptions"></a>
+                        <span class="name">
+                            <b>
+                            pieOptions</b>
+                            <a href="#pieOptions"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/dashboard/dashboard.component.ts:46</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selected"></a>
+                        <span class="name">
+                            <b>
+                            selected</b>
+                            <a href="#selected"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;days&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/dashboard/dashboard.component.ts:42</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="stats"></a>
+                        <span class="name">
+                            <b>
+                            stats</b>
+                            <a href="#stats"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/app/dashboard/dashboard.component.ts:45</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="theme"></a>
+                        <span class="name">
+                            <b>
+                            theme</b>
+                            <a href="#theme"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/app/dashboard/dashboard.component.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="wordcloud_img"></a>
+                        <span class="name">
+                            <b>
+                            wordcloud_img</b>
+                            <a href="#wordcloud_img"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/dashboard/dashboard.component.ts:57</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
 
 </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-
+import { DomSanitizer } from &#x27;@angular/platform-browser&#x27;;
+import { ApiService } from &#x27;../services/api.service&#x27;;
 /**
  *
  * @class DashboardComponent
@@ -237,40 +736,344 @@
   templateUrl: &#x27;./dashboard.component.html&#x27;,
   styleUrls: [&#x27;./dashboard.component.scss&#x27;]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit{
+  theme: string;
+  selected: string &#x3D; &#x27;days&#x27;;
+  isLoading: boolean &#x3D; true;
+  mergeOptions: object &#x3D; {};
+  stats: any &#x3D; {};
+  pieOptions: object;
+  barOptions: object;
 
-  constructor() { }
 
-  ngOnInit(): void {
+  options &#x3D; [
+    { value: &#x27;days&#x27;, viewValue: &#x27;Days (last 7 days)&#x27; },
+    { value: &#x27;weeks&#x27;, viewValue: &#x27;Weeks (last 4 weeks)&#x27; },
+    { value: &#x27;months&#x27;, viewValue: &#x27;Months (last 12 months)&#x27; },
+    { value: &#x27;years&#x27;, viewValue: &#x27;Years (since start)&#x27; }
+  ];
+
+  wordcloud_img;
+
+  constructor(private api: ApiService, private sanitizer: DomSanitizer) {}
+
+  ngOnInit() {
+    this.api.getWordcloud().subscribe(blob &#x3D;&gt; {
+
+
+      var reader &#x3D; new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onload &#x3D; (_event) &#x3D;&gt; {
+        this.wordcloud_img &#x3D; this.sanitizer.bypassSecurityTrustUrl(reader.result as string);
+      }
+
+    });
+    this.api.getStats()
+      .subscribe((value: any) &#x3D;&gt; {
+        this.stats &#x3D; value;
+        this.pieOptions &#x3D; {
+          title: {
+            text: &#x27;Tagged/Untagged Documents&#x27;,
+            x: &#x27;center&#x27;
+          },
+          tooltip: {
+            trigger: &#x27;item&#x27;,
+            formatter: &#x27;{a} &lt;br/&gt;{b} : {c} ({d}%)&#x27;
+          },
+          legend: {
+            x: &#x27;center&#x27;,
+            y: &#x27;bottom&#x27;,
+            data: [&#x27;Tagged Documents&#x27;, &#x27;Untagged Documents&#x27;]
+          },
+          calculable: true,
+          series: [
+            {
+              name: &#x27;Area&#x27;,
+              type: &#x27;pie&#x27;,
+              radius: [70, 110],
+              data: [
+                { value: this.stats.n_tagged_docs, name: &#x27;Tagged Documents&#x27; },
+                { value: this.stats.n_untagged_docs, name: &#x27;Untagged Documents&#x27; }
+              ],
+              color: [&#x27;#3f51b5&#x27;, &#x27;#e83e8c&#x27;]
+            }
+          ]
+        };
+        this.barOptions &#x3D; {
+          title: {
+            text: &#x27;Document upload/Day&#x27;,
+            x: &#x27;center&#x27;
+          },
+          tooltip: {
+            trigger: &#x27;axis&#x27;,
+            axisPointer: {
+              type: &#x27;shadow&#x27;
+            }
+          },
+          grid: {
+            left: &#x27;3%&#x27;,
+            right: &#x27;4%&#x27;,
+            bottom: &#x27;3%&#x27;,
+            containLabel: true
+          },
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: this.getPreviousDays(),
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          yAxis: [{
+            type: &#x27;value&#x27;
+          }],
+          series: [{
+            name: &#x27;Documents Added&#x27;,
+            type: &#x27;bar&#x27;,
+            barWidth: &#x27;50%&#x27;,
+            color: [&#x27;#3f51b5&#x27;, &#x27;#e83e8c&#x27;],
+            data: this.stats.uploaded_last_7_days
+          }]
+        };
+        this.isLoading &#x3D; false;
+      });
   }
 
+  changeBar &#x3D; (event) &#x3D;&gt; {
+    switch (event.value) {
+      case &#x27;days&#x27;:
+        this.mergeOptions &#x3D; {
+          title: {
+            text: &#x27;Document upload/Day&#x27;,
+            x: &#x27;center&#x27;
+          },
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: this.getPreviousDays(),
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          series: [{
+            name: &#x27;Documents Added&#x27;,
+            type: &#x27;bar&#x27;,
+            barWidth: &#x27;50%&#x27;,
+            data: this.stats.uploaded_last_7_days
+          }]
+        };
+        break;
+      case &#x27;weeks&#x27;:
+        var mondays &#x3D; this.getPreviousMondays();
+        this.mergeOptions &#x3D; {
+          title: {
+            text: &#x27;Document upload/Week&#x27;,
+            x: &#x27;center&#x27;
+          },
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: mondays,
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          series: [{
+            name: &#x27;Documents Added&#x27;,
+            type: &#x27;bar&#x27;,
+            barWidth: &#x27;50%&#x27;,
+            data: this.stats.uploaded_last_4_weeks
+          }]
+        };
+        break;
+      case &#x27;months&#x27;:
+        var months &#x3D; this.getPreviousMonths();
+
+        this.mergeOptions &#x3D; {
+          title: {
+            text: &#x27;Document upload/Month&#x27;,
+            x: &#x27;center&#x27;
+          },
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: months,
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          series: [{
+            name: &#x27;Documents Added&#x27;,
+            type: &#x27;bar&#x27;,
+            barWidth: &#x27;50%&#x27;,
+            data: this.stats.uploaded_last_12_months
+          }]
+        };
+        break;
+      case &#x27;years&#x27;:
+        var years &#x3D; this.getPreviousYears()
+        this.mergeOptions &#x3D; {
+          title: {
+            text: &#x27;Document upload/Year&#x27;,
+            x: &#x27;center&#x27;
+          },
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: years,
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+          series: [{
+            name: &#x27;Documents Added&#x27;,
+            type: &#x27;bar&#x27;,
+            barWidth: &#x27;50%&#x27;,
+            data: this.stats.uploaded_all_years
+          }]
+        };
+        break;
+      default:
+        this.mergeOptions &#x3D; {
+          xAxis: [
+            {
+              type: &#x27;category&#x27;,
+              data: [&#x27;Mon&#x27;, &#x27;Tue&#x27;, &#x27;Wed&#x27;, &#x27;Thu&#x27;, &#x27;Fri&#x27;, &#x27;Sat&#x27;, &#x27;Sun&#x27;],
+              axisTick: {
+                alignWithLabel: true
+              }
+            }
+          ],
+        };
+    }
+
+  }
+
+
+
+  getPreviousDays &#x3D; () &#x3D;&gt; {
+    var days &#x3D; [];
+    var daysName &#x3D; new Array(&quot;Sun&quot;, &quot;Mon&quot;, &quot;Tue&quot;, &quot;Wed&quot;, &quot;Thu&quot;, &quot;Fri&quot;, &quot;Sat&quot;);
+    for (var i &#x3D; 0; i &lt; 7; i++) {
+      var d &#x3D; new Date();
+      d.setDate(d.getDate() - i);
+      days.push(daysName[d.getDay()])
+    }
+    return days.reverse();
+  }
+
+  getPreviousMondays &#x3D; () &#x3D;&gt; {
+    var prevMondays &#x3D; [];
+    var d &#x3D; new Date();
+
+    let dt &#x3D; new Date(d.setDate(d.getDate() - (d.getDay() + 6) % 7));
+    prevMondays.push(dt.getDate() + &quot;/&quot; + (dt.getMonth() + 1));
+
+    for (let i &#x3D; 0; i &lt; 3; i++) {
+      let dt &#x3D; new Date(d.setDate(d.getDate() - ((d.getDay() + 6) % 7) - 7));
+      prevMondays.push(dt.getDate() + &quot;/&quot; + (dt.getMonth() + 1));
+    }
+    return prevMondays.reverse();
+  }
+
+  getPreviousMonths &#x3D; () &#x3D;&gt; {
+    var monthsWeWant &#x3D; [];
+    var monthName &#x3D; new Array(&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;, &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;);
+
+    var d &#x3D; new Date();
+    d.setDate(1);
+
+    for (let i &#x3D; 0; i &lt;&#x3D; 11; i++) {
+      monthsWeWant.push(monthName[d.getMonth()]);
+      d.setMonth(d.getMonth() - 1);
+    }
+    return monthsWeWant.reverse();
+  }
+
+  getPreviousYears &#x3D; () &#x3D;&gt; {
+    var years &#x3D; [];
+    var d &#x3D; new Date();
+    let index &#x3D; 0;
+    console.log(d.getFullYear())
+    for (let i &#x3D; 2020; i &lt;&#x3D; d.getFullYear(); i++) {
+      years.push(2020 + index);
+      index++;
+    }
+    return years;
+  }
 }
 </code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;container&quot;&gt;
-    &lt;h1&gt;Dashboard InfiniTag&lt;/h1&gt;
-    &lt;h3&gt; Welcome to InfiniTag - The automated machine learning software solution of Infineon&lt;/h3&gt;
-    &lt;mat-grid-list cols&#x3D;&quot;5&quot; rowHeight&#x3D;&quot;1:1.5&quot;&gt;
-        &lt;mat-grid-tile [colspan]&#x3D;&quot;2&quot;&gt;1&lt;/mat-grid-tile&gt;
-        &lt;mat-grid-tile [colspan]&#x3D;&quot;2&quot;&gt;2&lt;/mat-grid-tile&gt;
-        &lt;mat-grid-tile [colspan]&#x3D;&quot;1&quot;&gt;3&lt;/mat-grid-tile&gt;
-    &lt;/mat-grid-list&gt;
-    &lt;button mat-raised-button class&#x3D;&quot;edit&quot;&gt;
-        Edit
-        &lt;mat-icon&gt;edit&lt;/mat-icon&gt;
-    &lt;/button&gt;
-    &lt;div class&#x3D;&quot;footer&quot;&gt;
-
-        &lt;img class&#x3D;&quot;footer__logo&quot; src&#x3D;&quot;../../assets/img/InfiniTag2.png&quot; alt&#x3D;&quot;InfiniTag&quot; class&#x3D;&quot;footer&quot; /&gt;
-
-    &lt;/div&gt;
-
+        <pre class="line-numbers"><code class="language-html">&lt;div *ngIf&#x3D;&quot;isLoading; else dashboard&quot;&gt;
+    &lt;div class&#x3D;&quot;spinner-wrapper&quot;&gt;
+        &lt;mat-spinner [diameter]&#x3D;&quot;40&quot;&gt;&lt;/mat-spinner&gt;
+      &lt;/div&gt;
 &lt;/div&gt;
 
+&lt;ng-template #dashboard&gt;
+    &lt;div class&#x3D;&quot;container&quot;&gt;
+        &lt;h1&gt;Dashboard InfiniTag&lt;/h1&gt;
+        &lt;h3&gt;{{&#x27;HOME.MOTTO&#x27; | translate}}&lt;/h3&gt;
+        &lt;mat-grid-list cols&#x3D;&quot;5&quot; rowHeight&#x3D;&quot;1:2.2&quot; [gutterSize]&#x3D;&quot;&#x27;10px&#x27;&quot;&gt;
+            &lt;mat-grid-tile [colspan]&#x3D;&quot;2&quot;&gt;
+                &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;
+                    &lt;div *ngIf&#x3D;&#x27;selected&#x27; echarts [options]&#x3D;&quot;pieOptions&quot; [autoResize]&#x3D;&quot;true&quot; class&#x3D;&quot;demo-chart&quot;&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;!-- &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;&lt;/div&gt; --&gt;
 
+            &lt;/mat-grid-tile&gt;
 
+            &lt;mat-grid-tile [colspan]&#x3D;&quot;2&quot; &gt;
+                &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;
+                    &lt;div class&#x3D;&quot;parent&quot;&gt;
+                        &lt;mat-form-field &gt;
+                            &lt;mat-label&gt;Filter By&lt;/mat-label&gt;
+                            &lt;mat-select (selectionChange)&#x3D;&quot;changeBar($event)&quot; [(value)]&#x3D;&quot;selected&quot;&gt;
+                                &lt;mat-option *ngFor&#x3D;&quot;let option of options&quot; [value]&#x3D;&quot;option.value&quot;&gt;
+                                    {{option.viewValue}}
+                                &lt;/mat-option&gt;
+                            &lt;/mat-select&gt;
+                        &lt;/mat-form-field&gt;
+                    &lt;/div&gt;
+                    &lt;div class&#x3D;&quot;bar-chart&quot;&gt;
+                        &lt;div echarts [options]&#x3D;&quot;barOptions&quot; [autoResize]&#x3D;&quot;true&quot; [merge]&#x3D;&quot;mergeOptions&quot;
+                            class&#x3D;&quot;demo-chart&quot;&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/mat-grid-tile&gt;
+            &lt;mat-grid-tile [colspan]&#x3D;&quot;1&quot;&gt;
+                &lt;div fxLayout&#x3D;&quot;column&quot; fxLayoutAlign&#x3D;&quot;space-evenly center&quot;&gt;
+                    &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;
+                        &lt;div class&#x3D;&quot;circle&quot;&gt;#Keywords&lt;br&gt;{{this.stats.n_keywords}}&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;
+                        &lt;div class&#x3D;&quot;circle&quot;&gt;#Keyword Models&lt;br&gt;{{this.stats.n_keyword_models}}&lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;div class&#x3D;&quot;content-inside-grid&quot;&gt;
+                        &lt;div class&#x3D;&quot;circle&quot;&gt;#Documents&lt;br&gt;{{this.stats.n_total_docs}}&lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+            &lt;/mat-grid-tile&gt;
+             &lt;mat-grid-tile [colspan]&#x3D;&quot;5&quot; &gt;
+                &lt;div&gt;
+                    &lt;img [src]&#x3D;&quot;wordcloud_img&quot; alt&#x3D;&quot;InfiniTag&quot; class&#x3D;&quot;tagcloud&quot; layout-fill/&gt;
+                &lt;/div&gt;
+            &lt;/mat-grid-tile&gt;
+        &lt;/mat-grid-list&gt;
+        &lt;div class&#x3D;&quot;footer&quot;&gt;
+            &lt;img class&#x3D;&quot;footer__logo&quot; src&#x3D;&quot;../../assets/img/InfiniTag2.png&quot; alt&#x3D;&quot;InfiniTag&quot; class&#x3D;&quot;footer&quot; /&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/ng-template&gt;
 </code></pre>
     </div>
 
@@ -284,6 +1087,7 @@ export class DashboardComponent implements OnInit {
 mat-grid-tile{
     border-style: solid;
     border-width: thin;
+    margin-bottom: 24px !important;
 }
 
 .edit {
@@ -296,6 +1100,46 @@ mat-grid-tile{
     bottom: 20px;
     right: 20px;
 }
+
+.tagcloud {
+  width: 1000px;
+  height: 470px;
+}
+
+.content-inside-grid {
+    .bar-chart{
+        margin-top: -30px;
+    }
+    width:100%;
+}
+
+.circle {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  text-align: center;
+  display: flex;
+  background-color: #3f51b5;
+  color: white;
+  }
+
+  .parent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 20px;
+  }
+
+  .spinner-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+  }
 
 
 
@@ -328,9 +1172,9 @@ mat-grid-tile{
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><div class="container">    <h1>Dashboard InfiniTag</h1>    <h3> Welcome to InfiniTag - The automated machine learning software solution of Infineon</h3>    <mat-grid-list cols="5" rowHeight="1:1.5">        <mat-grid-tile [colspan]="2">1</mat-grid-tile>        <mat-grid-tile [colspan]="2">2</mat-grid-tile>        <mat-grid-tile [colspan]="1">3</mat-grid-tile>    </mat-grid-list>    <button mat-raised-button class="edit">        Edit        <mat-icon>edit</mat-icon>    </button>    <div class="footer">        <img class="footer__logo" src="../../assets/img/InfiniTag2.png" alt="InfiniTag" class="footer" />    </div></div></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
-    var DIRECTIVES = [];
+        var COMPONENT_TEMPLATE = '<div><div *ngIf="isLoading; else dashboard">    <div class="spinner-wrapper">        <mat-spinner [diameter]="40"></mat-spinner>      </div></div><ng-template #dashboard>    <div class="container">        <h1>Dashboard InfiniTag</h1>        <h3>{{\'HOME.MOTTO\' | translate}}</h3>        <mat-grid-list cols="5" rowHeight="1:2.2" [gutterSize]="\'10px\'">            <mat-grid-tile [colspan]="2">                <div class="content-inside-grid">                    <div *ngIf=\'selected\' echarts [options]="pieOptions" [autoResize]="true" class="demo-chart"></div>                </div>                <!-- <div class="content-inside-grid"></div> -->            </mat-grid-tile>            <mat-grid-tile [colspan]="2" >                <div class="content-inside-grid">                    <div class="parent">                        <mat-form-field >                            <mat-label>Filter By</mat-label>                            <mat-select (selectionChange)="changeBar($event)" [(value)]="selected">                                <mat-option *ngFor="let option of options" [value]="option.value">                                    {{option.viewValue}}                                </mat-option>                            </mat-select>                        </mat-form-field>                    </div>                    <div class="bar-chart">                        <div echarts [options]="barOptions" [autoResize]="true" [merge]="mergeOptions"                            class="demo-chart">                        </div>                    </div>                </div>            </mat-grid-tile>            <mat-grid-tile [colspan]="1">                <div fxLayout="column" fxLayoutAlign="space-evenly center">                    <div class="content-inside-grid">                        <div class="circle">#Keywords<br>{{this.stats.n_keywords}}</div>                    </div>                    <div class="content-inside-grid">                        <div class="circle">#Keyword Models<br>{{this.stats.n_keyword_models}}</div>                    </div>                    <div class="content-inside-grid">                        <div class="circle">#Documents<br>{{this.stats.n_total_docs}}</div>                    </div>                </div>            </mat-grid-tile>             <mat-grid-tile [colspan]="5" >                <div>                    <img [src]="wordcloud_img" alt="InfiniTag" class="tagcloud" layout-fill/>                </div>            </mat-grid-tile>        </mat-grid-list>        <div class="footer">            <img class="footer__logo" src="../../assets/img/InfiniTag2.png" alt="InfiniTag" class="footer" />        </div>    </div></ng-template></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutomatedTaggingParametersDialog', 'selector': 'app-automated-tagging-parameters-dialog'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentOverviewComponent', 'selector': 'app-document-overview'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileExistsDialogComponent', 'selector': 'app-file-exists-dialog'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FileUploadDialogComponent', 'selector': 'app-file-upload-dialog'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'KWMNameDialog', 'selector': 'input-dialog'},{'name': 'TaggingComponent', 'selector': 'app-tagging'},{'name': 'TaggingDialogComponent', 'selector': 'app-tagging-dialog'}];
+    var DIRECTIVES = [{'name': 'DragdropDirective', 'selector': '[appDragdrop]'},{'name': 'NaturalNumbersOnlyDirective', 'selector': '[appNaturalNumbersOnly]'}];
     var ACTUAL_COMPONENT = {'name': 'DashboardComponent'};
 </script>
 <script src="../js/tree.js"></script>

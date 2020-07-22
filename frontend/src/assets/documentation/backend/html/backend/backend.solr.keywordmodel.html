@@ -1,17 +1,18 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>backend.solr.keywordmodel &#8212; infinitag 6 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
    
@@ -41,7 +42,7 @@
 <h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><a class="reference internal" href="#backend.solr.keywordmodel.SolrKeywordModel" title="backend.solr.keywordmodel.SolrKeywordModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrKeywordModel</span></code></a>:
-Undocumented.</p></li>
+Class representing the keyword model as it appears in solr</p></li>
 <li><p><a class="reference internal" href="#backend.solr.keywordmodel.SolrKeywords" title="backend.solr.keywordmodel.SolrKeywords"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrKeywords</span></code></a>:
 Undocumented.</p></li>
 <li><p><a class="reference internal" href="#backend.solr.keywordmodel.SolrKeyword" title="backend.solr.keywordmodel.SolrKeyword"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrKeyword</span></code></a>:
@@ -51,43 +52,95 @@ Undocumented.</p></li>
 <li><p><a class="reference internal" href="#backend.solr.keywordmodel.SolrHierarchy" title="backend.solr.keywordmodel.SolrHierarchy"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrHierarchy</span></code></a>:
 Undocumented.</p></li>
 </ul>
-<dl class="class">
+<dl class="py class">
 <dt id="backend.solr.keywordmodel.SolrKeywordModel">
-<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeywordModel</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywordModel" title="Permalink to this definition">¶</a></dt>
-<dd><p class="rubric">Inheritance</p>
-<dl class="method">
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeywordModel</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywordModel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class representing the keyword model as it appears in solr</p>
+<p class="rubric">Inheritance</p>
+<dl class="py method">
 <dt id="backend.solr.keywordmodel.SolrKeywordModel.add">
-<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param">*hierarchies: backend.solr.keywordmodel.SolrHierarchy</em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywordModel.add" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">hierarchies</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#backend.solr.keywordmodel.SolrHierarchy" title="backend.solr.keywordmodel.SolrHierarchy">backend.solr.keywordmodel.SolrHierarchy</a></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywordModel.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a hierarchy to the database
 :param hierarchies:
 :return:</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrKeywordModel.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span><a class="reference internal" href="#backend.solr.keywordmodel.SolrHierarchy" title="backend.solr.keywordmodel.SolrHierarchy">backend.solr.keywordmodel.SolrHierarchy</a><span class="p">]</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywordModel.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all keyword models
+:return:</p>
 </dd></dl>
 
-<dl class="class">
+</dd></dl>
+
+<dl class="py class">
 <dt id="backend.solr.keywordmodel.SolrKeywords">
-<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeywords</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywords" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeywords</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywords" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrKeywords.add">
+<code class="sig-name descname">add</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">keywords</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywords.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds new keywords to Solr
+:param keywords:</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrKeywords.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>str<span class="p">]</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywords.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get every keyword
+:return:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrKeywords.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">old</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">new</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.keywordmodel.SolrKeywords.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces an existing keyword with a new one (rename)
+:param old:
+:param new:
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="backend.solr.keywordmodel.SolrKeyword">
-<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeyword</code><span class="sig-paren">(</span><em class="sig-param">keyword: str</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeyword" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrKeyword</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keyword</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrKeyword" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class representing an object in the KeywordStorage</p>
 <p class="rubric">Inheritance</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="backend.solr.keywordmodel.SolrAbstract">
-<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrAbstract</code><span class="sig-paren">(</span><em class="sig-param">config: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrAbstract" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrAbstract</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrAbstract" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrAbstract.clear">
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrAbstract.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears the whole Solr core associated with this object</p>
 </dd></dl>
 
-<dl class="class">
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrAbstract.delete">
+<code class="sig-name descname">delete</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">ids</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.keywordmodel.SolrAbstract.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes items from Solr
+:param ids: Ids to be deleted
+:return:</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt id="backend.solr.keywordmodel.SolrHierarchy">
-<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrHierarchy</code><span class="sig-paren">(</span><em class="sig-param">name: str</em>, <em class="sig-param">hierarchy: dict</em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrHierarchy" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.keywordmodel.</code><code class="sig-name descname">SolrHierarchy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">hierarchy</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">keywords</span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrHierarchy" title="Permalink to this definition">¶</a></dt>
 <dd><p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt id="backend.solr.keywordmodel.SolrHierarchy.get_keywords">
+<code class="sig-name descname">get_keywords</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.keywordmodel.SolrHierarchy.get_keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts all keywords and their paths from the hierarchy
+:return: dict containing keywords as keys and paths as values</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -127,7 +180,7 @@ Undocumented.</p></li>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -144,7 +197,7 @@ Undocumented.</p></li>
       &copy;2020, Barnhill, Hanif, Vinokour, Wich, Sakib.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

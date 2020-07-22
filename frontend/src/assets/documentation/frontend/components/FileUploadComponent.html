@@ -66,12 +66,6 @@
 
 
 
-    <p class="comment">
-        <h3>Implements</h3>
-    </p>
-    <p class="comment">
-                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
-    </p>
 
 
 <section>
@@ -130,7 +124,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dialog">dialog</a>
+                            </li>
+                            <li>
                                 <a href="#files">files</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#progressMonitor">progressMonitor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#utils">utils</a>
                             </li>
                         </ul>
                     </td>
@@ -146,11 +152,25 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Public</span>
-                                <a href="#ngOnInit">ngOnInit</a>
+                                <a href="#cleanUpCancelledFiles">cleanUpCancelledFiles</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleFileSend">handleFileSend</a>
                             </li>
                             <li>
                                     <span class="modifier">Public</span>
                                 <a href="#onSelectFile">onSelectFile</a>
+                            </li>
+                            <li>
+                                <a href="#openExistsDialog">openExistsDialog</a>
+                            </li>
+                            <li>
+                                <a href="#openUploadDialog">openUploadDialog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#resendFile">resendFile</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
@@ -161,6 +181,20 @@
                 </tr>
 
 
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#uploadFinished">uploadFinished</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
 
 
 
@@ -174,12 +208,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(uploadService: <a href="../injectables/UploadService.html">UploadService</a>)</code>
+<code>constructor(fileService: <a href="../injectables/FileService.html">FileService</a>, translate: TranslateService, dialog: MatDialog, utils: <a href="../injectables/Utils.html">Utils</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/file-upload/file-upload.component.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/file-upload/file-upload.component.ts:55</a></div>
                             </td>
                         </tr>
 
@@ -197,10 +231,46 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>uploadService</td>
+                                                        <td>fileService</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../injectables/UploadService.html" target="_self" >UploadService</a></code>
+                                                                        <code><a href="../injectables/FileService.html" target="_self" >FileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>translate</td>
+                                                  
+                                                        <td>
+                                                                    <code>TranslateService</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>utils</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Utils.html" target="_self" >Utils</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -218,7 +288,30 @@
 </section>
 
 
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="uploadFinished"></a>
+                        <b>uploadFinished</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
 
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/file-upload/file-upload.component.ts:51</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
 
 
     <section>
@@ -230,28 +323,28 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="ngOnInit"></a>
+                    <a name="cleanUpCancelledFiles"></a>
                     <span class="name">
                         <b>
                             <span class="modifier">Public</span>
-                            ngOnInit
+                            cleanUpCancelledFiles
                         </b>
-                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                        <a href="#cleanUpCancelledFiles"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>ngOnInit()</code>
+                    <code>cleanUpCancelledFiles(files: <a href="../interfaces/IFile.html">Array<IFile></a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="52"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:52</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:90</a></div>
                 </td>
             </tr>
 
@@ -260,8 +353,132 @@
                 <td class="col-md-4">
 
                     <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>files</td>
+                                    <td>
+                                                <code><a href="../interfaces/IFile.html" target="_self" >Array&lt;IFile&gt;</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
                         <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleFileSend"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            handleFileSend
+                        </b>
+                        <a href="#handleFileSend"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleFileSend(event: HttpEvent<any>, file: <a href="../interfaces/IFile.html">IFile</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="168"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:168</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>HttpEvent&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>: The HttpEvent to process</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>file</td>
+                                    <td>
+                                                <code><a href="../interfaces/IFile.html" target="_self" >IFile</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>: the corresponding file</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
                     </div>
                 </td>
             </tr>
@@ -291,8 +508,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="59"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:59</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="125"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:125</a></div>
                 </td>
             </tr>
 
@@ -348,6 +565,230 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="openExistsDialog"></a>
+                    <span class="name">
+                        <b>
+                            openExistsDialog
+                        </b>
+                        <a href="#openExistsDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openExistsDialog(dialogData: <a href="../interfaces/DialogData.html">DialogData</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:64</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dialogData</td>
+                                    <td>
+                                                <code><a href="../interfaces/DialogData.html" target="_self" >DialogData</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openUploadDialog"></a>
+                    <span class="name">
+                        <b>
+                            openUploadDialog
+                        </b>
+                        <a href="#openUploadDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>openUploadDialog(dialogData: <a href="../interfaces/UploadDialogData.html">UploadDialogData</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:76</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dialogData</td>
+                                    <td>
+                                                <code><a href="../interfaces/UploadDialogData.html" target="_self" >UploadDialogData</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="resendFile"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            resendFile
+                        </b>
+                        <a href="#resendFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>resendFile(requestType: literal type, file: <a href="../interfaces/IFile.html">IFile</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:101</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>requestType</td>
+                                    <td>
+                                            <code>literal type</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>file</td>
+                                    <td>
+                                                <code><a href="../interfaces/IFile.html" target="_self" >IFile</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="sendFileToService"></a>
                     <span class="name">
                         <b>
@@ -368,8 +809,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="144"
+                            class="link-to-prism">src/app/file-upload/file-upload.component.ts:144</a></div>
                 </td>
             </tr>
 
@@ -431,6 +872,34 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="dialog"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            dialog</b>
+                            <a href="#dialog"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatDialog</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/file-upload/file-upload.component.ts:60</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="files"></a>
                         <span class="name">
                             <b>
@@ -452,7 +921,71 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/app/file-upload/file-upload.component.ts:48</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/file-upload/file-upload.component.ts:50</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="progressMonitor"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            progressMonitor</b>
+                            <a href="#progressMonitor"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>{
+    progress: 0,
+    finished: 0
+  }</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/file-upload/file-upload.component.ts:52</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="utils"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            utils</b>
+                            <a href="#utils"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../injectables/Utils.html" target="_self" >Utils</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/file-upload/file-upload.component.ts:61</a></div>
                             </td>
                         </tr>
 
@@ -465,18 +998,20 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit } from &#x27;@angular/core&#x27;;
-import { UploadService } from &#x27;../services/upload.service&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {Component, EventEmitter, Output} from &#x27;@angular/core&#x27;;
+import { FileService } from &#x27;../services/file.service&#x27;;
 import { HttpEvent, HttpEventType } from &#x27;@angular/common/http&#x27;;
 import { throwError } from &#x27;rxjs&#x27;;
 import { catchError } from &#x27;rxjs/operators&#x27;;
+import { TranslateService } from &#x27;@ngx-translate/core&#x27;;
+import { MatDialog } from &#x27;@angular/material/dialog&#x27;;
+import { DialogData, FileExistsDialogComponent } from &#x27;../../dialogs/file-exists.component&#x27;;
+import { IFile } from &#x27;../models/IFile.model&#x27;;
+import { Utils } from &#x27;../services/utils.service&#x27;;
+import { FileUploadDialogComponent, UploadDialogData } from &#x27;../../dialogs/file-upload.dialog.component&#x27;;
 
-interface IFile {
-  file: File;
-  status: string;
-  progress: number;
-  icon: string;
-}
+
+
 @Component({
   selector: &#x27;app-file-upload&#x27;,
   templateUrl: &#x27;./file-upload.component.html&#x27;,
@@ -488,12 +1023,76 @@ interface IFile {
  *
  * Component handles the file input and displaying the progress
  */
-export class FileUploadComponent implements OnInit {
+export class FileUploadComponent {
   files: Array&lt;IFile&gt; &#x3D; [];
+  @Output() uploadFinished &#x3D; new EventEmitter&lt;any&gt;();
+  public progressMonitor &#x3D; {
+    progress: 0,
+    finished: 0
+  };
 
-  constructor(private uploadService: UploadService) { }
+  constructor(
+    private fileService: FileService,
+    private translate: TranslateService,
+    public dialog: MatDialog,
+    public utils: Utils) {
+  }
 
-  public ngOnInit(): void {}
+  openExistsDialog(dialogData: DialogData): void {
+    const dialogRef &#x3D; this.dialog.open(FileExistsDialogComponent, {
+      width: &#x27;500px&#x27;,
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((result: { response: string, id: string, fid: string }) &#x3D;&gt; {
+      const file: IFile | undefined &#x3D; this.files.find((f: IFile) &#x3D;&gt; f.fid &#x3D;&#x3D;&#x3D; result.fid);
+      this.resendFile(result, file);
+    });
+  }
+
+  openUploadDialog(dialogData: UploadDialogData): void {
+    const dialogRef &#x3D; this.dialog.open(FileUploadDialogComponent, {
+      width: &#x27;1200px&#x27;,
+      data: dialogData
+    });
+
+    dialogRef.afterClosed()
+      .subscribe( () &#x3D;&gt; {
+        this.uploadFinished.emit();
+        this.cleanUpCancelledFiles(dialogData.files);
+        this.progressMonitor.finished &#x3D; 0;
+      });
+  }
+
+  public cleanUpCancelledFiles(files: Array&lt;IFile&gt;) {
+    for (const file of files) {
+      if (file.status &#x3D;&#x3D;&#x3D; &#x27;CANCELLED&#x27;) {
+        this.fileService.deleteFile(file).subscribe( (result) &#x3D;&gt; {
+          console.log(result);
+        });
+      }
+
+    }
+  }
+
+  public resendFile(requestType: { response: string }, file: IFile) {
+    if (file !&#x3D;&#x3D; undefined) {
+      if (requestType.response &#x3D;&#x3D;&#x3D; &#x27;overwrite&#x27;) {
+        this.fileService.patchFile(file)
+          .subscribe((event: HttpEvent&lt;any&gt;) &#x3D;&gt; {
+            this.handleFileSend(event, file);
+          });
+      } else if (requestType.response &#x3D;&#x3D;&#x3D; &#x27;add&#x27;) {
+        this.fileService.putFile(file)
+          .subscribe((event: HttpEvent&lt;any&gt;) &#x3D;&gt; {
+            this.handleFileSend(event, file);
+          });
+      } else {
+        file.status &#x3D; &#x27;CANCELLED&#x27;;
+        file.icon &#x3D; &#x27;cloud_done&#x27;;
+      }
+    }
+  }
 
   /**
    * @description
@@ -503,47 +1102,79 @@ export class FileUploadComponent implements OnInit {
   public onSelectFile(files: FileList) {
     this.files &#x3D; [];
     for (let idx &#x3D; 0; idx &lt; files.length; idx++) {
-      let file: IFile &#x3D; { file: files[idx], status: &quot;enqueued&quot;, progress:0, icon:&quot;schedule&quot; };
+      const file: IFile &#x3D; {file: files[idx], status: &#x27;ENQUEUED&#x27;, progress: 0, icon: &#x27;schedule&#x27;, fid: this.utils.uuid4()};
       this.files.push(file);
       this.sendFileToService(file);
+    }
+    const dialogData: UploadDialogData &#x3D; {
+      files: this.files,
+      progressMonitor: this.progressMonitor
+    };
+    this.openUploadDialog(dialogData);
+  }
+
+  /**
+   * @description
+   * Takes IFile, sends it to the fileService and updates the progress accordingly
+   * @param {IFile} file: IFile object containing the file to be send
+   */
+  private sendFileToService(file: IFile) {
+    if (file.status !&#x3D;&#x3D; &#x27;CANCELLED&#x27;) {
+      console.log(file.status);
+      this.fileService.postFile(file)
+      .pipe(
+        // catch errors
+        catchError(error &#x3D;&gt; {
+          file.status &#x3D; &#x27;ERROR&#x27;;
+          file.icon &#x3D; &#x27;close&#x27;;
+          return throwError(error);
+        })
+      ).subscribe((event: HttpEvent&lt;any&gt;) &#x3D;&gt; {
+      this.handleFileSend(event, file);
+    });
     }
   }
 
   /**
    * @description
-   * Takes IFile, sends it to the uploadService and updates the progress accordingly
-   * @param {IFile} file: IFile object containing the file to be send
+   * Processes the HttpEvents of send files and updates the progress and
+   * status accordingly.
+   * @param {HttpEvent} event: The HttpEvent to process
+   * @param {IFile} file: the corresponding file
    */
-  private sendFileToService(file: IFile) {
-    this.uploadService.postFile(file.file)
-    .pipe(
-      //catch errors
-      catchError(error &#x3D;&gt; {
-        file.status &#x3D; &quot;failed(check console for info)&quot;;
-        file.icon &#x3D; &quot;close&quot;;
-        return throwError(error);
-      })
-    ).subscribe((event: HttpEvent&lt;any&gt;) &#x3D;&gt; {
+  private handleFileSend(event: HttpEvent&lt;any&gt;, file: IFile) {
+    if (file.status !&#x3D;&#x3D; &#x27;CANCELLED&#x27;) {
       switch (event.type) {
-        case HttpEventType.Sent:
-          file.status &#x3D; &quot;request send&quot;;
-          break;
-        case HttpEventType.ResponseHeader:
-          file.status &#x3D; &quot;response received&quot;;
-          break;
-        case HttpEventType.UploadProgress:
-          //update progress
-          file.progress &#x3D; Math.round(event.loaded / event.total * 100);
-          file.status &#x3D; &quot;uploading...&quot;;
-          file.icon &#x3D; &quot;cloud_upload&quot;;
-          break;
-        case HttpEventType.Response:
-          file.status &#x3D; &quot;success&quot;;
-          console.log(&#x27;Document send&#x27;, event.body);
-          file.icon &#x3D; &quot;cloud_done&quot;;
-          break;
-      }
-    })
+      case HttpEventType.Sent:
+        file.status &#x3D; &#x27;REQUEST_SEND&#x27;;
+        break;
+      case HttpEventType.ResponseHeader:
+        file.status &#x3D; &#x27;RESPONSE_RECEIVED&#x27;;
+        break;
+      case HttpEventType.UploadProgress:
+        // update progress
+        file.progress &#x3D; Math.round(event.loaded / event.total * 100);
+        this.progressMonitor.progress +&#x3D; file.progress;
+        file.status &#x3D; &#x27;UPLOADING&#x27;;
+        file.icon &#x3D; &#x27;cloud_upload&#x27;;
+        break;
+      case HttpEventType.Response:
+        if (event.status &#x3D;&#x3D;&#x3D; 207) {
+          const id &#x3D; event.body.id;
+          const fid &#x3D; event.body.fid;
+          const dialogData: DialogData &#x3D; {
+            id,
+            fid
+          };
+          this.openExistsDialog(dialogData);
+        } else {
+          file.status &#x3D; &#x27;SUCCESS&#x27;;
+          file.icon &#x3D; &#x27;cloud_done&#x27;;
+          this.progressMonitor.finished++;
+        }
+        break;
+    }
+    }
   }
 
 }
@@ -551,17 +1182,19 @@ export class FileUploadComponent implements OnInit {
     </div>
 
     <div class="tab-pane fade " id="c-templateData">
-        <pre class="line-numbers"><code class="language-html">&lt;h2&gt;File Upload&lt;/h2&gt;
-&lt;input type&#x3D;&#x27;file&#x27; (change)&#x3D;&quot;onSelectFile($event.target.files)&quot; multiple&gt;
+        <pre class="line-numbers"><code class="language-html">&lt;mat-grid-list cols&#x3D;&quot;8&quot; rows&#x3D;&quot;4&quot; gutterSize&#x3D;&quot;32px&quot; rowHeight&#x3D;&quot;200px&quot;&gt;
+  &lt;mat-grid-tile [rowspan]&#x3D;&quot;1&quot; [colspan]&#x3D;&quot;8&quot; appDragdrop (fileDropped)&#x3D;&quot;onSelectFile($event)&quot; class&#x3D;&quot;dropzone&quot;&gt;
+    &lt;div class&#x3D;&quot;title&quot;&gt;
+      &lt;mat-icon color&#x3D;&quot;primary&quot;&gt;cloud_upload&lt;/mat-icon&gt;
+      &lt;h3&gt;{{&#x27;DOCUMENTS.DRAG_DROP_DIALOG&#x27; | translate}}&lt;/h3&gt;
+      &lt;h3&gt;{{&#x27;OR&#x27; | translate}}&lt;/h3&gt;
+      &lt;input type&#x3D;&#x27;file&#x27; id&#x3D;&quot;file-select&quot; (change)&#x3D;&quot;onSelectFile($event.target.files)&quot; multiple&gt;
+      &lt;button mat-raised-button color&#x3D;&quot;primary&quot;&gt;{{&#x27;DOCUMENTS.BROWSE_FOR_FILES&#x27; | translate}}&lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/mat-grid-tile&gt;
+&lt;/mat-grid-list&gt;
 
-&lt;mat-list&gt;
-  &lt;mat-list-item *ngFor&#x3D;&quot;let file of files; index as i&quot;&gt;
-    &lt;mat-icon matListIcon&gt;{{file.icon}}&lt;/mat-icon&gt;
-    &lt;h2 matLine&gt; {{file.file.name}} &lt;/h2&gt;
-    &lt;span matLine&gt; {{file.status}} &lt;/span&gt;
-    &lt;mat-progress-bar matLine mode&#x3D;&quot;determinate&quot; value&#x3D;{{file.progress}}&gt;&lt;/mat-progress-bar&gt;
-  &lt;/mat-list-item&gt;
-&lt;/mat-list&gt;
+
 </code></pre>
     </div>
 
@@ -573,7 +1206,40 @@ export class FileUploadComponent implements OnInit {
 mat-list {
     max-height: 40em;
     overflow: auto;
-}</code></pre>
+    width: 100%;
+}
+
+.dropzone {
+  display: flex;
+  align-content: center;
+  justify-items: center;
+  width: 100%;
+  background-color: rgba(201, 201, 220, 0.36);
+  border-radius: 4px;
+  transition: background-color 0.2s linear;
+  text-align: center;
+
+  .title {
+    width: 100%;
+    margin: 20px;
+  }
+
+  input {
+    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+
+}
+
+.fileover {
+  background-color: rgba(63, 81, 181, 0.36);
+}
+</code></pre>
     </div>
 
     <div class="tab-pane fade " id="c-tree">
@@ -601,9 +1267,9 @@ mat-list {
 <script src="../js/libs/htmlparser.js"></script>
 <script src="../js/libs/deep-iterator.js"></script>
 <script>
-        var COMPONENT_TEMPLATE = '<div><h2>File Upload</h2><input type=\'file\' (change)="onSelectFile($event.target.files)" multiple><mat-list>  <mat-list-item *ngFor="let file of files; index as i">    <mat-icon matListIcon>{{file.icon}}</mat-icon>    <h2 matLine> {{file.file.name}} </h2>    <span matLine> {{file.status}} </span>    <mat-progress-bar matLine mode="determinate" value={{file.progress}}></mat-progress-bar>  </mat-list-item></mat-list></div>'
-    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'SearchComponent', 'selector': 'app-search'},{'name': 'SettingsComponent', 'selector': 'app-settings'}];
-    var DIRECTIVES = [];
+        var COMPONENT_TEMPLATE = '<div><mat-grid-list cols="8" rows="4" gutterSize="32px" rowHeight="200px">  <mat-grid-tile [rowspan]="1" [colspan]="8" appDragdrop (fileDropped)="onSelectFile($event)" class="dropzone">    <div class="title">      <mat-icon color="primary">cloud_upload</mat-icon>      <h3>{{\'DOCUMENTS.DRAG_DROP_DIALOG\' | translate}}</h3>      <h3>{{\'OR\' | translate}}</h3>      <input type=\'file\' id="file-select" (change)="onSelectFile($event.target.files)" multiple>      <button mat-raised-button color="primary">{{\'DOCUMENTS.BROWSE_FOR_FILES\' | translate}}</button>    </div>  </mat-grid-tile></mat-grid-list></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutomatedTaggingParametersDialog', 'selector': 'app-automated-tagging-parameters-dialog'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentOverviewComponent', 'selector': 'app-document-overview'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileExistsDialogComponent', 'selector': 'app-file-exists-dialog'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FileUploadDialogComponent', 'selector': 'app-file-upload-dialog'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'KWMNameDialog', 'selector': 'input-dialog'},{'name': 'TaggingComponent', 'selector': 'app-tagging'},{'name': 'TaggingDialogComponent', 'selector': 'app-tagging-dialog'}];
+    var DIRECTIVES = [{'name': 'DragdropDirective', 'selector': '[appDragdrop]'},{'name': 'NaturalNumbersOnlyDirective', 'selector': '[appNaturalNumbersOnly]'}];
     var ACTUAL_COMPONENT = {'name': 'FileUploadComponent'};
 </script>
 <script src="../js/tree.js"></script>

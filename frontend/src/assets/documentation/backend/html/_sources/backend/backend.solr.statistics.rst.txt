@@ -1,0 +1,45 @@
+===========================
+``backend.solr.statistics``
+===========================
+
+.. automodule:: backend.solr.statistics
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.solr.statistics
+
+
+Classes
+=======
+
+- :py:class:`SolrKeywordStatistics`:
+  Keeps track of the number of distinct keywords which are active (attached) to
+
+- :py:class:`SolrStatistics`:
+  Provides an API for statistics related to Solr
+
+- :py:class:`SolrDocStatistics`:
+  Undocumented.
+
+
+.. autoclass:: SolrKeywordStatistics
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrKeywordStatistics
+      :parts: 1
+
+.. autoclass:: SolrStatistics
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrStatistics
+      :parts: 1
+
+.. autoclass:: SolrDocStatistics
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrDocStatistics
+      :parts: 1

@@ -1,0 +1,96 @@
+Jul 15, 2020 2:43:01 PM org.apache.tika.config.InitializableProblemHandler$3 handleInitializableProblem
+WARNING: J2KImageReader not loaded. JPEG2000 files will not be processed.
+See https://pdfbox.apache.org/2.0/dependencies.html#jai-image-io
+for optional dependencies.
+
+Jul 15, 2020 2:43:01 PM org.apache.tika.config.InitializableProblemHandler$3 handleInitializableProblem
+WARNING: org.xerial's sqlite-jdbc is not loaded.
+Please provide the jar on your classpath to parse sqlite files.
+See tika-parsers/pom.xml for the correct version.
+INFO  Starting Apache Tika 1.24 server
+INFO  Setting the server's publish address to be http://localhost:9998/
+INFO  Logging initialized @6280ms to org.eclipse.jetty.util.log.Slf4jLog
+INFO  jetty-9.4.24.v20191120; built: 2019-11-20T21:37:49.771Z; git: 363d5f2df3a8a28de40604320230664b9c793c16; jvm 11.0.7+10-post-Ubuntu-2ubuntu218.04
+ERROR Could not start Jetty server on port 9,998: Failed to bind to localhost/127.0.0.1:9998
+INFO  Stopped ServerConnector@1d7f7be7{HTTP/1.1,[http/1.1]}{localhost:9998}
+org.apache.cxf.service.factory.ServiceConstructionException
+	at org.apache.cxINFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+INFO  rmeta/text (autodetecting type)
+ 3 more
+Caused by: java.io.IOException: Failed to bind to localhost/127.0.0.1:9998
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:346)
+	at org.eclipse.jetty.server.ServerConnector.open(ServerConnector.java:307)
+	at org.eclipse.jetty.server.AbstractNetworkConnector.doStart(AbstractNetworkConnector.java:80)
+	at org.eclipse.jetty.server.ServerConnector.doStart(ServerConnector.java:231)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:385)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine.addServant(JettyHTTPServerEngine.java:474)
+	... 9 more
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:455)
+	at java.base/sun.nio.ch.Net.bind(Net.java:447)
+	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:227)
+	at java.base/sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:80)
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:342)
+	... 16 more
+ERROR Can't start: 
+org.apache.cxf.service.factory.ServiceConstructionException
+	at org.apache.cxf.jaxrs.JAXRSServerFactoryBean.create(JAXRSServerFactoryBean.java:216)
+	at org.apache.tika.server.TikaServerCli.executeLegacy(TikaServerCli.java:333)
+	at org.apache.tika.server.TikaServerCli.execute(TikaServerCli.java:158)
+	at org.apache.tika.server.TikaServerCli.main(TikaServerCli.java:127)
+Caused by: org.apache.cxf.interceptor.Fault: Could not start Jetty server on port 9,998: Failed to bind to localhost/127.0.0.1:9998
+	at org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine.addServant(JettyHTTPServerEngine.java:485)
+	at org.apache.cxf.transport.http_jetty.JettyHTTPDestination.activate(JettyHTTPDestination.java:187)
+	at org.apache.cxf.transport.AbstractObservable.setMessageObserver(AbstractObservable.java:53)
+	at org.apache.cxf.binding.AbstractBindingFactory.addListener(AbstractBindingFactory.java:95)
+	at org.apache.cxf.jaxrs.JAXRSBindingFactory.addListener(JAXRSBindingFactory.java:91)
+	at org.apache.cxf.endpoint.ServerImpl.start(ServerImpl.java:128)
+	at org.apache.cxf.jaxrs.JAXRSServerFactoryBean.create(JAXRSServerFactoryBean.java:209)
+	... 3 more
+Caused by: java.io.IOException: Failed to bind to localhost/127.0.0.1:9998
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:346)
+	at org.eclipse.jetty.server.ServerConnector.open(ServerConnector.java:307)
+	at org.eclipse.jetty.server.AbstractNetworkConnector.doStart(AbstractNetworkConnector.java:80)
+	at org.eclipse.jetty.server.ServerConnector.doStart(ServerConnector.java:231)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.server.Server.doStart(Server.java:385)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.apache.cxf.transport.http_jetty.JettyHTTPServerEngine.addServant(JettyHTTPServerEngine.java:474)
+	... 9 more
+Caused by: java.net.BindException: Address already in use
+	at java.base/sun.nio.ch.Net.bind0(Native Method)
+	at java.base/sun.nio.ch.Net.bind(Net.java:455)
+	at java.base/sun.nio.ch.Net.bind(Net.java:447)
+	at java.base/sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:227)
+	at java.base/sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:80)
+	at org.eclipse.jetty.server.ServerConnector.openAcceptChannel(ServerConnector.java:342)
+	... 16 more

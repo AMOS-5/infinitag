@@ -1,0 +1,10 @@
+======================
+``utils.crawler_dict``
+======================
+
+.. automodule:: utils.crawler_dict
+
+   .. contents::
+      :local:
+
+.. currentmodule:: utils.crawler_dict

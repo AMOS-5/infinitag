@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>backend.solr.statistics &#8212; infinitag 6 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="module-backend.solr.statistics">
+<span id="backend-solr-statistics"></span><h1><code class="docutils literal notranslate"><span class="pre">backend.solr.statistics</span></code><a class="headerlink" href="#module-backend.solr.statistics" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<ul class="simple">
+<li><p><a class="reference internal" href="#classes" id="id1">Classes</a></p></li>
+</ul>
+</div>
+<div class="section" id="classes">
+<h2><a class="toc-backref" href="#id1">Classes</a><a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#backend.solr.statistics.SolrKeywordStatistics" title="backend.solr.statistics.SolrKeywordStatistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrKeywordStatistics</span></code></a>:
+Keeps track of the number of distinct keywords which are active (attached) to</p></li>
+<li><p><a class="reference internal" href="#backend.solr.statistics.SolrStatistics" title="backend.solr.statistics.SolrStatistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrStatistics</span></code></a>:
+Provides an API for statistics related to Solr</p></li>
+<li><p><a class="reference internal" href="#backend.solr.statistics.SolrDocStatistics" title="backend.solr.statistics.SolrDocStatistics"><code class="xref py py-class docutils literal notranslate"><span class="pre">SolrDocStatistics</span></code></a>:
+Undocumented.</p></li>
+</ul>
+<dl class="py class">
+<dt id="backend.solr.statistics.SolrKeywordStatistics">
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.statistics.</code><code class="sig-name descname">SolrKeywordStatistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">solr_docs</span><span class="p">:</span> <span class="n"><a class="reference internal" href="backend.solr.documents.html#backend.solr.documents.SolrDocuments" title="backend.solr.documents.SolrDocuments">backend.solr.documents.SolrDocuments</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.statistics.SolrKeywordStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Keeps track of the number of distinct keywords which are active (attached) to
+documents in Solr</p>
+<p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt id="backend.solr.statistics.SolrKeywordStatistics.update">
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">keywords_before</span><span class="p">:</span> <span class="n">Set<span class="p">[</span><a class="reference internal" href="backend.solr.doc.html#backend.solr.doc.SolrDocKeyword" title="backend.solr.doc.SolrDocKeyword">backend.solr.doc.SolrDocKeyword</a><span class="p">]</span></span></em>, <em class="sig-param"><span class="n">keywords_after</span><span class="p">:</span> <span class="n">Set<span class="p">[</span><a class="reference internal" href="backend.solr.doc.html#backend.solr.doc.SolrDocKeyword" title="backend.solr.doc.SolrDocKeyword">backend.solr.doc.SolrDocKeyword</a><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; None<a class="headerlink" href="#backend.solr.statistics.SolrKeywordStatistics.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs an update to the Solr core by:
+- adding new keywords
+- deleting keywords IF they are not attached to a document in Solr</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>keywords_before</strong> – The keywords before the update</p></li>
+<li><p><strong>keywords_after</strong> – The keywords after the update</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="backend.solr.statistics.SolrStatistics">
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.statistics.</code><code class="sig-name descname">SolrStatistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">solr_docs</span><span class="p">:</span> <span class="n"><a class="reference internal" href="backend.solr.documents.html#backend.solr.documents.SolrDocuments" title="backend.solr.documents.SolrDocuments">backend.solr.documents.SolrDocuments</a></span></em>, <em class="sig-param"><span class="n">solr_keywordmodel</span><span class="p">:</span> <span class="n"><a class="reference internal" href="backend.solr.keywordmodel.html#backend.solr.keywordmodel.SolrKeywordModel" title="backend.solr.keywordmodel.SolrKeywordModel">backend.solr.keywordmodel.SolrKeywordModel</a></span></em>, <em class="sig-param"><span class="n">solr_keyword_statistics</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#backend.solr.statistics.SolrKeywordStatistics" title="backend.solr.statistics.SolrKeywordStatistics">backend.solr.statistics.SolrKeywordStatistics</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.statistics.SolrStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides an API for statistics related to Solr</p>
+<p class="rubric">Inheritance</p>
+<dl class="py method">
+<dt id="backend.solr.statistics.SolrStatistics.docs">
+<code class="sig-name descname">docs</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; backend.solr.statistics.DocStatistics<a class="headerlink" href="#backend.solr.statistics.SolrStatistics.docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns staticstics related to the documents core</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>tuple(total documents, documents tagged, documents untagged)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.solr.statistics.SolrStatistics.keywordmodel">
+<code class="sig-name descname">keywordmodel</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#backend.solr.statistics.SolrStatistics.keywordmodel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns statistics related to keywordmodels
+:return: number of keywordmodels</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="backend.solr.statistics.SolrStatistics.keywords">
+<code class="sig-name descname">keywords</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#backend.solr.statistics.SolrStatistics.keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns statistics related to keywords
+:return: number of distinct keywords attached to documents</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="backend.solr.statistics.SolrDocStatistics">
+<em class="property">class </em><code class="sig-prename descclassname">backend.solr.statistics.</code><code class="sig-name descname">SolrDocStatistics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">solr_docs</span><span class="p">:</span> <span class="n"><a class="reference internal" href="backend.solr.documents.html#backend.solr.documents.SolrDocuments" title="backend.solr.documents.SolrDocuments">backend.solr.documents.SolrDocuments</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#backend.solr.statistics.SolrDocStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Inheritance</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">infinitag</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Barnhill, Hanif, Vinokour, Wich, Sakib.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/backend/backend.solr.statistics.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

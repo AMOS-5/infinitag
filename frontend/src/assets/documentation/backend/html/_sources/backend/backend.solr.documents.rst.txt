@@ -1,0 +1,25 @@
+==========================
+``backend.solr.documents``
+==========================
+
+.. automodule:: backend.solr.documents
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.solr.documents
+
+
+Classes
+=======
+
+- :py:class:`SolrDocuments`:
+  Provides functionality to strore / modify and retrive documents
+
+
+.. autoclass:: SolrDocuments
+   :members:
+
+   .. rubric:: Inheritance
+   .. inheritance-diagram:: SolrDocuments
+      :parts: 1

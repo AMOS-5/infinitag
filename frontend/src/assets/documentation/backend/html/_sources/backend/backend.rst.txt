@@ -13,7 +13,9 @@ Submodules
 
 .. toctree::
 
+   backend.autotagging
    backend.service
    backend.solr
+   backend.translator
 
 .. currentmodule:: backend

@@ -1,0 +1,2707 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>infinitag documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">infinitag documentation</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+<ol class="breadcrumb">
+  <li>Components</li>
+  <li>TaggingComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li >
+            <a href="#templateData" role="tab" id="templateData-tab" data-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li >
+            <a href="#styleData" role="tab" id="styleData-tab" data-toggle="tab" data-link="style">Styles</a>
+        </li>
+        <li >
+            <a href="#tree" role="tab" id="tree-tab" data-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/tagging/tagging.component.ts</code>
+</p>
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section>
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-tagging</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">styleUrls</td>
+                <td class="col-md-9"><code>./tagging.component.scss</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./tagging.component.html</code></td>
+            </tr>
+
+
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#addKeywordToDoc">addKeywordToDoc</a>
+                            </li>
+                            <li>
+                                <a href="#applyingTaggingMechanism">applyingTaggingMechanism</a>
+                            </li>
+                            <li>
+                                <a href="#applyToAllDocuments">applyToAllDocuments</a>
+                            </li>
+                            <li>
+                                <a href="#bulkKwCtrl">bulkKwCtrl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#dialog">dialog</a>
+                            </li>
+                            <li>
+                                <a href="#filteredBulkKeywords">filteredBulkKeywords</a>
+                            </li>
+                            <li>
+                                <a href="#keywordModels">keywordModels</a>
+                            </li>
+                            <li>
+                                <a href="#keywords">keywords</a>
+                            </li>
+                            <li>
+                                <a href="#KWInput">KWInput</a>
+                            </li>
+                            <li>
+                                <a href="#kwmToAdd">kwmToAdd</a>
+                            </li>
+                            <li>
+                                <a href="#matAutocomplete">matAutocomplete</a>
+                            </li>
+                            <li>
+                                <a href="#removable">removable</a>
+                            </li>
+                            <li>
+                                <a href="#selectable">selectable</a>
+                            </li>
+                            <li>
+                                <a href="#selectedBulkKeywords">selectedBulkKeywords</a>
+                            </li>
+                            <li>
+                                <a href="#selectedKeywordModel">selectedKeywordModel</a>
+                            </li>
+                            <li>
+                                <a href="#selectedKeywords">selectedKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selectedTaggingMethod">selectedTaggingMethod</a>
+                            </li>
+                            <li>
+                                <a href="#separatorKeysCodes">separatorKeysCodes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#taggingForm">taggingForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#taggingMethods">taggingMethods</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#_filter">_filter</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#add">add</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#applyBulkKeywords">applyBulkKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#applyKeyword">applyKeyword</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#changeKWM">changeKWM</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#changeTaggingMethod">changeTaggingMethod</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#delay">delay</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#deleteBulkKeywords">deleteBulkKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#monitorJobProgress">monitorJobProgress</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#ngOnInit">ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#onSubmit">onSubmit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#openMonitoring">openMonitoring</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#openTaggingDialog">openTaggingDialog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#remove">remove</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#selected">selected</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Inputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#editing">editing</a>
+                            </li>
+                            <li>
+                                <a href="#selectedDocuments">selectedDocuments</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Outputs</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#keywordsApplied">keywordsApplied</a>
+                            </li>
+                            <li>
+                                <a href="#taggingApplied">taggingApplied</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(api: <a href="../injectables/ApiService.html">ApiService</a>, formBuilder: <a href="https://angular.io/api/forms/FormBuilder" target="_blank">FormBuilder</a>, dialog: MatDialog, snackBar: MatSnackBar, fileService: <a href="../injectables/FileService.html">FileService</a>, utils: <a href="../injectables/Utils.html">Utils</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/tagging/tagging.component.ts:106</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>api</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/ApiService.html" target="_self" >ApiService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>formBuilder</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/forms/FormBuilder" target="_blank" >FormBuilder</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>snackBar</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatSnackBar</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>fileService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/FileService.html" target="_self" >FileService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>utils</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/Utils.html" target="_self" >Utils</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+    <section>
+    <h3 id="inputs">Inputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="editing"></a>
+                        <b>editing</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/app/tagging/tagging.component.ts:84</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedDocuments"></a>
+                        <b>selectedDocuments</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">src/app/tagging/tagging.component.ts:85</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+    <section>
+    <h3 id="outputs">Outputs</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keywordsApplied"></a>
+                        <b>keywordsApplied</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/app/tagging/tagging.component.ts:88</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="taggingApplied"></a>
+                        <b>taggingApplied</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-2" colspan="2">
+                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/app/tagging/tagging.component.ts:87</a></div>
+                            </td>
+                        </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_filter"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            _filter
+                        </b>
+                        <a href="#_filter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_filter(value)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="377"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:377</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>value</td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>IKeywordListEntry[]</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="add"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            add
+                        </b>
+                        <a href="#add"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>add(event: MatChipInputEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="291"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:291</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MatChipInputEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyBulkKeywords"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            applyBulkKeywords
+                        </b>
+                        <a href="#applyBulkKeywords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyBulkKeywords()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="160"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:160</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="applyKeyword"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            applyKeyword
+                        </b>
+                        <a href="#applyKeyword"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>applyKeyword(doc: <a href="../interfaces/IDocument.html">IDocument</a>, keyword: <a href="../interfaces/IKeywordListEntry.html">IKeywordListEntry</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="321"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:321</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>doc</td>
+                                    <td>
+                                                <code><a href="../interfaces/IDocument.html" target="_self" >IDocument</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>keyword</td>
+                                    <td>
+                                                <code><a href="../interfaces/IKeywordListEntry.html" target="_self" >IKeywordListEntry</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeKWM"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            changeKWM
+                        </b>
+                        <a href="#changeKWM"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changeKWM(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="206"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:206</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="changeTaggingMethod"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            changeTaggingMethod
+                        </b>
+                        <a href="#changeTaggingMethod"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>changeTaggingMethod(event: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="202"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:202</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delay"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Private</span>
+                            delay
+                        </b>
+                        <a href="#delay"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delay(ms: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="357"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:357</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>ms</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteBulkKeywords"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            deleteBulkKeywords
+                        </b>
+                        <a href="#deleteBulkKeywords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteBulkKeywords()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:183</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="monitorJobProgress"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                            monitorJobProgress
+                        </b>
+                        <a href="#monitorJobProgress"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>monitorJobProgress(taggingDialogData: <a href="../interfaces/TaggingDialogData.html">TaggingDialogData</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="343"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:343</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>taggingDialogData</td>
+                                    <td>
+                                                <code><a href="../interfaces/TaggingDialogData.html" target="_self" >TaggingDialogData</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            ngOnInit
+                        </b>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="121"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:121</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSubmit"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            onSubmit
+                        </b>
+                        <a href="#onSubmit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onSubmit()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:214</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Upon submitting the tagging mechanism, the method will be applied and the documents
+will be fetched again to update the table</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openMonitoring"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            openMonitoring
+                        </b>
+                        <a href="#openMonitoring"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openMonitoring(jobId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="267"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:267</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>jobId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="openTaggingDialog"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            openTaggingDialog
+                        </b>
+                        <a href="#openTaggingDialog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>openTaggingDialog(dialogData: <a href="../interfaces/TaggingDialogData.html">TaggingDialogData</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="139"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:139</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>dialogData</td>
+                                    <td>
+                                                <code><a href="../interfaces/TaggingDialogData.html" target="_self" >TaggingDialogData</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="remove"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            remove
+                        </b>
+                        <a href="#remove"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>remove(keyword: <a href="../interfaces/IKeywordListEntry.html">IKeywordListEntry</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="307"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:307</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>keyword</td>
+                                    <td>
+                                                <code><a href="../interfaces/IKeywordListEntry.html" target="_self" >IKeywordListEntry</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="selected"></a>
+                    <span class="name">
+                        <b>
+                            <span class="modifier">Public</span>
+                            selected
+                        </b>
+                        <a href="#selected"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>selected(event: MatAutocompleteSelectedEvent)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="284"
+                            class="link-to-prism">src/app/tagging/tagging.component.ts:284</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>event</td>
+                                    <td>
+                                            <code>MatAutocompleteSelectedEvent</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="addKeywordToDoc"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            addKeywordToDoc</b>
+                            <a href="#addKeywordToDoc"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="366" class="link-to-prism">src/app/tagging/tagging.component.ts:366</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="applyingTaggingMechanism"></a>
+                        <span class="name">
+                            <b>
+                            applyingTaggingMechanism</b>
+                            <a href="#applyingTaggingMechanism"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/tagging/tagging.component.ts:60</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="applyToAllDocuments"></a>
+                        <span class="name">
+                            <b>
+                            applyToAllDocuments</b>
+                            <a href="#applyToAllDocuments"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>false</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/tagging/tagging.component.ts:69</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="bulkKwCtrl"></a>
+                        <span class="name">
+                            <b>
+                            bulkKwCtrl</b>
+                            <a href="#bulkKwCtrl"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>new FormControl([])</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/app/tagging/tagging.component.ts:65</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="dialog"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            dialog</b>
+                            <a href="#dialog"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatDialog</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/app/tagging/tagging.component.ts:109</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="filteredBulkKeywords"></a>
+                        <span class="name">
+                            <b>
+                            filteredBulkKeywords</b>
+                            <a href="#filteredBulkKeywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>Observable&lt;IKeywordListEntry[]&gt;</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/app/tagging/tagging.component.ts:76</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keywordModels"></a>
+                        <span class="name">
+                            <b>
+                            keywordModels</b>
+                            <a href="#keywordModels"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/tagging/tagging.component.ts:63</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="keywords"></a>
+                        <span class="name">
+                            <b>
+                            keywords</b>
+                            <a href="#keywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>IKeywordListEntry[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/app/tagging/tagging.component.ts:72</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="KWInput"></a>
+                        <span class="name">
+                            <b>
+                            KWInput</b>
+                            <a href="#KWInput"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>ElementRef&lt;HTMLInputElement&gt;</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;bulkKWInput&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="90" class="link-to-prism">src/app/tagging/tagging.component.ts:90</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="kwmToAdd"></a>
+                        <span class="name">
+                            <b>
+                            kwmToAdd</b>
+                            <a href="#kwmToAdd"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/tagging/tagging.component.ts:64</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="matAutocomplete"></a>
+                        <span class="name">
+                            <b>
+                            matAutocomplete</b>
+                            <a href="#matAutocomplete"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>MatAutocomplete</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Decorators : </b>
+                            <br />
+                            <code>
+                                @ViewChild(&#x27;auto&#x27;)<br />
+                            </code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/app/tagging/tagging.component.ts:91</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="removable"></a>
+                        <span class="name">
+                            <b>
+                            removable</b>
+                            <a href="#removable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/tagging/tagging.component.ts:62</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectable"></a>
+                        <span class="name">
+                            <b>
+                            selectable</b>
+                            <a href="#selectable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>true</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/tagging/tagging.component.ts:61</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedBulkKeywords"></a>
+                        <span class="name">
+                            <b>
+                            selectedBulkKeywords</b>
+                            <a href="#selectedBulkKeywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>IKeywordListEntry[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/app/tagging/tagging.component.ts:79</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedKeywordModel"></a>
+                        <span class="name">
+                            <b>
+                            selectedKeywordModel</b>
+                            <a href="#selectedKeywordModel"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/app/tagging/tagging.component.ts:82</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedKeywords"></a>
+                        <span class="name">
+                            <b>
+                            selectedKeywords</b>
+                            <a href="#selectedKeywords"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>IKeywordListEntry[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/tagging/tagging.component.ts:73</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="selectedTaggingMethod"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            selectedTaggingMethod</b>
+                            <a href="#selectedTaggingMethod"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>this.taggingMethods[0]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/app/tagging/tagging.component.ts:106</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="separatorKeysCodes"></a>
+                        <span class="name">
+                            <b>
+                            separatorKeysCodes</b>
+                            <a href="#separatorKeysCodes"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>number[]</code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[ENTER, COMMA]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/tagging/tagging.component.ts:66</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="taggingForm"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            taggingForm</b>
+                            <a href="#taggingForm"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="104" class="link-to-prism">src/app/tagging/tagging.component.ts:104</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="taggingMethods"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Public</span>
+                            taggingMethods</b>
+                            <a href="#taggingMethods"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>        <code><a href="../interfaces/ITaggingMethod.html" target="_self" >Array&lt;ITaggingMethod&gt;</a></code>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[
+    {
+      name: &#x27;Keyword Model&#x27;,
+      type: &#x27;KWM&#x27;
+    },
+    {
+      name: &#x27;Automated&#x27;,
+      type: &#x27;ML&#x27;
+    }
+  ]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/app/tagging/tagging.component.ts:93</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from &#x27;@angular/core&#x27;;
+import { ITaggingMethod } from &#x27;../models/ITaggingMethod&#x27;;
+import { ApiService } from &#x27;../services/api.service&#x27;;
+import { FormBuilder, FormControl } from &#x27;@angular/forms&#x27;;
+import { IKeywordListEntry } from &#x27;../models/IKeywordListEntry.model&#x27;;
+import { ITaggingRequest } from &#x27;../models/ITaggingRequest.model&#x27;;
+import { IDocument } from &#x27;../models/IDocument.model&#x27;;
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from &#x27;@angular/material/autocomplete&#x27;;
+import { MatChipInputEvent } from &#x27;@angular/material/chips&#x27;;
+import { Observable, of, throwError } from &#x27;rxjs&#x27;;
+import { map, startWith } from &#x27;rxjs/operators&#x27;;
+import { COMMA, ENTER } from &#x27;@angular/cdk/keycodes&#x27;;
+import { MatSnackBar } from &#x27;@angular/material/snack-bar&#x27;;
+import { IKeyword } from &#x27;../models/IKeyword.model&#x27;;
+import { FileService } from &#x27;../services/file.service&#x27;;
+import { TaggingDialogComponent, TaggingDialogData } from &#x27;../../dialogs/tagging.dialog.component&#x27;;
+import { MatDialog } from &#x27;@angular/material/dialog&#x27;;
+import { Utils } from &#x27;../services/utils.service&#x27;;
+import { AutomatedTaggingParametersDialog, DialogData } from &#x27;../../dialogs/automated-tagging-parameters.component&#x27;;
+
+
+@Component({
+  selector: &#x27;app-tagging&#x27;,
+  templateUrl: &#x27;./tagging.component.html&#x27;,
+  styleUrls: [&#x27;./tagging.component.scss&#x27;]
+})
+export class TaggingComponent implements OnInit {
+  applyingTaggingMechanism &#x3D; false;
+  selectable &#x3D; true;
+  removable &#x3D; true;
+  keywordModels: any &#x3D; [];
+  kwmToAdd &#x3D; [];
+  bulkKwCtrl &#x3D; new FormControl([]);
+  separatorKeysCodes: number[] &#x3D; [ENTER, COMMA];
+
+  //Checkbox variable indicating if automated taggin should be applied to all documents
+  applyToAllDocuments: boolean &#x3D; false;
+
+  // list of all keywords (uncategorized + kwm)
+  keywords: IKeywordListEntry[] &#x3D; [];
+  selectedKeywords: IKeywordListEntry[] &#x3D; [];
+
+  // list of keywords filtered and display in the drop down menu
+  filteredBulkKeywords: Observable&lt;IKeywordListEntry[]&gt;;
+
+  // list of keywords selected for applying/deleting
+  selectedBulkKeywords: IKeywordListEntry[] &#x3D; [];
+
+  // kwm seclected from the drop down menu
+  selectedKeywordModel: any;
+
+  @Input() editing &#x3D; false;
+  @Input() selectedDocuments &#x3D; [];
+
+  @Output() taggingApplied &#x3D; new EventEmitter();
+  @Output() keywordsApplied &#x3D; new EventEmitter();
+
+  @ViewChild(&#x27;bulkKWInput&#x27;) KWInput: ElementRef&lt;HTMLInputElement&gt;;
+  @ViewChild(&#x27;auto&#x27;) matAutocomplete: MatAutocomplete;
+
+  public taggingMethods: Array&lt;ITaggingMethod&gt; &#x3D; [
+    {
+      name: &#x27;Keyword Model&#x27;,
+      type: &#x27;KWM&#x27;
+    },
+    {
+      name: &#x27;Automated&#x27;,
+      type: &#x27;ML&#x27;
+    }
+  ];
+
+  public taggingForm;
+
+  public selectedTaggingMethod &#x3D; this.taggingMethods[0];
+  constructor(private api: ApiService,
+    private formBuilder: FormBuilder,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private fileService: FileService,
+    private utils: Utils) {
+    this.taggingForm &#x3D; this.formBuilder.group({
+      taggingMethod: this.selectedTaggingMethod,
+      keywordModel: undefined,
+      documents: [],
+      bulkKeywords: []
+    });
+  }
+
+  public ngOnInit(): void {
+    this.api.getKeywordListEntries()
+      .subscribe((data: []) &#x3D;&gt; {
+        this.keywords &#x3D; data;
+        this.selectedKeywords &#x3D; this.keywords;
+        this.filteredBulkKeywords &#x3D; this.bulkKwCtrl.valueChanges.pipe(
+          startWith(&#x27;&#x27;),
+          map((selectedBulkKeyword: IKeywordListEntry | null) &#x3D;&gt; {
+            return selectedBulkKeyword ? this._filter(selectedBulkKeyword) : this.selectedKeywords.slice()
+          })
+        );
+      })
+    this.api.getKeywordModels()
+      .subscribe((data: any) &#x3D;&gt; {
+        this.keywordModels &#x3D; data;
+      });
+  }
+
+  public openTaggingDialog(dialogData: TaggingDialogData): void {
+    const dialogRef &#x3D; this.dialog.open(TaggingDialogComponent, {
+      width: &#x27;1200px&#x27;,
+      data: dialogData
+    });
+
+    dialogRef.afterClosed().subscribe((response: string) &#x3D;&gt; {
+      if (response &#x3D;&#x3D;&#x3D; &#x27;cancel&#x27;) {
+        this.api.cancelJob(dialogData.jobId)
+          .subscribe((res: any) &#x3D;&gt; {
+            this.snackBar.open(&#x27;Job cancelled&#x27;, &#x60;&#x60;, { duration: 3000 });
+          });
+      }
+      this.taggingApplied.emit();
+    });
+  }
+
+  /**
+   * @description
+   * Adds all selected keywords and their parents to all selected documents.
+   */
+  public applyBulkKeywords() {
+    if (this.selectedDocuments.length &#x3D;&#x3D;&#x3D; 0) {
+      this.snackBar.open(&#x27;no rows selected&#x27;, &#x60;&#x60;, { duration: 3000 });
+    }
+    this.selectedBulkKeywords.forEach(keyword &#x3D;&gt; {
+      if (!this.selectedKeywords.includes(keyword)) {
+        this.api.addUncategorizedKeyword(keyword.id).subscribe(() &#x3D;&gt; {
+
+        });
+      }
+      this.selectedDocuments.forEach(doc &#x3D;&gt; {
+        this.applyKeyword(doc, keyword);
+      });
+    });
+    this.selectedBulkKeywords &#x3D; [];
+  }
+
+  /**
+   * @description
+   * Removes all selected keywords from to all selected documents.
+   * Parent keywords are not touched and only the keyword string matters; the
+   * kwm of the keywords doesn&#x27;t get compared.
+   */
+  public deleteBulkKeywords() {
+    if (this.selectedDocuments.length &#x3D;&#x3D;&#x3D; 0) {
+      this.snackBar.open(&#x27;no rows selected&#x27;, &#x60;&#x60;, { duration: 3000 });
+    }
+    this.selectedBulkKeywords.forEach(keyword &#x3D;&gt; {
+      this.selectedDocuments.forEach(document &#x3D;&gt; {
+        const index &#x3D; document.keywords.map(kw &#x3D;&gt; kw.value).indexOf(keyword.id);
+        if (index &gt;&#x3D; 0) {
+          document.keywords.splice(index, 1);
+        }
+
+        this.fileService.patchKeywords(document).subscribe(res &#x3D;&gt; {
+          this.keywordsApplied.emit();
+        });
+      });
+    });
+    this.selectedBulkKeywords &#x3D; [];
+  }
+
+  public changeTaggingMethod(event: any) {
+    this.selectedTaggingMethod &#x3D; event.value;
+  }
+
+  public changeKWM(event: any) {
+    this.selectedKeywordModel &#x3D; event.value;
+  }
+
+  /**
+   * Upon submitting the tagging mechanism, the method will be applied and the documents
+   * will be fetched again to update the table
+   */
+  public onSubmit() {
+    const jobId &#x3D; this.utils.uuid4();
+    const taggingData: ITaggingRequest &#x3D; {
+      taggingMethod: this.selectedTaggingMethod,
+      documents: this.selectedDocuments,
+      keywordModel: this.selectedKeywordModel,
+      options: {applyToAllDocuments: this.applyToAllDocuments},
+      jobId
+    };
+    if(taggingData.documents.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; taggingData.options[&quot;applyToAllDocuments&quot;] &#x3D;&#x3D;&#x3D; false) {
+      this.snackBar.open(&#x27;no documents selected&#x27;, &#x60;&#x60;, { duration: 3000 });
+      return;
+    }
+    if (this.selectedTaggingMethod.name &#x3D;&#x3D;&#x3D; &#x27;Automated&#x27;) {
+      const dialogRef &#x3D; this.dialog.open(AutomatedTaggingParametersDialog, {
+        width: &#x27;300px&#x27;,
+        data: { computeOptimal: false, numClusters: 5, numKeywords: 5 }
+      });
+
+      dialogRef.afterClosed().subscribe((result: DialogData) &#x3D;&gt; {
+        if (result &#x3D;&#x3D;&#x3D; undefined) { return; } // cancel was pressed
+
+        result.numClusters &#x3D; Number(result.numClusters);
+        result.numKeywords &#x3D; Number(result.numKeywords);
+
+        if (result.numClusters &#x3D;&#x3D;&#x3D; 0 || result.numKeywords &#x3D;&#x3D;&#x3D; 0) { // happens if an empty string is inserted
+          this.snackBar.open(&#x27;invalid parameters&#x27;, &#x60;&#x60;, { duration: 3000 });
+          return;
+        }
+
+        taggingData.options[&quot;computeOptimal&quot;] &#x3D; result.computeOptimal;
+        taggingData.options[&quot;numClusters&quot;]    &#x3D; result.numClusters;
+        taggingData.options[&quot;numKeywords&quot;]    &#x3D; result.numKeywords;
+
+        this.api.applyTaggingMethod(taggingData).subscribe(
+          () &#x3D;&gt; {
+            this.applyingTaggingMechanism &#x3D; false;
+          });
+        this.openMonitoring(jobId);
+      });
+    } else {
+      if (taggingData.keywordModel &#x3D;&#x3D;&#x3D; undefined) {
+        this.snackBar.open(&#x27;no keyword model given&#x27;, &#x60;&#x60;, { duration: 3000 });
+        return;
+      }
+      this.api.applyTaggingMethod(taggingData).subscribe(() &#x3D;&gt; {
+        this.applyingTaggingMechanism &#x3D; false;
+      });
+      this.openMonitoring(jobId);
+    }
+
+  }
+
+  public openMonitoring(jobId: string) {
+    const taggingDialogData: TaggingDialogData &#x3D; {
+      status: &#x27;Documents are being tagged...&#x27;,
+      progress: 0,
+      jobId,
+      timeRemaining: -1
+    };
+    this.openTaggingDialog(taggingDialogData);
+    this.applyingTaggingMechanism &#x3D; true;
+
+    this.monitorJobProgress(taggingDialogData)
+      .then(() &#x3D;&gt; {
+        this.snackBar.open(&#x60;Finished tagging.&#x60;, &#x27;&#x27;, { duration: 3000 });
+      }
+    );
+  }
+
+  public selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedBulkKeywords.push(event.option.value);
+    this.KWInput.nativeElement.value &#x3D; &#x27;&#x27;;
+    this.bulkKwCtrl.setValue(null);
+  }
+
+
+  public add(event: MatChipInputEvent): void {
+    const input &#x3D; event.input;
+    const value &#x3D; event.value;
+
+    if ((value || &#x27;&#x27;).trim()) {
+      const kw: IKeywordListEntry &#x3D; { id: value, kwm: null, parents: [] };
+      this.selectedBulkKeywords.push(kw);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value &#x3D; &#x27;&#x27;;
+    }
+    this.bulkKwCtrl.setValue(null);
+  }
+
+  public remove(keyword: IKeywordListEntry): void {
+    const index &#x3D; this.selectedBulkKeywords.indexOf(keyword);
+
+    if (index &gt;&#x3D; 0) {
+      this.selectedBulkKeywords.splice(index, 1);
+    }
+  }
+
+  /**
+   * @description
+   * Adds a keyword and all its parents to a document, then sends a PATCH request to the backend
+   * to update the document. If angular compile switch to browser the request is succesfull the datasource gets
+   * updated.
+   */
+  public applyKeyword(doc: IDocument, keyword: IKeywordListEntry) {
+    let toAdd &#x3D; [keyword.id];
+    toAdd &#x3D; toAdd.concat(keyword.parents);
+    for (let i &#x3D; 0; i &lt; toAdd.length; i++) {
+      const kw: IKeyword &#x3D; { value: toAdd[i], type: &#x27;MANUAL&#x27; };
+      this.addKeywordToDoc(doc, kw).subscribe(
+        res &#x3D;&gt; {
+          doc &#x3D; res;
+        },
+        err &#x3D;&gt; this.snackBar.open(err, &#x60;&#x60;, { duration: 3000 })
+      );
+    }
+
+    this.fileService.patchKeywords(doc).subscribe(() &#x3D;&gt; {
+      this.keywordsApplied.emit();
+    });
+  }
+
+  /**
+   * @description
+   * Updates the job progress.
+   */
+  public async monitorJobProgress(taggingDialogData: TaggingDialogData) {
+    const jobId &#x3D; taggingDialogData.jobId;
+
+    while (taggingDialogData.status.toLowerCase() !&#x3D;&#x3D; &#x27;finished&#x27;) {
+      this.api.getTaggingJobStatus(jobId)
+        .subscribe((response: any) &#x3D;&gt; {
+          taggingDialogData.progress &#x3D; response.progress;
+          taggingDialogData.status &#x3D; response.message;
+          taggingDialogData.timeRemaining &#x3D; response.timeRemaining;
+        });
+      await this.delay(2000);
+    }
+  }
+
+  private delay(ms: number) {
+    return new Promise(resolve &#x3D;&gt; setTimeout(resolve, ms));
+  }
+
+  /**
+   * @description
+   * Adds a new keyword to an IDocument object. Throws an error if the keyword
+   * is already added to the document
+   */
+  private addKeywordToDoc &#x3D; (iDoc: IDocument, keyword: IKeyword): Observable&lt;IDocument&gt; &#x3D;&gt; {
+    if (iDoc.keywords.filter(kw &#x3D;&gt; kw.value &#x3D;&#x3D;&#x3D; keyword.value).length &#x3D;&#x3D;&#x3D; 0) {
+      iDoc.keywords.push(keyword);
+      iDoc.keywords.sort((a, b) &#x3D;&gt; a.value.localeCompare(b.value));
+      return of(iDoc);
+    } else {
+      return throwError(&#x27;Keyword &#x27; + keyword.value + &#x27; already added to &#x27; + iDoc.title);
+    }
+  }
+
+
+  private _filter(value): IKeywordListEntry[] {
+    let filterValue;
+    if (typeof (value) &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      filterValue &#x3D; value.toLowerCase();
+    } else {
+      filterValue &#x3D; value.id.toLowerCase();
+    }
+    return this.selectedKeywords.filter(keyword &#x3D;&gt; keyword.id.toLowerCase().indexOf(filterValue) &#x3D;&#x3D;&#x3D; 0);
+  }
+
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;mat-grid-list gutterSize&#x3D;&quot;32px&quot; [cols]&#x3D;&quot;12&quot; [rowHeight]&#x3D;&quot;&#x27;250px&#x27;&quot;&gt;
+  &lt;mat-grid-tile [colspan]&#x3D;&quot;4&quot; [rowspan]&#x3D;&quot;1&quot;&gt;
+    &lt;mat-grid-tile-header&gt;{{&#x27;DOCUMENTS.MANUAL_TAGGING&#x27; | translate}}&lt;/mat-grid-tile-header&gt;
+    &lt;div class&#x3D;&quot;tab-content&quot;&gt;
+      &lt;small &gt;{{&#x27;DOCUMENTS.kEYWORD_WARN&#x27; | translate}}&lt;/small&gt;
+      &lt;mat-form-field class&#x3D;&quot;example-chip-list&quot;&gt;
+      &lt;mat-chip-list #chipList aria-label&#x3D;&quot;Keyword selection&quot;&gt;
+        &lt;mat-chip
+          *ngFor&#x3D;&quot;let keyword of selectedBulkKeywords&quot;
+          [selectable]&#x3D;&quot;selectable&quot;
+          [removable]&#x3D;&quot;removable&quot;
+          (removed)&#x3D;&quot;remove(keyword)&quot;&gt;
+          {{keyword.kwm}} {{keyword.id}}
+          &lt;mat-icon matChipRemove *ngIf&#x3D;&quot;removable&quot;&gt;cancel&lt;/mat-icon&gt;
+        &lt;/mat-chip&gt;
+        &lt;input
+          placeholder&#x3D;&quot;Search Keywords...&quot;
+          #bulkKWInput
+          [formControl]&#x3D;&quot;bulkKwCtrl&quot;
+          [matAutocomplete]&#x3D;&quot;auto&quot;
+          [matChipInputFor]&#x3D;&quot;chipList&quot;
+          [matChipInputSeparatorKeyCodes]&#x3D;&quot;separatorKeysCodes&quot;
+          (matChipInputTokenEnd)&#x3D;&quot;add($event)&quot;&gt;
+      &lt;/mat-chip-list&gt;
+      &lt;mat-autocomplete #auto&#x3D;&quot;matAutocomplete&quot; (optionSelected)&#x3D;&quot;selected($event)&quot;&gt;
+        &lt;mat-option *ngFor&#x3D;&quot;let keyword of filteredBulkKeywords | async&quot; [value]&#x3D;&quot;keyword&quot;&gt;
+          {{keyword.kwm}} {{keyword.id}}
+        &lt;/mat-option&gt;
+      &lt;/mat-autocomplete&gt;
+    &lt;/mat-form-field&gt;
+    
+      &lt;button [disabled]&#x3D;&quot;!editing&quot; mat-raised-button color&#x3D;&quot;primary&quot;
+        (click)&#x3D;&quot;applyBulkKeywords()&quot;&gt;
+          {{&#x27;DOCUMENTS.APPLY_KEYWORDS&#x27; | translate}}
+      &lt;/button&gt;
+      &lt;button [disabled]&#x3D;&quot;!editing&quot; mat-raised-button color&#x3D;&quot;primary&quot;
+        (click)&#x3D;&quot;deleteBulkKeywords()&quot;
+        matTooltip&#x3D;&quot;{{&#x27;DOCUMENTS.DELETE_KEYWORDS_TOOLTIP&#x27; | translate}}&quot;
+      &gt;
+          {{&#x27;DOCUMENTS.DELETE_KEYWORDS&#x27; | translate}}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/mat-grid-tile&gt;
+  &lt;mat-grid-tile [colspan]&#x3D;&quot;4&quot; [rowspan]&#x3D;&quot;1&quot;&gt;
+    &lt;mat-grid-tile-header&gt;{{&#x27;DOCUMENTS.AUTOMATED_TAGGING&#x27; | translate}}&lt;/mat-grid-tile-header&gt;
+    &lt;div class&#x3D;&quot;tab-content&quot;&gt;
+      &lt;mat-form-field&gt;
+        &lt;mat-label&gt;{{&#x27;DOCUMENTS.SELECT_TAGGING_METHOD&#x27; | translate}}&lt;/mat-label&gt;
+        &lt;mat-select (selectionChange)&#x3D;&quot;changeTaggingMethod($event)&quot; [(value)]&#x3D;&quot;selectedTaggingMethod&quot;&gt;
+          &lt;mat-option *ngFor&#x3D;&quot;let taggingMethod of taggingMethods&quot; [value]&#x3D;&quot;taggingMethod&quot;&gt;{{taggingMethod.name}}&lt;/mat-option&gt;
+        &lt;/mat-select&gt;
+      &lt;/mat-form-field&gt;
+      &lt;mat-form-field *ngIf&#x3D;&quot;selectedTaggingMethod.type &#x3D;&#x3D;&#x3D; &#x27;KWM&#x27; &amp;&amp; keywordModels.length &gt; 0&quot;&gt;
+        &lt;mat-label&gt;{{&#x27;DOCUMENTS.SELECT_KEYWORD_MODEL&#x27; | translate}}&lt;/mat-label&gt;
+        &lt;mat-select (selectionChange)&#x3D;&quot;changeKWM($event)&quot; [(value)]&#x3D;&quot;selectedKeywordModel&quot;&gt;
+          &lt;mat-option *ngFor&#x3D;&quot;let keyWordModel of keywordModels&quot; [value]&#x3D;&quot;keyWordModel&quot;&gt;{{keyWordModel.id}}&lt;/mat-option&gt;
+        &lt;/mat-select&gt;
+      &lt;/mat-form-field&gt;
+      &lt;mat-checkbox [(ngModel)]&#x3D;&quot;applyToAllDocuments&quot;
+        matTooltip&#x3D;&quot;{{&#x27;DOCUMENTS.ALL_DOCUMENTS_CHECKBOX_TOOLTIP&#x27; | translate}}&quot;&gt;
+          {{&#x27;DOCUMENTS.ALL_DOCUMENTS_CHECKBOX&#x27; | translate}}
+      &lt;/mat-checkbox&gt;
+      &lt;button mat-raised-button color&#x3D;&quot;primary&quot; (click)&#x3D;&quot;onSubmit()&quot; [disabled]&#x3D;&quot;applyingTaggingMechanism&quot;&gt;
+        &lt;span *ngIf&#x3D;&quot;!applyingTaggingMechanism&quot;&gt;
+          {{&#x27;DOCUMENTS.APPLY_TAGGING&#x27; | translate}}
+        &lt;/span&gt;
+        &lt;mat-progress-spinner *ngIf&#x3D;&quot;applyingTaggingMechanism&quot;
+        class&#x3D;&quot;apply-spinner&quot;
+        [color]&#x3D;&quot;&#x27;primary&#x27;&quot;
+        [mode]&#x3D;&quot;&#x27;indeterminate&#x27;&quot;
+        [diameter]&#x3D;&quot;30&quot;&gt;
+        &lt;/mat-progress-spinner&gt;
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/mat-grid-tile&gt;
+&lt;/mat-grid-list&gt;
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-styleData">
+                <p class="comment">
+                    <code>./tagging.component.scss</code>
+                </p>
+                <pre class="line-numbers"><code class="language-scss">table {
+    width: 100%;
+}
+button:focus {
+    outline: none;
+}
+
+button {
+  margin:2px;
+}
+
+
+.tile-content {
+  margin-top: 16px;
+  width: 100%;
+
+  button {
+    width: 100%;
+  }
+}
+
+.apply-spinner {
+  width: 40px ;
+  height: 40px;
+  display: inline-block;
+}
+
+mat-paginator.mat-paginator.paginator--centered {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-tab {
+  margin-top: 16px;
+}
+
+table {
+  margin-top: 16px;
+}
+
+.mat-grid-tile .mat-grid-tile-header, .mat-grid-tile .mat-grid-tile-footer {
+  background-color: white;
+  color: #1b1e21;
+  padding: 0;
+  font-size: 18px;
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.example-chip-list, button {
+  width: 100%;
+}
+
+.help-icon {
+  font-size:20px;
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="c-tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><mat-grid-list gutterSize="32px" [cols]="12" [rowHeight]="\'250px\'">  <mat-grid-tile [colspan]="4" [rowspan]="1">    <mat-grid-tile-header>{{\'DOCUMENTS.MANUAL_TAGGING\' | translate}}</mat-grid-tile-header>    <div class="tab-content">      <small >{{\'DOCUMENTS.kEYWORD_WARN\' | translate}}</small>      <mat-form-field class="example-chip-list">      <mat-chip-list #chipList aria-label="Keyword selection">        <mat-chip          *ngFor="let keyword of selectedBulkKeywords"          [selectable]="selectable"          [removable]="removable"          (removed)="remove(keyword)">          {{keyword.kwm}} {{keyword.id}}          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>        </mat-chip>        <input          placeholder="Search Keywords..."          #bulkKWInput          [formControl]="bulkKwCtrl"          [matAutocomplete]="auto"          [matChipInputFor]="chipList"          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"          (matChipInputTokenEnd)="add($event)">      </mat-chip-list>      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">        <mat-option *ngFor="let keyword of filteredBulkKeywords | async" [value]="keyword">          {{keyword.kwm}} {{keyword.id}}        </mat-option>      </mat-autocomplete>    </mat-form-field>          <button [disabled]="!editing" mat-raised-button color="primary"        (click)="applyBulkKeywords()">          {{\'DOCUMENTS.APPLY_KEYWORDS\' | translate}}      </button>      <button [disabled]="!editing" mat-raised-button color="primary"        (click)="deleteBulkKeywords()"        matTooltip="{{\'DOCUMENTS.DELETE_KEYWORDS_TOOLTIP\' | translate}}"      >          {{\'DOCUMENTS.DELETE_KEYWORDS\' | translate}}      </button>    </div>  </mat-grid-tile>  <mat-grid-tile [colspan]="4" [rowspan]="1">    <mat-grid-tile-header>{{\'DOCUMENTS.AUTOMATED_TAGGING\' | translate}}</mat-grid-tile-header>    <div class="tab-content">      <mat-form-field>        <mat-label>{{\'DOCUMENTS.SELECT_TAGGING_METHOD\' | translate}}</mat-label>        <mat-select (selectionChange)="changeTaggingMethod($event)" [(value)]="selectedTaggingMethod">          <mat-option *ngFor="let taggingMethod of taggingMethods" [value]="taggingMethod">{{taggingMethod.name}}</mat-option>        </mat-select>      </mat-form-field>      <mat-form-field *ngIf="selectedTaggingMethod.type === \'KWM\' && keywordModels.length > 0">        <mat-label>{{\'DOCUMENTS.SELECT_KEYWORD_MODEL\' | translate}}</mat-label>        <mat-select (selectionChange)="changeKWM($event)" [(value)]="selectedKeywordModel">          <mat-option *ngFor="let keyWordModel of keywordModels" [value]="keyWordModel">{{keyWordModel.id}}</mat-option>        </mat-select>      </mat-form-field>      <mat-checkbox [(ngModel)]="applyToAllDocuments"        matTooltip="{{\'DOCUMENTS.ALL_DOCUMENTS_CHECKBOX_TOOLTIP\' | translate}}">          {{\'DOCUMENTS.ALL_DOCUMENTS_CHECKBOX\' | translate}}      </mat-checkbox>      <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="applyingTaggingMechanism">        <span *ngIf="!applyingTaggingMechanism">          {{\'DOCUMENTS.APPLY_TAGGING\' | translate}}        </span>        <mat-progress-spinner *ngIf="applyingTaggingMechanism"        class="apply-spinner"        [color]="\'primary\'"        [mode]="\'indeterminate\'"        [diameter]="30">        </mat-progress-spinner>      </button>    </div>  </mat-grid-tile></mat-grid-list></div>'
+    var COMPONENTS = [{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'AutomatedTaggingParametersDialog', 'selector': 'app-automated-tagging-parameters-dialog'},{'name': 'DashboardComponent', 'selector': 'app-dashboard'},{'name': 'DocumentationComponent', 'selector': 'app-documentation'},{'name': 'DocumentOverviewComponent', 'selector': 'app-document-overview'},{'name': 'DocumentViewTableComponent', 'selector': 'document-view-table'},{'name': 'FileExistsDialogComponent', 'selector': 'app-file-exists-dialog'},{'name': 'FileUploadComponent', 'selector': 'app-file-upload'},{'name': 'FileUploadDialogComponent', 'selector': 'app-file-upload-dialog'},{'name': 'KeywordsComponent', 'selector': 'app-keywords'},{'name': 'KWMNameDialog', 'selector': 'input-dialog'},{'name': 'TaggingComponent', 'selector': 'app-tagging'},{'name': 'TaggingDialogComponent', 'selector': 'app-tagging-dialog'}];
+    var DIRECTIVES = [{'name': 'DragdropDirective', 'selector': '[appDragdrop]'},{'name': 'NaturalNumbersOnlyDirective', 'selector': '[appNaturalNumbersOnly]'}];
+    var ACTUAL_COMPONENT = {'name': 'TaggingComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+                   
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'TaggingComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

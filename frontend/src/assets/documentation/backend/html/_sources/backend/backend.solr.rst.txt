@@ -17,5 +17,6 @@ Submodules
    backend.solr.doc
    backend.solr.documents
    backend.solr.keywordmodel
+   backend.solr.statistics
 
 .. currentmodule:: backend.solr

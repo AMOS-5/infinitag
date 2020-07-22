@@ -1,0 +1,10 @@
+=================================
+``backend.autotagging.lda_model``
+=================================
+
+.. automodule:: backend.autotagging.lda_model
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.lda_model

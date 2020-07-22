@@ -1,0 +1,10 @@
+===========================
+``backend.service.tagging``
+===========================
+
+.. automodule:: backend.service.tagging
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.service.tagging

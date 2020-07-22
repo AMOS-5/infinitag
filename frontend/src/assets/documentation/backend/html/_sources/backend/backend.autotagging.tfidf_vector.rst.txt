@@ -1,0 +1,10 @@
+====================================
+``backend.autotagging.tfidf_vector``
+====================================
+
+.. automodule:: backend.autotagging.tfidf_vector
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.tfidf_vector

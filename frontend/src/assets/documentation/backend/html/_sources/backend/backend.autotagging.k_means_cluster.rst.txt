@@ -1,0 +1,10 @@
+=======================================
+``backend.autotagging.k_means_cluster``
+=======================================
+
+.. automodule:: backend.autotagging.k_means_cluster
+
+   .. contents::
+      :local:
+
+.. currentmodule:: backend.autotagging.k_means_cluster
